@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Field Index</title>
+<meta name="description" content="Directory of every project tracked in this wiki.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="topbar__brand" href="../index.html">
+    <span class="topbar__mark">FI</span>
+    Field Index
+  </a>
+  <nav class="topbar__nav">
+    <a href="../index.html">Home</a>
+    <a href="index.html" class="is-active">Projects</a>
+  </nav>
+  <div class="topbar__spacer"></div>
+  <div class="search-box">
+    <input type="text" placeholder="Search the wiki…" aria-label="Search the wiki" data-search-input autocomplete="off">
+    <div class="search-box__results" data-search-results></div>
+  </div>
+  <button class="theme-toggle" data-theme-toggle type="button">☾</button>
+  <button class="menu-toggle" data-menu-toggle type="button" aria-label="Toggle navigation">☰</button>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar__section">
+      <div class="sidebar__label">Projects</div>
+      <a class="tab-link is-active" href="index.html"><span class="tab-index">◆</span> All Projects</a>
+      <a class="tab-link" href="project-alpha/index.html"><span class="tab-index">A</span> Project Alpha</a>
+      <a class="tab-link" href="project-beta/index.html"><span class="tab-index">B</span> Project Beta</a>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__label">Add your own</div>
+      <p style="padding:0 1.25rem; font-size:0.82rem; color:var(--ink-soft);">
+        Duplicate <code>project-alpha/</code>, rename it, and add a card + sidebar entry.
+      </p>
+    </div>
+  </aside>
+
+  <main class="content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a><span class="sep">/</span><span class="current">Projects</span>
+    </nav>
+
+    <span class="ledger-stamp"><span class="dot"></span> 2 entries</span>
+    <h1>Projects</h1>
+    <p>Every project gets its own folder under <code>/projects/</code>, with an <code>index.html</code> overview and as many subpages as it needs.</p>
+
+    <div class="grid">
+      <a class="card" href="project-alpha/index.html">
+        <span class="status-pill status-pill--active"><span class="dot"></span> Active</span>
+        <h3 class="card__title">Project Alpha</h3>
+        <p class="card__desc">The full example — overview, getting started, and an architecture page with a diagram.</p>
+        <div class="card__meta">
+          <span class="tag">web</span>
+          <span class="tag tag--amber">core</span>
+        </div>
+      </a>
+      <a class="card" href="project-beta/index.html">
+        <span class="status-pill status-pill--planning"><span class="dot"></span> Planning</span>
+        <h3 class="card__title">Project Beta</h3>
+        <p class="card__desc">A minimal single-page project — the smallest template to copy for something simple.</p>
+        <div class="card__meta">
+          <span class="tag">internal-tool</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="callout">
+      <div class="callout__title">Tip</div>
+      <p>Status pills use three states out of the box: <span class="status-pill status-pill--active"><span class="dot"></span>Active</span>, <span class="status-pill status-pill--planning"><span class="dot"></span>Planning</span>, and <span class="status-pill status-pill--archived"><span class="dot"></span>Archived</span>. Swap the modifier class to change state.</p>
+    </div>
+
+    <footer class="page-footer">
+      <span>Section: Projects</span>
+      <span>Last updated 2026-08-19</span>
+    </footer>
+  </main>
+</div>
+
+<footer class="site-footer">
+  Field Index Wiki — a template you can freely edit. Built with plain HTML/CSS/JS for <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>.
+</footer>
+
+<script>window.SITE_ROOT = "../";</script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

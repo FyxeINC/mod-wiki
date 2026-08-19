@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Index — Wiki</title>
+<meta name="description" content="A field-notebook wiki template: a landing page, a project directory, and per-project pages, ready to deploy on GitHub Pages.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="topbar__brand" href="index.html">
+    <span class="topbar__mark">FI</span>
+    Field Index
+  </a>
+  <nav class="topbar__nav">
+    <a href="index.html" class="is-active">Home</a>
+    <a href="projects/index.html">Projects</a>
+  </nav>
+  <div class="topbar__spacer"></div>
+  <div class="search-box">
+    <input type="text" placeholder="Search the wiki…" aria-label="Search the wiki" data-search-input autocomplete="off">
+    <div class="search-box__results" data-search-results></div>
+  </div>
+  <button class="theme-toggle" data-theme-toggle type="button">☾</button>
+  <button class="menu-toggle" data-menu-toggle type="button" aria-label="Toggle navigation">☰</button>
+</header>
+
+<section class="hero">
+  <div>
+    <span class="ledger-stamp"><span class="dot"></span> VOL. 01 — TEMPLATE</span>
+    <h1>A wiki that reads like a field notebook.</h1>
+    <p class="hero__lede">
+      This is a starter kit: one landing page, one project directory, and a
+      pattern for pages-within-projects. Copy the folders, rename the
+      entries, and it's yours — no build step, deploys straight to GitHub
+      Pages.
+    </p>
+    <div class="hero__actions">
+      <a class="btn btn--primary" href="projects/index.html">Browse projects</a>
+      <a class="btn btn--ghost" href="https://github.com" target="_blank" rel="noopener">View on GitHub</a>
+    </div>
+  </div>
+  <div class="card-stack" aria-hidden="true">
+    <div class="index-card index-card--back">
+      <div class="index-card__title">PROJECT BETA</div>
+      <div>status: planning</div>
+      <div class="index-card__rule"></div>
+      <div>owner: —</div>
+    </div>
+    <div class="index-card index-card--mid">
+      <div class="index-card__title">PROJECT ALPHA</div>
+      <div>status: active</div>
+      <div class="index-card__rule"></div>
+      <div>owner: you</div>
+    </div>
+    <div class="index-card index-card--front">
+      <div class="index-card__title">WELCOME.MD</div>
+      <div>rev: 2026-08-19</div>
+      <div class="index-card__rule"></div>
+      <div>tags: <span class="index-card__tag">start-here</span></div>
+    </div>
+  </div>
+</section>
+
+<main class="layout layout--wide">
+  <div class="content" style="padding-top:0;">
+
+    <h2>What's in this template</h2>
+    <p>Each block below is a working example — open the page it links to and view its source to see how it's built.</p>
+
+    <div class="grid">
+      <a class="card" href="projects/index.html">
+        <div class="card__eyebrow">Navigation</div>
+        <h3 class="card__title">Projects directory</h3>
+        <p class="card__desc">A card grid that lists every project, with status pills and tags.</p>
+      </a>
+      <a class="card" href="projects/project-alpha/index.html">
+        <div class="card__eyebrow">Structure</div>
+        <h3 class="card__title">Project overview + subpages</h3>
+        <p class="card__desc">Binder-tab sidebar navigation for a project and its child pages.</p>
+      </a>
+      <a class="card" href="projects/project-alpha/getting-started.html">
+        <div class="card__eyebrow">Content</div>
+        <h3 class="card__title">Tabs, callouts, code blocks</h3>
+        <p class="card__desc">Copy-to-clipboard code samples, tabbed examples, and admonitions.</p>
+      </a>
+      <a class="card" href="projects/project-alpha/architecture.html">
+        <div class="card__eyebrow">Reference</div>
+        <h3 class="card__title">Diagrams &amp; tables</h3>
+        <p class="card__desc">An inline SVG architecture diagram and a component reference table.</p>
+      </a>
+    </div>
+
+    <h2>How the pieces fit together</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Level</th><th>Example path</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Landing page</td><td><code>/index.html</code></td><td>Orientation and entry point — this page.</td></tr>
+          <tr><td>Project directory</td><td><code>/projects/index.html</code></td><td>Lists every project as a card.</td></tr>
+          <tr><td>Project overview</td><td><code>/projects/&lt;name&gt;/index.html</code></td><td>One page per project, summarizing status and links.</td></tr>
+          <tr><td>Project subpage</td><td><code>/projects/&lt;name&gt;/&lt;topic&gt;.html</code></td><td>Deeper docs — setup, architecture, decisions, etc.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <div class="callout__title">Note</div>
+      <p>Search is powered by a small JSON-like index at <code>assets/js/search-index.js</code>. Add one entry per page you create and the search box picks it up automatically — no server required.</p>
+    </div>
+
+    <h2>Recent updates</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Date</th><th>Page</th><th>Change</th></tr></thead>
+        <tbody>
+          <tr><td>2026-08-19</td><td><a href="projects/project-alpha/architecture.html">Project Alpha — Architecture</a></td><td>Added the request-flow diagram</td></tr>
+          <tr><td>2026-08-12</td><td><a href="projects/project-alpha/getting-started.html">Project Alpha — Getting Started</a></td><td>Documented the local setup steps</td></tr>
+          <tr><td>2026-08-05</td><td><a href="projects/project-beta/index.html">Project Beta</a></td><td>Project page created</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  Field Index Wiki — a template you can freely edit. Built with plain HTML/CSS/JS for <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>.
+</footer>
+
+<script>window.SITE_ROOT = "";</script>
+<script src="assets/js/search-index.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

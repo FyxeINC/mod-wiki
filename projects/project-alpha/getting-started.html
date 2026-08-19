@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Started — Project Alpha — Field Index</title>
+<meta name="description" content="Environment setup and first run instructions for Project Alpha.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="topbar__brand" href="../../index.html">
+    <span class="topbar__mark">FI</span>
+    Field Index
+  </a>
+  <nav class="topbar__nav">
+    <a href="../../index.html">Home</a>
+    <a href="../index.html" class="is-active">Projects</a>
+  </nav>
+  <div class="topbar__spacer"></div>
+  <div class="search-box">
+    <input type="text" placeholder="Search the wiki…" aria-label="Search the wiki" data-search-input autocomplete="off">
+    <div class="search-box__results" data-search-results></div>
+  </div>
+  <button class="theme-toggle" data-theme-toggle type="button">☾</button>
+  <button class="menu-toggle" data-menu-toggle type="button" aria-label="Toggle navigation">☰</button>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar__section">
+      <div class="sidebar__label">Project Alpha</div>
+      <a class="tab-link" href="index.html"><span class="tab-index">01</span> Overview</a>
+      <a class="tab-link tab-link--sub is-active" href="getting-started.html"><span class="tab-index">02</span> Getting Started</a>
+      <a class="tab-link tab-link--sub" href="architecture.html"><span class="tab-index">03</span> Architecture</a>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__label">Other Projects</div>
+      <a class="tab-link" href="../project-beta/index.html"><span class="tab-index">B</span> Project Beta</a>
+      <a class="tab-link" href="../index.html"><span class="tab-index">◆</span> All Projects</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a><span class="sep">/</span>
+      <a href="../index.html">Projects</a><span class="sep">/</span>
+      <a href="index.html">Project Alpha</a><span class="sep">/</span>
+      <span class="current">Getting Started</span>
+    </nav>
+
+    <div class="with-toc">
+      <div>
+        <span class="ledger-stamp"><span class="dot"></span> 02 — SETUP</span>
+        <h1>Getting Started</h1>
+        <p style="color:var(--ink-soft);">Everything you need to run Project Alpha on your machine.</p>
+
+        <h2 id="prerequisites">Prerequisites</h2>
+        <ul>
+          <li>Node.js 20 or later</li>
+          <li>Git</li>
+          <li>A GitHub account, if you plan to deploy your fork</li>
+        </ul>
+
+        <div class="callout callout--warning">
+          <div class="callout__title">⚠ Before you continue</div>
+          <p>This is placeholder content. Replace the commands below with whatever your actual project needs — this page exists to show the components, not to document a real tool.</p>
+        </div>
+
+        <h2 id="install">Install</h2>
+        <p>Pick the package manager you use. The tabs below all do the same thing.</p>
+
+        <div class="tabs">
+          <div class="tabs__list" role="tablist">
+            <button class="tabs__btn is-active" data-tab="npm" role="tab">npm</button>
+            <button class="tabs__btn" data-tab="yarn" role="tab">yarn</button>
+            <button class="tabs__btn" data-tab="pnpm" role="tab">pnpm</button>
+          </div>
+
+          <div class="tabs__panel is-active" data-tab-panel="npm">
+            <div class="code-block">
+              <div class="code-block__bar">
+                <span>bash</span>
+                <button class="code-block__copy" type="button">Copy</button>
+              </div>
+              <pre><code>git clone https://github.com/you/project-alpha.git
+cd project-alpha
+npm install
+npm run dev</code></pre>
+            </div>
+          </div>
+          <div class="tabs__panel" data-tab-panel="yarn">
+            <div class="code-block">
+              <div class="code-block__bar">
+                <span>bash</span>
+                <button class="code-block__copy" type="button">Copy</button>
+              </div>
+              <pre><code>git clone https://github.com/you/project-alpha.git
+cd project-alpha
+yarn install
+yarn dev</code></pre>
+            </div>
+          </div>
+          <div class="tabs__panel" data-tab-panel="pnpm">
+            <div class="code-block">
+              <div class="code-block__bar">
+                <span>bash</span>
+                <button class="code-block__copy" type="button">Copy</button>
+              </div>
+              <pre><code>git clone https://github.com/you/project-alpha.git
+cd project-alpha
+pnpm install
+pnpm dev</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="config">Configuration</h2>
+        <p>Copy the example environment file and fill in your own values:</p>
+        <div class="code-block">
+          <div class="code-block__bar">
+            <span>.env.example → .env</span>
+            <button class="code-block__copy" type="button">Copy</button>
+          </div>
+          <pre><code>API_URL=https://api.example.com
+API_KEY=replace-me
+LOG_LEVEL=info</code></pre>
+        </div>
+
+        <div class="callout">
+          <div class="callout__title">Note</div>
+          <p>Environment variables prefixed with <code>PUBLIC_</code> (if you use a framework that supports it) are the only ones exposed to the browser. Keep secrets unprefixed.</p>
+        </div>
+
+        <h2 id="troubleshooting">Troubleshooting</h2>
+
+        <details class="disclosure">
+          <summary>The dev server won't start</summary>
+          <div class="disclosure__body">Confirm you're on Node 20+ with <code>node -v</code>, then delete <code>node_modules</code> and reinstall.</div>
+        </details>
+        <details class="disclosure">
+          <summary>I'm getting a 401 from the API</summary>
+          <div class="disclosure__body">Double-check <code>API_KEY</code> in <code>.env</code> — it's the most common cause. Keys don't carry over from forks.</div>
+        </details>
+
+        <div class="callout callout--danger">
+          <div class="callout__title">✕ Common mistake</div>
+          <p>Don't commit your <code>.env</code> file. It's already listed in <code>.gitignore</code> — leave it there.</p>
+        </div>
+
+        <nav class="page-nav" aria-label="Project pages">
+          <a href="index.html">
+            <span class="page-nav__dir">Previous</span>
+            ← Overview
+          </a>
+          <a class="page-nav__next" href="architecture.html">
+            <span class="page-nav__dir">Next</span>
+            Architecture →
+          </a>
+        </nav>
+
+        <footer class="page-footer">
+          <span>Project Alpha / Getting Started</span>
+          <span>Last updated 2026-08-12</span>
+        </footer>
+      </div>
+
+      <aside class="toc">
+        <div class="toc__label">On this page</div>
+        <a href="#prerequisites">Prerequisites</a>
+        <a href="#install">Install</a>
+        <a href="#config">Configuration</a>
+        <a href="#troubleshooting">Troubleshooting</a>
+      </aside>
+    </div>
+  </main>
+</div>
+
+<footer class="site-footer">
+  Field Index Wiki — a template you can freely edit. Built with plain HTML/CSS/JS for <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>.
+</footer>
+
+<script>window.SITE_ROOT = "../../";</script>
+<script src="../../assets/js/search-index.js"></script>
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

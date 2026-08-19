@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Beta — Field Index</title>
+<meta name="description" content="A minimal single-page project, for copying when a project doesn't need subpages.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="topbar__brand" href="../../index.html">
+    <span class="topbar__mark">FI</span>
+    Field Index
+  </a>
+  <nav class="topbar__nav">
+    <a href="../../index.html">Home</a>
+    <a href="../index.html" class="is-active">Projects</a>
+  </nav>
+  <div class="topbar__spacer"></div>
+  <div class="search-box">
+    <input type="text" placeholder="Search the wiki…" aria-label="Search the wiki" data-search-input autocomplete="off">
+    <div class="search-box__results" data-search-results></div>
+  </div>
+  <button class="theme-toggle" data-theme-toggle type="button">☾</button>
+  <button class="menu-toggle" data-menu-toggle type="button" aria-label="Toggle navigation">☰</button>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar__section">
+      <div class="sidebar__label">Project Beta</div>
+      <a class="tab-link is-active" href="index.html"><span class="tab-index">01</span> Overview</a>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__label">Other Projects</div>
+      <a class="tab-link" href="../project-alpha/index.html"><span class="tab-index">A</span> Project Alpha</a>
+      <a class="tab-link" href="../index.html"><span class="tab-index">◆</span> All Projects</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a><span class="sep">/</span>
+      <a href="../index.html">Projects</a><span class="sep">/</span>
+      <span class="current">Project Beta</span>
+    </nav>
+
+    <span class="ledger-stamp"><span class="dot"></span> PROJECT FILE — BETA</span>
+    <h1>Project Beta</h1>
+
+    <div class="card__meta" style="margin: 0.8rem 0 1.6rem;">
+      <span class="status-pill status-pill--planning"><span class="dot"></span> Planning</span>
+      <span class="tag">internal-tool</span>
+    </div>
+
+    <p style="color:var(--ink-soft); font-size:1.05rem; max-width:60ch;">
+      This is the smallest project template: one page, no subpages, no
+      sidebar sub-tabs. Good starting point for a project that's still just
+      an idea, or that genuinely only needs one page of notes.
+    </p>
+
+    <h2>Notes</h2>
+    <ul>
+      <li>Replace this list with whatever you're tracking — links, open questions, next steps.</li>
+      <li>When this project grows past one page, copy the folder structure from <a href="../project-alpha/index.html">Project Alpha</a> instead: an <code>index.html</code> overview plus one file per subpage.</li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout__title">Tip</div>
+      <p>To add a project, duplicate this whole <code>project-beta/</code> folder, rename it, update the links in this sidebar and in <code>/projects/index.html</code>, and add an entry to <code>assets/js/search-index.js</code>.</p>
+    </div>
+
+    <footer class="page-footer">
+      <span>Project Beta / Overview</span>
+      <span>Last updated 2026-08-05</span>
+    </footer>
+  </main>
+</div>
+
+<footer class="site-footer">
+  Field Index Wiki — a template you can freely edit. Built with plain HTML/CSS/JS for <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>.
+</footer>
+
+<script>window.SITE_ROOT = "../../";</script>
+<script src="../../assets/js/search-index.js"></script>
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>
