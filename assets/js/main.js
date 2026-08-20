@@ -16,6 +16,98 @@
     return div.innerHTML;
   }
 
+
+  /* ---------------------------------------------------------------------
+   * Shared layout components
+   * ------------------------------------------------------------------- */
+  function renderSharedLayout() {
+    if (!window.WIKI_DATA) return;
+
+    const data = window.WIKI_DATA;
+    const site = data.site || {};
+    const root = window.SITE_ROOT || "";
+    const projects = data.projects || [];
+    const currentProject = getCurrentProject(projects);
+    const currentSection = getCurrentSection();
+    const currentPage = getCurrentPage(currentProject);
+    const pathname = window.location.pathname.replace(/\\/g, "/");
+    const isAbout = /\/about(?:\.html)?$/.test(pathname);
+    const homeHref = root + "index.html";
+    const projectsHref = root + "projects/index.html";
+    const aboutHref = root + "about.html";
+
+    document.querySelectorAll("[data-site-header]").forEach(function (mount) {
+      mount.outerHTML =
+        '<header class="topbar">' +
+          '<a class="topbar__brand" href="' + escapeHtml(homeHref) + '">' +
+            '<span class="topbar__mark" data-site-mark>' + escapeHtml(site.mark || "") + '</span>' +
+            '<span data-site-name>' + escapeHtml(site.name || "") + '</span>' +
+          '</a>' +
+          '<nav class="topbar__nav">' +
+            '<a href="' + escapeHtml(homeHref) + '" class="' + (!currentProject && !currentSection && !isAbout ? 'is-active' : '') + '">Home</a>' +
+            '<a href="' + escapeHtml(projectsHref) + '" class="' + (currentProject || currentSection ? 'is-active' : '') + '">Projects</a>' +
+            '<a href="' + escapeHtml(aboutHref) + '" class="' + (isAbout ? 'is-active' : '') + '">About</a>' +
+          '</nav>' +
+          '<div class="topbar__spacer"></div>' +
+          '<div class="search-box">' +
+            '<input type="text" placeholder="Search the wiki…" aria-label="Search the wiki" data-search-input autocomplete="off">' +
+            '<div class="search-box__results" data-search-results></div>' +
+          '</div>' +
+          '<button class="theme-toggle" data-theme-toggle type="button">☾</button>' +
+          '<button class="menu-toggle" data-menu-toggle type="button" aria-label="Toggle navigation">☰</button>' +
+        '</header>';
+    });
+
+    document.querySelectorAll("[data-site-breadcrumb]").forEach(function (mount) {
+      const parts = ['<nav class="breadcrumb" aria-label="Breadcrumb">'];
+      parts.push('<a href="' + escapeHtml(homeHref) + '">Home</a>');
+
+      if (currentProject) {
+        parts.push('<span class="sep">/</span><a href="' + escapeHtml(projectsHref) + '">Projects</a>');
+        const section = getSectionForProject(currentProject);
+        if (section) {
+          parts.push('<span class="sep">/</span><a href="' + escapeHtml(root + getSectionPath(section) + "index.html") + '">' + escapeHtml(section.label) + '</a>');
+        }
+        parts.push('<span class="sep">/</span><span class="current" data-project-name>' + escapeHtml(currentProject.name) + '</span>');
+      } else if (currentSection) {
+        parts.push('<span class="sep">/</span><a href="' + escapeHtml(projectsHref) + '">Projects</a>');
+        parts.push('<span class="sep">/</span><span class="current">' + escapeHtml(currentSection.label) + '</span>');
+      } else if (isAbout) {
+        parts.push('<span class="sep">/</span><span class="current">About</span>');
+      }
+
+      parts.push('</nav>');
+      mount.outerHTML = parts.join("");
+    });
+
+    document.querySelectorAll("[data-page-footer]").forEach(function (mount) {
+      let label = "Wiki";
+      if (currentProject) {
+        label = currentProject.name + (currentPage ? " / " + currentPage.title : "");
+      } else if (currentSection) {
+        label = "Section: " + currentSection.label;
+      } else if (isAbout) {
+        label = "About";
+      } else {
+        label = "Home";
+      }
+
+      let updated = "";
+      if (currentPage && currentPage.updated) updated = currentPage.updated;
+      else if (site.recentUpdates && site.recentUpdates.length) {
+        updated = site.recentUpdates.map(function (item) { return item.date; }).sort().reverse()[0] || "";
+      }
+
+      mount.outerHTML = '<footer class="page-footer"><span>' + escapeHtml(label) + '</span><span>' +
+        escapeHtml(updated ? "Last updated " + updated : "Last updated") + '</span></footer>';
+    });
+
+    document.querySelectorAll("[data-site-footer]").forEach(function (mount) {
+      mount.outerHTML = '<footer class="site-footer"><span data-site-name>' + escapeHtml(site.name || "") +
+        '</span> — built with plain HTML/CSS/JS for <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>.</footer>';
+    });
+  }
+
   /* ---------------------------------------------------------------------
    * Theme toggle (light / dark), persisted in localStorage
    * ------------------------------------------------------------------- */
@@ -136,12 +228,16 @@
   function setHref(element, href) {
     if (href) {
       element.setAttribute("href", href);
-    } else {
-      element.removeAttribute("href");
-      element.setAttribute("aria-disabled", "true");
-      element.classList.add("is-disabled");
-      element.hidden = true;
+      element.removeAttribute("aria-disabled");
+      element.classList.remove("is-disabled");
+      element.hidden = false;
+      return;
     }
+
+    element.removeAttribute("href");
+    element.setAttribute("aria-disabled", "true");
+    element.classList.add("is-disabled");
+    element.hidden = true;
   }
 
   function initSharedData() {
@@ -351,6 +447,63 @@
     });
   }
 
+
+  /* ---------------------------------------------------------------------
+   * Wiki search
+   * ------------------------------------------------------------------- */
+  function initSearch() {
+    const inputs = document.querySelectorAll("[data-search-input]");
+    if (!inputs.length || !window.WIKI_INDEX) return;
+
+    inputs.forEach(function (input) {
+      const results = input.parentElement.querySelector("[data-search-results]");
+      if (!results) return;
+
+      function render(query) {
+        const normalized = query.trim().toLowerCase();
+        if (!normalized) {
+          results.innerHTML = "";
+          results.classList.remove("is-open");
+          return;
+        }
+
+        const matches = window.WIKI_INDEX.filter(function (item) {
+          const haystack = [item.title, item.section, item.excerpt].concat(item.tags || []).join(" ").toLowerCase();
+          return haystack.indexOf(normalized) !== -1;
+        }).slice(0, 8);
+
+        if (!matches.length) {
+          results.innerHTML = '<div class="search-box__empty">No matching pages.</div>';
+          results.classList.add("is-open");
+          return;
+        }
+
+        const root = window.SITE_ROOT || "";
+        results.innerHTML = matches.map(function (item) {
+          return '<a class="search-box__result" href="' + escapeHtml(root + item.path) + '">' +
+            '<div class="search-box__result-title">' + escapeHtml(item.title) + '</div>' +
+            '<div class="search-box__result-path">' + escapeHtml(item.section) + '</div>' +
+          '</a>';
+        }).join("");
+        results.classList.add("is-open");
+      }
+
+      input.addEventListener("input", function () { render(input.value); });
+      input.addEventListener("focus", function () { if (input.value.trim()) render(input.value); });
+      input.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          input.value = "";
+          render("");
+          input.blur();
+        }
+      });
+
+      document.addEventListener("click", function (event) {
+        if (!input.parentElement.contains(event.target)) results.classList.remove("is-open");
+      });
+    });
+  }
+
   /* ---------------------------------------------------------------------
    * Project navigation and directory
    * ------------------------------------------------------------------- */
@@ -408,11 +561,13 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+    renderSharedLayout();
     initSharedData();
     initTheme();
     initMobileNav();
     initCodeCopy();
     initTabs();
+    initSearch();
     initProjectNavigation();
   });
 })();

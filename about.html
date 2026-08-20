@@ -11,31 +11,12 @@
 </head>
 <body>
 
-<header class="topbar">
-  <a class="topbar__brand" href="index.html">
-    <span class="topbar__mark" data-site-mark>FI</span>
-    <span data-site-name>Field Index</span>
-  </a>
-  <nav class="topbar__nav">
-    <a href="index.html">Home</a>
-    <a href="projects/index.html">Projects</a>
-    <a href="about.html" class="is-active">About</a>
-  </nav>
-  <div class="topbar__spacer"></div>
-  <div class="search-box">
-    <input type="text" placeholder="Search the wiki…" aria-label="Search the wiki" data-search-input autocomplete="off">
-    <div class="search-box__results" data-search-results></div>
-  </div>
-  <button class="theme-toggle" data-theme-toggle type="button">☾</button>
-  <button class="menu-toggle" data-menu-toggle type="button" aria-label="Toggle navigation">☰</button>
-</header>
+<div data-site-header></div>
 
 <main class="layout layout--wide">
   <div class="content" style="max-width:720px; margin:0 auto;">
 
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Home</a><span class="sep">/</span><span class="current">About</span>
-    </nav>
+    <div data-site-breadcrumb></div>
 
     <span class="ledger-stamp"><span class="dot"></span> AUTHOR FILE</span>
     <h1>About Me</h1>
@@ -64,16 +45,11 @@
     <p>None needed at this time!</p>
 
 
-    <footer class="page-footer">
-      <span>About</span>
-      <span data-page-updated>Last updated</span>
-    </footer>
+    <div data-page-footer></div>
   </div>
 </main>
 
-<footer class="site-footer">
-  <span data-site-name>Field Index</span> Wiki — a template you can freely edit. Built with plain HTML/CSS/JS for <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>.
-</footer>
+<div data-site-footer></div>
 
 <script>window.SITE_ROOT = "";</script>
 <script src="assets/js/wiki-data.js"></script>
