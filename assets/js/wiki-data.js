@@ -119,7 +119,7 @@ window.WIKI_DATA = {
     },
     {
         "slug": "ffdata_cheaper_maps",
-        "type": "mod",
+        "type": "datapack",
         "name": "FFCheaperMaps",
         "index": "E",
         "status": "active",
