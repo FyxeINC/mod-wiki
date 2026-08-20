@@ -121,7 +121,7 @@ window.WIKI_DATA = {
         "slug": "ffdata_cheaper_maps",
         "type": "datapack",
         "name": "FFCheaperMaps",
-        "index": "E",
+        "index": "A",
         "status": "active",
         "description": "Creates a new #inks tag and uses it as the center crafting ingredient for maps.",
         "tagline": "Creates a new #inks tag and uses it as the center crafting ingredient for maps.",
@@ -160,7 +160,7 @@ window.WIKI_DATA = {
         "slug": "fyxes-pbr-addons",
         "type": "resourcepack",
         "name": "Fyxe's PBR Addons",
-        "index": "E",
+        "index": "A",
         "status": "active",
         "description": "A PBR Extension for various mod blocks and items that includes Normal and Specular maps for LabPBR shaders.",
         "tagline": "A PBR Extension for various mod blocks and items that includes Normal and Specular maps for LabPBR shaders.",
@@ -199,7 +199,7 @@ window.WIKI_DATA = {
         "slug": "ffbandage",
         "type": "mod",
         "name": "FFBandage",
-        "index": "A",
+        "index": "B",
         "status": "active",
         "description": "Adds a simple healing bandage with configurable settings. A Fyxe's Features mod.",
         "tagline": "Adds a simple healing bandage with configurable settings. A Fyxe's Features mod.",
@@ -238,7 +238,7 @@ window.WIKI_DATA = {
         "slug": "ffcropevaporation",
         "type": "mod",
         "name": "FFCropEvaporation",
-        "index": "A",
+        "index": "C",
         "status": "active",
         "description": "A mod that makes crops require water, and has a chance to replace nearby water with a block when growing. A Fyxe's Features mod.",
         "tagline": "A mod that makes crops require water, and has a chance to replace nearby water with a block when growing. A Fyxe's Features mod.",
@@ -274,10 +274,49 @@ window.WIKI_DATA = {
     },
 
     {
+        "slug": "fyxes-classic-plus",
+        "type": "modpack",
+        "name": "Fyxe's Classic+",
+        "status": "active",
+        "description": "A pack dedicated to removing bloated features, expanding interconnectivity of mechanics, and enhancing the survival adventure experience.",
+        "tagline": "A pack dedicated to removing bloated features, expanding interconnectivity of mechanics, and enhancing the survival adventure experience.",
+        "version": "0.1.3",
+        "minecraftVersion": "1.21.1",
+        "modrinthSlug": "",
+        "icon": "",
+        "tags": [
+            {
+                "label": "NeoForge",
+                "class": "tag--rust"
+            },
+            {
+                "label": "MC 1.21.1",
+                "class": ""
+            }
+        ],
+        "links": {
+            "github": "",
+            "curseforge": "",
+            "discord": ""
+        },
+        "pages": [
+            {
+                "file": "index.html",
+                "title": "Overview",
+                "index": "01",
+                "description": "Fyxe's Classic+ overview, compatibility, features, and Modrinth information.",
+                "updated": "2026-08-20",
+                "searchExcerpt": "A pack dedicated to removing bloated features, expanding interconnectivity of mechanics, and enhancing the survival adventure experience."
+            }
+        ],
+        "index": "A"
+    },
+
+    {
         "slug": "fyxes-vanilla-modpack",
         "type": "modpack",
         "name": "Fyxe's Vanilla+",
-        "index": "A",
+        "index": "B",
         "status": "archived",
         "description": "A Vanilla Plus modpack centered around QoL tweaks, performance, and fun additions. Vanilla+",
         "tagline": "A Vanilla Plus modpack centered around QoL tweaks, performance, and fun additions. Vanilla+",
@@ -310,7 +349,124 @@ window.WIKI_DATA = {
                 "searchExcerpt": "A Vanilla Plus modpack centered around QoL tweaks, performance, and fun additions. Vanilla+"
             }
         ]
-    }
+    },
+
+ {
+     "slug": "ffwaterfalls",
+     "type": "mod",
+     "name": "FFWaterFalls",
+     "status": "active",
+     "description": "Adds gravity to fluids. Supports modded fluids and allows liquids to fall through waterloggable blocks.",
+     "tagline": "Adds gravity to fluids. Supports modded fluids and allows liquids to fall through waterloggable blocks.",
+     "version": "0.0.1",
+     "minecraftVersion": "1.21.1",
+     "modrinthSlug": "",
+     "icon": "",
+     "tags": [
+         {
+             "label": "NeoForge",
+             "class": "tag--rust"
+         },
+         {
+             "label": "MC 1.21.1",
+             "class": ""
+         }
+     ],
+     "links": {
+         "github": "",
+         "curseforge": "",
+         "discord": ""
+     },
+     "pages": [
+         {
+             "file": "index.html",
+             "title": "Overview",
+             "index": "01",
+             "description": "FFWaterFalls overview, compatibility, features, and Modrinth information.",
+             "updated": "2026-08-20",
+             "searchExcerpt": "Adds gravity to fluids. Supports modded fluids and allows liquids to fall through waterloggable blocks."
+         }
+     ],
+     "index": "D"
+ },
+
+ {
+     "slug": "ffmobsunburnangle",
+     "type": "mod",
+     "name": "FFMobSunBurnAngle",
+     "status": "active",
+     "description": "A mod that changes mob burning / spawning to be dependant on the sun angle. Has optional config to work through transparent blocks.",
+     "tagline": "A mod that changes mob burning / spawning to be dependant on the sun angle. Has optional config to work through transparent blocks.",
+     "version": "1.0.1",
+     "minecraftVersion": "1.21.1",
+     "modrinthSlug": "",
+     "icon": "",
+     "tags": [
+         {
+             "label": "NeoForge",
+             "class": "tag--rust"
+         },
+         {
+             "label": "MC 1.21.1",
+             "class": ""
+         }
+     ],
+     "links": {
+         "github": "",
+         "curseforge": "",
+         "discord": ""
+     },
+     "pages": [
+         {
+             "file": "index.html",
+             "title": "Overview",
+             "index": "01",
+             "description": "FFMobSunBurnAngle overview, compatibility, features, and Modrinth information.",
+             "updated": "2026-08-20",
+             "searchExcerpt": "A mod that changes mob burning / spawning to be dependant on the sun angle. Has optional config to work through transparent blocks."
+         }
+     ],
+     "index": "E"
+ },
+
+ {
+     "slug": "ffitemweight",
+     "type": "mod",
+     "name": "FFItemWeight",
+     "status": "active",
+     "description": "Adds weight and encumbrance built from crafting recipes and data. Insanely configurable.",
+     "tagline": "Adds weight and encumbrance built from crafting recipes and data. Insanely configurable.",
+     "version": "0.0.1",
+     "minecraftVersion": "1.21.1",
+     "modrinthSlug": "",
+     "icon": "",
+     "tags": [
+         {
+             "label": "NeoForge",
+             "class": "tag--rust"
+         },
+         {
+             "label": "MC 1.21.1",
+             "class": ""
+         }
+     ],
+     "links": {
+         "github": "",
+         "curseforge": "",
+         "discord": ""
+     },
+     "pages": [
+         {
+             "file": "index.html",
+             "title": "Overview",
+             "index": "01",
+             "description": "FFItemWeight overview, compatibility, features, and Modrinth information.",
+             "updated": "2026-08-20",
+             "searchExcerpt": "Adds weight and encumbrance built from crafting recipes and data. Insanely configurable."
+         }
+     ],
+     "index": "F"
+ }
   ]
 };
 

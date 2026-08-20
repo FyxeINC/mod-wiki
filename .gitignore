@@ -13,6 +13,8 @@ import-mod.sh
 /vendor
 /_zips
 *.code-workspace
+import-project.bat
+
 
 # Specific ignore for GitHub Pages
 # GitHub Pages will always use its own deployed version of pages-gem
