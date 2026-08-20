@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Fyxe's Mod Wiki</title>
+<meta name="description" content="Who makes these mods, and where to find them elsewhere.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="topbar__brand" href="index.html">
+    <span class="topbar__mark" data-site-mark>FI</span>
+    <span data-site-name>Field Index</span>
+  </a>
+  <nav class="topbar__nav">
+    <a href="index.html">Home</a>
+    <a href="projects/index.html">Projects</a>
+    <a href="about.html" class="is-active">About</a>
+  </nav>
+  <div class="topbar__spacer"></div>
+  <div class="search-box">
+    <input type="text" placeholder="Search the wiki…" aria-label="Search the wiki" data-search-input autocomplete="off">
+    <div class="search-box__results" data-search-results></div>
+  </div>
+  <button class="theme-toggle" data-theme-toggle type="button">☾</button>
+  <button class="menu-toggle" data-menu-toggle type="button" aria-label="Toggle navigation">☰</button>
+</header>
+
+<main class="layout layout--wide">
+  <div class="content" style="max-width:720px; margin:0 auto;">
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Home</a><span class="sep">/</span><span class="current">About</span>
+    </nav>
+
+    <span class="ledger-stamp"><span class="dot"></span> AUTHOR FILE</span>
+    <h1>About Me</h1>
+
+    <!--
+      Fill this card out: swap the placeholder avatar for a real image URL,
+      update the bio, and point each link at your real profiles. Delete any
+      link row you don't use.
+    -->
+    <div class="profile-card">
+      <img class="profile-card__avatar"
+           src="https://placehold.co/240x240/1D6F6F/FFFFFF?text=Fyxe"
+           alt="Fyxe profile image">
+      <div>
+        <h3 style="margin:0 0 0.2em;" data-site-author-name>Your Name / Handle</h3>
+        <p style="color:var(--ink-soft); margin:0 0 0.6em;">Minecraft mod developer</p>
+        <p>Game developer by trade, mod dev for added fun! This wiki contains documentation for my public Minecraft mods and is centered around providing better support for other developers/pack makers/tinkerers.</p>
+        <div class="profile-links">
+          <a class="btn btn--modrinth" href="" data-site-link="modrinth" target="_blank" rel="noopener">Modrinth profile</a>
+          <a class="btn btn--github" href="" data-site-link="github" target="_blank" rel="noopener">GitHub</a>          
+        </div>
+      </div>
+    </div>
+
+    <h2>Support</h2>
+    <p>None needed at this time!</p>
+
+
+    <footer class="page-footer">
+      <span>About</span>
+      <span data-page-updated>Last updated</span>
+    </footer>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <span data-site-name>Field Index</span> Wiki — a template you can freely edit. Built with plain HTML/CSS/JS for <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>.
+</footer>
+
+<script>window.SITE_ROOT = "";</script>
+<script src="assets/js/wiki-data.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

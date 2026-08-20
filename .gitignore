@@ -6,9 +6,13 @@ _site/
 .sass-cache/
 .jekyll-cache/
 .jekyll-metadata
-
+/tools
+import-mod.bat
+import-mod.sh
 # Additional Ruby/bundler ignore for when you run: bundle install
 /vendor
+/_zips
+*.code-workspace
 
 # Specific ignore for GitHub Pages
 # GitHub Pages will always use its own deployed version of pages-gem
