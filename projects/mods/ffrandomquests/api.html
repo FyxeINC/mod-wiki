@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modding API — Random Quests — Fyxe's Mod Wiki</title>
+<meta name="description" content="Adds periodic personal and shared quests, rewards, and a Quest Board.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>Random Quests</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<p>This guide describes the public API in the current source version <code>0.0.3</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<h2>Public API (for other mods)</h2>
+<p>Packages: <code>com.randomquests.api</code></p>
+<h3>QuestTypeRegistry</h3>
+<p>Extend built-in quest generation and progress without replacing the mod.</p>
+<h4>Target lists (optional — registry scans already pick up most mod content)</h4>
+<pre><code class="language-java">QuestTypeRegistry.addKillTargets(ResourceLocation...);
+QuestTypeRegistry.addCollectTargets(ResourceLocation...);
+QuestTypeRegistry.addMineTargets(ResourceLocation...);
+QuestTypeRegistry.addCraftTargets(ResourceLocation...);
+QuestTypeRegistry.addBiomeTargets(ResourceLocation...);
+QuestTypeRegistry.addEntityTargets(ResourceLocation...); // breed/tame</code></pre>
+<h4>Custom generators</h4>
+<pre><code class="language-java">QuestTypeRegistry.registerCustomGenerator(QuestType.KILL, (player, level, period, shared, difficulty, random) -&gt; {
+    // return a Quest or null to fall back to built-in
+});</code></pre>
+<h4>Progress reporting &amp; listeners</h4>
+<pre><code class="language-java">QuestTypeRegistry.reportProgress(player, QuestType.KILL, myEntityId, 1);
+QuestTypeRegistry.addProgressListener((player, quest, amountAdded) -&gt; { ... });
+QuestTypeRegistry.addCompletionListener((player, quest) -&gt; { ... });</code></pre>
+<h3>MainGoalRegistry</h3>
+<pre><code class="language-java">MainGoalRegistry.registerPersonalGenerator((player, level, serverGoal, difficulty, random) -&gt; {
+    MainGoal g = new MainGoal(...);
+    g.setTargetKey(&quot;mymod:boss_kills&quot;);
+    return g;
+});
+MainGoalRegistry.reportCustomProgress(player, &quot;mymod:boss_kills&quot;, 1);
+MainGoalRegistry.addCompletionListener((player, goal) -&gt; { ... });</code></pre>
+<h3>Design note</h3>
+<p>Prefer relying on <code>RegistryPools</code> automatic scans. Use the explicit API when:</p>
+<ul>
+<li>Your content is not discoverable by path/tag heuristics</li>
+<li>You need a completely custom quest generator</li>
+<li>You want to push progress from non-standard events</li>
+</ul>
+<h3>RewardRegistry</h3>
+<p>Other mods can register common/rare reward items, loot tables, and custom <code>RewardProvider</code>s. See <code>com.randomquests.api.RewardRegistry</code>.</p>
+<h3>RewardRegistry</h3>
+<p><code>com.randomquests.api.RewardRegistry</code> extends rewards. <code>addCommonItems(ResourceLocation...)</code>, <code>addRareItems(ResourceLocation...)</code>, and <code>addLootTables(ResourceLocation...)</code> add candidate IDs. <code>registerProvider(RewardProvider)</code> supplies custom rewards. The read-only getters expose registered candidates and providers. Register during setup, before quest rewards are generated.</p>
+<pre><code class="language-java">RewardRegistry.addRareItems(ResourceLocation.fromNamespaceAndPath(&quot;mymod&quot;, &quot;relic&quot;));</code></pre>
+<p>Main goal and quest progress calls need a <code>ServerPlayer</code>. Use namespaced target keys for custom progress to avoid collisions with other mods.</p>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

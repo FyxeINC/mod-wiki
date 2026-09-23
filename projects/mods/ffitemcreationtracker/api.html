@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modding API — FFItemCreationTracker — Fyxe's Mod Wiki</title>
+<meta name="description" content="Records who created an item, when, where, and how.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemCreationTracker</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<p>This guide describes the public API in the current source version <code>0.2.2</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<h2>Item Creation Tracker — Modding API</h2>
+<p>Primary class: <code>com.fyxe.ffitemcreationtracker.api.ItemCreationAPI</code>. The creation component is <code>ffitemcreationtracker:creation</code>; <code>CreationRecord</code> stores creator name and UUID, game day, timestamp, source ID, dimension, biome, moon phase, and custom extras.</p>
+<h3>Read and write stamps</h3>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><code>get(ItemStack)</code></td><td>Returns <code>Optional&lt;CreationRecord&gt;</code>.</td></tr>
+<tr><td><code>has(ItemStack)</code></td><td>Whether a stamp exists.</td></tr>
+<tr><td><code>tryStamp(ItemStack, Player, CreationSource)</code></td><td>Try a built-in source.</td></tr>
+<tr><td><code>tryStamp(ItemStack, Player, String, Map&lt;String,String&gt;)</code></td><td>Try a custom source and extras.</td></tr>
+<tr><td><code>putExtra(ItemStack, String, String)</code></td><td>Add or replace an extra on an existing stamp.</td></tr>
+<tr><td><code>create(Player, String, Map&lt;String,String&gt;)</code></td><td>Construct a record without writing it.</td></tr>
+</tbody></table></div>
+<p><code>tryStamp</code> runs on the logical server, returns <code>true</code> only when it writes a stamp, and respects enabled state, creative/spectator rules, item eligibility, and overwrite settings. It posts <code>CreationStampEvent</code> before writing.</p>
+<h3>Custom sources and display</h3>
+<p>Use a namespaced source ID such as <code>mymod:cooking</code>. Call <code>ItemCreationAPI.registerSource(sourceId, byKey, nounKey, nounFirstKey)</code> to supply wording, or provide translation keys. <code>registerExtra(extraKey, formatter)</code> formats an extra field in tooltips. Built-in sources include <code>CRAFTED</code>, <code>SMELTED</code>, <code>ANVIL</code>, <code>SMITHING</code>, <code>ENCHANTED</code>, <code>TRADED</code>, <code>FISHED</code>, and <code>UNKNOWN</code>.</p>
+<pre><code class="language-java">ItemCreationAPI.tryStamp(result, player, &quot;mymod:cooking&quot;, Map.of(&quot;mymod:recipe&quot;, &quot;stew&quot;));</code></pre>
+<h3>Pre-write event</h3>
+<p><code>com.fyxe.ffitemcreationtracker.api.event.CreationStampEvent</code> is cancellable and posted on <code>NeoForge.EVENT_BUS</code> after config checks but before the component is written. Inspect <code>getPlayer()</code>, <code>getStack()</code>, <code>getSourceId()</code>, and <code>getExtras()</code>; call <code>setSourceId</code>, <code>putExtra</code>, or <code>setCanceled(true)</code> to change or stop the stamp.</p>
+<pre><code class="language-java">@SubscribeEvent
+public static void onStamp(CreationStampEvent event) {
+    if (event.getSourceId().equals(&quot;mymod:cooking&quot;)) {
+        event.putExtra(&quot;mymod:station&quot;, &quot;campfire&quot;);
+    }
+}</code></pre>
+<p>The mod requires FFUtilities. Add an optional dependency check before calling this API from another mod when Item Creation Tracker is optional.</p>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

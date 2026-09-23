@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modding API — FFInjury — Fyxe's Mod Wiki</title>
+<meta name="description" content="Adds tiered injuries, adrenaline, treatment, and healing.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFInjury</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<p>This guide describes the public API in the current source version <code>0.7.2</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<h2>FFInjury — Modding API</h2>
+<p>Guide for other mods (and AI agents) integrating with <strong>FFInjury</strong> (<code>ffinjury</code>).</p>
+<div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td><strong>Minecraft</strong></td><td>1.21.1</td></tr>
+<tr><td><strong>Loader</strong></td><td>NeoForge 21.1.x</td></tr>
+<tr><td><strong>Mod ID</strong></td><td><code>ffinjury</code></td></tr>
+<tr><td><strong>API package</strong></td><td><code>com.fyxe.ffinjury.api</code></td></tr>
+<tr><td><strong>Source version</strong></td><td>0.7.2</td></tr>
+</tbody></table></div>
+<p>Dependency (optional):</p>
+<pre><code class="language-toml">[[dependencies.yourmod]]
+    modId=&quot;ffinjury&quot;
+    type=&quot;optional&quot;
+    versionRange=&quot;[0.6.0,)&quot;
+    ordering=&quot;NONE&quot;
+    side=&quot;BOTH&quot;</code></pre>
+<p>Use <code>ModList.get().isLoaded(&quot;ffinjury&quot;)</code> or an optional compile-only dependency before calling API classes.</p>
+<hr>
+<h3>Core concepts</h3>
+<ul>
+<li><strong>Server-authoritative.</strong> Mutations only apply on the logical server (<code>ServerPlayer</code>). Client query methods work; client mutations are no-ops.</li>
+<li><strong>Persisted</strong> on the player via NeoForge attachment <code>InjuryAttachments.INJURY_DATA</code>.</li>
+<li><strong>Cleared on death.</strong> Non-death clones keep state.</li>
+<li><strong>Adrenaline</strong> suppresses injury potion effects and attribute modifiers while active.</li>
+<li><strong>Treated</strong> injuries (bandaged) suppress their own effects/attributes until treatment expires. Increasing an injury&#x27;s tier clears treated + heal timers.</li>
+<li><strong>Injury types are dynamic</strong> — datapack JSON at <code>data/&lt;ns&gt;/ffinjury/injuries/</code> and/or <code>InjuryAPI.registerInjury</code>.</li>
+<li><strong>Hurt level</strong> is the highest active injury tier. Rules live in <code>data/&lt;ns&gt;/ffinjury/hurt_levels/</code> and are <strong>off</strong> unless <code>hurt_level.enabled</code> is true.</li>
+<li><strong>Creative suppression.</strong> If <code>general.enableInjuriesInCreative</code> is false, creative/instabuild players: do not gain injuries, do not heal them, hide HUD/inventory icons, and skip injury/adrenaline effects. Query with <code>InjuryAPI.isGameplaySuppressed(player)</code>.</li>
+</ul>
+<hr>
+<h3>Registering custom injuries</h3>
+<p>Prefer a datapack file so names, icons, effects, and damage weights exist on both sides:</p>
+<pre><code>data/mymod/ffinjury/injuries/fracture.json</code></pre>
+<p>Id becomes <code>mymod:fracture</code>. See <code>README.md</code> for the full JSON schema.</p>
+<p>Code fallback (overridden by datapack JSON with the same id):</p>
+<pre><code class="language-java">import com.fyxe.ffinjury.api.InjuryAPI;
+
+InjuryAPI.registerInjury(&quot;mymod:fracture&quot;, &quot;Bone Fracture&quot;, &quot;minecraft:bone&quot;);</code></pre>
+<p>All injuries share <code>general.defaultMaxTier</code>. Per-injury max tiers are gone.</p>
+<hr>
+<h3>Queries</h3>
+<pre><code class="language-java">import com.fyxe.ffinjury.api.InjuryAPI;
+import com.fyxe.ffinjury.injury.InjuryType;
+import net.minecraft.world.entity.player.Player;
+
+boolean any = InjuryAPI.hasAnyInjury(player);
+int count = InjuryAPI.getInjuryCount(player);
+int hurtLevel = InjuryAPI.getHurtLevel(player);          // max tier, 0 if none
+InjuryType type = InjuryAPI.getInjuryType(&quot;bleeding&quot;).orElse(null);
+boolean has = InjuryAPI.hasInjury(player, type);
+int tier = InjuryAPI.getTier(player, type);
+boolean treated = InjuryAPI.isTreated(player, type);
+boolean healing = InjuryAPI.isHealing(player, type);
+boolean adrenaline = InjuryAPI.isAdrenalineActive(player);
+long expireTick = InjuryAPI.getAdrenalineExpireTick(player);
+Optional&lt;ActiveInjury&gt; ai = InjuryAPI.getActiveInjury(player, type);
+
+List&lt;ActiveInjury&gt; list = InjuryAPI.getInjuries(player); // unmodifiable
+Collection&lt;InjuryType&gt; allTypes = InjuryAPI.getRegisteredInjuryTypes();
+
+boolean suppressed = InjuryAPI.isGameplaySuppressed(player);
+boolean hurtOn = InjuryAPI.isHurtLevelEnabled();
+double regenMul = InjuryAPI.getHurtLevelRegenMultiplier(player); // 1.0 if feature off</code></pre>
+<p>Config mirrors:</p>
+<pre><code class="language-java">boolean creative = InjuryAPI.areInjuriesEnabledInCreative();
+int maxActive = InjuryAPI.getMaxActiveInjuries();
+int maxTier = InjuryAPI.getDefaultMaxTier();</code></pre>
+<p>Built-in convenience constants still exist: <code>InjuryType.BLEEDING</code>, <code>InjuryType.BURN</code>, etc.</p>
+<hr>
+<h3>Mutations (server only)</h3>
+<pre><code class="language-java">InjuryAPI.setInjuryTier(player, type, 2);           // 0 removes
+int newTier = InjuryAPI.addOrIncreaseInjury(player, type);
+InjuryAPI.reduceInjury(player, type, 1);
+int healed = InjuryAPI.healTiers(player, 2);
+InjuryAPI.treatInjury(player, type, 60);            // treat 60s + start heal timer
+InjuryAPI.clearAllInjuries(player);
+InjuryAPI.grantAdrenaline(player, 20 * 15);</code></pre>
+<p>All mutations refresh potion effects, attribute modifiers, sync the client HUD, and fire the relevant API events.</p>
+<p>Raising a tier via <code>setInjuryTier</code> / <code>addOrIncreaseInjury</code> clears that injury&#x27;s treated and heal timers.</p>
+<hr>
+<h3>Events (NeoForge bus)</h3>
+<p>Listen with <code>@SubscribeEvent</code> on <code>NeoForge.EVENT_BUS</code>.</p>
+<div class="table-wrap"><table><thead><tr><th>Event</th><th>Cancellable</th><th>When</th></tr></thead><tbody>
+<tr><td><code>InjurySelectEvent</code></td><td>Yes</td><td>After damage-table selection, before apply. Can change type.</td></tr>
+<tr><td><code>InjuryAppliedEvent</code></td><td>No</td><td>After an injury is added or tier increased.</td></tr>
+<tr><td><code>InjuryHealedEvent</code></td><td>No</td><td>When tiers are reduced (sleep, apple, bandage heal, API, tick heal).</td></tr>
+<tr><td><code>InjuryTreatedEvent</code></td><td>No</td><td>When a bandage or <code>InjuryAPI.treatInjury</code> starts treatment. <code>getTreatmentItem()</code> may be empty for API calls.</td></tr>
+<tr><td><code>AdrenalineGrantedEvent</code></td><td>Yes</td><td>Before adrenaline is applied; can adjust duration.</td></tr>
+</tbody></table></div>
+<p>Package: <code>com.fyxe.ffinjury.api.event</code>.</p>
+<p>Example:</p>
+<pre><code class="language-java">@SubscribeEvent
+public void onSelect(InjurySelectEvent e) {
+    if (e.getInjuryType().getId().equals(&quot;bleeding&quot;)) {
+        e.setCanceled(true); // block bleeding from this hit
+    }
+}</code></pre>
+<hr>
+<h3>Injury types</h3>
+<p>Resolve by id: <code>InjuryType.fromId(&quot;bleeding&quot;)</code> or <code>InjuryType.of(&quot;bleeding&quot;)</code> (fallback handle).</p>
+<div class="table-wrap"><table><thead><tr><th>Default ID</th><th>Display</th></tr></thead><tbody>
+<tr><td><code>twisted_ankle</code></td><td>Twisted Ankle</td></tr>
+<tr><td><code>ankle_fracture</code></td><td>Ankle Fracture</td></tr>
+<tr><td><code>broken_leg</code></td><td>Broken Leg</td></tr>
+<tr><td><code>bruised_ribs</code></td><td>Bruised Ribs</td></tr>
+<tr><td><code>broken_ribs</code></td><td>Broken Ribs</td></tr>
+<tr><td><code>concussion</code></td><td>Concussion</td></tr>
+<tr><td><code>bleeding</code></td><td>Bleeding</td></tr>
+<tr><td><code>burn</code></td><td>Burn</td></tr>
+</tbody></table></div>
+<p><code>InjuryType</code> live-resolves display name, description, icon, effects, and attributes from the current datapack definition.</p>
+<hr>
+<h3>ActiveInjury</h3>
+<pre><code class="language-java">ActiveInjury ai = ...;
+InjuryType type = ai.getType();
+int tier = ai.getTier();
+boolean treated = ai.isTreated(currentGameTick);
+boolean healing = ai.isHealing();
+long treatedUntil = ai.getTreatedUntilTick();
+long healAt = ai.getHealAtTick();</code></pre>
+<p>Do not call <code>setTier</code> / timer setters from other mods unless you also refresh status and sync. Prefer <code>InjuryAPI</code>.</p>
+<hr>
+<h3>Hurt level (datapack)</h3>
+<p>Path: <code>data/&lt;namespace&gt;/ffinjury/hurt_levels/&lt;id&gt;.json</code></p>
+<pre><code class="language-json">{
+  &quot;min_hurt_level&quot;: 2,
+  &quot;stop_regen&quot;: false,
+  &quot;regen_multiplier&quot;: 0.5,
+  &quot;effects&quot;: [
+    { &quot;effect&quot;: &quot;minecraft:slowness&quot;, &quot;amplifier&quot;: 0 }
+  ],
+  &quot;attributes&quot;: [
+    { &quot;attribute&quot;: &quot;minecraft:generic.movement_speed&quot;, &quot;amount&quot;: -0.05, &quot;operation&quot;: &quot;add_multiplied_total&quot; }
+  ]
+}</code></pre>
+<p>Matching rules (<code>hurt &gt;= min_hurt_level</code>) combine: lowest regen multiplier wins, any <code>stop_regen</code> stops regen, effects/attributes stack. Feature toggle: <code>hurt_level.enabled</code> (default <strong>false</strong>).</p>
+<hr>
+<h3>Attribute modifiers</h3>
+<ul>
+<li>Per-injury modifiers live on the injury JSON (<code>attributes</code> array).</li>
+<li>Hurt-level modifiers live on hurt-level JSON (<code>attributes</code> array), not in server config.</li>
+</ul>
+<p>Operations: <code>add_value</code>, <code>add_multiplied_base</code>, <code>add_multiplied_total</code>.</p>
+<p>Applied by <code>InjuryStatusApplier</code> and suppressed by adrenaline / treatment / creative gameplay suppression.</p>
+<hr>
+<h3>Notes for integrators</h3>
+<ul>
+<li>Prefer <code>InjuryAPI</code> over direct attachment access so status (effects + attributes) stays consistent.</li>
+<li>Check <code>isGameplaySuppressed</code> before applying your own injury-related effects in creative.</li>
+<li>Damage chance is config (<code>damage_sources.chances</code>); weighted injury picks come from JSON <code>damage_weights</code>. Intercept selection with <code>InjurySelectEvent</code>.</li>
+<li>Custom injuries defined only on the server datapack may show fallback icons/names on clients that lack the same JSON.</li>
+<li>Bandages refuse to start their use animation when they cannot apply (no injuries, or all treated for non-ethereal).</li>
+</ul>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

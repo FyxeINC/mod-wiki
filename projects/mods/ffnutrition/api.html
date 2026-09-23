@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modding API — FFNutrition — Fyxe's Mod Wiki</title>
+<meta name="description" content="Rewards diet variety with nutrition categories that affect maximum health.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFNutrition</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<p>This guide describes the public API in the current source version <code>0.2.2</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<h2>FF Nutrition — Modding API</h2>
+<p>This document describes the public API other mods (and agents) can use to interact with FF Nutrition on Minecraft 1.21.1 / NeoForge.</p>
+<p>Primary entry point: <code>com.fyxeinc.ffnutrition.api.FFNutritionAPI</code></p>
+<p>Events live under <code>com.fyxeinc.ffnutrition.api.event</code>.</p>
+<hr>
+<h3>Dependency</h3>
+<p>Optional (recommended):</p>
+<pre><code class="language-toml">[[dependencies.yourmod]]
+    modId=&quot;ffnutrition&quot;
+    type=&quot;optional&quot;
+    versionRange=&quot;[0.2,)&quot;
+    ordering=&quot;NONE&quot;
+    side=&quot;BOTH&quot;</code></pre>
+<p>Always prefer the API over writing the <code>nutrition_data</code> attachment or attribute base value directly. The API keeps events, the max-health modifier, and the Metabolic Gauge client sync consistent.</p>
+<hr>
+<h3>Max-health compatibility</h3>
+<p>FF Nutrition no longer calls <code>AttributeInstance#setBaseValue</code> on <code>Attributes.MAX_HEALTH</code>.</p>
+<p>It applies a <strong>permanent</strong> <code>AttributeModifier</code> with a stable id:</p>
+<pre><code class="language-text">ffnutrition:nutrition_max_health</code></pre>
+<p>Exposed as <code>FFNutritionMod.NUTRITION_MAX_HEALTH_MODIFIER_ID</code> and <code>FFNutritionAPI.getMaxHealthModifierId()</code>.</p>
+<p>Behaviour:</p>
+<ol>
+<li>Remove any previous instance of our modifier.</li>
+<li>Measure the attribute value without us.</li>
+<li>Add an <code>ADD_VALUE</code> modifier so the <strong>final</strong> value equals the nutrition target (same absolute result as the old base-value overwrite).</li>
+<li>Clamp current health downward if it exceeds the new max.</li>
+</ol>
+<p>Other mods can:</p>
+<ul>
+<li>Detect our contribution via <code>AttributeInstance#getModifier(FFNutritionAPI.getMaxHealthModifierId())</code>.</li>
+<li>Remove it with <code>AttributeInstance#removeModifier(...)</code>.</li>
+<li>Adjust the target before application by listening to <code>ComputeMaxHealthEvent</code>.</li>
+</ul>
+<hr>
+<h3>Queries (safe on both sides when the attachment exists)</h3>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>Returns</th></tr></thead><tbody>
+<tr><td><code>getNutritionData(LivingEntity)</code></td><td>Attachment instance (creates defaults if needed)</td></tr>
+<tr><td><code>getNutritionScore(Player)</code></td><td>Score in <code>[0.0, 1.0]</code></td></tr>
+<tr><td><code>getCategoryValue(Player, String)</code></td><td>Category fill in <code>[0.0, 100.0]</code></td></tr>
+<tr><td><code>getCategoryValues(Player)</code></td><td>Unmodifiable category map</td></tr>
+<tr><td><code>getCategories()</code></td><td>Ordered datapack category names</td></tr>
+<tr><td><code>hasCategory(String)</code></td><td>Whether the category is currently loaded</td></tr>
+<tr><td><code>getItemNutritionValues(Item)</code></td><td>Raw datapack vector (unscaled)</td></tr>
+<tr><td><code>hasItemNutrition(Item)</code></td><td>Whether a datapack entry exists</td></tr>
+<tr><td><code>getDefaultTargetMaxHealth(Player)</code></td><td>Built-in formula target (before events)</td></tr>
+<tr><td><code>getMaxHealthModifierId()</code></td><td><code>ResourceLocation</code> of our permanent modifier</td></tr>
+<tr><td><code>getMaxHealthModifierAmount(Player)</code></td><td><code>Optional&lt;Double&gt;</code> of current modifier amount</td></tr>
+</tbody></table></div>
+<hr>
+<h3>Mutations (server only; no-ops on client)</h3>
+<p>All mutation helpers:</p>
+<ol>
+<li>Post a cancellable <code>NutritionChangeEvent</code>.</li>
+<li>Apply the change (with clamping).</li>
+<li>Refresh the max-health modifier (fires <code>ComputeMaxHealthEvent</code> + <code>MaxHealthAppliedEvent</code>).</li>
+<li>Sync Metabolic Gauge state to the owning client.</li>
+<li>Post <code>NutritionChangedEvent</code>.</li>
+</ol>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><code>addToCategory(Player, String, double)</code></td><td>Add delta to one category</td></tr>
+<tr><td><code>addToCategory(..., Cause)</code></td><td>Same with explicit cause</td></tr>
+<tr><td><code>setCategory(Player, String, double)</code></td><td>Absolute set (clamped)</td></tr>
+<tr><td><code>setCategory(..., Cause)</code></td><td>Same with explicit cause</td></tr>
+<tr><td><code>setAllCategories(Player, double)</code></td><td>Set every category to the same value (clamped)</td></tr>
+<tr><td><code>setAllCategories(..., Cause)</code></td><td>Same with explicit cause</td></tr>
+<tr><td><code>addNutritionVector(Player, double[], Cause)</code></td><td>Ordered vector add (food-style)</td></tr>
+<tr><td><code>applyFoodNutrition(ServerPlayer, Item, double[], usedFallback, fromPlacedBlock)</code></td><td>Food path + <code>FoodNutritionAppliedEvent</code></td></tr>
+<tr><td><code>applyMaxHealth(Player)</code></td><td>Force modifier refresh only</td></tr>
+</tbody></table></div>
+<p><code>Cause</code> values: <code>FOOD</code>, <code>DECAY</code>, <code>COMMAND</code>, <code>API</code>, <code>DEATH_CLONE</code>, <code>OTHER</code>.</p>
+<hr>
+<h3>Events (NeoForge bus, server-side)</h3>
+<div class="table-wrap"><table><thead><tr><th>Event</th><th>Cancellable</th><th>When</th></tr></thead><tbody>
+<tr><td><code>NutritionChangeEvent</code></td><td>Yes</td><td>Before a category mutation</td></tr>
+<tr><td><code>NutritionChangedEvent</code></td><td>No</td><td>After a successful mutation</td></tr>
+<tr><td><code>ComputeMaxHealthEvent</code></td><td>No (adjust target instead)</td><td>Before the max-health modifier is written</td></tr>
+<tr><td><code>MaxHealthAppliedEvent</code></td><td>No</td><td>After the modifier is applied</td></tr>
+<tr><td><code>FoodNutritionAppliedEvent</code></td><td>No</td><td>After food (item or placed block) contributed values</td></tr>
+</tbody></table></div>
+<h4>Example — override max health from another mod</h4>
+<pre><code class="language-java">@SubscribeEvent
+public static void onComputeMaxHealth(ComputeMaxHealthEvent event) {
+    // e.g. give a bonus heart while a custom effect is active
+    if (event.getPlayer().hasEffect(YOUR_EFFECT)) {
+        event.setTargetMaxHealth(event.getTargetMaxHealth() + 2.0);
+    }
+}</code></pre>
+<h4>Example — block nutrition gain from a specific food</h4>
+<pre><code class="language-java">@SubscribeEvent
+public static void onNutritionChange(NutritionChangeEvent event) {
+    if (event.getCause() == NutritionChangeEvent.Cause.FOOD
+            &amp;&amp; event.getOperation() == NutritionChangeEvent.Operation.ADD_VECTOR) {
+        // cancel or mutate event.getVector()
+        event.setCanceled(true);
+    }
+}</code></pre>
+<h4>Example — react after score changes</h4>
+<pre><code class="language-java">@SubscribeEvent
+public static void onNutritionChanged(NutritionChangedEvent event) {
+    if (event.getNewScore() &gt;= 0.9) {
+        // grant achievement, particle, etc.
+    }
+}</code></pre>
+<hr>
+<h3>Notes for agents / integrators</h3>
+<ul>
+<li>Category names and order come from the datapack (<code>nutrition_categories.json</code>). Do not hard-code indices without also reading <code>getCategories()</code>.</li>
+<li>Item vectors are <strong>raw composition</strong>; the server scales them by vanilla food nutrition/saturation and the common-config multipliers before applying.</li>
+<li>Decay runs every server level tick and deliberately does <strong>not</strong> spam <code>NutritionChangeEvent</code> every tick. Max-health events still fire when the applied max actually changes.</li>
+<li><code>setCategory</code> / <code>setAllCategories</code> via the API (and commands) now clamp correctly; the old command path that accidentally added instead of set has been fixed.</li>
+<li>Prefer <code>FFNutritionAPI</code> over direct attachment writes so client gauge sync and events stay correct.</li>
+</ul>
+<hr>
+<h3>Package layout</h3>
+<pre><code class="language-text">com.fyxeinc.ffnutrition.api
+├── FFNutritionAPI.java
+└── event
+    ├── NutritionChangeEvent.java
+    ├── NutritionChangedEvent.java
+    ├── ComputeMaxHealthEvent.java
+    ├── MaxHealthAppliedEvent.java
+    └── FoodNutritionAppliedEvent.java</code></pre>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

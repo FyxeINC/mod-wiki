@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modding API — FFExhaustion — Fyxe's Mod Wiki</title>
+<meta name="description" content="Tracks player fatigue from actions with configurable recovery and effects.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFExhaustion</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<p>This guide describes the public API in the current source version <code>0.7.2</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<h2>FFExhaustion — Modding API</h2>
+<p>Guide for other mods (and AI agents) integrating with <strong>FFExhaustion</strong> (<code>ffexhaustion</code>).</p>
+<div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td><strong>Minecraft</strong></td><td>1.21.1</td></tr>
+<tr><td><strong>Loader</strong></td><td>NeoForge 21.1.x</td></tr>
+<tr><td><strong>Mod ID</strong></td><td><code>ffexhaustion</code></td></tr>
+<tr><td><strong>API package</strong></td><td><code>com.fyxe.ffexhaustion.api</code></td></tr>
+<tr><td><strong>Exhaustion range</strong></td><td><code>0.0</code> – <code>1.0</code> (higher = more fatigued)</td></tr>
+</tbody></table></div>
+<p>Dependency (optional):</p>
+<pre><code class="language-toml">[[dependencies.yourmod]]
+    modId=&quot;ffexhaustion&quot;
+    type=&quot;optional&quot;
+    versionRange=&quot;[0,)&quot;
+    ordering=&quot;NONE&quot;
+    side=&quot;BOTH&quot;</code></pre>
+<p>Use <code>ModList.get().isLoaded(&quot;ffexhaustion&quot;)</code> or optional compile-only dependency before calling API classes.</p>
+<hr>
+<h3>Core concepts</h3>
+<ul>
+<li><strong>Server-authoritative.</strong> Mutations only apply on the logical server (<code>ServerPlayer</code>). Client calls are no-ops.</li>
+<li><strong>Persisted</strong> on the player via NeoForge attachments (<code>ModAttachments.EXHAUSTION</code>).</li>
+<li><strong>Death:</strong> controlled by server config <code>copyOnDeath</code> (default <code>false</code> → resets on death). Non-death clones (e.g. leaving the End) always keep the value.</li>
+<li><strong>Recovery delay:</strong> after many actions, recovery waits N ticks before draining toward 0.</li>
+<li><strong>Level modifiers (optional):</strong> vanilla <code>Player.experienceLevel</code> can reduce gain and recovery delay when enabled in config.</li>
+</ul>
+<hr>
+<h3>Reading exhaustion</h3>
+<pre><code class="language-java">import com.fyxe.ffexhaustion.api.ExhaustionAPI;
+import net.minecraft.world.entity.player.Player;
+
+float x = ExhaustionAPI.getExhaustion(player);       // 0.0 – 1.0
+int delay = ExhaustionAPI.getRecoveryDelayTicks(player);
+boolean recovering = ExhaustionAPI.isRecovering(player);
+boolean full = ExhaustionAPI.isFull(player);
+boolean empty = ExhaustionAPI.isEmpty(player);
+boolean tired = ExhaustionAPI.isAtLeast(player, 0.75f);</code></pre>
+<h4>Client HUD / client-only code</h4>
+<pre><code class="language-java">import com.fyxe.ffexhaustion.api.client.ClientExhaustionAPI;
+
+float local = ClientExhaustionAPI.getExhaustion();
+boolean tired = ClientExhaustionAPI.isAtLeast(0.9f);</code></pre>
+<p>This is a <strong>synced cache</strong>, not authoritative. Do not use it for gameplay rules.</p>
+<hr>
+<h3>Changing exhaustion (server)</h3>
+<p>All of these fire events and sync the client HUD when not cancelled.</p>
+<pre><code class="language-java">import com.fyxe.ffexhaustion.api.ExhaustionAPI;
+
+// Absolute set
+ExhaustionAPI.setExhaustion(player, 0.5f, true);   // value, triggerRecoveryDelay
+
+// Relative change (level gain multiplier applied on increase)
+ExhaustionAPI.increaseExhaustion(player, 0.05f, true);
+ExhaustionAPI.decreaseExhaustion(player, 0.05f, false);
+
+// No recovery delay
+ExhaustionAPI.increaseExhaustionNoDelay(player, 0.02f);
+ExhaustionAPI.decreaseExhaustionNoDelay(player, 0.02f);
+
+// Exact amount, ignore level multiplier, no delay
+ExhaustionAPI.increaseExhaustionRaw(player, 0.1f);
+
+// Full reset
+ExhaustionAPI.resetExhaustion(player);
+
+// Delay timer only
+ExhaustionAPI.setRecoveryDelayTicks(player, 40);</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>Level multiplier</th><th>Typical use</th></tr></thead><tbody>
+<tr><td><code>increaseExhaustion(p, amt, delay)</code></td><td>Yes</td><td>Player actions, combat costs</td></tr>
+<tr><td><code>increaseExhaustion(p, amt, delay, raw)</code></td><td>If <code>raw == false</code></td><td>Same, optional raw</td></tr>
+<tr><td><code>increaseExhaustionRaw(p, amt)</code></td><td>No</td><td>Scripted / exact values</td></tr>
+<tr><td><code>decreaseExhaustion(...)</code></td><td>N/A</td><td>Items, rest abilities</td></tr>
+<tr><td><code>setExhaustion(...)</code></td><td>N/A</td><td>Absolute control</td></tr>
+<tr><td><code>resetExhaustion(p)</code></td><td>N/A</td><td>Death effects, commands</td></tr>
+</tbody></table></div>
+<hr>
+<h3>Events (NeoForge event bus)</h3>
+<p>Register on <code>NeoForge.EVENT_BUS</code> (common / server).</p>
+<h4><code>ExhaustionChangeEvent</code> (cancellable, before apply)</h4>
+<pre><code class="language-java">import com.fyxe.ffexhaustion.api.ExhaustionChangeEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.common.NeoForge;
+
+@SubscribeEvent
+public void onExhaustionChange(ExhaustionChangeEvent event) {
+    // Cancel entirely
+    if (event.getPlayer().isCreative()) {
+        event.setCanceled(true);
+        return;
+    }
+    // Soften increases
+    if (event.getCause() == ExhaustionChangeEvent.Cause.INCREASE) {
+        float mid = (event.getOldValue() + event.getNewValue()) * 0.5f;
+        event.setNewValue(mid);
+    }
+    event.setTriggerDelay(false);
+}</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Getter / setter</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>getPlayer()</code></td><td><code>ServerPlayer</code></td></tr>
+<tr><td><code>getOldValue()</code> / <code>getNewValue()</code></td><td>Before / proposed after</td></tr>
+<tr><td><code>setNewValue(float)</code></td><td>Clamp-aware override</td></tr>
+<tr><td><code>isTriggerDelay()</code> / <code>setTriggerDelay(boolean)</code></td><td>Recovery delay after apply</td></tr>
+<tr><td><code>getCause()</code></td><td><code>SET</code>, <code>INCREASE</code>, <code>DECREASE</code>, <code>RECOVERY</code>, <code>SYSTEM</code>, <code>OTHER</code></td></tr>
+<tr><td><code>getDelta()</code></td><td><code>new - old</code></td></tr>
+</tbody></table></div>
+<h4><code>ExhaustionChangedEvent</code> (after apply, not cancellable)</h4>
+<pre><code class="language-java">@SubscribeEvent
+public void onExhaustionChanged(ExhaustionChangedEvent event) {
+    float x = event.getNewValue();
+    // e.g. grant advancement, play sound, update capability
+}</code></pre>
+<p><strong>Note:</strong> Continuous built-in drains (sprint per tick, shield hold, glider) may update the attachment <strong>without</strong> posting these events every tick (performance). Discrete API calls and most one-shot actions (jump, attack, Better Combat swing) <strong>do</strong> post them. Always re-read <code>ExhaustionAPI.getExhaustion(player)</code> if you need the live value each tick.</p>
+<hr>
+<h3>Level helpers</h3>
+<pre><code class="language-java">int level = ExhaustionAPI.getEffectiveLevel(player);  // capped by config
+float gainMult = ExhaustionAPI.getGainMultiplier(player);  // 1.0 if disabled
+int delayTicks = ExhaustionAPI.getEffectiveDelayTicks(player);</code></pre>
+<p>These respect <code>ServerConfig</code> level-modifier toggles. They use vanilla <code>experienceLevel</code> only (no custom level store).</p>
+<hr>
+<h3>Attachment (advanced)</h3>
+<pre><code class="language-java">import com.fyxe.ffexhaustion.data.ModAttachments;
+import com.fyxe.ffexhaustion.data.ExhaustionData;
+
+ExhaustionData data = player.getData(ModAttachments.EXHAUSTION);
+float v = data.getValue();</code></pre>
+<p>Prefer <code>ExhaustionAPI</code> for writes so events and client sync stay consistent.</p>
+<hr>
+<h3>Configurable status systems (potions + attributes)</h3>
+<p>Optional server features (all <strong>disabled by default</strong>). Other mods can query state without reading config classes.</p>
+<pre><code class="language-java">boolean potionsOn = ExhaustionAPI.arePotionEffectsEnabled();
+boolean thresholdAttrs = ExhaustionAPI.areThresholdAttributesEnabled();
+boolean scalingAttrs = ExhaustionAPI.areScalingAttributesEnabled();
+
+List&lt;ExhaustionStatusApplier.PotionEntry&gt; potions = ExhaustionAPI.getPotionEffectEntries();
+List&lt;ExhaustionStatusApplier.ThresholdAttrEntry&gt; steps = ExhaustionAPI.getThresholdAttributeEntries();
+List&lt;ExhaustionStatusApplier.ScalingAttrEntry&gt; scales = ExhaustionAPI.getScalingAttributeEntries();
+
+boolean anyPotion = ExhaustionAPI.hasActivePotionThreshold(player);
+boolean anyStep = ExhaustionAPI.hasActiveThresholdAttribute(player);
+
+double amount = ExhaustionAPI.getScalingAmount(player, scales.get(0));
+double atHalf = ExhaustionAPI.getScalingAmountAt(scales.get(0), 0.5f);</code></pre>
+<p>Parsed entry records live in <code>com.fyxe.ffexhaustion.effect.ExhaustionStatusApplier</code> and are part of the supported surface for <strong>read</strong> access.</p>
+<h4>Config entry formats (server TOML)</h4>
+<p><strong><code>potion_effects</code></strong></p>
+<ul>
+<li><code>enabled</code> (bool, default <code>false</code>)</li>
+<li><code>entries</code> — list of <code>&quot;minExhaustion;effect_id;amplifier;duration_ticks&quot;</code></li>
+<li>Example: <code>&quot;0.5;minecraft:slowness;0;40&quot;</code></li>
+</ul>
+<p><strong><code>attributes.threshold</code></strong></p>
+<ul>
+<li><code>enabled</code> (bool, default <code>false</code>)</li>
+<li><code>entries</code> — list of <code>&quot;minExhaustion;attribute_id;amount;operation&quot;</code></li>
+<li>Example: <code>&quot;0.7;minecraft:generic.movement_speed;-0.15;add_multiplied_total&quot;</code></li>
+<li>Operations: <code>add_value</code> | <code>add_multiplied_base</code> | <code>add_multiplied_total</code></li>
+</ul>
+<p><strong><code>attributes.scaling</code></strong></p>
+<ul>
+<li><code>enabled</code> (bool, default <code>false</code>)</li>
+<li><code>entries</code> — list of <code>&quot;attribute_id;amountAtFull;operation&quot;</code></li>
+<li>Applied amount = <code>amountAtFull * exhaustion</code> (exhaustion in <code>[0, 1]</code>)</li>
+<li>Example: <code>&quot;minecraft:generic.attack_damage;-0.25;add_multiplied_total&quot;</code></li>
+</ul>
+<p>These are independent of built-in sprint / attack-speed decay modifiers.</p>
+<hr>
+<h3>Soft compatibility patterns</h3>
+<p>FFExhaustion uses <strong>optional</strong> soft compat (reflection / soft mixins) for:</p>
+<ul>
+<li><strong>Better Combat</strong> (<code>bettercombat</code>) — multi-hit + miss via combo hooks</li>
+<li><strong>VC Gliders</strong> (<code>vc_gliders</code>) — drain while gliding, force drop at threshold</li>
+</ul>
+<p>Other mods should <strong>not</strong> depend on those packages. Integrate through <code>ExhaustionAPI</code> instead.</p>
+<hr>
+<h3>Config surface (for documentation only)</h3>
+<p>Server configs live under <code>ffexhaustion-server.toml</code> (names illustrative):</p>
+<ul>
+<li><code>copyOnDeath</code> — keep exhaustion after death (default <code>false</code>)</li>
+<li>Recovery, <code>gain</code> (sprinting, swim sprinting, floating, jumping, falling, attacking, shield), player level</li>
+<li>Optional: <code>potion_effects.<em></code>, <code>attributes.threshold.</em></code>, <code>attributes.scaling.*</code></li>
+<li>Optional compat: <code>compat.better_combat.<em></code>, <code>compat.gliders.</em></code></li>
+</ul>
+<p>Do not hard-code config class field names in foreign mods; treat them as user-facing, not API.</p>
+<hr>
+<h3>Minimal integration example</h3>
+<pre><code class="language-java">@EventBusSubscriber(modid = &quot;yourmod&quot;)
+public class YourExhaustionHooks {
+    @SubscribeEvent
+    public static void onSpellCast(YourSpellEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        if (!ModList.get().isLoaded(&quot;ffexhaustion&quot;)) return;
+
+        if (ExhaustionAPI.isAtLeast(player, 0.9f)) {
+            event.setCanceled(true);
+            return;
+        }
+        ExhaustionAPI.increaseExhaustion(player, 0.08f, true);
+    }
+}</code></pre>
+<hr>
+<h3>Stability</h3>
+<ul>
+<li>Package <code>com.fyxe.ffexhaustion.api</code> and <code>com.fyxe.ffexhaustion.api.client</code> are <strong>public API</strong>.</li>
+<li><code>ExhaustionStatusApplier</code> entry records and <code>ExhaustionAPI</code> status query helpers are <strong>public</strong> for read/integration.</li>
+<li><code>ExhaustionData</code> / <code>ModAttachments</code> are stable enough for read access; prefer API for mutations.</li>
+<li><code>ExhaustionHandler</code>, <code>compat.<em></code>, and <code>mixin.</em></code> are <strong>internal</strong> — do not call them from other mods.</li>
+</ul>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

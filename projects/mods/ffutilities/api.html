@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modding API — FFUtilities — Fyxe's Mod Wiki</title>
+<meta name="description" content="A shared API library for Fyxe NeoForge mods.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFUtilities</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<p>This guide describes the public API in the current source version <code>0.2.3</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<h2>FFUtilities — Modding API</h2>
+<p>FFUtilities is a shared NeoForge 1.21.1 library. Package root: <code>com.fyxe.ffutilities.api</code>. Add it as a required dependency if you directly use its classes. Use the <code>ffutilities_version</code> dependency required by the consuming mod&#x27;s own <code>gradle.properties</code>; do not copy an older README jar example blindly.</p>
+<h3>Core utilities</h3>
+<div class="table-wrap"><table><thead><tr><th>Class</th><th>Public helpers</th><th>Use</th></tr></thead><tbody>
+<tr><td><code>Ids</code></td><td><code>of(namespace,path)</code>, <code>of(id)</code>, <code>tryParse(raw)</code></td><td>Build or parse resource IDs.</td></tr>
+<tr><td><code>Mods</code></td><td><code>isLoaded</code>, <code>ifLoaded</code>, <code>getIfLoaded</code></td><td>Guard optional integrations.</td></tr>
+<tr><td><code>SoftReflect</code></td><td><code>findClass</code>, <code>findMethod</code>, <code>invokeStatic</code>, <code>invoke</code></td><td>Reflect into optional classes.</td></tr>
+<tr><td><code>PlayerUtil</code></td><td><code>isSurvivalLike</code>, <code>isGameplayTarget</code></td><td>Apply survival/creative targeting rules.</td></tr>
+<tr><td><code>DebugLog</code></td><td><code>info</code>, <code>debug</code></td><td>Log only when the supplied toggle is enabled.</td></tr>
+</tbody></table></div>
+<pre><code class="language-java">ResourceLocation id = Ids.of(&quot;mymod&quot;, &quot;widget&quot;);
+if (Mods.isLoaded(&quot;someothermod&quot;)) {
+    // Access optional integration code only after the load check.
+}</code></pre>
+<h3>Config and data</h3>
+<p><code>ConfigValidators</code> validates resource locations, tags, registry IDs, weighted entries, keyed numbers, booleans, and nonblank strings. <code>KeyedEntries.split</code> separates a config entry at a chosen character. <code>ConfigLists</code> parses lists into maps of string or resource ID keys to doubles, integers, or booleans; <code>freezeStringDoubles</code>, <code>freezeStringInts</code>, and <code>freezeStringBooleans</code> return immutable snapshots.</p>
+<p><code>RegistryUtil.item</code>, <code>.block</code>, and <code>.fluid</code> return <code>Optional</code> lookups by ID. <code>SimpleCodecReloadListener&lt;T&gt;</code> is a base for datapack reload listeners backed by a codec; <code>loaded()</code> returns the current keyed entries. Keep domain-specific rules in the gameplay mod.</p>
+<h3>Math, time, and selection</h3>
+<p><code>MathUtil</code> provides numeric <code>clamp</code>, <code>lerp</code>, <code>inverseLerp</code>, and <code>stageIndex</code>. <code>ExpressionEvaluator.evaluate(expression, vars)</code> evaluates configurable arithmetic with named variables. <code>WeightedRandom.pick(items, weightFn, random)</code> selects by integer weights. <code>TickGate.every</code> and <code>everyStaggered</code> support periodic work without a timer per entity. <code>TimeFormat</code> formats seconds or ticks as minutes and seconds; <code>ColorUtil.parseHex</code> has a fallback color.</p>
+<h3>HUD and client helpers</h3>
+<p><code>HudPlacement.anchorX</code>, <code>anchorY</code>, and <code>relativeText</code> calculate positions from anchor enums, offsets, and layout. <code>HudTextStyle</code> and related enums describe bold, outline, shadow, alignment, and expansion. <code>HudTextRenderer.draw</code> and <code>ConfigScreens.register</code> live under <code>api.client</code>; access those only from client code. <code>TooltipMode.shouldShow(shiftDown)</code> controls tooltip visibility.</p>
+<p>FFUtilities does not define injury, spoilage, rarity, or encumbrance rules. Use each gameplay mod&#x27;s own API for those features.</p>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

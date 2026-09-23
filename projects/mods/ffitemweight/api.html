@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modding API — FFItemWeight — Fyxe's Mod Wiki</title>
+<meta name="description" content="Gives items weight and players configurable encumbrance bands.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemWeight</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<p>This guide describes the public API in the current source version <code>0.6.2</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<h2>FFItemWeight — Modding API</h2>
+<p>Guide for other mods (and AI agents) integrating with <strong>FFItemWeight</strong> (<code>ffitemweight</code>).</p>
+<div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td><strong>Minecraft</strong></td><td>1.21.1</td></tr>
+<tr><td><strong>Loader</strong></td><td>NeoForge 21.1.x</td></tr>
+<tr><td><strong>Mod ID</strong></td><td><code>ffitemweight</code></td></tr>
+<tr><td><strong>API package</strong></td><td><code>com.fyxe.ffitemweight.api</code></td></tr>
+<tr><td><strong>Client helpers</strong></td><td><code>com.fyxe.ffitemweight.api.client</code></td></tr>
+</tbody></table></div>
+<p>Optional dependency:</p>
+<pre><code class="language-toml">[[dependencies.yourmod]]
+    modId=&quot;ffitemweight&quot;
+    type=&quot;optional&quot;
+    versionRange=&quot;[0,)&quot;
+    ordering=&quot;NONE&quot;
+    side=&quot;BOTH&quot;</code></pre>
+<p>Use <code>ModList.get().isLoaded(&quot;ffitemweight&quot;)</code> or a compile-only / optional dependency before calling API classes.</p>
+<hr>
+<h3>Core concepts</h3>
+<ul>
+<li><strong>Unit weight</strong> — mass of one item (no stack count). Assigned from datapack JSON, recipe derivation, or <code>defaultWeight</code>.</li>
+<li><strong>Stack weight</strong> — <code>unit * count</code>, optionally plus <strong>nested</strong> inventory contents (shulkers, bundles, backpacks).</li>
+<li><strong>Player total</strong> — sum of configured slots (main inventory, armour, offhand, Accessories, Curios).</li>
+<li><strong>Encumbrance</strong> — ordered datapack bands compared by integer <code>level</code> (default 0 Unencumbered through 5 Immobile). Display names are labels only.</li>
+<li><strong>Capacity</strong> — raises (or lowers) band capacities: <code>threshold&#x27; = capacity * levelMultiplier + flatBonus</code>.</li>
+<li><strong>Server-authoritative weights</strong> — table computed on server start / datapack reload, synced as a slim non-default map to clients.</li>
+<li><strong>Display</strong> — tooltips, slot highlights, HUD are client-only.</li>
+</ul>
+<hr>
+<h3>Dependency check</h3>
+<pre><code class="language-java">import net.neoforged.fml.ModList;
+
+if (!ModList.get().isLoaded(&quot;ffitemweight&quot;)) {
+    return;
+}</code></pre>
+<hr>
+<h3>Reading item weights</h3>
+<pre><code class="language-java">import com.fyxe.ffitemweight.api.ItemWeightAPI;
+import com.fyxe.ffitemweight.api.WeightCategory;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+
+double unit = ItemWeightAPI.getUnitWeight(item);
+double stack = ItemWeightAPI.getWeight(stack); // includes nested if enabled
+
+WeightCategory cat = ItemWeightAPI.getItemWeightCategory(stack);
+String name = cat.name();
+int rgb = cat.rgb();
+double bandMax = cat.maxWeight();
+
+List&lt;WeightCategory&gt; allItemBands = ItemWeightAPI.getItemWeightCategories();</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>Notes</th></tr></thead><tbody>
+<tr><td><code>getUnitWeight(Item)</code></td><td>One item; default weight if unknown</td></tr>
+<tr><td><code>getWeight(ItemStack)</code></td><td>Count + nested contents</td></tr>
+<tr><td><code>getItemWeightCategory(double/stack)</code></td><td>Band from client <code>weightCategories</code></td></tr>
+<tr><td><code>getItemWeightCategories()</code></td><td>Ordered immutable list</td></tr>
+</tbody></table></div>
+<p>Empty stacks return <code>0.0</code>. Null item uses the configured default unit weight.</p>
+<hr>
+<h3>Player totals and encumbrance</h3>
+<pre><code class="language-java">import net.minecraft.world.entity.player.Player;
+import com.fyxe.ffitemweight.api.EncumbranceLevel;
+
+boolean tracking = ItemWeightAPI.isPlayerWeightTrackingEnabled();
+
+double total = ItemWeightAPI.getPlayerTotalWeight(player);
+EncumbranceLevel enc = ItemWeightAPI.getPlayerEncumbrance(player);
+int level = ItemWeightAPI.getPlayerEncumbranceLevel(player);
+
+boolean heavyOrWorse = ItemWeightAPI.isPlayerEncumbranceAtLeast(player, 3);
+boolean pastMedium = ItemWeightAPI.isPlayerOverLevel(player, 2);
+
+EncumbranceLevel band = ItemWeightAPI.getEncumbranceCategory(total, player);
+List&lt;EncumbranceLevel&gt; loads = ItemWeightAPI.getEncumbranceLevels();</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>Notes</th></tr></thead><tbody>
+<tr><td><code>getPlayerTotalWeight(Player)</code></td><td>Cached ~5 ticks; respects creative / slot toggles</td></tr>
+<tr><td><code>getPlayerEncumbrance(Player)</code></td><td>Current <code>EncumbranceLevel</code> after capacity scaling</td></tr>
+<tr><td><code>getPlayerEncumbranceLevel(Player)</code></td><td>Integer <code>level</code> from the datapack band</td></tr>
+<tr><td><code>isPlayerEncumbranceAtLeast(p, level)</code></td><td>Current level &gt;= given level</td></tr>
+<tr><td><code>isPlayerOverLevel(p, level)</code></td><td>Total weight above that band&#x27;s scaled capacity</td></tr>
+<tr><td><code>getEncumbranceLevels()</code></td><td>Base bands (capacities before scaling)</td></tr>
+</tbody></table></div>
+<p>Creative players return 0 total (and no HUD) unless <code>applyInventoryWeightsInCreative</code> is true.</p>
+<hr>
+<h3>Capacity</h3>
+<pre><code class="language-java">boolean capOn = ItemWeightAPI.isCapacityScalingEnabled();
+double mult = ItemWeightAPI.getPlayerCapacityMultiplier(player); // level formula
+double flat = ItemWeightAPI.getPlayerCapacityFlatBonus(player);  // armour / accessories / enchants
+
+double effectiveMax = ItemWeightAPI.scaleThreshold(2000.0, player); // Heavy Load example
+
+double pieceBonus = ItemWeightAPI.getEquipmentCapacityBonus(chestStack);
+boolean isGear = ItemWeightAPI.isCapacityEquipment(chestStack);</code></pre>
+<p>Formula used internally: <code>threshold&#x27; = base * levelMultiplier + flatBonus</code>.</p>
+<p>Enchantment keys (datapack):</p>
+<ul>
+<li><code>ffitemweight:burden_bearing</code> — flat capacity <strong>bonus</strong> per level</li>
+<li><code>ffitemweight:crushing_load</code> — curse; flat capacity <strong>penalty</strong> per level</li>
+</ul>
+<hr>
+<h3>Effects toggles (read-only)</h3>
+<pre><code class="language-java">boolean potions = ItemWeightAPI.areEncumbranceEffectsEnabled();
+boolean attrs = ItemWeightAPI.areEncumbranceAttributesEnabled();</code></pre>
+<p>Actual potion / attribute application is internal (<code>EncumbranceEffects</code>). Query toggles only; do not depend on internal applicator classes.</p>
+<hr>
+<h3>Cache and readiness</h3>
+<pre><code class="language-java">// After you mutate inventory in a way this mod does not already listen for
+ItemWeightAPI.invalidatePlayerCache(player);
+ItemWeightAPI.invalidatePlayerCache(null); // all players
+
+boolean ready = ItemWeightAPI.isWeightTableReady(); // server computed / client synced
+Set&lt;Item&gt; stillDefault = ItemWeightAPI.getFallbackItems(); // server audit helper</code></pre>
+<p>Built-in invalidation already covers: equipment change, item pickup, container close, item destroy, logout.</p>
+<hr>
+<h3>Client-only helpers</h3>
+<pre><code class="language-java">import com.fyxe.ffitemweight.api.client.ClientItemWeightAPI;
+
+double localTotal = ClientItemWeightAPI.getLocalPlayerTotalWeight();
+EncumbranceLevel localEnc = ClientItemWeightAPI.getLocalPlayerEncumbrance();
+boolean overloaded = ClientItemWeightAPI.isLocalPlayerEncumbranceAtLeast(4);</code></pre>
+<p>Use for HUD / UI only. Gameplay rules belong on the server with <code>ItemWeightAPI</code> and a real <code>Player</code> / <code>ServerPlayer</code>.</p>
+<hr>
+<h3>Datapack weights (for content packs)</h3>
+<p>Path: <code>data/&lt;namespace&gt;/item_weights/&lt;name&gt;.json</code></p>
+<pre><code class="language-json">{
+  &quot;weights&quot;: [
+    { &quot;id&quot;: &quot;mymod:widget&quot;, &quot;weight&quot;: 2.5 },
+    { &quot;id&quot;: &quot;mymod:.*_ore&quot;, &quot;weight&quot;: 6.0, &quot;regex&quot;: true },
+    { &quot;id&quot;: &quot;mymod:boss_core&quot;, &quot;weight&quot;: 50.0, &quot;force&quot;: true }
+  ]
+}</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Field</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>id</code></td><td>Item id, or regex when <code>regex</code> is true</td></tr>
+<tr><td><code>weight</code></td><td>Unit weight</td></tr>
+<tr><td><code>regex</code></td><td>Treat <code>id</code> as a full-id Java regex</td></tr>
+<tr><td><code>force</code></td><td>Lock base; recipes cannot overwrite</td></tr>
+</tbody></table></div>
+<p>Prefer exact ids for anchors; leave craftable tools out of JSON so recipe derivation can fill them.</p>
+<h3>Datapack encumbrance</h3>
+<p>Path: <code>data/&lt;namespace&gt;/ffitemweight/encumbrance/&lt;id&gt;.json</code></p>
+<p>Override a built-in by shipping the same path (for example <code>ffitemweight/encumbrance/heavy_load.json</code>).</p>
+<pre><code class="language-json">{
+  &quot;level&quot;: 3,
+  &quot;display_name&quot;: &quot;Heavy Load&quot;,
+  &quot;color&quot;: &quot;#FFAA00&quot;,
+  &quot;capacity&quot;: 2000,
+  &quot;icon&quot;: &quot;ffitemweight:textures/gui/encumbrance/heavy_load.png&quot;,
+  &quot;shake&quot;: 1.5,
+  &quot;effects&quot;: [{ &quot;id&quot;: &quot;minecraft:slowness&quot;, &quot;amplifier&quot;: 0 }],
+  &quot;attributes&quot;: [{ &quot;id&quot;: &quot;minecraft:generic.movement_speed&quot;, &quot;operation&quot;: &quot;multiply_total&quot;, &quot;amount&quot;: -0.20 }]
+}</code></pre>
+<p>Compare <code>level</code> in code. Treat <code>display_name</code> as a label only.</p>
+<hr>
+<h3>Events (NeoForge event bus)</h3>
+<p>Register on <code>NeoForge.EVENT_BUS</code> (common / server).</p>
+<h4><code>EncumbranceChangedEvent</code> (after level change, not cancellable)</h4>
+<p>Fired when the player&#x27;s <strong>integer encumbrance level</strong> changes (for example 2 to 3). Checked about every 10 ticks with potion/attribute application. First observation after join does <strong>not</strong> fire (avoids login spam).</p>
+<pre><code class="language-java">import com.fyxe.ffitemweight.api.EncumbranceChangedEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+
+@SubscribeEvent
+public void onEncumbranceChanged(EncumbranceChangedEvent event) {
+    if (event.isIncrease()) {
+        // moved to a heavier band
+    }
+    int from = event.getOldLevel();
+    int to = event.getNewLevel();
+    double total = event.getTotalWeight();
+    EncumbranceLevel band = event.getNewBand();
+}</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Getter</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>getPlayer()</code></td><td><code>ServerPlayer</code></td></tr>
+<tr><td><code>getOldLevel()</code> / <code>getNewLevel()</code></td><td>Previous / new integer bands (<code>Integer.MIN_VALUE</code> when tracking is off)</td></tr>
+<tr><td><code>getTotalWeight()</code></td><td>Carried weight at transition</td></tr>
+<tr><td><code>getOldBand()</code> / <code>getNewBand()</code></td><td><code>EncumbranceLevel</code> snapshots (<code>old</code> may be null)</td></tr>
+<tr><td><code>isIncrease()</code> / <code>isDecrease()</code></td><td>Direction along integer levels</td></tr>
+</tbody></table></div>
+<p><strong>Note:</strong> There is no pre-change cancellable event — weight is inventory-derived. Cancel gameplay side-effects in your own handlers instead.</p>
+<h3>Soft compatibility (do not hard-depend)</h3>
+<div class="table-wrap"><table><thead><tr><th>Mod</th><th>Role</th></tr></thead><tbody>
+<tr><td>EMI</td><td>Tooltip weights via vanilla tooltip path</td></tr>
+<tr><td>Accessories / Curios</td><td>Slot weight + capacity (Accessories preferred if both present)</td></tr>
+<tr><td>Create</td><td>Config recipe modifiers / filters / nested handlers</td></tr>
+</tbody></table></div>
+<p>Integrate through <code>ItemWeightAPI</code>, not <code>compat.*</code> packages.</p>
+<hr>
+<h3>Stability</h3>
+<div class="table-wrap"><table><thead><tr><th>Surface</th><th>Status</th></tr></thead><tbody>
+<tr><td><code>com.fyxe.ffitemweight.api.*</code></td><td><strong>Public API</strong></td></tr>
+<tr><td><code>EncumbranceChangedEvent</code></td><td><strong>Public API</strong></td></tr>
+<tr><td><code>com.fyxe.ffitemweight.api.client.*</code></td><td><strong>Public API</strong> (client)</td></tr>
+<tr><td><code>WeightManager</code> / <code>CapacityHelper</code> public methods</td><td>Stable but prefer <code>ItemWeightAPI</code></td></tr>
+<tr><td><code>Config</code> fields / TOML keys</td><td>User-facing; do not hard-code as API</td></tr>
+<tr><td><code>EncumbranceEffects</code>, <code>compat.*</code>, network internals</td><td><strong>Internal</strong></td></tr>
+</tbody></table></div>
+<hr>
+<h3>Minimal integration example</h3>
+<pre><code class="language-java">@EventBusSubscriber(modid = &quot;yourmod&quot;)
+public class YourWeightHooks {
+    @SubscribeEvent
+    public static void onSpellCast(YourSpellEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        if (!ModList.get().isLoaded(&quot;ffitemweight&quot;)) return;
+
+        if (ItemWeightAPI.isPlayerEncumbranceAtLeast(player, 4)) {
+            event.setCanceled(true);
+            player.displayClientMessage(
+                    Component.literal(&quot;Too encumbered to cast.&quot;), true);
+            return;
+        }
+
+        // Optional: react to carried mass
+        double mass = ItemWeightAPI.getPlayerTotalWeight(player);
+        if (mass &gt; 3000.0) {
+            // apply your own mild penalty...
+        }
+    }
+}</code></pre>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

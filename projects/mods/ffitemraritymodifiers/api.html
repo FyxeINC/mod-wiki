@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modding API — FFItemRarityModifiers — Fyxe's Mod Wiki</title>
+<meta name="description" content="Adds configurable rarity rolls and small modifiers to gear.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemRarityModifiers</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<p>This guide describes the public API in the current source version <code>0.1.3</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<h2>Item Rarity Modifiers — Modding API</h2>
+<p>Entry point: <code>com.fyxe.ffitemraritymodifiers.api.RarityModifierApi</code>. Use it when your mod creates an item outside the built-in crafting, loot, or trade paths.</p>
+<h3>Roll a custom source</h3>
+<pre><code class="language-java">ResourceLocation source = ResourceLocation.fromNamespaceAndPath(&quot;mymod&quot;, &quot;quest_reward&quot;);
+boolean changed = RarityModifierApi.tryApplyRaritySource(
+    reward, source, level.getRandom(), level.registryAccess());</code></pre>
+<p>The method takes an <code>ItemStack</code>, source <code>ResourceLocation</code>, <code>RandomSource</code>, and <code>HolderLookup.Provider</code>. It returns <code>true</code> when the stack changes. It is a safe no-op if the item is ineligible, already processed, has no matching source data, or fails its chance roll.</p>
+<h3>Pair code with data</h3>
+<p>Create <code>data/mymod/ffitemraritymodifiers/rarity_source/quest_reward.json</code> so pack authors can configure the source&#x27;s chance and rarity weights. The source ID in code must match the namespace and file path. See the mod&#x27;s README and shipped datapack files for the current schema.</p>
+<p>Call from the logical server path that hands out the reward. Do not call repeatedly on the same stack in a tick; the API guards already processed items, but the best integration point is item creation.</p>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

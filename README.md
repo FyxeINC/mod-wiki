@@ -136,17 +136,16 @@ Search is generated automatically from the `pages` entries in `wiki-data.js`. Th
 
 There is no build step. Push the repository to GitHub and enable GitHub Pages for the repository/branch containing these files.
 
+Before publishing, run `python tools/check_site.py` from this repository. It checks that every page listed in `wiki-data.js` exists, that local links resolve, and that project pages use relative paths compatible with a GitHub Pages project subpath. The published site needs only the static HTML, CSS, JavaScript, and assets; the checker is a maintainer tool.
+
 
 ## Fyxe wiki setup
 
-The wiki is currently configured for Fyxe's four public Modrinth mods, all under the **Mods** section:
+The **Mods** section includes all 18 Minecraft mod projects in the sibling workspace as of 2026-09-23. Each has an overview page. The nine mods with a public integration API also have a Modding API page. The source version shown in wiki metadata is read from each mod's `gradle.properties`; it may be newer than a published release.
 
-- FFNutrition
-- FFBandage
-- FFCropEvaporation
-- FCompat_VanillaPlus
+Only projects with a configured Modrinth slug show a Modrinth button or badge. Leave `modrinthSlug` empty for projects still awaiting publication. `status` describes project development, not publication.
 
-Additional public projects can be imported into the appropriate section with the importer.
+When a mod's API changes, update its API page and `assets/js/wiki-data.js` page metadata in the same change. Keep examples aligned with the current Java source and test local links under a GitHub Pages project path. Additional public projects can still be imported with the importer.
 
 ### Where to edit things
 

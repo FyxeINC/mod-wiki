@@ -717,6 +717,9 @@ details.disclosure .disclosure__body { padding-bottom: 0.9em; color: var(--ink-s
 .mod-meta__tagline { color: var(--ink-soft); font-size: 0.9rem; margin: 0 0 0.5em; }
 .mod-meta__actions { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.7rem; }
 
+/* Keep optional links and icons hidden even when component CSS sets display. */
+[hidden] { display: none !important; }
+
 /* platform brand buttons — swap the href for your own project page */
 .btn--modrinth { background: #1bd96a; color: #0b2b18; }
 .btn--modrinth:hover { background: #15b658; color: #0b2b18; }

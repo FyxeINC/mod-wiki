@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modding API — FFFoodSpoilageAndPreservation — Fyxe's Mod Wiki</title>
+<meta name="description" content="Adds food spoilage stages, preservation modifiers, temperature, and eat effects.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFFoodSpoilageAndPreservation</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<p>This guide describes the public API in the current source version <code>0.7.2</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<h2>Food Spoilage and Preservation — Modding API</h2>
+<p>Package: <code>com.fyxe.fffoodspoilageandpreservation.api</code>. These events are posted on <code>NeoForge.EVENT_BUS</code>. Register a common/server listener with <code>@SubscribeEvent</code>; use registry access from the current level for modifier definitions.</p>
+<h3>Event lifecycle</h3>
+<div class="table-wrap"><table><thead><tr><th>Event</th><th>Cancellable</th><th>Use</th></tr></thead><tbody>
+<tr><td><code>SpoilageStageAdvancedEvent</code></td><td>No</td><td>Observe a stage transition; read <code>getStack()</code>, <code>getComponent()</code>, <code>getPreviousStage()</code>, and <code>getNewStage()</code>.</td></tr>
+<tr><td><code>FoodSpoiledEvent</code></td><td>Yes</td><td>Inspect the original and proposed replacement, call <code>setReplacement(ItemStack)</code> to substitute another result, or cancel the replacement.</td></tr>
+<tr><td><code>ModifierChangedEvent</code></td><td>No</td><td>Observe an applied or removed modifier with <code>getStack()</code>, <code>getModifier()</code>, <code>getAction()</code>, <code>wasApplied()</code>, and <code>wasRemoved()</code>.</td></tr>
+</tbody></table></div>
+<p><code>ModifierChangedEvent.Action</code> has <code>APPLIED</code> and <code>REMOVED</code> values. A <code>FoodSpoiledEvent</code> is posted before the replacement is committed; cancellation keeps the original stack. These event classes do not provide a general mutation API for spoilage state.</p>
+<h3>Modifier definitions</h3>
+<p>Use <code>com.fyxe.fffoodspoilageandpreservation.registry.ModifierLookup</code> with <code>level.registryAccess()</code> to resolve modifier IDs and definitions. The registries are <code>ModRegistries.MODIFIER</code> and <code>MODIFIER_CATEGORY</code>. Datapack definitions are the preferred extension path for new preservation behavior; inspect the mod&#x27;s README and shipped data for formats.</p>
+<h3>Integration pattern</h3>
+<pre><code class="language-java">@SubscribeEvent
+public static void onSpoiled(FoodSpoiledEvent event) {
+    // Called before the spoiled stack is replaced.
+    if (shouldKeepOriginal(event.getOriginal())) event.setCanceled(true);
+}</code></pre>
+<p>Keep gameplay changes on the logical server. Do not edit the component directly in an observer event and assume the mod will synchronize it; use the replacement event or the supported datapack path.</p>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

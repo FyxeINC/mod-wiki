@@ -334,7 +334,13 @@
         element.innerHTML = '<span class="dot"></span> ' + escapeHtml(label);
       });
       document.querySelectorAll("[data-project-icon]").forEach(function (element) {
-        if (currentProject.icon) element.setAttribute("src", currentProject.icon);
+        if (currentProject.icon) {
+          element.setAttribute("src", currentProject.icon);
+          element.hidden = false;
+        } else {
+          element.removeAttribute("src");
+          element.hidden = true;
+        }
         element.setAttribute("alt", currentProject.name + " icon");
       });
       document.querySelectorAll("[data-project-link]").forEach(function (element) {
