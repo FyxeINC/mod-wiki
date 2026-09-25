@@ -11,7 +11,24 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFFoodSpoilageAndPreservation</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Adds food spoilage stages, preservation modifiers, temperature, and eat effects.</p><h2>Features</h2><ul><li>Food progresses through configurable spoilage stages.</li><li>Datapack modifiers and server settings control preservation and immunity.</li></ul><h2>Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.21.1</td></tr><tr><th>Loader</th><td>NeoForge</td></tr><tr><th>Source version</th><td>0.7.2</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2>For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, events, and integration examples.</p>
+<p class="lead">Food does not stay fresh forever. This mod tracks spoilage, preservation, and temperature so storage choices matter.</p>
+<h2>What changes in game</h2>
+<ul><li>Food moves through Fresh, Good, Stale, Rotting, and Rotten stages. Later stages provide less hunger and saturation; fully spoiled food is replaced.</li><li>Preservation modifiers and server settings can slow spoilage or make food immune.</li><li>Temperature and storage conditions affect the rate shown in food tooltips. Hold Shift for additional tooltip details.</li></ul>
+<p>Food made through preservation crafting, smoking, or campfires starts aging when it first enters the world.</p>
+<h2>Keeping food fresh</h2>
+<p>Storage matters. By default, an ender chest stops spoilage; barrels, pots, and bundles slow it compared with an ordinary chest or your inventory. You can also preserve food directly:</p>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>How to use it</th></tr></thead><tbody><tr><td>Cured</td><td>Craft food with bone meal.</td></tr><tr><td>Brined</td><td>Craft suitable food with an awkward potion.</td></tr><tr><td>Candied</td><td>Craft suitable food with a honey bottle.</td></tr><tr><td>Dried or Smoked</td><td>Use a campfire or smoker with suitable food.</td></tr><tr><td>Frozen</td><td>Use ice items or keep food cold. Frozen food must thaw before you can eat it.</td></tr></tbody></table></div>
+<h2>Storage and moving food</h2>
+<p>When you open a container, spoilage uses that inventory's location and conditions. If the inventory has no known world location, neutral ambient conditions apply. Moving food accounts for time in its previous storage before using the new conditions.</p>
+<h2>Stacking food</h2>
+<p>By default, food with the same spoilage stage and preservation modifiers can stack even when individual pieces have different histories. The resulting stack keeps the worst spoilage progress. This works with inventory clicks, pickups, bundles, hoppers, and furnace outputs.</p>
+<p>Server owners can set <code>mergeSameStageFood</code> to <code>false</code> to require identical freshness histories. With that setting, differently aged food may prevent a furnace output from stacking until the output is emptied.</p>
+<h2>Requirements</h2>
+<div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.21.1</td></tr><tr><th>Loader</th><td>NeoForge</td></tr><tr><th>Documented source version</th><td>0.7.9</td></tr></tbody></table></div>
+<p>FFUtilities 0.2.4 is bundled in the mod JAR, so a separate library download is not needed. The documented source version may be newer than the latest published file.</p>
+<h2>For datapack makers</h2>
+<p>Datapacks can define modifier categories and preservation modifiers, including their rate, allowed foods, and apply or remove items. You can also override the mod's food tags and add modifier smoking or campfire recipes. See the mod's <a data-project-link="modrinth" target="_blank" rel="noopener">Modrinth description</a> for the supported fields and paths.</p>
+<h2>For mod developers</h2><p>The <a href="api.html">Modding API guide</a> covers events, preservation definitions, and custom inventory integration.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

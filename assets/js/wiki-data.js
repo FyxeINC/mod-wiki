@@ -14,16 +14,16 @@ window.WIKI_DATA = {
     },
     "recentUpdates": [
       {
-        "date": "2026-09-23",
-        "project": "ffutilities",
-        "page": "api.html",
-        "change": "Added public API reference and integration guidance."
+        "date": "2026-09-25",
+        "project": "fffoodspoilageandpreservation",
+        "page": "index.html",
+        "change": "Expanded the player guide with preservation and storage tips."
       },
       {
-        "date": "2026-09-23",
-        "project": "ffmodfavorites",
-        "page": "index.html",
-        "change": "Expanded the catalog to every local mod project."
+        "date": "2026-09-25",
+        "project": "fffoodspoilageandpreservation",
+        "page": "api.html",
+        "change": "Added a clearer path through events and integrations."
       }
     ]
   },
@@ -58,7 +58,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Crop growth can consume nearby water and require water access.",
       "tagline": "Crop growth can consume nearby water and require water access.",
-      "version": "0.1.2",
+      "version": "0.1.3",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffcropevaporation",
       "icon": "icon.png",
@@ -132,9 +132,9 @@ window.WIKI_DATA = {
       "name": "FF Expanded Biome Tint",
       "index": "E",
       "status": "active",
-      "description": "Applies biome grass, foliage, or water tint to configured blocks.",
-      "tagline": "Applies biome grass, foliage, or water tint to configured blocks.",
-      "version": "0.2.11",
+      "description": "Applies biome tints with datapack rules and a mod integration API.",
+      "tagline": "Give blocks local color with datapack rules.",
+      "version": "0.4.0",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -159,8 +159,16 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FF Expanded Biome Tint features, requirements, and source version.",
-          "updated": "2026-09-23",
-          "searchExcerpt": "Applies biome grass, foliage, or water tint to configured blocks."
+          "updated": "2026-09-25",
+          "searchExcerpt": "Datapack rules and a mod API assign grass, foliage, or water tint to blocks and breaking particles."
+        },
+        {
+          "file": "api.html",
+          "title": "Modding API",
+          "index": "02",
+          "description": "Java registration API and datapack format for block biome tint rules.",
+          "updated": "2026-09-25",
+          "searchExcerpt": "BiomeTintAPI Java methods, exact IDs, block tags, regex, tint channels, strengths, and datapack precedence."
         }
       ]
     },
@@ -210,7 +218,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Tracks player fatigue from actions with configurable recovery and effects.",
       "tagline": "Tracks player fatigue from actions with configurable recovery and effects.",
-      "version": "0.7.2",
+      "version": "0.7.5",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffexhaustion",
       "icon": "",
@@ -235,16 +243,16 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFExhaustion features, requirements, and source version.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-24",
           "searchExcerpt": "Tracks player fatigue from actions with configurable recovery and effects."
         },
         {
           "file": "api.html",
           "title": "Modding API",
           "index": "02",
-          "description": "FFExhaustion API, events, and integration examples.",
-          "updated": "2026-09-23",
-          "searchExcerpt": "FFExhaustion public API and integration guide."
+          "description": "FFExhaustion API, finite values, events, and integration examples.",
+          "updated": "2026-09-24",
+          "searchExcerpt": "FFExhaustion public API, finite value validation, and integration guide."
         }
       ]
     },
@@ -256,7 +264,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
       "tagline": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
-      "version": "0.7.2",
+      "version": "0.7.9",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "fffoodspoilageandpreservation",
       "icon": "",
@@ -281,16 +289,16 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFFoodSpoilageAndPreservation features, requirements, and source version.",
-          "updated": "2026-09-23",
-          "searchExcerpt": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects."
+          "updated": "2026-09-25",
+          "searchExcerpt": "Food spoilage stages, preservation methods, storage rates, stacking, and requirements."
         },
         {
           "file": "api.html",
           "title": "Modding API",
           "index": "02",
           "description": "FFFoodSpoilageAndPreservation API, events, and integration examples.",
-          "updated": "2026-09-23",
-          "searchExcerpt": "FFFoodSpoilageAndPreservation public API and integration guide."
+          "updated": "2026-09-25",
+          "searchExcerpt": "Food spoilage events, modifier definitions, custom inventory stacking, and integration examples."
         }
       ]
     },
@@ -302,7 +310,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds tiered injuries, adrenaline, treatment, and healing.",
       "tagline": "Adds tiered injuries, adrenaline, treatment, and healing.",
-      "version": "0.7.2",
+      "version": "0.7.3",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffinjury",
       "icon": "",
@@ -348,7 +356,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Records who created an item, when, where, and how.",
       "tagline": "Records who created an item, when, where, and how.",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -394,7 +402,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds configurable rarity rolls and small modifiers to gear.",
       "tagline": "Adds configurable rarity rolls and small modifiers to gear.",
-      "version": "0.1.3",
+      "version": "0.1.11",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -419,16 +427,16 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemRarityModifiers features, requirements, and source version.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-24",
           "searchExcerpt": "Adds configurable rarity rolls and small modifiers to gear."
         },
         {
           "file": "api.html",
           "title": "Modding API",
           "index": "02",
-          "description": "FFItemRarityModifiers API, events, and integration examples.",
-          "updated": "2026-09-23",
-          "searchExcerpt": "FFItemRarityModifiers public API and integration guide."
+          "description": "FFItemRarityModifiers API, gear tags, modifier targeting, and integration examples.",
+          "updated": "2026-09-24",
+          "searchExcerpt": "FFItemRarityModifiers API, durable gear tags, required_item_tag modifier targeting, and integration guide."
         }
       ]
     },
@@ -440,7 +448,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Gives items weight and players configurable encumbrance bands.",
       "tagline": "Gives items weight and players configurable encumbrance bands.",
-      "version": "0.6.2",
+      "version": "0.6.4",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffitemweight",
       "icon": "",
@@ -465,16 +473,16 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemWeight features, requirements, and source version.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-24",
           "searchExcerpt": "Gives items weight and players configurable encumbrance bands."
         },
         {
           "file": "api.html",
           "title": "Modding API",
           "index": "02",
-          "description": "FFItemWeight API, events, and integration examples.",
-          "updated": "2026-09-23",
-          "searchExcerpt": "FFItemWeight public API and integration guide."
+          "description": "FFItemWeight API, weight references, events, and integration examples.",
+          "updated": "2026-09-24",
+          "searchExcerpt": "FFItemWeight public API, weight_from datapack references, and copper variant weights."
         }
       ]
     },
@@ -486,7 +494,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs.",
       "tagline": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs.",
-      "version": "1.1.2",
+      "version": "1.1.3",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -684,7 +692,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "A shared API library for Fyxe NeoForge mods.",
       "tagline": "A shared API library for Fyxe NeoForge mods.",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -730,7 +738,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Makes liquid source blocks fall under gravity.",
       "tagline": "Makes liquid source blocks fall under gravity.",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffwaterfalls",
       "icon": "",

@@ -11,7 +11,7 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemRarityModifiers</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.1.3</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.1.11</code>. Check that the mod is loaded when integrating conditionally.</p>
 <h2>Item Rarity Modifiers — Modding API</h2>
 <p>Entry point: <code>com.fyxe.ffitemraritymodifiers.api.RarityModifierApi</code>. Use it when your mod creates an item outside the built-in crafting, loot, or trade paths.</p>
 <h3>Roll a custom source</h3>
@@ -22,6 +22,14 @@ boolean changed = RarityModifierApi.tryApplyRaritySource(
 <h3>Pair code with data</h3>
 <p>Create <code>data/mymod/ffitemraritymodifiers/rarity_source/quest_reward.json</code> so pack authors can configure the source&#x27;s chance and rarity weights. The source ID in code must match the namespace and file path. See the mod&#x27;s README and shipped datapack files for the current schema.</p>
 <p>Call from the logical server path that hands out the reward. Do not call repeatedly on the same stack in a tick; the API guards already processed items, but the best integration point is item creation.</p>
+<h3>Choose eligible items with tags</h3>
+<p>The API and built-in sources accept only single-stack items in <code>ffitemraritymodifiers:weapons</code>, <code>:armor</code>, <code>:tools</code>, or <code>:accessories</code>. Add items or another tag to one of these tags using <code>data/ffitemraritymodifiers/tags/item/&lt;category&gt;.json</code>. Minecraft 1.21.1 uses the singular <code>tags/item</code> directory.</p>
+<p>The defaults include NeoForge's <code>#c:tools/melee_weapon</code> and <code>#c:tools/ranged_weapon</code> for weapons, <code>#c:armors</code> plus elytra and wolf armor for armor, and <code>#c:tools</code> plus the two vanilla riding sticks for tools. The separate <code>mining_tools</code> tag contains vanilla pickaxes, axes, shovels, hoes, and shears plus <code>#c:tools/mining_tool</code>. Mining tools take priority over weapons, so axes stay in the tool category. The accessories tag is empty until a datapack or another mod fills it. An item class alone does not make an item eligible.</p>
+<pre><code class="language-json">{"values":["mymod:quest_blade", "#mymod:relic_weapons"]}</code></pre>
+<h3>Limit a modifier to an item tag</h3>
+<p>A <code>modifier_type</code> definition can set optional <code>required_item_tag</code> alongside <code>applies_to</code>. The category and tag must both match before that modifier enters a roll. Use the tag ID without a leading <code>#</code>. Existing definitions without this field continue to apply to their whole category.</p>
+<pre><code class="language-json">{"category":"good","kind":"attribute","family":"fishing_luck","applies_to":["tool"],"required_item_tag":"c:tools/fishing_rod","attribute":"minecraft:generic.luck","operation":"add_value","slot":"mainhand","base_value":0.25,"short_name":"mymod.modifier.lucky_rod.short","detailed_name":"mymod.modifier.lucky_rod.detailed"}</code></pre>
+<p>This example follows the current <code>ModifierType</code> codec. Add translations for both name keys. The built-in definitions use tag restrictions to keep melee attack bonuses off bows and fishing luck on rods.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

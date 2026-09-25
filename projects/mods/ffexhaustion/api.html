@@ -11,7 +11,7 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFExhaustion</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.7.2</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.7.5</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
 <h2>FFExhaustion — Modding API</h2>
 <p>Guide for other mods (and AI agents) integrating with <strong>FFExhaustion</strong> (<code>ffexhaustion</code>).</p>
 <div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
@@ -40,6 +40,7 @@
 </ul>
 <hr>
 <h3>Reading exhaustion</h3>
+<p>These player-based queries read the server-owned attachment. Use them on the logical server only. Client player attachments are not updated by HUD packets and can report zero or stale values. Recovery delay, recovery state, and status queries are also server-only.</p>
 <pre><code class="language-java">import com.fyxe.ffexhaustion.api.ExhaustionAPI;
 import net.minecraft.world.entity.player.Player;
 
@@ -54,10 +55,10 @@ boolean tired = ExhaustionAPI.isAtLeast(player, 0.75f);</code></pre>
 
 float local = ClientExhaustionAPI.getExhaustion();
 boolean tired = ClientExhaustionAPI.isAtLeast(0.9f);</code></pre>
-<p>This is a <strong>synced cache</strong>, not authoritative. Do not use it for gameplay rules.</p>
+<p>This is a <strong>synced cache</strong>, not authoritative. It may lag continuous server changes by up to five ticks. Do not use it for gameplay rules.</p>
 <hr>
 <h3>Changing exhaustion (server)</h3>
-<p>All of these fire events and sync the client HUD when not cancelled.</p>
+<p>All of these fire the cancellable pre-change event. When the value actually changes, they also fire the changed event and sync the client HUD immediately. Non-finite inputs are ignored; finite values outside 0 to 1 are clamped.</p>
 <pre><code class="language-java">import com.fyxe.ffexhaustion.api.ExhaustionAPI;
 
 // Absolute set
@@ -112,7 +113,7 @@ public void onExhaustionChange(ExhaustionChangeEvent event) {
 <div class="table-wrap"><table><thead><tr><th>Getter / setter</th><th>Meaning</th></tr></thead><tbody>
 <tr><td><code>getPlayer()</code></td><td><code>ServerPlayer</code></td></tr>
 <tr><td><code>getOldValue()</code> / <code>getNewValue()</code></td><td>Before / proposed after</td></tr>
-<tr><td><code>setNewValue(float)</code></td><td>Clamp-aware override</td></tr>
+<tr><td><code>setNewValue(float)</code></td><td>Clamps finite overrides; ignores NaN and infinities</td></tr>
 <tr><td><code>isTriggerDelay()</code> / <code>setTriggerDelay(boolean)</code></td><td>Recovery delay after apply</td></tr>
 <tr><td><code>getCause()</code></td><td><code>SET</code>, <code>INCREASE</code>, <code>DECREASE</code>, <code>RECOVERY</code>, <code>SYSTEM</code>, <code>OTHER</code></td></tr>
 <tr><td><code>getDelta()</code></td><td><code>new - old</code></td></tr>
@@ -123,7 +124,7 @@ public void onExhaustionChanged(ExhaustionChangedEvent event) {
     float x = event.getNewValue();
     // e.g. grant advancement, play sound, update capability
 }</code></pre>
-<p><strong>Note:</strong> Continuous built-in drains (sprint per tick, shield hold, glider) may update the attachment <strong>without</strong> posting these events every tick (performance). Discrete API calls and most one-shot actions (jump, attack, Better Combat swing) <strong>do</strong> post them. Always re-read <code>ExhaustionAPI.getExhaustion(player)</code> if you need the live value each tick.</p>
+<p><strong>Note:</strong> Continuous built-in drains (sprint per tick, shield hold, glider) may update the attachment <strong>without</strong> posting these events every tick (performance). Discrete API calls and most one-shot actions (jump, attack, Better Combat swing) <strong>do</strong> post them. On the server, re-read <code>ExhaustionAPI.getExhaustion(player)</code> if you need the live value each tick.</p>
 <hr>
 <h3>Level helpers</h3>
 <pre><code class="language-java">int level = ExhaustionAPI.getEffectiveLevel(player);  // capped by config

@@ -11,9 +11,15 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFUtilities</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.2.3</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.2.4</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
 <h2>FFUtilities — Modding API</h2>
-<p>FFUtilities is a shared NeoForge 1.21.1 library. Package root: <code>com.fyxe.ffutilities.api</code>. Add it as a required dependency if you directly use its classes. Use the <code>ffutilities_version</code> dependency required by the consuming mod&#x27;s own <code>gradle.properties</code>; do not copy an older README jar example blindly.</p>
+<p>FFUtilities is a shared NeoForge 1.21.1 library. Package root: <code>com.fyxe.ffutilities.api</code>. Gameplay mods bundle its mod JAR with NeoForge Jar-in-Jar, so players do not need a separate download. Consumer builds resolve the Maven coordinate <code>com.fyxe.ffutilities:ffutilities:0.2.4</code> from the Fyxe Gitea Maven registry or a sibling local publication. Keep the required <code>ffutilities</code> dependency in <code>neoforge.mods.toml>; the embedded mod satisfies it.</p>
+<pre><code class="language-groovy">jarJar(implementation(&quot;com.fyxe.ffutilities:ffutilities:${ffutilities_version}&quot;)) {
+    version {
+        strictly &quot;[${ffutilities_version},0.3.0)&quot;
+        prefer ffutilities_version
+    }
+}</code></pre>
 <h3>Core utilities</h3>
 <div class="table-wrap"><table><thead><tr><th>Class</th><th>Public helpers</th><th>Use</th></tr></thead><tbody>
 <tr><td><code>Ids</code></td><td><code>of(namespace,path)</code>, <code>of(id)</code>, <code>tryParse(raw)</code></td><td>Build or parse resource IDs.</td></tr>

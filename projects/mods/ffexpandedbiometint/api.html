@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modding API — FF Expanded Biome Tint — Fyxe's Mod Wiki</title>
+<meta name="description" content="Java registration API and datapack rules for biome tint blocks, channels, and strengths.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<h1>Modding API</h1>
+<p>Current source version: <strong>0.4.0</strong>. Install the mod on the server and clients. The server resolves all tint rules and syncs the selected blocks when a player joins or the server runs <code>/reload</code>.</p>
+<h2>Java registration</h2>
+<p>Other mods can call <code>com.fyxe.ffexpandedbiometint.BiomeTintAPI</code> during mod construction to supply defaults. Require FF Expanded Biome Tint 0.4.0 or newer and load after it. Registrations close when server datapacks first load; a later call throws <code>IllegalStateException</code>. Strength must be finite and between <code>0.0</code> and <code>1.0</code>.</p>
+<pre><code class="language-java">import com.fyxe.ffexpandedbiometint.BiomeTintAPI;
+import net.minecraft.resources.ResourceLocation;
+
+BiomeTintAPI.registerBlock(ResourceLocation.parse("examplemod:blue_stone"),
+        BiomeTintAPI.Channel.WATER, 0.35);
+BiomeTintAPI.registerTag(ResourceLocation.parse("examplemod:forest_stones"),
+        BiomeTintAPI.Channel.GRASS, 0.5);
+BiomeTintAPI.registerRegex("examplemod:.*_leaves",
+        BiomeTintAPI.Channel.FOLIAGE, 0.8);</code></pre>
+<p><code>registerBlock</code> accepts an exact block ID, <code>registerTag</code> a block tag ID without <code>#</code>, and <code>registerRegex</code> a Java pattern matched against the entire block ID. Invalid regular expressions throw <code>PatternSyntaxException</code>. Use registry IDs rather than block instances so rules can be registered before blocks are resolved.</p>
+<pre><code class="language-toml">[[dependencies.yourmod]]
+    modId="ffexpandedbiometint"
+    type="required"
+    versionRange="[0.4.0,)"
+    ordering="AFTER"
+    side="BOTH"</code></pre>
+<h2>Datapack rules</h2>
+<h2>Rule files</h2>
+<p>Put a JSON file at <code>data/&lt;namespace&gt;/ffexpandedbiometint/tint_rules/&lt;name&gt;.json</code>. Each entry in <code>rules</code> has exactly one selector: <code>block</code> for an exact block ID, <code>tag</code> for a block tag ID without <code>#</code>, or <code>regex</code> for a Java regular expression matched against the full block ID. Set <code>tint</code> to <code>grass</code>, <code>foliage</code>, or <code>water</code>. Optional <code>strength</code> ranges from <code>0.0</code> to <code>1.0</code> and defaults to <code>1.0</code>.</p>
+<pre><code class="language-json">{
+  "rules": [
+    { "block": "minecraft:clay", "tint": "water", "strength": 0.35 },
+    { "tag": "minecraft:base_stone_overworld", "tint": "grass", "strength": 0.45 },
+    { "regex": "examplemod:.*_leaves", "tint": "foliage", "strength": 0.75 }
+  ]
+}</code></pre>
+<h2>Order and overrides</h2>
+<p>The bundled default file is applied first, Java API registrations next in registration order, then other datapack rule files in resource ID order. Entries in each file run top to bottom. The last matching rule sets the block's channel and strength. To replace bundled defaults, override <code>data/ffexpandedbiometint/ffexpandedbiometint/tint_rules/default.json</code> with a higher priority datapack file at the same path. This does not remove Java API registrations.</p>
+<h2>Bundled modded ore patterns</h2>
+<p>The bundled JSON names the vanilla deepslate family and its eight ore variants explicitly. This includes cobbled, polished, brick, tile, chiseled, reinforced, and infested deepslate blocks, plus stairs, slabs, and walls for each available style. They use grass tint at 0.25 strength.</p>
+<p>Four default regex selectors cover non-Minecraft ore IDs ending in <code>_ore</code> or beginning with <code>ore_</code>. Names containing <code>deepslate</code> use grass at 0.25 strength; other matching ores use grass at 0.45. All skip IDs containing common Nether or End material names. Names cannot prove a block's dimension, so add later rules or replace the defaults for exceptions.</p>
+<p>Existing model tint indices are preserved. Rules choose the biome color for the entire selected block, including its already tinted faces and block-breaking particles. Inventory previews have no biome to sample.</p>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

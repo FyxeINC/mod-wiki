@@ -11,8 +11,9 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFFoodSpoilageAndPreservation</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.7.2</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
-<h2>Food Spoilage and Preservation — Modding API</h2>
+<p class="lead">Integrate with spoilage through events, modifier definitions, or the stacking helper. This guide covers source version <code>0.7.9</code>; check that the mod is loaded for optional integrations.</p>
+<div class="table-wrap"><table><thead><tr><th>If you want to…</th><th>Start with</th></tr></thead><tbody><tr><td>React when food spoils or a modifier changes</td><td><a href="#event-lifecycle">Event lifecycle</a></td></tr><tr><td>Add preservation behavior with data</td><td><a href="#modifier-definitions">Modifier definitions</a></td></tr><tr><td>Support a custom inventory</td><td><a href="#stacking-policy">Stacking policy</a></td></tr><tr><td>Understand storage rates</td><td><a href="#container-context">Container context</a></td></tr></tbody></table></div>
+<h2>Getting started</h2>
 <p>Package: <code>com.fyxe.fffoodspoilageandpreservation.api</code>. These events are posted on <code>NeoForge.EVENT_BUS</code>. Register a common/server listener with <code>@SubscribeEvent</code>; use registry access from the current level for modifier definitions.</p>
 <h3>Event lifecycle</h3>
 <div class="table-wrap"><table><thead><tr><th>Event</th><th>Cancellable</th><th>Use</th></tr></thead><tbody>
@@ -23,6 +24,23 @@
 <p><code>ModifierChangedEvent.Action</code> has <code>APPLIED</code> and <code>REMOVED</code> values. A <code>FoodSpoiledEvent</code> is posted before the replacement is committed; cancellation keeps the original stack. These event classes do not provide a general mutation API for spoilage state.</p>
 <h3>Modifier definitions</h3>
 <p>Use <code>com.fyxe.fffoodspoilageandpreservation.registry.ModifierLookup</code> with <code>level.registryAccess()</code> to resolve modifier IDs and definitions. The registries are <code>ModRegistries.MODIFIER</code> and <code>MODIFIER_CATEGORY</code>. Datapack definitions are the preferred extension path for new preservation behavior; inspect the mod&#x27;s README and shipped data for formats.</p>
+<h3>Stacking policy</h3>
+<p>In 0.7.9, the server option <code>mergeSameStageFood</code> defaults to <code>true</code>. Matching item, spoilage stage, modifiers, and all non-spoilage components can merge. The result retains maximum stored spoilage progress and the earliest initialized lastGameTime, preserving deferred age conservatively. Freeze/thaw progress and its timestamp are averaged by destination count and the count actually transferred, with integer truncation. Legacy zero lastTempGameTime falls back to lastGameTime. An untracked stack counts as fresh/unmodified with zero progress, anchored to the tracked stack's clocks. Source remainders retain their original state.</p>
+<p>Recipe outputs made from untracked food use <code>SpoilageComponent.uninitialized()</code>, which stores <code>UNINITIALIZED_TIME</code> (-1) for both clocks. Their first world update supplies the current time without charging the world's prior age. An uninitialized stack merged into a tracked stack inherits the tracked clocks.</p>
+<p><code>SpoilageComponent.equals</code> and <code>hashCode</code> include all seven persisted fields, including the saved storage rate, for synchronization. Setting <code>mergeSameStageFood=false</code>, disabling the master toggle, or using an unloaded config requires exact-state matches. Do not use <code>SpoilageComponent.worst</code> to authorize merging: it does not consider timestamps or temperature state.</p>
+<p>The mod handles menu clicks, shift-clicks, dragging, double-clicks, inventory pickups, dropped-item merging, bundles, hoppers (including capability paths), furnace outputs, and standard NeoForge item handlers. Custom inventories can opt in with <code>com.fyxe.fffoodspoilageandpreservation.util.SpoilageStacking</code>. <code>canMerge</code> is read-only; <code>mergeInto</code> changes only the destination component and must run before either count changes, after capacity, permissions, and simulation checks. It does not move items or mark inventories dirty.</p>
+<pre><code class="language-java">// After slot permissions are checked; destination is occupied.
+int amount = Math.min(source.getCount(),
+        Math.min(slotLimit, destination.getMaxStackSize()) - destination.getCount());
+if (amount &gt; 0 &amp;&amp; SpoilageStacking.canMerge(destination, source)) {
+    if (!simulate) {
+        SpoilageStacking.mergeInto(destination, source, amount);
+        destination.grow(amount);
+        source.shrink(amount);
+        container.setChanged();
+    }
+    // Report amount to the caller; simulation must not change either stack.
+}</code></pre>
 <h3>Integration pattern</h3>
 <pre><code class="language-java">@SubscribeEvent
 public static void onSpoiled(FoodSpoiledEvent event) {
@@ -30,6 +48,9 @@ public static void onSpoiled(FoodSpoiledEvent event) {
     if (shouldKeepOriginal(event.getOriginal())) event.setCanceled(true);
 }</code></pre>
 <p>Keep gameplay changes on the logical server. Do not edit the component directly in an observer event and assume the mod will synchronize it; use the replacement event or the supported datapack path.</p>
+<h2>Container context</h2>
+<p><code>SpoilageHelper.identifyOpenContainer(player)</code> resolves the backing inventory of the active menu. <code>OpenContainer.pos()</code> may be null for generic or compound inventories without a known world position. These use neutral ambient conditions and pause thermal advancement. Player inventory slots keep player context.</p>
+<p><code>SpoilageComponent.storageRate()</code> stores the rate for elapsed time after <code>lastGameTime()</code>. <code>SpoilageHelper.advance</code> applies that saved rate before recording a new one, so moving food between inventories does not retroactively change its prior aging. The server synchronizes menu rate, ambient conditions, label, and temperature for tooltip estimates. Networking payloads and the client cache setter are internal details.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

@@ -6,7 +6,8 @@ _site/
 .sass-cache/
 .jekyll-cache/
 .jekyll-metadata
-/tools
+/tools/*
+!/tools/check_site.py
 import-mod.bat
 import-mod.sh
 # Additional Ruby/bundler ignore for when you run: bundle install

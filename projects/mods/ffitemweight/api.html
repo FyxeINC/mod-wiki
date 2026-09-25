@@ -11,7 +11,7 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemWeight</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.6.2</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.6.4</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
 <h2>FFItemWeight — Modding API</h2>
 <p>Guide for other mods (and AI agents) integrating with <strong>FFItemWeight</strong> (<code>ffitemweight</code>).</p>
 <div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
@@ -230,6 +230,15 @@ public class YourWeightHooks {
         }
     }
 }</code></pre>
+<h2>Datapack item weight references (0.6.4)</h2>
+<p>In <code>data/&lt;namespace&gt;/item_weights/&lt;name&gt;.json</code>, use an exact <code>weight_from</code> reference instead of a numeric <code>weight</code>:</p>
+<pre><code class="language-json">{
+  "weights": [
+    { "id": "minecraft:oxidized_copper", "weight_from": "minecraft:copper_block" }
+  ]
+}</code></pre>
+<p>The item always uses the source item's final unit weight, including recipe calculation, clamps, and fallback. References are locked regardless of <code>force</code> and take precedence over numeric regex bases. Do not combine <code>weight_from</code> with <code>weight</code> or <code>regex: true</code>. Chains are supported. Missing items and cycles, including self-references and dependent chains, log warnings and retain normal regex/recipe/fallback calculation. Recipe ingredients follow the source's current weight. Final weights sync to clients; nested contents are still counted separately.</p>
+<p>Default data maps all 63 oxidation and wax variants of the nine copper shapes to their unwaxed, unoxidized equivalents. Replace the same resource path to override these defaults. Later loaded exact numeric/reference entries replace earlier ones. Reload with <code>/reload</code>; Java API signatures are unchanged.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

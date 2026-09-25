@@ -131,12 +131,14 @@ For code examples, the following are available:
 
 Search is generated automatically from the `pages` entries in `wiki-data.js`. There is no second list to maintain.
 
+The project directory also has a client-side name and feature filter. Project pages show their own page links first, with the rest of the section in a collapsible list. Pages with several headings get an automatic "On this page" guide; use clear `h2` and `h3` headings so those links remain useful. API code examples in `pre` blocks get a copy button.
+
 
 ## GitHub Pages
 
 There is no build step. Push the repository to GitHub and enable GitHub Pages for the repository/branch containing these files.
 
-Before publishing, run `python tools/check_site.py` from this repository. It checks that every page listed in `wiki-data.js` exists, that local links resolve, and that project pages use relative paths compatible with a GitHub Pages project subpath. The published site needs only the static HTML, CSS, JavaScript, and assets; the checker is a maintainer tool.
+Before publishing, run `python tools/check_site.py` from this repository. It checks that every page and icon listed in `wiki-data.js` exists, that local links resolve, and that project pages use relative paths compatible with a GitHub Pages project subpath. The published site needs only the static HTML, CSS, JavaScript, and assets; the checker is a maintainer tool. Preview under a repository path such as `/mod-wiki/` to catch runtime URL mistakes too.
 
 
 ## Fyxe wiki setup

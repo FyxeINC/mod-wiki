@@ -35,6 +35,7 @@
     const homeHref = root + "index.html";
     const projectsHref = root + "projects/index.html";
     const aboutHref = root + "about.html";
+    const hasSidebar = Boolean(document.querySelector("[data-project-sidebar]"));
 
     document.querySelectorAll("[data-site-header]").forEach(function (mount) {
       mount.outerHTML =
@@ -54,7 +55,8 @@
             '<div class="search-box__results" data-search-results></div>' +
           '</div>' +
           '<button class="theme-toggle" data-theme-toggle type="button">☾</button>' +
-          '<button class="menu-toggle" data-menu-toggle type="button" aria-label="Toggle navigation">☰</button>' +
+          '<button class="menu-toggle" data-menu-toggle type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="' + (hasSidebar ? 'wiki-sidebar' : 'mobile-site-nav') + '">☰</button>' +
+          (hasSidebar ? '' : '<nav class="mobile-site-nav" id="mobile-site-nav" aria-label="Site"><a href="' + escapeHtml(homeHref) + '">Home</a><a href="' + escapeHtml(projectsHref) + '">Projects</a><a href="' + escapeHtml(aboutHref) + '">About</a></nav>') +
         '</header>';
     });
 
@@ -141,16 +143,27 @@
    * ------------------------------------------------------------------- */
   function initMobileNav() {
     const toggle = document.querySelector("[data-menu-toggle]");
-    const sidebar = document.querySelector(".sidebar");
+    const sidebar = document.querySelector(".sidebar") || document.querySelector(".mobile-site-nav");
     if (!toggle || !sidebar) return;
+    function close() {
+      sidebar.classList.remove("is-open");
+      document.body.classList.remove("nav-open");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Open navigation");
+    }
     toggle.addEventListener("click", function () {
-      sidebar.classList.toggle("is-open");
+      const open = sidebar.classList.toggle("is-open");
+      document.body.classList.toggle("nav-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
     });
     document.addEventListener("click", function (evt) {
       if (!sidebar.classList.contains("is-open")) return;
       if (sidebar.contains(evt.target) || toggle.contains(evt.target)) return;
-      sidebar.classList.remove("is-open");
+      close();
     });
+    document.addEventListener("keydown", function (evt) { if (evt.key === "Escape") close(); });
+    sidebar.addEventListener("click", function (evt) { if (evt.target.closest("a")) close(); });
   }
 
   /* ---------------------------------------------------------------------
@@ -169,9 +182,9 @@
           setTimeout(function () { btn.textContent = original; }, 1400);
         };
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(done).catch(done);
+          navigator.clipboard.writeText(text).then(done).catch(function () { btn.textContent = "Copy failed"; });
         } else {
-          done();
+          btn.textContent = "Copy unavailable";
         }
       });
     });
@@ -335,11 +348,13 @@
       });
       document.querySelectorAll("[data-project-icon]").forEach(function (element) {
         if (currentProject.icon) {
-          element.setAttribute("src", currentProject.icon);
+          element.setAttribute("src", (window.SITE_ROOT || "") + getProjectPath(currentProject) + currentProject.icon);
           element.hidden = false;
         } else {
           element.removeAttribute("src");
           element.hidden = true;
+          const panel = element.closest(".mod-meta");
+          if (panel) panel.classList.add("mod-meta--no-icon");
         }
         element.setAttribute("alt", currentProject.name + " icon");
       });
@@ -525,50 +540,157 @@
 
     if (sidebar) {
       const root = window.SITE_ROOT || "";
-      let html = '<a class="tab-link sidebar__all-projects" href="' + root + 'projects/index.html"><span class="tab-index">◆</span> All Projects</a>';
+      sidebar.id = "wiki-sidebar";
+      sidebar.setAttribute("aria-label", "Page navigation");
+      let html = '<nav class="sidebar__site-nav" aria-label="Site"><a href="' + root + 'index.html">Home</a><a href="' + root + 'projects/index.html">Projects</a><a href="' + root + 'about.html">About</a></nav><a class="sidebar__back" href="' + root + 'projects/index.html">← All projects</a>';
       if (currentProject) {
         const pagePath = currentPath.substring(currentPath.lastIndexOf("/") + 1) || "index.html";
-        html += '<div class="sidebar__section"><div class="sidebar__label">' + escapeHtml(currentProject.name) + '</div>';
+        const section = getSectionForProject(currentProject);
+        html += '<div class="sidebar__section"><div class="sidebar__label">In this project</div><div class="sidebar__project-name">' + escapeHtml(currentProject.name) + '</div>';
         currentProject.pages.forEach(function (page) {
           const active = page.file === pagePath;
-          html += '<a class="tab-link' + (page.sub ? ' tab-link--sub' : '') + (active ? ' is-active' : '') + '" href="' + escapeHtml(page.file) + '"><span class="tab-index">' + escapeHtml(page.index) + '</span> ' + escapeHtml(page.title) + '</a>';
+          html += '<a class="tab-link' + (active ? ' is-active' : '') + '"' + (active ? ' aria-current="page"' : '') + ' href="' + escapeHtml(page.file) + '">' + escapeHtml(page.title) + '</a>';
         });
         html += '</div>';
+        if (section) html += '<a class="sidebar__section-link" href="' + escapeHtml(root + getSectionPath(section) + 'index.html') + '">Browse all ' + escapeHtml(section.label.toLowerCase()) + ' →</a>';
+        const otherProjects = projects.filter(function (project) { return project.type === currentProject.type && project.slug !== currentProject.slug; });
+        if (otherProjects.length) {
+          html += '<details class="sidebar__browse"><summary>Other ' + escapeHtml(section ? section.label.toLowerCase() : 'projects') + '</summary><div class="sidebar__browse-list">';
+          otherProjects.forEach(function (project) {
+            html += '<a href="' + escapeHtml(root + getProjectPath(project) + 'index.html') + '">' + escapeHtml(project.name) + '</a>';
+          });
+          html += '</div></details>';
+        }
+      } else {
+        html += '<div class="sidebar__label">Browse by type</div>';
+        sections.forEach(function (section) {
+          const count = projects.filter(function (project) { return project.type === section.type; }).length;
+          if (!count) return;
+          const active = currentSection && currentSection.type === section.type;
+          html += '<a class="tab-link' + (active ? ' is-active' : '') + '" href="' + escapeHtml(root + getSectionPath(section) + 'index.html') + '">' + escapeHtml(section.label) + '<span class="sidebar__count">' + count + '</span></a>';
+        });
       }
-      sections.forEach(function (section) {
-        const sectionProjects = projects.filter(function (project) { return project.type === section.type; });
-        if (!sectionProjects.length) return;
-        const activeSection = currentSection && currentSection.type === section.type;
-        html += '<div class="sidebar__section"><div class="sidebar__label"><a href="' + root + getSectionPath(section) + 'index.html">' + escapeHtml(section.label) + '</a></div>';
-        sectionProjects.forEach(function (project) {
-          html += '<a class="tab-link' + (currentProject && currentProject.slug === project.slug ? ' is-active' : '') + '" href="' + root + getProjectPath(project) + 'index.html"><span class="tab-index">' + escapeHtml(project.index) + '</span> ' + escapeHtml(project.name) + '</a>';
-        });
-        html += '</div>';
-      });
       sidebar.innerHTML = html;
     }
 
     const grid = document.querySelector("[data-project-grid]");
     if (grid) {
       const visibleSections = currentSection && !currentProject ? sections.filter(function (section) { return section.type === currentSection.type; }) : sections;
+      const catalog = document.createElement("div");
+      catalog.className = "catalog-filter";
+      catalog.innerHTML = '<label for="catalog-query">Find a project</label><input id="catalog-query" type="search" placeholder="Search by name or feature…" autocomplete="off"><span class="catalog-filter__count" aria-live="polite"></span>';
+      grid.before(catalog);
       grid.innerHTML = visibleSections.map(function (section) {
         const sectionProjects = projects.filter(function (project) { return project.type === section.type; });
         if (!sectionProjects.length) return "";
         const cards = sectionProjects.map(function (project) {
           const tags = (project.tags || []).map(function (tag) { return '<span class="tag ' + escapeHtml(tag.class || "") + ' tag--platform">' + escapeHtml(tag.label) + '</span>'; }).join("");
-          return '<a class="card" href="' + escapeHtml((window.SITE_ROOT || "") + getProjectPath(project) + 'index.html') + '"><span class="status-pill status-pill--' + escapeHtml(project.status) + '"><span class="dot"></span> ' + escapeHtml(project.status.charAt(0).toUpperCase() + project.status.slice(1)) + '</span><h3 class="card__title">' + escapeHtml(project.name) + '</h3><p class="card__desc">' + escapeHtml(project.description) + '</p><div class="card__meta">' + tags + '</div></a>';
+          return '<a class="card" data-catalog-card data-search="' + escapeHtml([project.name, project.description, project.slug].join(' ').toLowerCase()) + '" href="' + escapeHtml((window.SITE_ROOT || "") + getProjectPath(project) + 'index.html') + '"><span class="status-pill status-pill--' + escapeHtml(project.status) + '"><span class="dot"></span> ' + escapeHtml(project.status.charAt(0).toUpperCase() + project.status.slice(1)) + '</span><h3 class="card__title">' + escapeHtml(project.name) + '</h3><p class="card__desc">' + escapeHtml(project.description) + '</p><div class="card__meta">' + tags + '</div></a>';
         }).join("");
-        return '<section class="project-section"><div class="section-heading"><div><div class="sidebar__label">' + escapeHtml(section.label) + '</div><h2>' + escapeHtml(section.label) + '</h2></div><a class="btn btn--ghost" href="' + escapeHtml((window.SITE_ROOT || "") + getSectionPath(section) + 'index.html') + '">View ' + escapeHtml(section.label) + ' ↗</a></div><div class="grid">' + cards + '</div></section>';
+        const heading = currentSection && !currentProject ? '' : '<div class="section-heading"><h2>' + escapeHtml(section.label) + '</h2><a class="btn btn--ghost" href="' + escapeHtml((window.SITE_ROOT || "") + getSectionPath(section) + 'index.html') + '">View ' + escapeHtml(section.label) + ' →</a></div>';
+        return '<section class="project-section">' + heading + '<div class="grid">' + cards + '</div></section>';
       }).join("");
+      const cards = Array.from(grid.querySelectorAll("[data-catalog-card]"));
+      const input = catalog.querySelector("input");
+      const count = catalog.querySelector(".catalog-filter__count");
+      function filterCards() {
+        const query = input.value.trim().toLowerCase();
+        let visible = 0;
+        cards.forEach(function (card) {
+          card.hidden = !card.dataset.search.includes(query);
+          if (!card.hidden) visible++;
+        });
+        grid.querySelectorAll(".project-section").forEach(function (section) {
+          section.hidden = !section.querySelector("[data-catalog-card]:not([hidden])");
+        });
+        count.textContent = visible + (visible === 1 ? " project" : " projects") + " shown";
+      }
+      input.addEventListener("input", filterCards);
+      filterCards();
     }
 
     const projectCount = document.querySelector("[data-project-count]");
-    if (projectCount) projectCount.textContent = projects.length + (projects.length === 1 ? " project" : " projects");
+    if (projectCount) {
+      const total = currentSection && !currentProject ? projects.filter(function (project) { return project.type === currentSection.type; }).length : projects.length;
+      projectCount.textContent = total + (total === 1 ? " project" : " projects");
+    }
+  }
+
+  function initPageGuide() {
+    const content = document.querySelector(".layout .content");
+    if (!content || !document.querySelector("[data-project-sidebar]")) return;
+    const project = getCurrentProject(window.WIKI_DATA.projects || []);
+    if (!project) return;
+    const page = getCurrentPage(project);
+    if (!page) return;
+    const meta = content.querySelector(".mod-meta");
+    if (!meta) return;
+    const projectHeading = meta.querySelector(".mod-meta__body h3");
+    if (projectHeading) {
+      const heading = document.createElement("h1");
+      heading.className = "mod-meta__title";
+      heading.textContent = project.name;
+      projectHeading.replaceWith(heading);
+    }
+    const pageHeader = document.createElement("div");
+    pageHeader.className = "page-intro";
+    const title = document.createElement("h2");
+    title.textContent = page.title;
+    pageHeader.append(title);
+    meta.after(pageHeader);
+    const firstHeading = pageHeader.nextElementSibling;
+    if (firstHeading && firstHeading.tagName === "H2" && firstHeading.textContent.trim() === page.title) firstHeading.remove();
+    const repeatedApiHeading = Array.from(content.querySelectorAll("h2")).find(function (heading) { return !pageHeader.contains(heading); });
+    if (page.file === "api.html" && repeatedApiHeading && repeatedApiHeading.textContent.includes(project.name) && /Modding API/i.test(repeatedApiHeading.textContent)) repeatedApiHeading.remove();
+    const headings = Array.from(content.querySelectorAll("h2, h3")).filter(function (heading) {
+      return !pageHeader.contains(heading) && !meta.contains(heading) && heading.textContent.trim();
+    });
+    if (headings.length >= 3) {
+      const guide = document.createElement("nav");
+      guide.className = "page-guide";
+      guide.setAttribute("aria-label", "On this page");
+      guide.innerHTML = '<span class="page-guide__label">On this page</span>';
+      const used = new Set();
+      headings.forEach(function (heading) {
+        let id = heading.id || heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "section";
+        const base = id;
+        let number = 2;
+        while (used.has(id) || (document.getElementById(id) && document.getElementById(id) !== heading)) id = base + "-" + number++;
+        heading.id = id;
+        used.add(id);
+        const link = document.createElement("a");
+        link.href = "#" + id;
+        link.textContent = heading.textContent;
+        if (heading.tagName === "H3") link.className = "page-guide__sub";
+        guide.append(link);
+      });
+      pageHeader.after(guide);
+      if (window.location.hash) {
+        try {
+          const target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+          if (target) requestAnimationFrame(function () { target.scrollIntoView(); });
+        } catch (e) { /* Ignore malformed fragments. */ }
+      }
+    }
+    if (page.file === "api.html") {
+      content.classList.add("content--api");
+      content.querySelectorAll("pre").forEach(function (pre) {
+        if (pre.closest(".code-block")) return;
+        const wrapper = document.createElement("div");
+        wrapper.className = "code-block";
+        const bar = document.createElement("div");
+        bar.className = "code-block__bar";
+        bar.innerHTML = '<span>Example</span><button class="code-block__copy" type="button">Copy</button>';
+        pre.before(wrapper);
+        wrapper.append(bar, pre);
+      });
+    }
   }
 
   document.addEventListener("DOMContentLoaded", function () {
     renderSharedLayout();
     initSharedData();
+    initPageGuide();
     initTheme();
     initMobileNav();
     initCodeCopy();
