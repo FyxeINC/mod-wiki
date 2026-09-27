@@ -340,7 +340,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
       "tagline": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
-      "version": "0.7.9",
+      "version": "0.7.12",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "fffoodspoilageandpreservation",
       "icon": "",
