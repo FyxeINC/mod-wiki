@@ -14,6 +14,36 @@ window.WIKI_DATA = {
     },
     "recentUpdates": [
       {
+        "date": "2026-09-27",
+        "project": "ffentitydirt",
+        "page": "index.html",
+        "change": "0.2.0: damage marks from projectiles and melee, with per-mob colors."
+      },
+      {
+        "date": "2026-09-27",
+        "project": "ffentitydirt",
+        "page": "index.html",
+        "change": "New mod: dirt from walking and falls, washed off by water."
+      },
+      {
+        "date": "2026-09-27",
+        "project": "ffentitypainting",
+        "page": "api.html",
+        "change": "0.5.0: geometry capture (where each paintable spot sits on the body) and batch-local pixel reads."
+      },
+      {
+        "date": "2026-09-27",
+        "project": "ffutilities",
+        "page": "api.html",
+        "change": "0.2.5: registry whitelist/blacklist filters and keyed values with IDs, tags and namespaces."
+      },
+      {
+        "date": "2026-09-27",
+        "project": "ffentitypainting",
+        "page": "api.html",
+        "change": "Added the modding API: custom brushes, server-side painting, locked layers, events and paintable models."
+      },
+      {
         "date": "2026-09-25",
         "project": "fffoodspoilageandpreservation",
         "page": "index.html",
@@ -94,9 +124,9 @@ window.WIKI_DATA = {
       "name": "FF Entity Painting",
       "index": "C",
       "status": "active",
-      "description": "Paint living entities and inspect brush placement with debug visualization.",
-      "tagline": "Paint living entities and inspect brush placement with debug visualization.",
-      "version": "0.3.7",
+      "description": "Paint living entities with layers and opacity, with a mod API for brushes and server-side painting.",
+      "tagline": "Add a splash of color to living entities.",
+      "version": "0.5.0",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -121,8 +151,54 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FF Entity Painting features, requirements, and source version.",
-          "updated": "2026-09-23",
-          "searchExcerpt": "Paint living entities and inspect brush placement with debug visualization."
+          "updated": "2026-09-27",
+          "searchExcerpt": "Paint living entities with layers, blend modes and brush opacity."
+        },
+        {
+          "file": "api.html",
+          "title": "Modding API",
+          "index": "02",
+          "description": "Java API for paint tools, server-side paint edits, locked layers, events, snapshots, geometry capture and paintable models.",
+          "updated": "2026-09-27",
+          "searchExcerpt": "EntityPaintingAPI, PaintEditor, PaintView, PaintTool, PixelMode opacity, PaintEvent, EntityPaintingClientAPI registerPaintableModel, captureGeometry CapturedGeometry rasterize."
+        }
+      ]
+    },
+    {
+      "slug": "ffentitydirt",
+      "type": "mod",
+      "name": "FF Entity Dirt",
+      "index": "S",
+      "status": "active",
+      "description": "Entities pick up dirt from the ground, get damage marks where they are hit, and wash both off in water.",
+      "tagline": "Mobs that look like they've been somewhere.",
+      "version": "0.2.1",
+      "minecraftVersion": "1.21.1",
+      "modrinthSlug": "",
+      "icon": "",
+      "tags": [
+        {
+          "label": "NeoForge",
+          "class": "tag--rust"
+        },
+        {
+          "label": "MC 1.21.1",
+          "class": ""
+        }
+      ],
+      "links": {
+        "github": "",
+        "curseforge": "",
+        "discord": ""
+      },
+      "pages": [
+        {
+          "file": "index.html",
+          "title": "Overview",
+          "index": "01",
+          "description": "FF Entity Dirt features, requirements, and source version.",
+          "updated": "2026-09-27",
+          "searchExcerpt": "Dirt from walking and falls, damage marks from projectiles and melee, washed off by water, stored as FF Entity Painting paint on locked layers."
         }
       ]
     },
@@ -356,7 +432,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Records who created an item, when, where, and how.",
       "tagline": "Records who created an item, when, where, and how.",
-      "version": "0.2.3",
+      "version": "0.2.6",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -692,7 +768,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "A shared API library for Fyxe NeoForge mods.",
       "tagline": "A shared API library for Fyxe NeoForge mods.",
-      "version": "0.2.4",
+      "version": "0.2.5",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -717,7 +793,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFUtilities features, requirements, and source version.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-27",
           "searchExcerpt": "A shared API library for Fyxe NeoForge mods."
         },
         {
@@ -725,7 +801,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFUtilities API, events, and integration examples.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-27",
           "searchExcerpt": "FFUtilities public API and integration guide."
         }
       ]
@@ -776,7 +852,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds periodic personal and shared quests, rewards, and a Quest Board.",
       "tagline": "Adds periodic personal and shared quests, rewards, and a Quest Board.",
-      "version": "0.0.3",
+      "version": "0.0.7",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -801,7 +877,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "Random Quests features, requirements, and source version.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-26",
           "searchExcerpt": "Adds periodic personal and shared quests, rewards, and a Quest Board."
         },
         {
@@ -809,7 +885,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "Random Quests API, events, and integration examples.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-26",
           "searchExcerpt": "Random Quests public API and integration guide."
         }
       ]

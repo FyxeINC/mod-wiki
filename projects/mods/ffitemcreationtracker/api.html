@@ -11,7 +11,7 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemCreationTracker</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.2.2</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.2.6</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
 <h2>Item Creation Tracker — Modding API</h2>
 <p>Primary class: <code>com.fyxe.ffitemcreationtracker.api.ItemCreationAPI</code>. The creation component is <code>ffitemcreationtracker:creation</code>; <code>CreationRecord</code> stores creator name and UUID, game day, timestamp, source ID, dimension, biome, moon phase, and custom extras.</p>
 <h3>Read and write stamps</h3>
@@ -22,8 +22,10 @@
 <tr><td><code>tryStamp(ItemStack, Player, String, Map&lt;String,String&gt;)</code></td><td>Try a custom source and extras.</td></tr>
 <tr><td><code>putExtra(ItemStack, String, String)</code></td><td>Add or replace an extra on an existing stamp.</td></tr>
 <tr><td><code>create(Player, String, Map&lt;String,String&gt;)</code></td><td>Construct a record without writing it.</td></tr>
+<tr><td><code>forceStamp(ItemStack, Player, String)</code></td><td>Write a stamp unconditionally, replacing any existing one.</td></tr>
 </tbody></table></div>
 <p><code>tryStamp</code> runs on the logical server, returns <code>true</code> only when it writes a stamp, and respects enabled state, creative/spectator rules, item eligibility, and overwrite settings. It posts <code>CreationStampEvent</code> before writing.</p>
+<p><code>forceStamp</code> ignores those config gates and does not post <code>CreationStampEvent</code>; it backs the OP-only <code>/ffitemcreationtracker stamp</code> command and is meant for explicit admin actions, not automatic gameplay stamping. There is no API method or command to remove a stamp.</p>
 <h3>Custom sources and display</h3>
 <p>Use a namespaced source ID such as <code>mymod:cooking</code>. Call <code>ItemCreationAPI.registerSource(sourceId, byKey, nounKey, nounFirstKey)</code> to supply wording, or provide translation keys. <code>registerExtra(extraKey, formatter)</code> formats an extra field in tooltips. Built-in sources include <code>CRAFTED</code>, <code>SMELTED</code>, <code>ANVIL</code>, <code>SMITHING</code>, <code>ENCHANTED</code>, <code>TRADED</code>, <code>FISHED</code>, and <code>UNKNOWN</code>.</p>
 <pre><code class="language-java">ItemCreationAPI.tryStamp(result, player, &quot;mymod:cooking&quot;, Map.of(&quot;mymod:recipe&quot;, &quot;stew&quot;));</code></pre>

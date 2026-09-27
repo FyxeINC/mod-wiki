@@ -11,7 +11,7 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>Random Quests</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.0.3</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.0.6</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
 <h2>Public API (for other mods)</h2>
 <p>Packages: <code>com.randomquests.api</code></p>
 <h3>QuestTypeRegistry</h3>
@@ -25,20 +25,28 @@ QuestTypeRegistry.addBiomeTargets(ResourceLocation...);
 QuestTypeRegistry.addEntityTargets(ResourceLocation...); // breed/tame</code></pre>
 <h4>Custom generators</h4>
 <pre><code class="language-java">QuestTypeRegistry.registerCustomGenerator(QuestType.KILL, (player, level, period, shared, difficulty, random) -&gt; {
-    // return a Quest or null to fall back to built-in
+    Quest quest = myCustomQuest; // your custom kill quest generation logic
+    quest.setTarget(QuestTarget.entity(ResourceLocation.fromNamespaceAndPath(&quot;mymod&quot;, &quot;boss_entity&quot;)));
+    return quest; // or null to fall back to the built-in generator
 });</code></pre>
+<p><code>Quest#setTarget(QuestTarget)</code> takes one of <code>QuestTarget</code>'s five record variants
+(<code>entity</code>/<code>item</code>/<code>block</code>/<code>biome</code>/<code>key</code>, all static factories on <code>QuestTarget</code>), or <code>null</code> for "any."
+<code>KILL</code> additionally supports <code>quest.setRequiredWeapon(ResourceLocation)</code> for a weapon requirement alongside the entity target.</p>
 <h4>Progress reporting &amp; listeners</h4>
 <pre><code class="language-java">QuestTypeRegistry.reportProgress(player, QuestType.KILL, myEntityId, 1);
 QuestTypeRegistry.addProgressListener((player, quest, amountAdded) -&gt; { ... });
 QuestTypeRegistry.addCompletionListener((player, quest) -&gt; { ... });</code></pre>
 <h3>MainGoalRegistry</h3>
 <pre><code class="language-java">MainGoalRegistry.registerPersonalGenerator((player, level, serverGoal, difficulty, random) -&gt; {
-    MainGoal g = new MainGoal(...);
+    long now = com.randomquests.util.GameTime.now(level);
+    MainGoal g = new MainGoal(UUID.randomUUID(), MainGoalType.CUSTOM, false,
+        Component.literal(&quot;Defeat the Mod Boss 3 times&quot;), difficulty, now, 3);
     g.setTargetKey(&quot;mymod:boss_kills&quot;);
-    return g;
+    return g; // or null to skip this turn — retried among the other pool entries
 });
 MainGoalRegistry.reportCustomProgress(player, &quot;mymod:boss_kills&quot;, 1);
 MainGoalRegistry.addCompletionListener((player, goal) -&gt; { ... });</code></pre>
+<p>A registered generator is offered in the same weighted pool as built-in personal goal types, not a separate lottery.</p>
 <h3>Design note</h3>
 <p>Prefer relying on <code>RegistryPools</code> automatic scans. Use the explicit API when:</p>
 <ul>
@@ -46,11 +54,30 @@ MainGoalRegistry.addCompletionListener((player, goal) -&gt; { ... });</code></pr
 <li>You need a completely custom quest generator</li>
 <li>You want to push progress from non-standard events</li>
 </ul>
-<h3>RewardRegistry</h3>
-<p>Other mods can register common/rare reward items, loot tables, and custom <code>RewardProvider</code>s. See <code>com.randomquests.api.RewardRegistry</code>.</p>
+<p>Internally, built-in quest types and main-goal types are each driven by a small registry
+(<code>QuestTypeDefinition</code>/<code>QuestTypeDefinitions</code> and <code>MainGoalDefinition</code>/<code>MainGoalDefinitions</code>)
+instead of switch statements — this only affects mod authors reading the mod's own source, not the public API above.</p>
 <h3>RewardRegistry</h3>
 <p><code>com.randomquests.api.RewardRegistry</code> extends rewards. <code>addCommonItems(ResourceLocation...)</code>, <code>addRareItems(ResourceLocation...)</code>, and <code>addLootTables(ResourceLocation...)</code> add candidate IDs. <code>registerProvider(RewardProvider)</code> supplies custom rewards. The read-only getters expose registered candidates and providers. Register during setup, before quest rewards are generated.</p>
 <pre><code class="language-java">RewardRegistry.addRareItems(ResourceLocation.fromNamespaceAndPath(&quot;mymod&quot;, &quot;relic&quot;));</code></pre>
+<p>For a genuinely new <em>kind</em> of reward (not just new content for an existing one), register a <code>CustomRewardKind</code> by key and attach it with <code>QuestReward.custom(...)</code>:</p>
+<pre><code class="language-java">ResourceLocation kindId = ResourceLocation.fromNamespaceAndPath(&quot;mymod&quot;, &quot;unlock_recipe&quot;);
+RewardRegistry.registerCustomKind(kindId, new RewardRegistry.CustomRewardKind() {
+    public void grant(ServerPlayer player, CompoundTag data) {
+        MyRecipeUnlocks.unlock(player, data.getString(&quot;recipeId&quot;));
+    }
+    public String describe(CompoundTag data) {
+        return &quot;Recipe unlocked: &quot; + data.getString(&quot;recipeId&quot;);
+    }
+});
+CompoundTag data = new CompoundTag();
+data.putString(&quot;recipeId&quot;, &quot;mymod:super_pickaxe&quot;);
+quest.addReward(QuestReward.custom(kindId, data));</code></pre>
+<p><code>data</code> is an opaque <code>CompoundTag</code> your handler owns the shape of; it round-trips through save/load unmodified. A handler that throws is caught and treated as a no-op.</p>
+<h3>DifficultyRegistry</h3>
+<p>Contribute an additive factor to the dynamic-difficulty breakdown, the same way <code>RewardRegistry</code> contributes reward content:</p>
+<pre><code class="language-java">DifficultyRegistry.registerFactor((player, level, period) -&gt; MyReputation.get(player) / 100.0);</code></pre>
+<p>The value is added alongside the built-in factors (base, player level, world age, play time, distance, dimension/equipment, adaptive rating, death penalty) before the period multiplier and difficulty-range clamp are applied. A factor that throws is caught and ignored.</p>
 <p>Main goal and quest progress calls need a <code>ServerPlayer</code>. Use namespaced target keys for custom progress to avoid collisions with other mods.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>

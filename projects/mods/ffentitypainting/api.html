@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modding API — FF Entity Painting — Fyxe's Mod Wiki</title>
+<meta name="description" content="Paint entities from other mods: custom brushes, server-side paint edits, locked layers, events, snapshots and custom models.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Entity Painting</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<p>This guide describes the public API in the current source version <code>0.5.0</code>. The mod is an experimental checkpoint: the API compiles and its storage rules are covered by automated checks, but it has not yet been exercised in a running game.</p>
+<h2>FF Entity Painting — Modding API</h2>
+<p>Use this guide when integrating another mod with <strong>FF Entity Painting</strong> (<code>ffentitypainting</code>).</p>
+<div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td><strong>Minecraft</strong></td><td>1.21.1</td></tr>
+<tr><td><strong>Loader</strong></td><td>NeoForge 21.1.x</td></tr>
+<tr><td><strong>Mod ID</strong></td><td><code>ffentitypainting</code></td></tr>
+<tr><td><strong>API packages</strong></td><td><code>com.fyxe.ffentitypainting.api</code>, <code>.api.event</code>, <code>.api.client</code></td></tr>
+<tr><td><strong>Source version</strong></td><td>0.5.0</td></tr>
+<tr><td><strong>Maven</strong></td><td><code>com.fyxe.ffentitypainting:ffentitypainting:0.5.0</code> (Fyxe Gitea registry)</td></tr>
+</tbody></table></div>
+<p>Dependency (optional):</p>
+<pre><code class="language-toml">[[dependencies.yourmod]]
+    modId=&quot;ffentitypainting&quot;
+    type=&quot;optional&quot;
+    versionRange=&quot;[0.5.0,)&quot;
+    ordering=&quot;NONE&quot;
+    side=&quot;BOTH&quot;</code></pre>
+<p>Check <code>ModList.get().isLoaded(&quot;ffentitypainting&quot;)</code> before touching API classes, and keep those calls in a separate class so your mod still loads without it. Never reference <code>api.client</code> classes from common or server code.</p>
+<hr>
+<h3>Pick your integration</h3>
+<div class="table-wrap"><table><thead><tr><th>You want to…</th><th>Use</th></tr></thead><tbody>
+<tr><td>Add a brush, spray can, stencil or dyeable paint</td><td><code>PaintTool</code> on your item</td></tr>
+<tr><td>Paint or tint entities from game logic (team colors, status marks, cosmetics)</td><td><code>EntityPaintingAPI.edit</code> with a locked layer</td></tr>
+<tr><td>Block painting in claims, arenas or for some mobs</td><td>Cancel <code>PaintEvent.PlayerStamp</code> / <code>PlayerLayerEdit</code></td></tr>
+<tr><td>React to paint (quests, logging, achievements)</td><td><code>PaintEvent.Changed</code></td></tr>
+<tr><td>Read paint back (renderers, maps, exports)</td><td><code>EntityPaintingAPI.view</code></td></tr>
+<tr><td>Keep paint through a mob conversion or clone</td><td><code>EntityPaintingAPI.copyPaint</code></td></tr>
+<tr><td>Make your own entity paintable</td><td><code>EntityPaintingClientAPI.registerPaintableModel</code></td></tr>
+<tr><td>Paint from a keybind or menu</td><td><code>EntityPaintingClientAPI.requestPaint</code></td></tr>
+</tbody></table></div>
+<hr>
+<h3>Core concepts</h3>
+<ul>
+<li><strong>Server-authoritative.</strong> Edits apply only on the logical server. On a client, <code>edit</code>, <code>copyPaint</code> and <code>clearPaint</code> do nothing and return <code>false</code>. Reads work on both sides, since clients hold a synced copy for every tracked entity.</li>
+<li><strong>Surfaces and parts.</strong> Paint is stored per part of a model, per surface. A <em>surface</em> is one model class drawn with one texture. A <em>part</em> is one named <code>ModelPart</code>, or one cube of a multi-cube part. The storage key is <code>EntityPaintingAPI.partKey(surfaceId, partName)</code>.</li>
+<li><strong>Parts appear on first paint.</strong> Only the client sees exact geometry, so a part normally exists after a player first paints it. A mod that knows its own model can create parts on the server with <code>PaintEditor.establishPart</code>.</li>
+<li><strong>Layers</strong> are composited bottom to top, each with a blend mode (<code>normal</code>, <code>multiply</code>, <code>additive</code>, <code>screen</code>, <code>overlay</code>), an opacity and a visibility flag. A <strong>locked</strong> layer can only be changed through the API. Players see it but cannot select, paint, clear or edit it, and it does not count toward the server&#x27;s <code>maxLayers</code>.</li>
+<li><strong>Colors</strong> are straight-alpha ARGB <code>int</code>s. A <code>PixelMode</code> decides how a color meets what a layer already holds: <code>BLEND</code> (source-over, strokes build up), <code>REPLACE</code> (exact color including alpha) or <code>ERASE</code> (alpha is how much coverage to remove).</li>
+<li><strong>Hard limits</strong> apply to everyone: <code>MAX_LAYERS</code> 16, <code>MAX_PARTS</code> 64, <code>MAX_TOTAL_PIXELS</code> 196,608 texels per entity, <code>MAX_SIDE</code> 256 texels per canvas side, <code>MAX_BRUSH_RADIUS</code> 7.</li>
+</ul>
+<hr>
+<h3>Custom paint tools</h3>
+<p>Implement <code>PaintTool</code> on any <code>Item</code>. It gets the built-in behavior: right-click a living entity in first person to paint the texel under the crosshair, sneak-right-click for the layer manager. Every method gets the stack, so the color can live in a data component.</p>
+<pre><code class="language-java">import com.fyxe.ffentitypainting.api.PaintTool;
+import com.fyxe.ffentitypainting.api.PixelMode;
+
+public class SprayCanItem extends Item implements PaintTool {
+    public SprayCanItem(Properties p) { super(p); }
+
+    @Override public int paintColor(ItemStack stack) {
+        // Half-strength by default; the painter&#x27;s Brush Opacity scales it further.
+        return 0x80000000 | (stack.getOrDefault(MyComponents.SPRAY_RGB, 0xFF8800) &amp; 0xFFFFFF);
+    }
+    @Override public PixelMode pixelMode(ItemStack stack) { return PixelMode.BLEND; }
+    @Override public int brushRadius(ItemStack stack, int configuredRadius) {
+        return Math.min(configuredRadius + 2, 7); // a wider nozzle than the server default
+    }
+}</code></pre>
+<p>The server reads these methods when it applies a stroke, so they must give the same answer on both sides. For an eraser, return an alpha of the strength you want and <code>PixelMode.ERASE</code>; RGB is ignored.</p>
+<hr>
+<h3>Editing paint from the server</h3>
+<p><code>EntityPaintingAPI.edit</code> hands you a <code>PaintEditor</code> working on a private copy. If the callback returns normally and something changed, the whole batch commits as one revision, fires one <code>PaintEvent.Changed</code>, and syncs to clients once at the end of the tick. If it throws, nothing is saved.</p>
+<pre><code class="language-java">import com.fyxe.ffentitypainting.api.EntityPaintingAPI;
+import com.fyxe.ffentitypainting.api.PixelMode;
+
+// Tint every painted part with a translucent team color on a layer players can&#x27;t touch.
+EntityPaintingAPI.edit(mob, editor -&gt; {
+    var layer = editor.getOrCreateLayer(&quot;mymod:team&quot;, true);
+    if (layer.isEmpty()) return; // 16 layers already
+    for (var part : editor.parts()) {
+        editor.fill(layer.get(), part.key(), 0x60FF2020, PixelMode.REPLACE);
+    }
+});</code></pre>
+<p>Common <code>PaintEditor</code> calls:</p>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>Notes</th></tr></thead><tbody>
+<tr><td><code>addLayer(name[, locked])</code>, <code>getOrCreateLayer(name, locked)</code></td><td>Return <code>Optional&lt;String&gt;</code> layer ID; empty at 16 layers. Names are 1 to 64 characters.</td></tr>
+<tr><td><code>removeLayer</code>, <code>moveLayer(id, index)</code>, <code>rename</code></td><td>Index 0 is the bottom. Removing a layer forgets parts no other layer paints.</td></tr>
+<tr><td><code>setOpacity(id, 0..1)</code>, <code>setVisible</code>, <code>setBlendMode</code>, <code>setLocked</code></td><td>Return <code>true</code> when the value changed.</td></tr>
+<tr><td><code>stamp(layer, part, u, v, argb, radius, mode)</code></td><td>Round brush at part-local <code>u, v</code> (0 to 1 across the part).</td></tr>
+<tr><td><code>stampTexture(layer, part, texU, texV, argb, radius, mode)</code></td><td>Same, at a UV on the entity&#x27;s original texture inside the part&#x27;s rectangle.</td></tr>
+<tr><td><code>setPixel</code>, <code>fillRect</code>, <code>fill</code>, <code>writeCanvas</code></td><td>Texel coordinates are local to the part&#x27;s canvas. <code>writeCanvas</code> takes <code>width * height</code> row-major values.</td></tr>
+<tr><td><code>clearLayer</code>, <code>clearPart</code>, <code>clearAll</code></td><td>Clear keeps the layer; <code>clearAll</code> removes every layer and part.</td></tr>
+<tr><td><code>establishPart(surfaceId, partName, texW, texH, minU, minV, maxU, maxV)</code></td><td>Makes a part paintable without a player click. Returns the part key.</td></tr>
+<tr><td><code>canAllocate(layer, part)</code></td><td>Whether a new canvas for that part fits the texel budget.</td></tr>
+</tbody></table></div>
+<p>Pixel methods return <code>false</code> only when the layer needs a new canvas for the part and the entity&#x27;s texel budget is full. Unknown layer IDs or part keys and out-of-range values throw <code>IllegalArgumentException</code>. API edits skip player rules (held tool, reach, rate limit, <code>maxLayers</code>, locks) but never the hard limits.</p>
+<p>One-liners:</p>
+<pre><code class="language-java">EntityPaintingAPI.fillAllParts(mob, &quot;mymod:frost&quot;, 0x4080C0FF, PixelMode.BLEND);
+EntityPaintingAPI.copyPaint(oldZombieVillager, newVillager); // conversions and clones
+EntityPaintingAPI.clearPaint(mob);</code></pre>
+<p><strong>Keep edits occasional.</strong> Every commit is a new revision. A player whose click was captured against the previous revision has that stroke rejected as stale and must click again. Per-tick effects belong in your renderer, not in paint data.</p>
+<hr>
+<h3>Painting your own entity from the server</h3>
+<p>If you know your model&#x27;s class, texture and part layout, establish parts yourself. The surface ID must match what the client capture builds: the model&#x27;s fully qualified class name and the texture it actually binds. Pass the class name as a string so server code never loads client classes.</p>
+<pre><code class="language-java">String surface = EntityPaintingAPI.surfaceId(&quot;com.example.client.GolemModel&quot;,
+        ResourceLocation.fromNamespaceAndPath(&quot;mymod&quot;, &quot;textures/entity/golem.png&quot;));
+EntityPaintingAPI.edit(golem, editor -&gt; {
+    // &quot;head&quot; is a 8x8x8 cube at texOffs(0, 0) on a 64x64 texture: its faces span u 0..32, v 0..16.
+    var head = editor.establishPart(surface, &quot;head&quot;, 64, 64, 0f, 0f, 32 / 64f, 16 / 64f);
+    var layer = editor.getOrCreateLayer(&quot;mymod:runes&quot;, true);
+    if (head.isPresent() &amp;&amp; layer.isPresent())
+        editor.stamp(layer.get(), head.get(), 0.5f, 0.5f, 0xFF40FFE0, 1, PixelMode.REPLACE);
+});</code></pre>
+<p>Part names follow the capture&#x27;s naming rules:</p>
+<ul>
+<li>A <code>ModelPart</code> field uses its field name: <code>head</code>, <code>leftLeg</code>.</li>
+<li>Parts in an array, list or map field use <code>field[index]</code> or <code>field[key]</code>.</li>
+<li>Parts with no Java field use their path from the root: <code>body/jacket</code>.</li>
+<li>A part with more than one cube gets one canvas per cube: <code>arms#0</code>, <code>arms#1</code>.</li>
+<li>Players use <code>EntityPaintingAPI.playerSurfaceId(modelClassName, &quot;wide&quot;|&quot;slim&quot;)</code>.</li>
+</ul>
+<p>The rectangle must cover every face of the part, or paint lands in the wrong place. For entities you don&#x27;t own, let a player paint first and use the parts listed by <code>view</code> or <code>editor.parts()</code>.</p>
+<hr>
+<h3>Reading paint</h3>
+<pre><code class="language-java">EntityPaintingAPI.view(mob).ifPresent(view -&gt; {
+    for (var layer : view.layers()) {   // bottom to top
+        log(layer.name() + &quot; &quot; + layer.opacity() + (layer.locked() ? &quot; locked&quot; : &quot;&quot;));
+    }
+    for (var part : view.parts()) {
+        int argb = view.composite(part.key(), 0, 0); // all visible layers, no base texture
+    }
+});</code></pre>
+<p><code>PaintView</code> is an immutable snapshot: <code>revision()</code>, <code>layers()</code>, <code>parts()</code> (key, surface hash, part name, UV rectangle, canvas size), <code>pixel(layer, part, x, y)</code>, <code>composite(part, x, y)</code>, <code>canvas(layer, part)</code> and <code>partsOnSurface(surfaceId)</code>. <code>hasPaint</code> and <code>revision</code> are cheap checks that do not copy anything.</p>
+<hr>
+<h3>Events (NeoForge bus, server only)</h3>
+<div class="table-wrap"><table><thead><tr><th>Event</th><th>Cancelable</th><th>When</th></tr></thead><tbody>
+<tr><td><code>PaintEvent.PlayerStamp</code></td><td>Yes</td><td>A player stroke passed every built-in check and is about to apply. Color, mode and radius can be changed.</td></tr>
+<tr><td><code>PaintEvent.PlayerLayerEdit</code></td><td>Yes</td><td>A layer-manager action (<code>ADD</code>, <code>BLEND_MODE</code>, <code>VISIBILITY</code>, <code>CLEAR</code>, <code>OPACITY</code>) is about to apply.</td></tr>
+<tr><td><code>PaintEvent.Changed</code></td><td>No</td><td>Any committed change. <code>getCause()</code> is <code>PLAYER_STAMP</code>, <code>PLAYER_LAYER_EDIT</code> or <code>API</code>; <code>getPlayer()</code> is null for API edits.</td></tr>
+</tbody></table></div>
+<pre><code class="language-java">@SubscribeEvent
+public void onStamp(PaintEvent.PlayerStamp e) {
+    if (!Claims.canBuild(e.getPlayer(), e.getEntity().blockPosition())) {
+        e.setCanceled(true);
+        e.getPlayer().displayClientMessage(Component.literal(&quot;You can&#x27;t paint here.&quot;), true);
+    }
+}
+
+@SubscribeEvent
+public void onChanged(PaintEvent.Changed e) {
+    if (e.getCause() == PaintEvent.Cause.PLAYER_STAMP) Quests.progress(e.getPlayer(), &quot;paint_a_mob&quot;);
+}</code></pre>
+<p>Canceling sends no message by itself, so tell the player why if it helps them.</p>
+<hr>
+<h3>Client API</h3>
+<p><code>com.fyxe.ffentitypainting.api.client.EntityPaintingClientAPI</code>, client only.</p>
+<pre><code class="language-java">// During FMLClientSetupEvent: opt your model into capture.
+EntityPaintingClientAPI.registerPaintableModel(GolemModel.class);
+EntityPaintingClientAPI.registerPaintableModels(model -&gt; model.getClass().getName().startsWith(&quot;com.example.client.&quot;));
+
+// From a keybind: paint what the crosshair is on, as a right-click would.
+EntityPaintingClientAPI.requestPaint(target, InteractionHand.MAIN_HAND);
+EntityPaintingClientAPI.setBrushOpacity(128); // 1 to 255, this client only
+String layer = EntityPaintingClientAPI.selectedLayer(target);</code></pre>
+<p>Only register models that draw like vanilla ones: <code>ModelPart</code> geometry sent through a <code>LivingEntityRenderer</code>&#x27;s main body draw or <code>RenderLayer.renderColoredCutoutModel</code>, using a vanilla entity render type (solid, cutout, cutout no-cull, translucent) with a single texture. Custom shaders, emissive passes and vertex animation outside <code>ModelPart</code> won&#x27;t capture correctly. <code>requestPaint</code> needs first-person view and a <code>PaintTool</code> in that hand, and the server still checks reach, permission and revision.</p>
+<hr>
+<h3>Where is each spot on the body? (0.5.0)</h3>
+<p>Paint lives in texture space, so the server cannot tell which texel is a foot and which is an ear. <code>EntityPaintingClientAPI.captureGeometry(entity, partialTick)</code> draws the entity once off-screen (nothing reaches the screen, no click is disturbed, and it works on entities out of view and on your own player in first person) and returns a <code>CapturedGeometry</code>: each surface's <code>surfaceId</code> and texture size, and each part's name, UV rectangle and quads. Positions are in blocks relative to the entity's feet on world axes, so <code>y</code> is height. <code>Part.rasterize(width, height)</code> samples a canvas-shaped grid and returns <code>x, y, z</code> per texel, or <code>NaN</code> where no face covers it. Send what you need to the server yourself; the IDs and rectangles match what <code>PaintEditor.establishPart</code> expects.</p>
+<pre><code class="language-java">// Client: find how high each texel of each part sits.
+EntityPaintingClientAPI.captureGeometry(mob, 1f).ifPresent(geometry -&gt; {
+    for (var surface : geometry.surfaces())
+        for (var part : surface.parts()) {
+            int w = Math.round((part.maxU() - part.minU()) * surface.textureWidth());
+            int h = Math.round((part.maxV() - part.minV()) * surface.textureHeight());
+            float[] xyz = part.rasterize(w, h);          // NaN = uncovered
+            float feetToTexel = xyz[(0 * w + 0) * 3 + 1]; // height of texel (0, 0)
+            // ...send surface.surfaceId(), part.name(), the rect and your heights to your server code
+        }
+});
+
+// Server: establish the part and read-modify-write inside one batch.
+EntityPaintingAPI.edit(mob, editor -&gt; {
+    String layer = editor.getOrCreateLayer(&quot;mymod:mud&quot;, true).orElseThrow();
+    String key = editor.establishPart(surfaceId, partName, texW, texH, minU, minV, maxU, maxV).orElseThrow();
+    int old = editor.pixel(layer, key, 3, 7);             // sees this batch's own edits
+    editor.setPixel(layer, key, 3, 7, old == 0 ? 0x80664422 : old, PixelMode.REPLACE);
+});</code></pre>
+<p><code>captureGeometry</code> costs one extra model draw, so cache results and re-measure only occasionally. It returns empty for invisible entities, EMF custom models, unreadable textures, or before the first frame has rendered. <code>PaintEditor.part(key)</code>, <code>pixel</code> and <code>canvas</code> read the batch in progress, including changes made earlier in the same callback. FF Entity Dirt is built this way.</p>
+<hr>
+<h3>Compatibility notes</h3>
+<ul>
+<li>Clients and servers must both run 0.4.0 or newer; the network protocol changed in 0.4.0. 0.5.0 adds API only and stays compatible with 0.4.0.</li>
+<li>Entities an active EMF custom model drives are still refused. ETF variants resolve to the currently shown texture, so a variant change is a different surface.</li>
+<li>Player paint resets on death because the attachment is not copied to the respawned player. Use <code>copyPaint</code> in your own clone handler if your mod needs it kept.</li>
+</ul>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>
