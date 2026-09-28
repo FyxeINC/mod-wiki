@@ -15,6 +15,18 @@ window.WIKI_DATA = {
     "recentUpdates": [
       {
         "date": "2026-09-28",
+        "project": "ffutilities",
+        "page": "index.html",
+        "change": "0.2.7: Fyxe mods now work with NeoForge 21.1.211 or newer and bundle FFUtilities 0.2.7."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffentitypainting",
+        "page": "api.html",
+        "change": "0.8.1: mobs using EMF custom models are paintable, on surfaces of their own; captureGeometry includes them."
+      },
+      {
+        "date": "2026-09-28",
         "project": "ffentitypainting",
         "page": "api.html",
         "change": "0.8.0: BlendMode moved to the api package, client PaintUpdatedEvent, canvas-to-shape-cell lookups, and much cheaper edits and crowds of painted mobs."
@@ -142,7 +154,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Crop growth can consume nearby water and require water access.",
       "tagline": "Crop growth can consume nearby water and require water access.",
-      "version": "0.1.3",
+      "version": "0.1.4",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffcropevaporation",
       "icon": "icon.png",
@@ -167,7 +179,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FF Crop Evaporation features, requirements, and source version.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-28",
           "searchExcerpt": "Crop growth can consume nearby water and require water access."
         }
       ]
@@ -180,7 +192,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Paint living entities with layers and opacity, with a mod API for brushes and server-side painting.",
       "tagline": "Add a splash of color to living entities.",
-      "version": "0.8.0",
+      "version": "0.8.2",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -226,7 +238,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Entities pick up dirt from the ground, soot, snow and damage marks, and wash it all off in water, rain or a cauldron.",
       "tagline": "Mobs that look like they've been somewhere.",
-      "version": "0.7.0",
+      "version": "0.7.1",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -264,7 +276,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Applies biome tints with datapack rules and a mod integration API.",
       "tagline": "Give blocks local color with datapack rules.",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -289,7 +301,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FF Expanded Biome Tint features, requirements, and source version.",
-          "updated": "2026-09-25",
+          "updated": "2026-09-28",
           "searchExcerpt": "Datapack rules and a mod API assign grass, foliage, or water tint to blocks and breaking particles."
         },
         {
@@ -310,7 +322,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "A configurable healing bandage item.",
       "tagline": "A configurable healing bandage item.",
-      "version": "0.0.4",
+      "version": "0.0.5",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffbandage",
       "icon": "icon.png",
@@ -335,7 +347,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFBandage features, requirements, and source version.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-28",
           "searchExcerpt": "A configurable healing bandage item."
         }
       ]
@@ -348,7 +360,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Tracks player fatigue from actions with configurable recovery and effects.",
       "tagline": "Tracks player fatigue from actions with configurable recovery and effects.",
-      "version": "0.7.5",
+      "version": "0.7.7",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffexhaustion",
       "icon": "",
@@ -373,7 +385,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFExhaustion features, requirements, and source version.",
-          "updated": "2026-09-24",
+          "updated": "2026-09-28",
           "searchExcerpt": "Tracks player fatigue from actions with configurable recovery and effects."
         },
         {
@@ -394,7 +406,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
       "tagline": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
-      "version": "0.7.12",
+      "version": "0.7.13",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "fffoodspoilageandpreservation",
       "icon": "",
@@ -419,7 +431,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFFoodSpoilageAndPreservation features, requirements, and source version.",
-          "updated": "2026-09-25",
+          "updated": "2026-09-28",
           "searchExcerpt": "Food spoilage stages, preservation methods, storage rates, stacking, and requirements."
         },
         {
@@ -440,7 +452,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds tiered injuries, adrenaline, treatment, and healing.",
       "tagline": "Adds tiered injuries, adrenaline, treatment, and healing.",
-      "version": "0.7.3",
+      "version": "0.7.5",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffinjury",
       "icon": "",
@@ -465,7 +477,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFInjury features, requirements, and source version.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-28",
           "searchExcerpt": "Adds tiered injuries, adrenaline, treatment, and healing."
         },
         {
@@ -486,7 +498,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Records who created an item, when, where, and how.",
       "tagline": "Records who created an item, when, where, and how.",
-      "version": "0.2.7",
+      "version": "0.2.8",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -511,7 +523,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemCreationTracker features, requirements, and source version.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-28",
           "searchExcerpt": "Records who created an item, when, where, and how."
         },
         {
@@ -532,7 +544,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds configurable rarity rolls and small modifiers to gear.",
       "tagline": "Adds configurable rarity rolls and small modifiers to gear.",
-      "version": "0.1.11",
+      "version": "0.1.13",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -557,7 +569,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemRarityModifiers features, requirements, and source version.",
-          "updated": "2026-09-24",
+          "updated": "2026-09-28",
           "searchExcerpt": "Adds configurable rarity rolls and small modifiers to gear."
         },
         {
@@ -578,7 +590,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Gives items weight and players configurable encumbrance bands.",
       "tagline": "Gives items weight and players configurable encumbrance bands.",
-      "version": "0.6.4",
+      "version": "0.6.8",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffitemweight",
       "icon": "",
@@ -603,7 +615,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemWeight features, requirements, and source version.",
-          "updated": "2026-09-24",
+          "updated": "2026-09-28",
           "searchExcerpt": "Gives items weight and players configurable encumbrance bands."
         },
         {
@@ -624,7 +636,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs.",
       "tagline": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs.",
-      "version": "1.1.3",
+      "version": "1.1.4",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -649,7 +661,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFMobSunBurnAngle features, requirements, and source version.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-28",
           "searchExcerpt": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs."
         }
       ]
@@ -700,7 +712,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Loads mods from nested folders in the mods directory.",
       "tagline": "Loads mods from nested folders in the mods directory.",
-      "version": "0.4.7",
+      "version": "0.4.9",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffmodsubfolders",
       "icon": "",
@@ -725,7 +737,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFModsSubfolders features, requirements, and source version.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-28",
           "searchExcerpt": "Loads mods from nested folders in the mods directory."
         }
       ]
@@ -738,7 +750,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Rewards diet variety with nutrition categories that affect maximum health.",
       "tagline": "Rewards diet variety with nutrition categories that affect maximum health.",
-      "version": "0.2.2",
+      "version": "0.3.1",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffnutrition",
       "icon": "icon.png",
@@ -763,7 +775,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFNutrition features, requirements, and source version.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-28",
           "searchExcerpt": "Rewards diet variety with nutrition categories that affect maximum health."
         },
         {
@@ -822,7 +834,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "A shared API library for Fyxe NeoForge mods.",
       "tagline": "A shared API library for Fyxe NeoForge mods.",
-      "version": "0.2.6",
+      "version": "0.2.7",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -847,7 +859,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFUtilities features, requirements, and source version.",
-          "updated": "2026-09-27",
+          "updated": "2026-09-28",
           "searchExcerpt": "A shared API library for Fyxe NeoForge mods."
         },
         {
@@ -868,7 +880,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Makes liquid source blocks fall under gravity.",
       "tagline": "Makes liquid source blocks fall under gravity.",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffwaterfalls",
       "icon": "",
@@ -893,7 +905,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFWaterFalls features, requirements, and source version.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-28",
           "searchExcerpt": "Makes liquid source blocks fall under gravity."
         }
       ]
@@ -906,7 +918,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds periodic personal and shared quests, rewards, and a Quest Board.",
       "tagline": "Adds periodic personal and shared quests, rewards, and a Quest Board.",
-      "version": "0.0.7",
+      "version": "0.0.10",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -931,7 +943,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "Random Quests features, requirements, and source version.",
-          "updated": "2026-09-26",
+          "updated": "2026-09-28",
           "searchExcerpt": "Adds periodic personal and shared quests, rewards, and a Quest Board."
         },
         {

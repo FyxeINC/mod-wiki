@@ -11,7 +11,7 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Entity Painting</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.8.0</code>. The mod is an experimental checkpoint: the API compiles and its storage rules are covered by automated checks, but it has not yet been exercised in a running game.</p>
+<p>This guide describes the public API in the current source version <code>0.8.1</code>. The mod is an experimental checkpoint: the API compiles and its storage rules are covered by automated checks, but it has not yet been exercised in a running game.</p>
 <h2>FF Entity Painting — Modding API</h2>
 <p>Use this guide when integrating another mod with <strong>FF Entity Painting</strong> (<code>ffentitypainting</code>).</p>
 <div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
@@ -19,8 +19,8 @@
 <tr><td><strong>Loader</strong></td><td>NeoForge 21.1.x</td></tr>
 <tr><td><strong>Mod ID</strong></td><td><code>ffentitypainting</code></td></tr>
 <tr><td><strong>API packages</strong></td><td><code>com.fyxe.ffentitypainting.api</code>, <code>.api.event</code>, <code>.api.client</code>, <code>.api.shape</code></td></tr>
-<tr><td><strong>Source version</strong></td><td>0.8.0</td></tr>
-<tr><td><strong>Maven</strong></td><td><code>com.fyxe.ffentitypainting:ffentitypainting:0.8.0</code> (Fyxe Gitea registry)</td></tr>
+<tr><td><strong>Source version</strong></td><td>0.8.1</td></tr>
+<tr><td><strong>Maven</strong></td><td><code>com.fyxe.ffentitypainting:ffentitypainting:0.8.1</code> (Fyxe Gitea registry)</td></tr>
 </tbody></table></div>
 <p>Dependency (optional):</p>
 <pre><code class="language-toml">[[dependencies.yourmod]]
@@ -142,6 +142,7 @@ EntityPaintingAPI.edit(golem, editor -&gt; {
 <li>Parts with no Java field use their path from the root: <code>body/jacket</code>.</li>
 <li>A part with more than one cube gets one canvas per cube: <code>arms#0</code>, <code>arms#1</code>.</li>
 <li>Players use <code>EntityPaintingAPI.playerSurfaceId(modelClassName, &quot;wide&quot;|&quot;slim&quot;)</code>.</li>
+<li>When Entity Model Features draws the entity with a custom (jem) model (0.8.1), the client appends <code>+emf:&lt;namespace&gt;:&lt;model&gt;#&lt;variant&gt;</code> to the model class name, so a resource pack&#x27;s model has surfaces of its own. Vanilla parts keep their names; parts the jem adds are <code>head/EMF_horn</code> (its <code>id</code>), or <code>head/emf@&lt;hex&gt;</code> (a geometry fingerprint) when the jem part has no <code>id</code>. A jem part with its own texture is a separate surface with that texture. Take these IDs from <code>captureGeometry</code>, <code>BodyShapes</code> or <code>view</code> rather than building them.</li>
 </ul>
 <p>The rectangle must cover every face of the part, or paint lands in the wrong place. For entities you don&#x27;t own, let a player paint first and use the parts listed by <code>view</code> or <code>editor.parts()</code>.</p>
 <hr>
@@ -229,14 +230,14 @@ EntityPaintingClientAPI.captureGeometry(mob, 1f).ifPresent(geometry -&gt; {
             float feetToTexel = xyz[(0 * w + 0) * 3 + 1]; // height of texel (0, 0), in blocks
         }
 });</code></pre>
-<p><code>captureGeometry</code> costs one extra model draw, so cache results and re-measure only occasionally. It returns empty for invisible entities, EMF custom models, unreadable textures, or before the first frame has rendered. <code>PaintEditor.part(key)</code>, <code>pixel</code> and <code>canvas</code> read the batch in progress, including changes made earlier in the same callback.</p>
+<p><code>captureGeometry</code> costs one extra model draw, so cache results and re-measure only occasionally. It returns empty for invisible entities, unreadable textures, or before the first frame has rendered. Since 0.8.1 it includes EMF custom models, with one surface per texture. <code>PaintEditor.part(key)</code>, <code>pixel</code> and <code>canvas</code> read the batch in progress, including changes made earlier in the same callback.</p>
 <hr>
 <h3>Compatibility notes</h3>
 <ul>
-<li>Clients and servers must both run 0.7.0 or newer; the network protocol changed in 0.7.0 (shape reports) and not since, so 0.7.0 and 0.8.0 connect to each other.</li>
+<li>Clients and servers must both run 0.7.0 or newer; the network protocol changed in 0.7.0 (shape reports) and not since, so 0.7.0 through 0.8.1 connect to each other. 0.8.1 has no API signature change.</li>
 <li>0.8.0 changed the API, so rebuild against it: <code>BlendMode</code> moved to <code>com.fyxe.ffentitypainting.api</code>, and <code>SurfaceShape.part(name)</code> returns an <code>Optional</code>. New in 0.8.0: <code>BlendMode.byName</code>/<code>next</code>, <code>PixelMode.byName</code>, <code>PaintUpdatedEvent</code>, <code>SurfaceShape.Part.canvasCells</code>/<code>height(cell)</code>/<code>covered(cell)</code> and <code>BodyShapes.part</code>.</li>
 <li>Views and edit batches are cheap: canvases are shared until written, so a batch copies only the canvases it changes.</li>
-<li>Entities an active EMF custom model drives are still refused. ETF variants resolve to the currently shown texture, so a variant change is a different surface.</li>
+<li>Entities an EMF custom model drives are painted since 0.8.1, on surfaces of their own (see the part naming rules). ETF variants resolve to the currently shown texture, so a variant change is a different surface.</li>
 <li>Player paint resets on death unless the server enables <code>keepPlayerPaintOnDeath</code>. Use <code>copyPaint</code> in your own clone handler if your mod needs it kept regardless.</li>
 </ul>
 <div data-page-footer></div>
