@@ -17,6 +17,18 @@ window.WIKI_DATA = {
         "date": "2026-09-28",
         "project": "ffentitypainting",
         "page": "api.html",
+        "change": "0.8.0: BlendMode moved to the api package, client PaintUpdatedEvent, canvas-to-shape-cell lookups, and much cheaper edits and crowds of painted mobs."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffentitydirt",
+        "page": "index.html",
+        "change": "0.7.0: needs FF Entity Painting 0.8.0; smoother with many dirty mobs on screen."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffentitypainting",
+        "page": "api.html",
         "change": "0.7.0: BodyShapes, client-measured mob shapes the server can use to place paint by body height and facing."
       },
       {
@@ -168,7 +180,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Paint living entities with layers and opacity, with a mod API for brushes and server-side painting.",
       "tagline": "Add a splash of color to living entities.",
-      "version": "0.7.0",
+      "version": "0.8.0",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -202,7 +214,7 @@ window.WIKI_DATA = {
           "index": "02",
           "description": "Java API for paint tools, server-side paint edits, locked layers, events, snapshots, body shapes, geometry capture and paintable models.",
           "updated": "2026-09-28",
-          "searchExcerpt": "EntityPaintingAPI, PaintEditor, PaintView, PaintTool, PixelMode opacity, PaintEvent, EntityPaintingClientAPI registerPaintableModel, captureGeometry CapturedGeometry rasterize, BodyShapes SurfaceShape BodyFrame measureShapes."
+          "searchExcerpt": "EntityPaintingAPI, PaintEditor, PaintView, PaintTool, PixelMode opacity, BlendMode, PaintEvent, PaintUpdatedEvent, EntityPaintingClientAPI registerPaintableModel, captureGeometry CapturedGeometry rasterize, BodyShapes SurfaceShape canvasCells BodyFrame measureShapes."
         }
       ]
     },
@@ -214,7 +226,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Entities pick up dirt from the ground, soot, snow and damage marks, and wash it all off in water, rain or a cauldron.",
       "tagline": "Mobs that look like they've been somewhere.",
-      "version": "0.6.0",
+      "version": "0.7.0",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",

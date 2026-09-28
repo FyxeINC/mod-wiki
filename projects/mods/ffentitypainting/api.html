@@ -11,7 +11,7 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Entity Painting</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.7.0</code>. The mod is an experimental checkpoint: the API compiles and its storage rules are covered by automated checks, but it has not yet been exercised in a running game.</p>
+<p>This guide describes the public API in the current source version <code>0.8.0</code>. The mod is an experimental checkpoint: the API compiles and its storage rules are covered by automated checks, but it has not yet been exercised in a running game.</p>
 <h2>FF Entity Painting — Modding API</h2>
 <p>Use this guide when integrating another mod with <strong>FF Entity Painting</strong> (<code>ffentitypainting</code>).</p>
 <div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
@@ -19,14 +19,14 @@
 <tr><td><strong>Loader</strong></td><td>NeoForge 21.1.x</td></tr>
 <tr><td><strong>Mod ID</strong></td><td><code>ffentitypainting</code></td></tr>
 <tr><td><strong>API packages</strong></td><td><code>com.fyxe.ffentitypainting.api</code>, <code>.api.event</code>, <code>.api.client</code>, <code>.api.shape</code></td></tr>
-<tr><td><strong>Source version</strong></td><td>0.7.0</td></tr>
-<tr><td><strong>Maven</strong></td><td><code>com.fyxe.ffentitypainting:ffentitypainting:0.7.0</code> (Fyxe Gitea registry)</td></tr>
+<tr><td><strong>Source version</strong></td><td>0.8.0</td></tr>
+<tr><td><strong>Maven</strong></td><td><code>com.fyxe.ffentitypainting:ffentitypainting:0.8.0</code> (Fyxe Gitea registry)</td></tr>
 </tbody></table></div>
 <p>Dependency (optional):</p>
 <pre><code class="language-toml">[[dependencies.yourmod]]
     modId=&quot;ffentitypainting&quot;
     type=&quot;optional&quot;
-    versionRange=&quot;[0.7.0,)&quot;
+    versionRange=&quot;[0.8.0,)&quot;
     ordering=&quot;NONE&quot;
     side=&quot;BOTH&quot;</code></pre>
 <p>Check <code>ModList.get().isLoaded(&quot;ffentitypainting&quot;)</code> before touching API classes, and keep those calls in a separate class so your mod still loads without it. Never reference <code>api.client</code> classes from common or server code.</p>
@@ -39,6 +39,7 @@
 <tr><td>Block painting in claims, arenas or for some mobs</td><td>Cancel <code>PaintEvent.PlayerStamp</code> / <code>PlayerLayerEdit</code></td></tr>
 <tr><td>React to paint (quests, logging, achievements)</td><td><code>PaintEvent.Changed</code></td></tr>
 <tr><td>Read paint back (renderers, maps, exports)</td><td><code>EntityPaintingAPI.view</code></td></tr>
+<tr><td>Refresh client-side effects when paint changes</td><td><code>PaintUpdatedEvent</code></td></tr>
 <tr><td>Keep paint through a mob conversion or clone</td><td><code>EntityPaintingAPI.copyPaint</code></td></tr>
 <tr><td>Know where each paintable spot sits on the body, on the server (paint the feet, the side facing a hit)</td><td><code>BodyShapes</code></td></tr>
 <tr><td>Make your own entity paintable</td><td><code>EntityPaintingClientAPI.registerPaintableModel</code></td></tr>
@@ -50,7 +51,7 @@
 <li><strong>Server-authoritative.</strong> Edits apply only on the logical server. On a client, <code>edit</code>, <code>copyPaint</code> and <code>clearPaint</code> do nothing and return <code>false</code>. Reads work on both sides, since clients hold a synced copy for every tracked entity.</li>
 <li><strong>Surfaces and parts.</strong> Paint is stored per part of a model, per surface. A <em>surface</em> is one model class drawn with one texture. A <em>part</em> is one named <code>ModelPart</code>, or one cube of a multi-cube part. The storage key is <code>EntityPaintingAPI.partKey(surfaceId, partName)</code>.</li>
 <li><strong>Parts appear on first paint.</strong> Only the client sees exact geometry, so a part normally exists after a player first paints it. A mod that knows its own model can create parts on the server with <code>PaintEditor.establishPart</code>.</li>
-<li><strong>Layers</strong> are composited bottom to top, each with a blend mode (<code>normal</code>, <code>multiply</code>, <code>additive</code>, <code>screen</code>, <code>overlay</code>), an opacity and a visibility flag. A <strong>locked</strong> layer can only be changed through the API. Players see it but cannot select, paint, clear or edit it, and it does not count toward the server&#x27;s <code>maxLayers</code>.</li>
+<li><strong>Layers</strong> are composited bottom to top, each with a <code>BlendMode</code> (<code>NORMAL</code>, <code>MULTIPLY</code>, <code>ADDITIVE</code>, <code>SCREEN</code>, <code>OVERLAY</code>; <code>BlendMode.byName(&quot;screen&quot;)</code> parses one), an opacity and a visibility flag. A <strong>locked</strong> layer can only be changed through the API. Players see it but cannot select, paint, clear, edit or move it, their own layers cannot be moved past it, and it does not count toward the server&#x27;s <code>maxLayers</code>. A layer a player adds goes just below the locked layers at the top of the stack, so overlays you keep on top stay there.</li>
 <li><strong>Colors</strong> are straight-alpha ARGB <code>int</code>s. A <code>PixelMode</code> decides how a color meets what a layer already holds: <code>BLEND</code> (source-over, strokes build up), <code>REPLACE</code> (exact color including alpha) or <code>ERASE</code> (alpha is how much coverage to remove).</li>
 <li><strong>Hard limits</strong> apply to everyone: <code>MAX_LAYERS</code> 16, <code>MAX_PARTS</code> 64, <code>MAX_TOTAL_PIXELS</code> 196,608 texels per entity, <code>MAX_SIDE</code> 256 texels per canvas side, <code>MAX_BRUSH_RADIUS</code> 7.</li>
 </ul>
@@ -92,7 +93,7 @@ EntityPaintingAPI.edit(mob, editor -&gt; {
 });</code></pre>
 <p>Common <code>PaintEditor</code> calls:</p>
 <div class="table-wrap"><table><thead><tr><th>Method</th><th>Notes</th></tr></thead><tbody>
-<tr><td><code>addLayer(name[, locked])</code>, <code>getOrCreateLayer(name, locked)</code></td><td>Return <code>Optional&lt;String&gt;</code> layer ID; empty at 16 layers. Names are 1 to 64 characters.</td></tr>
+<tr><td><code>addLayer(name[, locked])</code>, <code>getOrCreateLayer(name, locked)</code></td><td>Return <code>Optional&lt;String&gt;</code> layer ID; empty at 16 layers. New layers go on top. Names are 1 to 64 characters.</td></tr>
 <tr><td><code>removeLayer</code>, <code>moveLayer(id, index)</code>, <code>rename</code></td><td>Index 0 is the bottom. Removing a layer forgets parts no other layer paints.</td></tr>
 <tr><td><code>setOpacity(id, 0..1)</code>, <code>setVisible</code>, <code>setBlendMode</code>, <code>setLocked</code></td><td>Return <code>true</code> when the value changed.</td></tr>
 <tr><td><code>stamp(layer, part, u, v, argb, radius, mode)</code></td><td>Round brush at part-local <code>u, v</code> (0 to 1 across the part).</td></tr>
@@ -174,6 +175,12 @@ public void onChanged(PaintEvent.Changed e) {
     if (e.getCause() == PaintEvent.Cause.PLAYER_STAMP) Quests.progress(e.getPlayer(), &quot;paint_a_mob&quot;);
 }</code></pre>
 <p>Canceling sends no message by itself, so tell the player why if it helps them.</p>
+<h4>On the client</h4>
+<p><code>api.client.PaintUpdatedEvent</code> fires on the NeoForge bus on the client main thread whenever this client&#x27;s copy of an entity&#x27;s paint changes. <code>isSnapshot()</code> is true when the whole paint was replaced (layers, parts or settings may differ) and false when only some texels changed. Use it to refresh anything you derive from paint instead of polling revisions.</p>
+<pre><code class="language-java">@SubscribeEvent
+public void onPaint(PaintUpdatedEvent e) {
+    GlowMasks.invalidate(e.getEntity()); // rebuilt from EntityPaintingAPI.view on next render
+}</code></pre>
 <hr>
 <h3>Client API</h3>
 <p><code>com.fyxe.ffentitypainting.api.client.EntityPaintingClientAPI</code>, client only.</p>
@@ -189,7 +196,7 @@ String layer = EntityPaintingClientAPI.selectedLayer(target);</code></pre>
 <hr>
 <h3>Where is each spot on the body?</h3>
 <p>Paint lives in texture space, and only a client knows what a model looks like, so on its own the server cannot tell which texel is a foot and which is an ear. Since 0.7.0 FF Entity Painting can measure that for you: call <code>BodyShapes.request()</code> once (mod constructor or common setup) and every client that joins the server measures nearby standing or crouching entities now and then and reports their shape. On a server where no mod asks, clients never measure.</p>
-<p><code>com.fyxe.ffentitypainting.api.shape.BodyShapes</code> (server thread): <code>surfaces(entity)</code> lists the surface IDs the entity was last measured with, in draw order (empty until a player has been near it); <code>shape(surfaceId)</code> and <code>shapes(entity)</code> return the <code>SurfaceShape</code>s reported so far. A <code>SurfaceShape</code> has the surface ID and texture size and, per part, a grid over the part&#x27;s UV rectangle (<code>shape.part(name)</code> finds one). Each cell holds its height as a fraction of the entity&#x27;s height (<code>height(gx, gy)</code>, 0 at the feet, 1 at the top, -1 where no face covers it), its sideways position in the body frame in entity heights (<code>x(i)</code>, <code>z(i)</code>) and its outward facing (<code>normal(i)</code>, all zero when unknown). <code>heightAtUv(u, v)</code> and <code>cellAtUv(u, v)</code> look a texture UV up. Body-frame coordinates turn with the entity&#x27;s body: convert a world offset with <code>BodyFrame.toLocal(dx, dz, entity.yBodyRot)</code>. The IDs, names, texture sizes and rectangles are exactly what <code>PaintEditor.establishPart</code> expects.</p>
+<p><code>com.fyxe.ffentitypainting.api.shape.BodyShapes</code> (server thread): <code>surfaces(entity)</code> lists the surface IDs the entity was last measured with, in draw order (empty until a player has been near it); <code>shape(surfaceId)</code> and <code>shapes(entity)</code> return the <code>SurfaceShape</code>s reported so far. A <code>SurfaceShape</code> has the surface ID and texture size and, per part, a grid over the part&#x27;s UV rectangle (<code>shape.part(name)</code> finds one, or <code>BodyShapes.part(entity, partKey)</code> straight from a painting part key). Each cell holds its height as a fraction of the entity&#x27;s height (<code>height(gx, gy)</code>, 0 at the feet, 1 at the top, -1 where no face covers it), its sideways position in the body frame in entity heights (<code>x(i)</code>, <code>z(i)</code>) and its outward facing (<code>normal(i)</code>, all zero when unknown). <code>heightAtUv(u, v)</code> and <code>cellAtUv(u, v)</code> look a texture UV up, and <code>canvasCells(paintPart)</code> maps every texel of a paint canvas to the covered cell under it (-1 where none), so <code>height(cell)</code>, <code>x(cell)</code> and <code>normal(cell)</code> describe each texel you paint. Body-frame coordinates turn with the entity&#x27;s body: convert a world offset with <code>BodyFrame.toLocal(dx, dz, entity.yBodyRot)</code>. The IDs, names, texture sizes and rectangles are exactly what <code>PaintEditor.establishPart</code> expects.</p>
 <pre><code class="language-java">// Mod constructor: ask clients to measure shapes.
 BodyShapes.request();
 
@@ -202,9 +209,10 @@ EntityPaintingAPI.edit(mob, editor -&gt; {
                     part.minU(), part.minV(), part.maxU(), part.maxV());
             if (key.isEmpty()) continue; // part budget full
             var canvas = editor.part(key.get()).orElseThrow();
+            int[] cells = part.canvasCells(canvas); // cache this per part and canvas size
             editor.transform(layer, key.get(), (x, y, argb) -&gt; {
-                float h = part.heightAtUv(canvas.textureU(x), canvas.textureV(y));
-                return h &gt;= 0 &amp;&amp; h &lt; 0.33f ? 0x80664422 : argb;
+                int cell = cells[y * canvas.width() + x];
+                return cell &gt;= 0 &amp;&amp; part.height(cell) &lt; 0.33f ? 0x80664422 : argb;
             });
         }
 });</code></pre>
@@ -225,7 +233,9 @@ EntityPaintingClientAPI.captureGeometry(mob, 1f).ifPresent(geometry -&gt; {
 <hr>
 <h3>Compatibility notes</h3>
 <ul>
-<li>Clients and servers must both run 0.7.0 or newer; the network protocol changed in 0.7.0 (shape reports). <code>BodyShapes</code>, <code>SurfaceShape</code>, <code>BodyFrame</code> and <code>measureShapes</code> are new in 0.7.0; code written for 0.6.0 still compiles.</li>
+<li>Clients and servers must both run 0.7.0 or newer; the network protocol changed in 0.7.0 (shape reports) and not since, so 0.7.0 and 0.8.0 connect to each other.</li>
+<li>0.8.0 changed the API, so rebuild against it: <code>BlendMode</code> moved to <code>com.fyxe.ffentitypainting.api</code>, and <code>SurfaceShape.part(name)</code> returns an <code>Optional</code>. New in 0.8.0: <code>BlendMode.byName</code>/<code>next</code>, <code>PixelMode.byName</code>, <code>PaintUpdatedEvent</code>, <code>SurfaceShape.Part.canvasCells</code>/<code>height(cell)</code>/<code>covered(cell)</code> and <code>BodyShapes.part</code>.</li>
+<li>Views and edit batches are cheap: canvases are shared until written, so a batch copies only the canvases it changes.</li>
 <li>Entities an active EMF custom model drives are still refused. ETF variants resolve to the currently shown texture, so a variant change is a different surface.</li>
 <li>Player paint resets on death unless the server enables <code>keepPlayerPaintOnDeath</code>. Use <code>copyPaint</code> in your own clone handler if your mod needs it kept regardless.</li>
 </ul>
