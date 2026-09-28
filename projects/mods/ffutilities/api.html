@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modding API — FFUtilities — Fyxe's Mod Wiki</title>
-<meta name="description" content="A shared API library for Fyxe NeoForge mods.">
+<meta name="description" content="A shared API library for Fyxe mods on Fabric, NeoForge and Forge.">
 <link rel="stylesheet" href="../../../assets/css/style.css">
 </head>
 <body>
@@ -11,15 +11,50 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFUtilities</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.2.7</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.2.8</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
 <h2>FFUtilities — Modding API</h2>
-<p>FFUtilities is a shared NeoForge 1.21.1 library. Package root: <code>com.fyxe.ffutilities.api</code>. Gameplay mods bundle its mod JAR with NeoForge Jar-in-Jar, so players do not need a separate download. Consumer builds resolve the Maven coordinate <code>com.fyxe.ffutilities:ffutilities:0.2.7</code> from the Fyxe Gitea Maven registry or a sibling local publication. Keep the required <code>ffutilities</code> dependency in <code>neoforge.mods.toml>; the embedded mod satisfies it.</p>
-<pre><code class="language-groovy">jarJar(implementation(&quot;com.fyxe.ffutilities:ffutilities:${ffutilities_version}&quot;)) {
+<p>FFUtilities is a shared library for Fabric, NeoForge and Forge. Package root: <code>com.fyxe.ffutilities.api</code>. The same API is built for every target below; gameplay mods bundle the jar for their target with Jar-in-Jar, so players do not need a separate download. Keep the required <code>ffutilities</code> dependency in your loader metadata (<code>neoforge.mods.toml</code>, <code>mods.toml</code> or <code>fabric.mod.json</code>); the embedded mod satisfies it.</p>
+<p>Each target is published to the Fyxe Gitea Maven registry (or a sibling local publication) as <code>com.fyxe.ffutilities:ffutilities-&lt;minecraft&gt;-&lt;loader&gt;:&lt;version&gt;</code>:</p>
+<div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loaders</th><th>Artifacts</th></tr></thead><tbody>
+<tr><td>1.20.1</td><td>Fabric, Forge</td><td><code>ffutilities-1.20.1-fabric</code>, <code>ffutilities-1.20.1-forge</code></td></tr>
+<tr><td>1.20.6</td><td>Fabric, NeoForge</td><td><code>ffutilities-1.20.6-fabric</code>, <code>ffutilities-1.20.6-neoforge</code></td></tr>
+<tr><td>1.21.1</td><td>Fabric, NeoForge</td><td><code>ffutilities-1.21.1-fabric</code>, <code>ffutilities-1.21.1-neoforge</code> (also published as <code>ffutilities</code>, the coordinate used before 0.2.8)</td></tr>
+<tr><td>1.21.11</td><td>Fabric, NeoForge</td><td><code>ffutilities-1.21.11-fabric</code>, <code>ffutilities-1.21.11-neoforge</code></td></tr>
+</tbody></table></div>
+<p>Gradle Kotlin DSL, one target per build script (<code>ffutilities</code> holds the pinned version, for example <code>0.2.8</code>):</p>
+<pre><code class="language-kotlin">// NeoForge (ModDevGradle)
+val ffutilitiesJar = &quot;com.fyxe.ffutilities:ffutilities-1.21.1-neoforge:$ffutilities&quot;
+implementation(ffutilitiesJar)
+jarJar(ffutilitiesJar) {
     version {
-        strictly &quot;[${ffutilities_version},0.3.0)&quot;
-        prefer ffutilities_version
+        strictly(&quot;[$ffutilities,0.3.0)&quot;)
+        prefer(ffutilities)
     }
-}</code></pre>
+}
+
+// Forge 1.20.1 (ModDevGradle Legacy: modImplementation remaps the SRG jar for development)
+val ffutilitiesJar = &quot;com.fyxe.ffutilities:ffutilities-1.20.1-forge:$ffutilities&quot;
+modImplementation(ffutilitiesJar)
+jarJar(ffutilitiesJar) {
+    version {
+        strictly(&quot;[$ffutilities,0.3.0)&quot;)
+        prefer(ffutilities)
+    }
+}
+
+// Fabric (Loom). Forge Config API Port comes along as a dependency, from
+// maven(&quot;https://raw.githubusercontent.com/Fuzss/modresources/main/maven/&quot;)
+val ffutilitiesJar = &quot;com.fyxe.ffutilities:ffutilities-1.21.1-fabric:$ffutilities&quot;
+modImplementation(ffutilitiesJar)
+include(ffutilitiesJar)</code></pre>
+<p>In a Groovy build script the NeoForge form <code>jarJar(implementation(&quot;...&quot;)) { version { ... } }</code> also works.</p>
+<h3>Differences between targets</h3>
+<ul>
+<li>Minecraft 1.21.11 renamed <code>ResourceLocation</code> to <code>Identifier</code>; methods that take or return IDs use the name of their version.</li>
+<li>Configs: NeoForge's <code>ModConfigSpec</code> on 1.20.6+ (Fabric included, through Forge Config API Port) and Forge's <code>ForgeConfigSpec</code> on 1.20.1. <code>ConfigValidators</code> and <code>ConfigLists</code> work with both.</li>
+<li><code>ConfigScreens.register(modId)</code> works on every loader: it adds the generated config screen on NeoForge 1.21.1+ (Mods list) and Fabric 1.21.1+ (Mod Menu), and does nothing where no generated screen exists (1.20.x, Forge). <code>ConfigScreens.register(ModContainer)</code> is also available on NeoForge.</li>
+<li><code>SimpleCodecReloadListener</code> registers like any server data reload listener: <code>AddReloadListenerEvent</code> on NeoForge and Forge, Fabric API's resource loader on Fabric.</li>
+</ul>
 <h3>Core utilities</h3>
 <div class="table-wrap"><table><thead><tr><th>Class</th><th>Public helpers</th><th>Use</th></tr></thead><tbody>
 <tr><td><code>Ids</code></td><td><code>of(namespace,path)</code>, <code>of(id)</code>, <code>tryParse(raw)</code></td><td>Build or parse resource IDs.</td></tr>
@@ -51,7 +86,7 @@ if (blocks.allows(state.getBlockHolder())) {
 <h3>Math, time, and selection</h3>
 <p><code>MathUtil</code> provides numeric <code>clamp</code>, <code>lerp</code>, <code>inverseLerp</code>, and <code>stageIndex</code>. <code>ExpressionEvaluator.evaluate(expression, vars)</code> evaluates configurable arithmetic with named variables. <code>WeightedRandom.pick(items, weightFn, random)</code> selects by integer weights. <code>TickGate.every</code> and <code>everyStaggered</code> support periodic work without a timer per entity. <code>TimeFormat</code> formats seconds or ticks as minutes and seconds; <code>ColorUtil.parseHex</code> has a fallback color.</p>
 <h3>HUD and client helpers</h3>
-<p><code>HudPlacement.anchorX</code>, <code>anchorY</code>, and <code>relativeText</code> calculate positions from anchor enums, offsets, and layout. <code>HudTextStyle</code> and related enums describe bold, outline, shadow, alignment, and expansion. <code>HudTextRenderer.draw</code> and <code>ConfigScreens.register</code> live under <code>api.client</code>; access those only from client code. <code>TooltipMode.shouldShow(shiftDown)</code> controls tooltip visibility.</p>
+<p><code>HudPlacement.anchorX</code>, <code>anchorY</code>, and <code>relativeText</code> calculate positions from anchor enums, offsets, and layout. <code>HudTextStyle</code> and related enums describe bold, outline, shadow, alignment, and expansion. <code>HudTextRenderer.draw</code> and <code>ConfigScreens.register</code> (see above) live under <code>api.client</code>; access those only from client code. <code>TooltipMode.shouldShow(shiftDown)</code> controls tooltip visibility.</p>
 <p>FFUtilities does not define injury, spoilage, rarity, or encumbrance rules. Use each gameplay mod&#x27;s own API for those features.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>

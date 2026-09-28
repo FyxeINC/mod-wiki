@@ -15,6 +15,36 @@ window.WIKI_DATA = {
     "recentUpdates": [
       {
         "date": "2026-09-28",
+        "project": "ffmodsubfolders",
+        "page": "index.html",
+        "change": "0.5.0: NeoForge builds for Minecraft 1.20.6, 1.21.1 and 1.21.11, with configuration registration fixed and version-specific startup-service guidance."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffitemcreationtracker",
+        "page": "index.html",
+        "change": "0.3.0: now on Fabric and NeoForge for Minecraft 1.20.6 and 1.21.1, with FFUtilities bundled. CreationStampEvent moved off the NeoForge bus to CreationStampEvents."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffcropevaporation",
+        "page": "index.html",
+        "change": "0.2.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities bundled."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffbandage",
+        "page": "index.html",
+        "change": "0.1.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities bundled."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffutilities",
+        "page": "api.html",
+        "change": "0.2.8: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with per-target Maven artifacts."
+      },
+      {
+        "date": "2026-09-28",
         "project": "ffutilities",
         "page": "index.html",
         "change": "0.2.7: Fyxe mods now work with NeoForge 21.1.211 or newer and bundle FFUtilities 0.2.7."
@@ -154,17 +184,25 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Crop growth can consume nearby water and require water access.",
       "tagline": "Crop growth can consume nearby water and require water access.",
-      "version": "0.1.4",
-      "minecraftVersion": "1.21.1",
+      "version": "0.2.0",
+      "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffcropevaporation",
       "icon": "icon.png",
       "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
         {
           "label": "NeoForge",
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "Forge",
+          "class": ""
+        },
+        {
+          "label": "MC 1.20.1-1.21.11",
           "class": ""
         }
       ],
@@ -322,17 +360,25 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "A configurable healing bandage item.",
       "tagline": "A configurable healing bandage item.",
-      "version": "0.0.5",
-      "minecraftVersion": "1.21.1",
+      "version": "0.1.0",
+      "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffbandage",
       "icon": "icon.png",
       "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
         {
           "label": "NeoForge",
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "Forge",
+          "class": ""
+        },
+        {
+          "label": "MC 1.20.1-1.21.11",
           "class": ""
         }
       ],
@@ -498,17 +544,21 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Records who created an item, when, where, and how.",
       "tagline": "Records who created an item, when, where, and how.",
-      "version": "0.2.8",
-      "minecraftVersion": "1.21.1",
+      "version": "0.3.0",
+      "minecraftVersion": "1.20.6-1.21.1",
       "modrinthSlug": "",
       "icon": "",
       "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
         {
           "label": "NeoForge",
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "MC 1.20.6-1.21.1",
           "class": ""
         }
       ],
@@ -531,7 +581,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFItemCreationTracker API, events, and integration examples.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-28",
           "searchExcerpt": "FFItemCreationTracker public API and integration guide."
         }
       ]
@@ -712,8 +762,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Loads mods from nested folders in the mods directory.",
       "tagline": "Loads mods from nested folders in the mods directory.",
-      "version": "0.4.9",
-      "minecraftVersion": "1.21.1",
+      "version": "0.5.0",
+      "minecraftVersion": "1.20.6 / 1.21.1 / 1.21.11",
       "modrinthSlug": "ffmodsubfolders",
       "icon": "",
       "tags": [
@@ -722,7 +772,7 @@ window.WIKI_DATA = {
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "MC 1.20.6 / 1.21.1 / 1.21.11",
           "class": ""
         }
       ],
@@ -832,19 +882,27 @@ window.WIKI_DATA = {
       "name": "FFUtilities",
       "index": "Q",
       "status": "active",
-      "description": "A shared API library for Fyxe NeoForge mods.",
-      "tagline": "A shared API library for Fyxe NeoForge mods.",
-      "version": "0.2.7",
-      "minecraftVersion": "1.21.1",
+      "description": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge.",
+      "tagline": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge.",
+      "version": "0.2.8",
+      "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "",
       "icon": "",
       "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
         {
           "label": "NeoForge",
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "Forge",
+          "class": ""
+        },
+        {
+          "label": "MC 1.20.1-1.21.11",
           "class": ""
         }
       ],
@@ -860,7 +918,7 @@ window.WIKI_DATA = {
           "index": "01",
           "description": "FFUtilities features, requirements, and source version.",
           "updated": "2026-09-28",
-          "searchExcerpt": "A shared API library for Fyxe NeoForge mods."
+          "searchExcerpt": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge."
         },
         {
           "file": "api.html",

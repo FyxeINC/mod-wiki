@@ -11,7 +11,7 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemCreationTracker</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.2.7</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.3.0</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
 <h2>Item Creation Tracker — Modding API</h2>
 <p>Primary class: <code>com.fyxe.ffitemcreationtracker.api.ItemCreationAPI</code>. The creation component is <code>ffitemcreationtracker:creation</code>; <code>CreationRecord</code> stores creator name and UUID, game day, timestamp, source ID, dimension, biome, moon phase, and custom extras.</p>
 <h3>Read and write stamps</h3>
@@ -42,13 +42,20 @@
         .filter(&quot;thunder&quot;::equals)
         .ifPresent(w -&gt; giveStormBonus(player));</code></pre>
 <h3>Pre-write event</h3>
-<p><code>com.fyxe.ffitemcreationtracker.api.event.CreationStampEvent</code> is cancellable and posted on <code>NeoForge.EVENT_BUS</code> after config checks but before the component is written. Inspect <code>getPlayer()</code>, <code>getStack()</code>, <code>getSourceId()</code>, and <code>getExtras()</code>; call <code>setSourceId</code>, <code>putExtra</code>, or <code>setCanceled(true)</code> to change or stop the stamp.</p>
-<pre><code class="language-java">@SubscribeEvent
-public static void onStamp(CreationStampEvent event) {
+<p><code>com.fyxe.ffitemcreationtracker.api.event.CreationStampEvent</code> is a plain class (not a NeoForge bus event) passed to every listener registered with <code>CreationStampEvents.register(Consumer&lt;CreationStampEvent&gt;)</code>. It runs on the logical server after config checks but before the component is written, and works the same on Fabric and NeoForge. Inspect <code>getPlayer()</code>, <code>getStack()</code>, <code>getSourceId()</code>, and <code>getExtras()</code>; call <code>setSourceId</code>, <code>putExtra</code>, or <code>setCanceled(true)</code> to change or stop the stamp. Register once during mod initialization.</p>
+<pre><code class="language-java">CreationStampEvents.register(event -&gt; {
     if (event.getSourceId().equals(&quot;mymod:cooking&quot;)) {
         event.putExtra(&quot;mymod:station&quot;, &quot;campfire&quot;);
     }
-}</code></pre>
+});</code></pre>
+<p>Before 0.3.0 this event was posted on <code>NeoForge.EVENT_BUS</code>; listeners written with <code>@SubscribeEvent</code> must move to <code>CreationStampEvents.register</code>.</p>
+<h3>Dependency coordinates</h3>
+<p>Each target is published as <code>com.fyxe.ffitemcreationtracker:ffitemcreationtracker-&lt;minecraft&gt;-&lt;loader&gt;:&lt;version&gt;</code> on the Fyxe Gitea Maven registry.</p>
+<div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loaders</th><th>Artifact</th></tr></thead><tbody>
+<tr><td>1.20.6</td><td>Fabric, NeoForge</td><td><code>ffitemcreationtracker-1.20.6-fabric</code>, <code>ffitemcreationtracker-1.20.6-neoforge</code></td></tr>
+<tr><td>1.21.1</td><td>Fabric, NeoForge</td><td><code>ffitemcreationtracker-1.21.1-fabric</code>, <code>ffitemcreationtracker-1.21.1-neoforge</code></td></tr>
+</tbody></table></div>
+<p>Compile against it (<code>compileOnly</code> on NeoForge, <code>modCompileOnly</code> on Fabric) and declare a dependency on <code>ffitemcreationtracker</code> in your loader metadata. The mod is not published for Forge or Minecraft 1.20.1.</p>
 <p>The mod requires FFUtilities. Add an optional dependency check before calling this API from another mod when Item Creation Tracker is optional.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
