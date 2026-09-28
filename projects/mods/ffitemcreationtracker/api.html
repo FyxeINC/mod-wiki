@@ -11,7 +11,7 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemCreationTracker</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.2.6</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.2.7</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
 <h2>Item Creation Tracker — Modding API</h2>
 <p>Primary class: <code>com.fyxe.ffitemcreationtracker.api.ItemCreationAPI</code>. The creation component is <code>ffitemcreationtracker:creation</code>; <code>CreationRecord</code> stores creator name and UUID, game day, timestamp, source ID, dimension, biome, moon phase, and custom extras.</p>
 <h3>Read and write stamps</h3>
@@ -29,6 +29,18 @@
 <h3>Custom sources and display</h3>
 <p>Use a namespaced source ID such as <code>mymod:cooking</code>. Call <code>ItemCreationAPI.registerSource(sourceId, byKey, nounKey, nounFirstKey)</code> to supply wording, or provide translation keys. <code>registerExtra(extraKey, formatter)</code> formats an extra field in tooltips. Built-in sources include <code>CRAFTED</code>, <code>SMELTED</code>, <code>ANVIL</code>, <code>SMITHING</code>, <code>ENCHANTED</code>, <code>TRADED</code>, <code>FISHED</code>, and <code>UNKNOWN</code>.</p>
 <pre><code class="language-java">ItemCreationAPI.tryStamp(result, player, &quot;mymod:cooking&quot;, Map.of(&quot;mymod:recipe&quot;, &quot;stew&quot;));</code></pre>
+<h3>Built-in detail extras</h3>
+<p><code>com.fyxe.ffitemcreationtracker.api.CreationExtras</code> names the extras keys this mod writes itself when the server config allows it. They are added before <code>CreationStampEvent</code> is posted, so a listener can read or remove them; <code>forceStamp</code> records them as well. Values from the caller's own extras map are never overwritten.</p>
+<div class="table-wrap"><table><thead><tr><th>Constant</th><th>Key</th><th>Values</th><th>Server config</th></tr></thead><tbody>
+<tr><td><code>WEATHER</code></td><td><code>ffitemcreationtracker:weather</code></td><td><code>clear</code>, <code>rain</code>, <code>snow</code>, <code>thunder</code> (skylit dimensions only)</td><td><code>recordWeather</code>, default on</td></tr>
+<tr><td><code>DEPTH</code></td><td><code>ffitemcreationtracker:depth</code></td><td><code>deep</code>, <code>underground</code>, <code>underwater</code>, <code>surface</code>, <code>high</code> (skipped in roofed dimensions)</td><td><code>recordDepth</code>, default on</td></tr>
+<tr><td><code>POSITION</code></td><td><code>ffitemcreationtracker:position</code></td><td><code>x,y,z</code> block position</td><td><code>recordCoordinates</code>, default off</td></tr>
+</tbody></table></div>
+<p><code>CreationExtras.BUILT_IN</code> holds all three keys. The tooltip draws them with their own client settings instead of the generic extras setting.</p>
+<pre><code class="language-java">ItemCreationAPI.get(stack)
+        .map(rec -&gt; rec.extras().get(CreationExtras.WEATHER))
+        .filter(&quot;thunder&quot;::equals)
+        .ifPresent(w -&gt; giveStormBonus(player));</code></pre>
 <h3>Pre-write event</h3>
 <p><code>com.fyxe.ffitemcreationtracker.api.event.CreationStampEvent</code> is cancellable and posted on <code>NeoForge.EVENT_BUS</code> after config checks but before the component is written. Inspect <code>getPlayer()</code>, <code>getStack()</code>, <code>getSourceId()</code>, and <code>getExtras()</code>; call <code>setSourceId</code>, <code>putExtra</code>, or <code>setCanceled(true)</code> to change or stop the stamp.</p>
 <pre><code class="language-java">@SubscribeEvent

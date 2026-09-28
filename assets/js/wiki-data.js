@@ -14,6 +14,48 @@ window.WIKI_DATA = {
     },
     "recentUpdates": [
       {
+        "date": "2026-09-28",
+        "project": "ffentitypainting",
+        "page": "api.html",
+        "change": "0.7.0: BodyShapes, client-measured mob shapes the server can use to place paint by body height and facing."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffentitydirt",
+        "page": "index.html",
+        "change": "0.6.0: needs FF Entity Painting 0.7.0, which now measures mob shapes; measuring settings moved there."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffentitypainting",
+        "page": "index.html",
+        "change": "0.6.1: /entitypaint operator commands for inspecting, clearing, filling and copying paint and managing layers."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffentitydirt",
+        "page": "index.html",
+        "change": "0.5.0: explosion soot, mining specks, walking particles, rain and cauldron washing, and snow that settles and melts."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffutilities",
+        "page": "api.html",
+        "change": "0.2.6: WeatherUtil tells whether rain or snow falls on a block or entity from open sky."
+      },
+      {
+        "date": "2026-09-27",
+        "project": "ffentitypainting",
+        "page": "api.html",
+        "change": "0.6.0: transform brushes, tool stamp hook, captured face normals, lighter syncs, and layer rename/reorder/delete."
+      },
+      {
+        "date": "2026-09-27",
+        "project": "ffentitydirt",
+        "page": "index.html",
+        "change": "0.4.0: needs FF Entity Painting 0.6.0; faster dirt writes and model-accurate damage mark facing."
+      },
+      {
         "date": "2026-09-27",
         "project": "ffentitydirt",
         "page": "index.html",
@@ -126,7 +168,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Paint living entities with layers and opacity, with a mod API for brushes and server-side painting.",
       "tagline": "Add a splash of color to living entities.",
-      "version": "0.5.0",
+      "version": "0.7.0",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -151,16 +193,16 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FF Entity Painting features, requirements, and source version.",
-          "updated": "2026-09-27",
+          "updated": "2026-09-28",
           "searchExcerpt": "Paint living entities with layers, blend modes and brush opacity."
         },
         {
           "file": "api.html",
           "title": "Modding API",
           "index": "02",
-          "description": "Java API for paint tools, server-side paint edits, locked layers, events, snapshots, geometry capture and paintable models.",
-          "updated": "2026-09-27",
-          "searchExcerpt": "EntityPaintingAPI, PaintEditor, PaintView, PaintTool, PixelMode opacity, PaintEvent, EntityPaintingClientAPI registerPaintableModel, captureGeometry CapturedGeometry rasterize."
+          "description": "Java API for paint tools, server-side paint edits, locked layers, events, snapshots, body shapes, geometry capture and paintable models.",
+          "updated": "2026-09-28",
+          "searchExcerpt": "EntityPaintingAPI, PaintEditor, PaintView, PaintTool, PixelMode opacity, PaintEvent, EntityPaintingClientAPI registerPaintableModel, captureGeometry CapturedGeometry rasterize, BodyShapes SurfaceShape BodyFrame measureShapes."
         }
       ]
     },
@@ -170,9 +212,9 @@ window.WIKI_DATA = {
       "name": "FF Entity Dirt",
       "index": "S",
       "status": "active",
-      "description": "Entities pick up dirt from the ground, get damage marks where they are hit, and wash both off in water.",
+      "description": "Entities pick up dirt from the ground, soot, snow and damage marks, and wash it all off in water, rain or a cauldron.",
       "tagline": "Mobs that look like they've been somewhere.",
-      "version": "0.2.1",
+      "version": "0.6.0",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -197,8 +239,8 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FF Entity Dirt features, requirements, and source version.",
-          "updated": "2026-09-27",
-          "searchExcerpt": "Dirt from walking and falls, damage marks from projectiles and melee, washed off by water, stored as FF Entity Painting paint on locked layers."
+          "updated": "2026-09-28",
+          "searchExcerpt": "Dirt from walking, falls and mining, soot from fire and explosions, snow, damage marks from projectiles and melee, washed off by water, rain or a cauldron, stored as FF Entity Painting paint on locked layers."
         }
       ]
     },
@@ -432,7 +474,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Records who created an item, when, where, and how.",
       "tagline": "Records who created an item, when, where, and how.",
-      "version": "0.2.6",
+      "version": "0.2.7",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -768,7 +810,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "A shared API library for Fyxe NeoForge mods.",
       "tagline": "A shared API library for Fyxe NeoForge mods.",
-      "version": "0.2.5",
+      "version": "0.2.6",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -801,7 +843,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFUtilities API, events, and integration examples.",
-          "updated": "2026-09-27",
+          "updated": "2026-09-28",
           "searchExcerpt": "FFUtilities public API and integration guide."
         }
       ]
