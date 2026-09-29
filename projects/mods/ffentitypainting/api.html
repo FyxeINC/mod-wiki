@@ -11,25 +11,32 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Entity Painting</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.8.1</code>. The mod is an experimental checkpoint: the API compiles and its storage rules are covered by automated checks, but it has not yet been exercised in a running game.</p>
+<p>This guide describes the public API in the current source version <code>0.8.3</code>. The mod is an experimental checkpoint: the API compiles and its storage rules are covered by automated checks, but it has not yet been exercised in a running game.</p>
 <h2>FF Entity Painting — Modding API</h2>
 <p>Use this guide when integrating another mod with <strong>FF Entity Painting</strong> (<code>ffentitypainting</code>).</p>
 <div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
-<tr><td><strong>Minecraft</strong></td><td>1.21.1</td></tr>
-<tr><td><strong>Loader</strong></td><td>NeoForge 21.1.x</td></tr>
+<tr><td><strong>Minecraft</strong></td><td>1.21.1 and 1.21.11</td></tr>
+<tr><td><strong>Loader</strong></td><td>NeoForge (21.1.x, 21.11.x) and Fabric</td></tr>
 <tr><td><strong>Mod ID</strong></td><td><code>ffentitypainting</code></td></tr>
 <tr><td><strong>API packages</strong></td><td><code>com.fyxe.ffentitypainting.api</code>, <code>.api.event</code>, <code>.api.client</code>, <code>.api.shape</code></td></tr>
-<tr><td><strong>Source version</strong></td><td>0.8.1</td></tr>
-<tr><td><strong>Maven</strong></td><td><code>com.fyxe.ffentitypainting:ffentitypainting:0.8.1</code> (Fyxe Gitea registry)</td></tr>
+<tr><td><strong>Source version</strong></td><td>0.8.3</td></tr>
+<tr><td><strong>Maven</strong></td><td>One artifact per target on the Fyxe Gitea registry: <code>com.fyxe.ffentitypainting:ffentitypainting-1.21.1-neoforge:0.8.3</code>, <code>...-1.21.1-fabric</code>, <code>...-1.21.11-neoforge</code> and <code>...-1.21.11-fabric</code>. The 1.21.1 NeoForge jar is also published as <code>com.fyxe.ffentitypainting:ffentitypainting:0.8.3</code>, the coordinate older consumers use.</td></tr>
 </tbody></table></div>
-<p>Dependency (optional):</p>
+<p>Dependency (optional), NeoForge <code>neoforge.mods.toml</code>:</p>
 <pre><code class="language-toml">[[dependencies.yourmod]]
     modId=&quot;ffentitypainting&quot;
     type=&quot;optional&quot;
     versionRange=&quot;[0.8.0,)&quot;
     ordering=&quot;NONE&quot;
     side=&quot;BOTH&quot;</code></pre>
-<p>Check <code>ModList.get().isLoaded(&quot;ffentitypainting&quot;)</code> before touching API classes, and keep those calls in a separate class so your mod still loads without it. Never reference <code>api.client</code> classes from common or server code.</p>
+<p>Fabric <code>fabric.mod.json</code> (put it under <code>suggests</code> for an optional dependency, or <code>depends</code> for a required one):</p>
+<pre><code class="language-json">&quot;depends&quot;: { &quot;ffentitypainting&quot;: &quot;&gt;=0.8.0&quot; }</code></pre>
+<p>Compile against the artifact for your target without bundling it (players install this mod separately): <code>compileOnly</code> on NeoForge, <code>modCompileOnly</code> on Fabric.</p>
+<pre><code class="language-kotlin">// NeoForge
+compileOnly(&quot;com.fyxe.ffentitypainting:ffentitypainting-1.21.11-neoforge:0.8.3&quot;)
+// Fabric
+modCompileOnly(&quot;com.fyxe.ffentitypainting:ffentitypainting-1.21.11-fabric:0.8.3&quot;)</code></pre>
+<p>Check that the mod is loaded (FFUtilities' <code>Mods.isLoaded(&quot;ffentitypainting&quot;)</code>, or your loader&#x27;s own check) before touching API classes, and keep those calls in a separate class so your mod still loads without it. Never reference <code>api.client</code> classes from common or server code.</p>
 <hr>
 <h3>Pick your integration</h3>
 <div class="table-wrap"><table><thead><tr><th>You want to…</th><th>Use</th></tr></thead><tbody>
@@ -157,7 +164,8 @@ EntityPaintingAPI.edit(golem, editor -&gt; {
 });</code></pre>
 <p><code>PaintView</code> is an immutable snapshot: <code>revision()</code>, <code>layers()</code>, <code>parts()</code> (key, surface hash, part name, UV rectangle, canvas size), <code>pixel(layer, part, x, y)</code>, <code>composite(part, x, y)</code>, <code>compositeCanvas(part)</code> (every texel at once), <code>canvas(layer, part)</code> and <code>partsOnSurface(surfaceId)</code>. Each <code>PaintView.Part</code> converts between texture UV and canvas texels with <code>contains(u, v)</code>, <code>texelX(u)</code>, <code>texelY(v)</code>, <code>textureU(x)</code> and <code>textureV(y)</code>. <code>hasPaint</code> and <code>revision</code> are cheap checks that do not copy anything; <code>EntityPaintingAPI.surfaceHash(surfaceId)</code> gives the prefix a surface&#x27;s part keys share.</p>
 <hr>
-<h3>Events (NeoForge bus, server only)</h3>
+<h3>Events (server only)</h3>
+<p>Events are delivered to every listener added with <code>PaintEvents.register(Class, Consumer)</code>, on any loader. On NeoForge they are also posted on <code>NeoForge.EVENT_BUS</code>, so <code>@SubscribeEvent</code> methods work as before. On Fabric, use <code>PaintEvents.register</code>.</p>
 <div class="table-wrap"><table><thead><tr><th>Event</th><th>Cancelable</th><th>When</th></tr></thead><tbody>
 <tr><td><code>PaintEvent.PlayerStamp</code></td><td>Yes</td><td>A player stroke passed every built-in check and is about to apply. Color, mode and radius can be changed.</td></tr>
 <tr><td><code>PaintEvent.PlayerLayerEdit</code></td><td>Yes</td><td>A layer-manager action (<code>ADD</code>, <code>BLEND_MODE</code>, <code>VISIBILITY</code>, <code>CLEAR</code>, <code>OPACITY</code>, <code>REMOVE</code>, <code>MOVE</code>, <code>RENAME</code>) is about to apply. <code>getValue()</code> is the blend mode, opacity percent, <code>up</code>/<code>down</code> or new name.</td></tr>
@@ -175,13 +183,21 @@ public void onStamp(PaintEvent.PlayerStamp e) {
 public void onChanged(PaintEvent.Changed e) {
     if (e.getCause() == PaintEvent.Cause.PLAYER_STAMP) Quests.progress(e.getPlayer(), &quot;paint_a_mob&quot;);
 }</code></pre>
+<pre><code class="language-java">// Any loader (the only way on Fabric):
+PaintEvents.register(PaintEvent.PlayerStamp.class, e -&gt; {
+    if (!Claims.canBuild(e.getPlayer(), e.getEntity().blockPosition())) e.setCanceled(true);
+});</code></pre>
 <p>Canceling sends no message by itself, so tell the player why if it helps them.</p>
 <h4>On the client</h4>
-<p><code>api.client.PaintUpdatedEvent</code> fires on the NeoForge bus on the client main thread whenever this client&#x27;s copy of an entity&#x27;s paint changes. <code>isSnapshot()</code> is true when the whole paint was replaced (layers, parts or settings may differ) and false when only some texels changed. Use it to refresh anything you derive from paint instead of polling revisions.</p>
+<p><code>api.client.PaintUpdatedEvent</code> fires on the client main thread (on the NeoForge bus too, and to <code>PaintUpdatedEvent.register(Consumer)</code> listeners on every loader) whenever this client&#x27;s copy of an entity&#x27;s paint changes. <code>isSnapshot()</code> is true when the whole paint was replaced (layers, parts or settings may differ) and false when only some texels changed. Use it to refresh anything you derive from paint instead of polling revisions.</p>
 <pre><code class="language-java">@SubscribeEvent
 public void onPaint(PaintUpdatedEvent e) {
     GlowMasks.invalidate(e.getEntity()); // rebuilt from EntityPaintingAPI.view on next render
-}</code></pre>
+}
+
+// Any loader:
+PaintUpdatedEvent.register(e -&gt; GlowMasks.invalidate(e.getEntity()));</code></pre>
+<p>Part names and surface IDs differ by loader (Fabric names parts by child path and its surface IDs carry the runtime class names), so take them from <code>BodyShapes</code> and <code>PaintView</code> instead of building them yourself.</p>
 <hr>
 <h3>Client API</h3>
 <p><code>com.fyxe.ffentitypainting.api.client.EntityPaintingClientAPI</code>, client only.</p>

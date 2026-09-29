@@ -11,20 +11,23 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFNutrition</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.2.2</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.5.0</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
 <h2>FF Nutrition — Modding API</h2>
-<p>This document describes the public API other mods (and agents) can use to interact with FF Nutrition on Minecraft 1.21.1 / NeoForge.</p>
+<p>This document describes the public API other mods (and agents) can use to interact with FF Nutrition on Minecraft 1.20.1, 1.20.6, 1.21.1 and 1.21.11 (Fabric, Forge and NeoForge).</p>
 <p>Primary entry point: <code>com.fyxeinc.ffnutrition.api.FFNutritionAPI</code></p>
 <p>Events live under <code>com.fyxeinc.ffnutrition.api.event</code>.</p>
 <hr>
 <h3>Dependency</h3>
-<p>Optional (recommended):</p>
+<p>Optional (recommended). NeoForge (<code>neoforge.mods.toml</code>):</p>
 <pre><code class="language-toml">[[dependencies.yourmod]]
     modId=&quot;ffnutrition&quot;
     type=&quot;optional&quot;
     versionRange=&quot;[0.2,)&quot;
     ordering=&quot;NONE&quot;
     side=&quot;BOTH&quot;</code></pre>
+<p>Forge 1.20.1 (<code>mods.toml</code>) uses <code>mandatory=false</code> in place of <code>type=&quot;optional&quot;</code>.</p>
+<p>Fabric (<code>fabric.mod.json</code>): <code>"suggests": { "ffnutrition": "&gt;=0.4.0" }</code>. The API is loader-free, so the same calls work on both loaders.</p>
+<p>Compile against the per-target Maven artifact <code>com.fyxeinc.ffnutrition:ffnutrition-&lt;minecraft&gt;-&lt;loader&gt;:0.5.0</code>, for example <code>ffnutrition-1.21.1-neoforge</code>, <code>ffnutrition-1.21.11-fabric</code> or <code>ffnutrition-1.20.1-forge</code>. NeoForge 1.21.1 builds before 0.4.0 used <code>com.fyxeinc.ffnutrition:ffnutrition</code>.</p>
 <p>Always prefer the API over writing the <code>nutrition_data</code> attachment or attribute base value directly. The API keeps events, the max-health modifier, and the Metabolic Gauge client sync consistent.</p>
 <hr>
 <h3>Max-health compatibility</h3>
@@ -57,7 +60,7 @@
 <tr><td><code>getItemNutritionValues(Item)</code></td><td>Raw datapack vector (unscaled)</td></tr>
 <tr><td><code>hasItemNutrition(Item)</code></td><td>Whether a datapack entry exists</td></tr>
 <tr><td><code>getDefaultTargetMaxHealth(Player)</code></td><td>Built-in formula target (before events)</td></tr>
-<tr><td><code>getMaxHealthModifierId()</code></td><td><code>ResourceLocation</code> of our permanent modifier</td></tr>
+<tr><td><code>getMaxHealthModifierId()</code></td><td><code>ResourceLocation</code> (<code>Identifier</code> on 1.21.11) of our permanent modifier; on 1.20.x it is stored under a UUID derived from this id</td></tr>
 <tr><td><code>getMaxHealthModifierAmount(Player)</code></td><td><code>Optional&lt;Double&gt;</code> of current modifier amount</td></tr>
 </tbody></table></div>
 <hr>
@@ -83,7 +86,8 @@
 </tbody></table></div>
 <p><code>Cause</code> values: <code>FOOD</code>, <code>DECAY</code>, <code>COMMAND</code>, <code>API</code>, <code>DEATH_CLONE</code>, <code>OTHER</code>.</p>
 <hr>
-<h3>Events (NeoForge bus, server-side)</h3>
+<h3>Events (server-side)</h3>
+<p>All events extend <code>NutritionEvent</code>. On every loader, listen with <code>NutritionEvents.register(EventClass.class, listener)</code>; listeners run on the server thread in registration order. On NeoForge 1.20.6 and newer the events also extend NeoForge's <code>Event</code> and are posted on <code>NeoForge.EVENT_BUS</code>, so <code>@SubscribeEvent</code> listeners work there. <code>NutritionChangeEvent</code> implements <code>Cancellable</code> (NeoForge's <code>ICancellableEvent</code> on NeoForge). Forge 1.20.1 uses the listener registry only.</p>
 <div class="table-wrap"><table><thead><tr><th>Event</th><th>Cancellable</th><th>When</th></tr></thead><tbody>
 <tr><td><code>NutritionChangeEvent</code></td><td>Yes</td><td>Before a category mutation</td></tr>
 <tr><td><code>NutritionChangedEvent</code></td><td>No</td><td>After a successful mutation</td></tr>
@@ -92,7 +96,10 @@
 <tr><td><code>FoodNutritionAppliedEvent</code></td><td>No</td><td>After food (item or placed block) contributed values</td></tr>
 </tbody></table></div>
 <h4>Example — override max health from another mod</h4>
-<pre><code class="language-java">@SubscribeEvent
+<pre><code class="language-java">// Any loader, once during mod setup:
+NutritionEvents.register(ComputeMaxHealthEvent.class, YourMod::onComputeMaxHealth);
+
+// NeoForge alone can use @SubscribeEvent on the same method.
 public static void onComputeMaxHealth(ComputeMaxHealthEvent event) {
     // e.g. give a bonus heart while a custom effect is active
     if (event.getPlayer().hasEffect(YOUR_EFFECT)) {
@@ -100,8 +107,7 @@ public static void onComputeMaxHealth(ComputeMaxHealthEvent event) {
     }
 }</code></pre>
 <h4>Example — block nutrition gain from a specific food</h4>
-<pre><code class="language-java">@SubscribeEvent
-public static void onNutritionChange(NutritionChangeEvent event) {
+<pre><code class="language-java">public static void onNutritionChange(NutritionChangeEvent event) {
     if (event.getCause() == NutritionChangeEvent.Cause.FOOD
             &amp;&amp; event.getOperation() == NutritionChangeEvent.Operation.ADD_VECTOR) {
         // cancel or mutate event.getVector()
@@ -109,8 +115,7 @@ public static void onNutritionChange(NutritionChangeEvent event) {
     }
 }</code></pre>
 <h4>Example — react after score changes</h4>
-<pre><code class="language-java">@SubscribeEvent
-public static void onNutritionChanged(NutritionChangedEvent event) {
+<pre><code class="language-java">public static void onNutritionChanged(NutritionChangedEvent event) {
     if (event.getNewScore() &gt;= 0.9) {
         // grant achievement, particle, etc.
     }
@@ -123,12 +128,16 @@ public static void onNutritionChanged(NutritionChangedEvent event) {
 <li>Decay runs every server level tick and deliberately does <strong>not</strong> spam <code>NutritionChangeEvent</code> every tick. Max-health events still fire when the applied max actually changes.</li>
 <li><code>setCategory</code> / <code>setAllCategories</code> via the API (and commands) now clamp correctly; the old command path that accidentally added instead of set has been fixed.</li>
 <li>Prefer <code>FFNutritionAPI</code> over direct attachment writes so client gauge sync and events stay correct.</li>
+<li><code>NutritionData</code> no longer implements NeoForge's <code>INBTSerializable</code> (0.4.0). <code>serializeNBT</code> and <code>deserializeNBT</code> remain as plain methods, and <code>NutritionData.CODEC</code> is the save codec.</li>
 </ul>
 <hr>
 <h3>Package layout</h3>
 <pre><code class="language-text">com.fyxeinc.ffnutrition.api
 ├── FFNutritionAPI.java
 └── event
+    ├── NutritionEvent.java            (base class)
+    ├── NutritionEvents.java           (listener registry, every loader)
+    ├── Cancellable.java
     ├── NutritionChangeEvent.java
     ├── NutritionChangedEvent.java
     ├── ComputeMaxHealthEvent.java

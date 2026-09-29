@@ -11,12 +11,12 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFExhaustion</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.7.5</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.8.0</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
 <h2>FFExhaustion — Modding API</h2>
 <p>Guide for other mods (and AI agents) integrating with <strong>FFExhaustion</strong> (<code>ffexhaustion</code>).</p>
 <div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
 <tr><td><strong>Minecraft</strong></td><td>1.21.1</td></tr>
-<tr><td><strong>Loader</strong></td><td>NeoForge 21.1.x</td></tr>
+<tr><td><strong>Loader</strong></td><td>NeoForge 21.1.x and Fabric</td></tr>
 <tr><td><strong>Mod ID</strong></td><td><code>ffexhaustion</code></td></tr>
 <tr><td><strong>API package</strong></td><td><code>com.fyxe.ffexhaustion.api</code></td></tr>
 <tr><td><strong>Exhaustion range</strong></td><td><code>0.0</code> – <code>1.0</code> (higher = more fatigued)</td></tr>
@@ -28,12 +28,13 @@
     versionRange=&quot;[0,)&quot;
     ordering=&quot;NONE&quot;
     side=&quot;BOTH&quot;</code></pre>
-<p>Use <code>ModList.get().isLoaded(&quot;ffexhaustion&quot;)</code> or optional compile-only dependency before calling API classes.</p>
+<p>On Fabric, list <code>&quot;ffexhaustion&quot;: &quot;*&quot;</code> under <code>suggests</code> (or <code>depends</code> when required) in <code>fabric.mod.json</code>. The first Fabric build is 0.8.0, so use a version range starting there when you need it.</p>
+<p>Use <code>ModList.get().isLoaded(&quot;ffexhaustion&quot;)</code> on NeoForge, <code>FabricLoader.getInstance().isModLoaded(&quot;ffexhaustion&quot;)</code> on Fabric, or FFUtilities&#x27; <code>Mods.isLoaded</code>, together with an optional compile-only dependency, before calling API classes. Each target is published as <code>com.fyxe.ffexhaustion:ffexhaustion-&lt;minecraft&gt;-&lt;loader&gt;:&lt;version&gt;</code> (for example <code>ffexhaustion-1.21.1-fabric</code>).</p>
 <hr>
 <h3>Core concepts</h3>
 <ul>
 <li><strong>Server-authoritative.</strong> Mutations only apply on the logical server (<code>ServerPlayer</code>). Client calls are no-ops.</li>
-<li><strong>Persisted</strong> on the player via NeoForge attachments (<code>ModAttachments.EXHAUSTION</code>).</li>
+<li><strong>Persisted</strong> on the player as a data attachment (NeoForge attachment or Fabric API attachment, same saved format). Read it through <code>ExhaustionData.of(player)</code>.</li>
 <li><strong>Death:</strong> controlled by server config <code>copyOnDeath</code> (default <code>false</code> → resets on death). Non-death clones (e.g. leaving the End) always keep the value.</li>
 <li><strong>Recovery delay:</strong> after many actions, recovery waits N ticks before draining toward 0.</li>
 <li><strong>Level modifiers (optional):</strong> vanilla <code>Player.experienceLevel</code> can reduce gain and recovery delay when enabled in config.</li>
@@ -89,8 +90,18 @@ ExhaustionAPI.setRecoveryDelayTicks(player, 40);</code></pre>
 <tr><td><code>resetExhaustion(p)</code></td><td>N/A</td><td>Death effects, commands</td></tr>
 </tbody></table></div>
 <hr>
-<h3>Events (NeoForge event bus)</h3>
-<p>Register on <code>NeoForge.EVENT_BUS</code> (common / server).</p>
+<h3>Events</h3>
+<p>On every loader listen with <code>ExhaustionApiEvents.register(EventType.class, listener)</code>; listeners run on the server thread, in registration order. On NeoForge the same events are also posted on <code>NeoForge.EVENT_BUS</code> (they extend NeoForge&#x27;s <code>Event</code>), so <code>@SubscribeEvent</code> listeners keep working. Fabric has no separate bus, so use <code>ExhaustionApiEvents</code> there. <code>ExhaustionChangeEvent</code> implements <code>Cancellable</code>, which is NeoForge&#x27;s <code>ICancellableEvent</code> on NeoForge and a plain <code>isCanceled</code> / <code>setCanceled</code> interface elsewhere.</p>
+<pre><code class="language-java">import com.fyxe.ffexhaustion.api.ExhaustionApiEvents;
+import com.fyxe.ffexhaustion.api.ExhaustionChangeEvent;
+
+// Any loader (Fabric: onInitialize; NeoForge: your mod constructor)
+ExhaustionApiEvents.register(ExhaustionChangeEvent.class, event -&gt; {
+    if (event.getPlayer().isCreative()) {
+        event.setCanceled(true);
+    }
+});</code></pre>
+<p>The NeoForge-bus form is shown below.</p>
 <h4><code>ExhaustionChangeEvent</code> (cancellable, before apply)</h4>
 <pre><code class="language-java">import com.fyxe.ffexhaustion.api.ExhaustionChangeEvent;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -133,11 +144,11 @@ int delayTicks = ExhaustionAPI.getEffectiveDelayTicks(player);</code></pre>
 <p>These respect <code>ServerConfig</code> level-modifier toggles. They use vanilla <code>experienceLevel</code> only (no custom level store).</p>
 <hr>
 <h3>Attachment (advanced)</h3>
-<pre><code class="language-java">import com.fyxe.ffexhaustion.data.ModAttachments;
-import com.fyxe.ffexhaustion.data.ExhaustionData;
+<pre><code class="language-java">import com.fyxe.ffexhaustion.data.ExhaustionData;
 
-ExhaustionData data = player.getData(ModAttachments.EXHAUSTION);
+ExhaustionData data = ExhaustionData.of(player);
 float v = data.getValue();</code></pre>
+<p>Before 0.8.0 the attachment type was <code>ModAttachments.EXHAUSTION</code> on NeoForge. That class is gone because the attachment now lives in each loader&#x27;s own package; use <code>ExhaustionData.of(player)</code>.</p>
 <p>Prefer <code>ExhaustionAPI</code> for writes so events and client sync stay consistent.</p>
 <hr>
 <h3>Configurable status systems (potions + attributes)</h3>
@@ -217,7 +228,7 @@ public class YourExhaustionHooks {
 <ul>
 <li>Package <code>com.fyxe.ffexhaustion.api</code> and <code>com.fyxe.ffexhaustion.api.client</code> are <strong>public API</strong>.</li>
 <li><code>ExhaustionStatusApplier</code> entry records and <code>ExhaustionAPI</code> status query helpers are <strong>public</strong> for read/integration.</li>
-<li><code>ExhaustionData</code> / <code>ModAttachments</code> are stable enough for read access; prefer API for mutations.</li>
+<li><code>ExhaustionData</code> is stable enough for read access; prefer API for mutations.</li>
 <li><code>ExhaustionHandler</code>, <code>compat.<em></code>, and <code>mixin.</em></code> are <strong>internal</strong> — do not call them from other mods.</li>
 </ul>
 <div data-page-footer></div>

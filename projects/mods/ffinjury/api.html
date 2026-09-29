@@ -11,29 +11,30 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFInjury</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.7.2</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.8.0</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
 <h2>FFInjury — Modding API</h2>
 <p>Use this guide when integrating another mod with <strong>FFInjury</strong> (<code>ffinjury</code>).</p>
 <div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
 <tr><td><strong>Minecraft</strong></td><td>1.21.1</td></tr>
-<tr><td><strong>Loader</strong></td><td>NeoForge 21.1.x</td></tr>
+<tr><td><strong>Loader</strong></td><td>NeoForge 21.1.x and Fabric</td></tr>
 <tr><td><strong>Mod ID</strong></td><td><code>ffinjury</code></td></tr>
 <tr><td><strong>API package</strong></td><td><code>com.fyxe.ffinjury.api</code></td></tr>
-<tr><td><strong>Source version</strong></td><td>0.7.2</td></tr>
+<tr><td><strong>Source version</strong></td><td>0.8.0</td></tr>
 </tbody></table></div>
-<p>Dependency (optional):</p>
+<p>Dependency (optional), NeoForge:</p>
 <pre><code class="language-toml">[[dependencies.yourmod]]
     modId=&quot;ffinjury&quot;
     type=&quot;optional&quot;
     versionRange=&quot;[0.6.0,)&quot;
     ordering=&quot;NONE&quot;
     side=&quot;BOTH&quot;</code></pre>
-<p>Use <code>ModList.get().isLoaded(&quot;ffinjury&quot;)</code> or an optional compile-only dependency before calling API classes.</p>
+<p>On Fabric, list <code>&quot;ffinjury&quot;: &quot;*&quot;</code> under <code>suggests</code> (or <code>depends</code> when required) in <code>fabric.mod.json</code>. The first Fabric build is 0.8.0, so use a version range starting there when you need it.</p>
+<p>Use <code>ModList.get().isLoaded(&quot;ffinjury&quot;)</code> on NeoForge, <code>FabricLoader.getInstance().isModLoaded(&quot;ffinjury&quot;)</code> on Fabric, or FFUtilities&#x27; <code>Mods.isLoaded</code>, together with an optional compile-only dependency, before calling API classes. Each target is published as <code>com.fyxe.ffinjury:ffinjury-&lt;minecraft&gt;-&lt;loader&gt;:&lt;version&gt;</code> (for example <code>ffinjury-1.21.1-fabric</code>).</p>
 <hr>
 <h3>Core concepts</h3>
 <ul>
 <li><strong>Server-authoritative.</strong> Mutations only apply on the logical server (<code>ServerPlayer</code>). Client query methods work; client mutations are no-ops.</li>
-<li><strong>Persisted</strong> on the player via NeoForge attachment <code>InjuryAttachments.INJURY_DATA</code>.</li>
+<li><strong>Persisted</strong> on the player through a loader attachment (<code>ffinjury:injury_data</code>), read with <code>InjuryAttachments.get(player)</code>. NeoForge uses <code>AttachmentType</code>, Fabric uses the data attachment API.</li>
 <li><strong>Cleared on death.</strong> Non-death clones keep state.</li>
 <li><strong>Adrenaline</strong> suppresses injury potion effects and attribute modifiers while active.</li>
 <li><strong>Treated</strong> injuries (bandaged) suppress their own effects/attributes until treatment expires. Increasing an injury&#x27;s tier clears treated + heal timers.</li>
@@ -92,8 +93,8 @@ InjuryAPI.grantAdrenaline(player, 20 * 15);</code></pre>
 <p>All mutations refresh potion effects, attribute modifiers, sync the client HUD, and fire the relevant API events.</p>
 <p>Raising a tier via <code>setInjuryTier</code> / <code>addOrIncreaseInjury</code> clears that injury&#x27;s treated and heal timers.</p>
 <hr>
-<h3>Events (NeoForge bus)</h3>
-<p>Listen with <code>@SubscribeEvent</code> on <code>NeoForge.EVENT_BUS</code>.</p>
+<h3>Events</h3>
+<p>Listen on every loader with <code>InjuryApiEvents.register(EventClass.class, listener)</code>. Listeners run on the server thread, in registration order. On NeoForge the same events are also posted on <code>NeoForge.EVENT_BUS</code> (they extend NeoForge&#x27;s <code>Event</code>), so <code>@SubscribeEvent</code> listeners keep working. Fabric has no separate bus, so use <code>InjuryApiEvents</code> there. Every event extends <code>InjuryEvent</code>; the cancellable ones implement <code>Cancellable</code> (NeoForge&#x27;s <code>ICancellableEvent</code> on NeoForge).</p>
 <div class="table-wrap"><table><thead><tr><th>Event</th><th>Cancellable</th><th>When</th></tr></thead><tbody>
 <tr><td><code>InjurySelectEvent</code></td><td>Yes</td><td>After damage-table selection, before apply. Can change type.</td></tr>
 <tr><td><code>InjuryAppliedEvent</code></td><td>No</td><td>After an injury is added or tier increased.</td></tr>
@@ -102,11 +103,17 @@ InjuryAPI.grantAdrenaline(player, 20 * 15);</code></pre>
 <tr><td><code>AdrenalineGrantedEvent</code></td><td>Yes</td><td>Before adrenaline is applied; can adjust duration.</td></tr>
 </tbody></table></div>
 <p>Package: <code>com.fyxe.ffinjury.api.event</code>.</p>
-<p>Example:</p>
+<p>Example (any loader):</p>
+<pre><code class="language-java">InjuryApiEvents.register(InjurySelectEvent.class, e -&gt; {
+    if (e.getInjuryType().getId().equals(&quot;bleeding&quot;)) {
+        e.setCanceled(true); // block bleeding from this hit
+    }
+});</code></pre>
+<p>The same listener written for NeoForge only:</p>
 <pre><code class="language-java">@SubscribeEvent
 public void onSelect(InjurySelectEvent e) {
     if (e.getInjuryType().getId().equals(&quot;bleeding&quot;)) {
-        e.setCanceled(true); // block bleeding from this hit
+        e.setCanceled(true);
     }
 }</code></pre>
 <hr>

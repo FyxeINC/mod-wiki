@@ -15,6 +15,48 @@ window.WIKI_DATA = {
     "recentUpdates": [
       {
         "date": "2026-09-28",
+        "project": "ffexhaustion",
+        "page": "api.html",
+        "change": "0.8.0: now on Fabric and NeoForge for 1.21.1 with FFUtilities bundled; API events can be heard on any loader with ExhaustionApiEvents, and the attachment is read with ExhaustionData.of(player)."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "fffoodspoilageandpreservation",
+        "page": "api.html",
+        "change": "0.8.0: now on Fabric and NeoForge for 1.21.1 with FFUtilities bundled; API events can be heard on any loader with SpoilageApiEvents."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffitemweight",
+        "page": "api.html",
+        "change": "0.7.0: now on Fabric and NeoForge for 1.21.1 with FFUtilities bundled; EncumbranceChangedEvent can be heard on any loader with EncumbranceApiEvents."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffnutrition",
+        "page": "index.html",
+        "change": "0.5.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities bundled; API events can be heard on any loader with NutritionEvents."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffinjury",
+        "page": "api.html",
+        "change": "0.8.0: now on Fabric and NeoForge for 1.21.1 with FFUtilities bundled; API events can be heard on any loader with InjuryApiEvents."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffnutrition",
+        "page": "api.html",
+        "change": "0.4.0: now on Fabric and NeoForge for 1.21.1 with FFUtilities bundled; API events can be heard on any loader with NutritionEvents."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffwaterfalls",
+        "page": "index.html",
+        "change": "0.3.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities bundled."
+      },
+      {
+        "date": "2026-09-28",
         "project": "ffmodsubfolders",
         "page": "index.html",
         "change": "0.5.0: NeoForge builds for Minecraft 1.20.6, 1.21.1 and 1.21.11, with configuration registration fixed and version-specific startup-service guidance."
@@ -48,6 +90,12 @@ window.WIKI_DATA = {
         "project": "ffutilities",
         "page": "index.html",
         "change": "0.2.7: Fyxe mods now work with NeoForge 21.1.211 or newer and bundle FFUtilities 0.2.7."
+      },
+      {
+        "date": "2026-09-28",
+        "project": "ffentitypainting",
+        "page": "api.html",
+        "change": "0.8.3: runs on Fabric and Minecraft 1.21.11 too; PaintEvents.register and PaintUpdatedEvent.register let any loader listen; one Maven artifact per target."
       },
       {
         "date": "2026-09-28",
@@ -230,17 +278,21 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Paint living entities with layers and opacity, with a mod API for brushes and server-side painting.",
       "tagline": "Add a splash of color to living entities.",
-      "version": "0.8.2",
-      "minecraftVersion": "1.21.1",
+      "version": "0.8.3",
+      "minecraftVersion": "1.21.1, 1.21.11",
       "modrinthSlug": "",
       "icon": "",
       "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
         {
           "label": "NeoForge",
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "MC 1.21.1, 1.21.11",
           "class": ""
         }
       ],
@@ -406,11 +458,15 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Tracks player fatigue from actions with configurable recovery and effects.",
       "tagline": "Tracks player fatigue from actions with configurable recovery and effects.",
-      "version": "0.7.7",
+      "version": "0.8.0",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffexhaustion",
       "icon": "",
       "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
         {
           "label": "NeoForge",
           "class": "tag--rust"
@@ -439,7 +495,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFExhaustion API, finite values, events, and integration examples.",
-          "updated": "2026-09-24",
+          "updated": "2026-09-28",
           "searchExcerpt": "FFExhaustion public API, finite value validation, and integration guide."
         }
       ]
@@ -452,11 +508,15 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
       "tagline": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
-      "version": "0.7.13",
+      "version": "0.8.0",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "fffoodspoilageandpreservation",
       "icon": "",
       "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
         {
           "label": "NeoForge",
           "class": "tag--rust"
@@ -485,7 +545,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFFoodSpoilageAndPreservation API, events, and integration examples.",
-          "updated": "2026-09-25",
+          "updated": "2026-09-28",
           "searchExcerpt": "Food spoilage events, modifier definitions, custom inventory stacking, and integration examples."
         }
       ]
@@ -498,11 +558,15 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds tiered injuries, adrenaline, treatment, and healing.",
       "tagline": "Adds tiered injuries, adrenaline, treatment, and healing.",
-      "version": "0.7.5",
+      "version": "0.8.0",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffinjury",
       "icon": "",
       "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
         {
           "label": "NeoForge",
           "class": "tag--rust"
@@ -531,7 +595,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFInjury API, events, and integration examples.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-28",
           "searchExcerpt": "FFInjury public API and integration guide."
         }
       ]
@@ -640,11 +704,15 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Gives items weight and players configurable encumbrance bands.",
       "tagline": "Gives items weight and players configurable encumbrance bands.",
-      "version": "0.6.8",
+      "version": "0.7.0",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "ffitemweight",
       "icon": "",
       "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
         {
           "label": "NeoForge",
           "class": "tag--rust"
@@ -673,7 +741,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFItemWeight API, weight references, events, and integration examples.",
-          "updated": "2026-09-24",
+          "updated": "2026-09-28",
           "searchExcerpt": "FFItemWeight public API, weight_from datapack references, and copper variant weights."
         }
       ]
@@ -800,17 +868,21 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Rewards diet variety with nutrition categories that affect maximum health.",
       "tagline": "Rewards diet variety with nutrition categories that affect maximum health.",
-      "version": "0.3.1",
-      "minecraftVersion": "1.21.1",
+      "version": "0.5.0",
+      "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffnutrition",
       "icon": "icon.png",
       "tags": [
+        {
+          "label": "Forge",
+          "class": ""
+        },
         {
           "label": "NeoForge",
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "MC 1.20.1-1.21.11",
           "class": ""
         }
       ],
@@ -833,7 +905,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFNutrition API, events, and integration examples.",
-          "updated": "2026-09-23",
+          "updated": "2026-09-28",
           "searchExcerpt": "FFNutrition public API and integration guide."
         }
       ]
@@ -938,17 +1010,25 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Makes liquid source blocks fall under gravity.",
       "tagline": "Makes liquid source blocks fall under gravity.",
-      "version": "0.2.4",
-      "minecraftVersion": "1.21.1",
+      "version": "0.3.0",
+      "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffwaterfalls",
       "icon": "",
       "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
         {
           "label": "NeoForge",
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "Forge",
+          "class": ""
+        },
+        {
+          "label": "MC 1.20.1-1.21.11",
           "class": ""
         }
       ],
