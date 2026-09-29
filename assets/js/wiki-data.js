@@ -14,6 +14,42 @@ window.WIKI_DATA = {
     },
     "recentUpdates": [
       {
+        "date": "2026-09-29",
+        "project": "ffentitypainting",
+        "page": "api.html",
+        "change": "0.9.0: per-layer view and paint access (teams, tags, players, or your own LayerRules), and client-only local layers (saved per world on the player's computer) with editLocal and paintLocal."
+      },
+      {
+        "date": "2026-09-29",
+        "project": "ffentitydirt",
+        "page": "index.html",
+        "change": "0.8.0: now on Fabric and NeoForge for Minecraft 1.21.1 and 1.21.11; needs FF Entity Painting 0.9.0."
+      },
+      {
+        "date": "2026-09-29",
+        "project": "ffinjury",
+        "page": "api.html",
+        "change": "0.9.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities 0.2.8 bundled; the API is unchanged, with per-target Maven coordinates."
+      },
+      {
+        "date": "2026-09-29",
+        "project": "ffexpandedbiometint",
+        "page": "api.html",
+        "change": "0.6.0: food names can now sort foods into categories by regex. 0.5.0: now on Fabric and NeoForge for 1.21.1 with FFUtilities 0.2.8 bundled; the BiomeTintAPI is unchanged, with per-loader dependency snippets and Maven coordinates added."
+      },
+      {
+        "date": "2026-09-29",
+        "project": "ffmobsunburnangle",
+        "page": "index.html",
+        "change": "1.2.0: now on Fabric and NeoForge for 1.21.1 with FFUtilities 0.2.8 bundled; no public API."
+      },
+      {
+        "date": "2026-09-29",
+        "project": "fffoodspoilageandpreservation",
+        "page": "api.html",
+        "change": "0.9.0: now also on Fabric and NeoForge for 1.21.11; the API is unchanged, and third-party storage on the transfer API stays strict about freshness there."
+      },
+      {
         "date": "2026-09-28",
         "project": "ffexhaustion",
         "page": "api.html",
@@ -65,7 +101,7 @@ window.WIKI_DATA = {
         "date": "2026-09-28",
         "project": "ffitemcreationtracker",
         "page": "index.html",
-        "change": "0.3.0: now on Fabric and NeoForge for Minecraft 1.20.6 and 1.21.1, with FFUtilities bundled. CreationStampEvent moved off the NeoForge bus to CreationStampEvents."
+        "change": "0.3.0: now on Fabric and NeoForge for Minecraft 1.20.6, 1.21.1 and 1.21.11, with FFUtilities bundled. CreationStampEvent moved off the NeoForge bus to CreationStampEvents."
       },
       {
         "date": "2026-09-28",
@@ -276,9 +312,9 @@ window.WIKI_DATA = {
       "name": "FF Entity Painting",
       "index": "C",
       "status": "active",
-      "description": "Paint living entities with layers and opacity, with a mod API for brushes and server-side painting.",
+      "description": "Paint living entities with shared, team-restricted and local layers, with a mod API for brushes, layer access rules and server-side painting.",
       "tagline": "Add a splash of color to living entities.",
-      "version": "0.8.3",
+      "version": "0.9.0",
       "minecraftVersion": "1.21.1, 1.21.11",
       "modrinthSlug": "",
       "icon": "",
@@ -307,16 +343,16 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FF Entity Painting features, requirements, and source version.",
-          "updated": "2026-09-28",
-          "searchExcerpt": "Paint living entities with layers, blend modes and brush opacity."
+          "updated": "2026-09-29",
+          "searchExcerpt": "Paint living entities with layers, blend modes and brush opacity, local layers and team layers."
         },
         {
           "file": "api.html",
           "title": "Modding API",
           "index": "02",
-          "description": "Java API for paint tools, server-side paint edits, locked layers, events, snapshots, body shapes, geometry capture and paintable models.",
-          "updated": "2026-09-28",
-          "searchExcerpt": "EntityPaintingAPI, PaintEditor, PaintView, PaintTool, PixelMode opacity, BlendMode, PaintEvent, PaintUpdatedEvent, EntityPaintingClientAPI registerPaintableModel, captureGeometry CapturedGeometry rasterize, BodyShapes SurfaceShape canvasCells BodyFrame measureShapes."
+          "description": "Java API for paint tools, server-side paint edits, locked layers, layer access rules, local layers, events, snapshots, body shapes, geometry capture and paintable models.",
+          "updated": "2026-09-29",
+          "searchExcerpt": "EntityPaintingAPI, PaintEditor, PaintView, PaintTool, PixelMode opacity, BlendMode, LayerAccess LayerRules LayerRule team tag view paint access, editLocal paintLocal local layers raycast, PaintEvent, PaintUpdatedEvent, EntityPaintingClientAPI registerPaintableModel, captureGeometry CapturedGeometry rasterize, BodyShapes SurfaceShape canvasCells BodyFrame measureShapes."
         }
       ]
     },
@@ -328,17 +364,21 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Entities pick up dirt from the ground, soot, snow and damage marks, and wash it all off in water, rain or a cauldron.",
       "tagline": "Mobs that look like they've been somewhere.",
-      "version": "0.7.1",
-      "minecraftVersion": "1.21.1",
+      "version": "0.8.0",
+      "minecraftVersion": "1.21.1, 1.21.11",
       "modrinthSlug": "",
       "icon": "",
       "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
         {
           "label": "NeoForge",
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "MC 1.21.1, 1.21.11",
           "class": ""
         }
       ],
@@ -366,11 +406,15 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Applies biome tints with datapack rules and a mod integration API.",
       "tagline": "Give blocks local color with datapack rules.",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
       "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
         {
           "label": "NeoForge",
           "class": "tag--rust"
@@ -391,7 +435,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FF Expanded Biome Tint features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-29",
           "searchExcerpt": "Datapack rules and a mod API assign grass, foliage, or water tint to blocks and breaking particles."
         },
         {
@@ -399,7 +443,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "Java registration API and datapack format for block biome tint rules.",
-          "updated": "2026-09-25",
+          "updated": "2026-09-29",
           "searchExcerpt": "BiomeTintAPI Java methods, exact IDs, block tags, regex, tint channels, strengths, and datapack precedence."
         }
       ]
@@ -508,8 +552,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
       "tagline": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
-      "version": "0.8.0",
-      "minecraftVersion": "1.21.1",
+      "version": "0.9.0",
+      "minecraftVersion": "1.21.1, 1.21.11",
       "modrinthSlug": "fffoodspoilageandpreservation",
       "icon": "",
       "tags": [
@@ -522,7 +566,7 @@ window.WIKI_DATA = {
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "MC 1.21.1, 1.21.11",
           "class": ""
         }
       ],
@@ -558,8 +602,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds tiered injuries, adrenaline, treatment, and healing.",
       "tagline": "Adds tiered injuries, adrenaline, treatment, and healing.",
-      "version": "0.8.0",
-      "minecraftVersion": "1.21.1",
+      "version": "0.9.0",
+      "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffinjury",
       "icon": "",
       "tags": [
@@ -568,11 +612,15 @@ window.WIKI_DATA = {
           "class": "tag--blue"
         },
         {
+          "label": "Forge",
+          "class": ""
+        },
+        {
           "label": "NeoForge",
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "MC 1.20.1-1.21.11",
           "class": ""
         }
       ],
@@ -587,7 +635,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFInjury features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-29",
           "searchExcerpt": "Adds tiered injuries, adrenaline, treatment, and healing."
         },
         {
@@ -595,7 +643,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFInjury API, events, and integration examples.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-29",
           "searchExcerpt": "FFInjury public API and integration guide."
         }
       ]
@@ -609,7 +657,7 @@ window.WIKI_DATA = {
       "description": "Records who created an item, when, where, and how.",
       "tagline": "Records who created an item, when, where, and how.",
       "version": "0.3.0",
-      "minecraftVersion": "1.20.6-1.21.1",
+      "minecraftVersion": "1.20.6-1.21.11",
       "modrinthSlug": "",
       "icon": "",
       "tags": [
@@ -622,7 +670,7 @@ window.WIKI_DATA = {
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.20.6-1.21.1",
+          "label": "MC 1.20.6-1.21.11",
           "class": ""
         }
       ],
@@ -754,11 +802,15 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs.",
       "tagline": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs.",
-      "version": "1.1.4",
+      "version": "1.2.0",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
       "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
         {
           "label": "NeoForge",
           "class": "tag--rust"
@@ -779,7 +831,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFMobSunBurnAngle features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-29",
           "searchExcerpt": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs."
         }
       ]
@@ -868,7 +920,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Rewards diet variety with nutrition categories that affect maximum health.",
       "tagline": "Rewards diet variety with nutrition categories that affect maximum health.",
-      "version": "0.5.0",
+      "version": "0.6.0",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffnutrition",
       "icon": "icon.png",

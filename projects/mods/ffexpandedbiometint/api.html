@@ -11,9 +11,9 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <h1>Modding API</h1>
-<p>Current source version: <strong>0.4.0</strong>. Install the mod on the server and clients. The server resolves all tint rules and syncs the selected blocks when a player joins or the server runs <code>/reload</code>.</p>
+<p>Current source version: <strong>0.5.0</strong>, for Minecraft 1.21.1 on NeoForge and Fabric. The API classes are identical on both loaders. Install the mod on the server and clients. The server resolves all tint rules and syncs the selected blocks when a player joins or the server runs <code>/reload</code>.</p>
 <h2>Java registration</h2>
-<p>Other mods can call <code>com.fyxe.ffexpandedbiometint.BiomeTintAPI</code> during mod construction to supply defaults. Require FF Expanded Biome Tint 0.4.0 or newer and load after it. Registrations close when server datapacks first load; a later call throws <code>IllegalStateException</code>. Strength must be finite and between <code>0.0</code> and <code>1.0</code>.</p>
+<p>Other mods can call <code>com.fyxe.ffexpandedbiometint.BiomeTintAPI</code> during mod construction (the <code>@Mod</code> constructor on NeoForge, <code>onInitialize</code> on Fabric) to supply defaults. Require FF Expanded Biome Tint 0.4.0 or newer (0.5.0 or newer for Fabric) and load after it. Registrations close when server datapacks first load; a later call throws <code>IllegalStateException</code>. Strength must be finite and between <code>0.0</code> and <code>1.0</code>.</p>
 <pre><code class="language-java">import com.fyxe.ffexpandedbiometint.BiomeTintAPI;
 import net.minecraft.resources.ResourceLocation;
 
@@ -24,12 +24,19 @@ BiomeTintAPI.registerTag(ResourceLocation.parse("examplemod:forest_stones"),
 BiomeTintAPI.registerRegex("examplemod:.*_leaves",
         BiomeTintAPI.Channel.FOLIAGE, 0.8);</code></pre>
 <p><code>registerBlock</code> accepts an exact block ID, <code>registerTag</code> a block tag ID without <code>#</code>, and <code>registerRegex</code> a Java pattern matched against the entire block ID. Invalid regular expressions throw <code>PatternSyntaxException</code>. Use registry IDs rather than block instances so rules can be registered before blocks are resolved.</p>
+<p>On NeoForge, declare the dependency in <code>neoforge.mods.toml</code>:</p>
 <pre><code class="language-toml">[[dependencies.yourmod]]
     modId="ffexpandedbiometint"
     type="required"
-    versionRange="[0.4.0,)"
+    versionRange="[0.5.0,)"
     ordering="AFTER"
     side="BOTH"</code></pre>
+<p>On Fabric, add it to <code>depends</code> in <code>fabric.mod.json</code>:</p>
+<pre><code class="language-json">"depends": {
+  "ffexpandedbiometint": ">=0.5.0"
+}</code></pre>
+<h2>Compile-time coordinates</h2>
+<p>Each target is published to the Fyxe Gitea Maven registry as <code>com.fyxe.ffexpandedbiometint:ffexpandedbiometint-&lt;minecraft&gt;-&lt;loader&gt;:&lt;version&gt;</code>. For 0.5.0 that is <code>ffexpandedbiometint-1.21.1-neoforge</code> and <code>ffexpandedbiometint-1.21.1-fabric</code>. Use them as compile-only dependencies (<code>compileOnly</code> on NeoForge, <code>modCompileOnly</code> on Fabric); players install the mod separately, and it is not bundled into other mods.</p>
 <h2>Datapack rules</h2>
 <h2>Rule files</h2>
 <p>Put a JSON file at <code>data/&lt;namespace&gt;/ffexpandedbiometint/tint_rules/&lt;name&gt;.json</code>. Each entry in <code>rules</code> has exactly one selector: <code>block</code> for an exact block ID, <code>tag</code> for a block tag ID without <code>#</code>, or <code>regex</code> for a Java regular expression matched against the full block ID. Set <code>tint</code> to <code>grass</code>, <code>foliage</code>, or <code>water</code>. Optional <code>strength</code> ranges from <code>0.0</code> to <code>1.0</code> and defaults to <code>1.0</code>.</p>
