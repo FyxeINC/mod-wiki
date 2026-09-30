@@ -11,7 +11,291 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Entity Painting</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Paint living entities with shared, team-restricted and local layers, with a mod API for brushes, layer access rules and server-side painting.</p><h2>Features</h2><ul><li>Operator commands (<code>/entitypaint</code>) to inspect, clear, fill and copy paint and to manage layers without a paint tool.</li><li>Paint lands on the exact texel under the crosshair, captured from the model as it is actually drawn, and each limb holds its own paint.</li><li>Layers with blend modes, visibility and opacity, synchronized between players. Rename, reorder and delete them right in the layer manager. Layers other mods lock (like dirt) stay put above your own.</li><li>Local layers only you can see, and team layers: servers, datapacks and mods can choose who sees each shared layer and who may paint it.</li><li>Brush opacity for see-through strokes that mix with paint already on the layer.</li><li>A <a href="api.html">modding API</a> for custom brushes, server-side painting, locked layers, layer access rules, local layers, events, snapshots, custom models and mob body shapes.</li><li>Measures nearby mobs' shapes for the server when another mod (like FF Entity Dirt) asks, with client settings for range and rate.</li></ul><h2>Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.21.1 and 1.21.11</td></tr><tr><th>NeoForge</th><td>21.1.211 or newer (1.21.1), 21.11.45 or newer (1.21.11)</td></tr><tr><th>Fabric</th><td>Fabric Loader 0.16.1 or newer (1.21.1) or 0.18.0 or newer (1.21.11), plus Fabric API</td></tr><tr><th>Included</th><td>FFUtilities is bundled in the download</td></tr><tr><th>Source version</th><td>0.9.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
+<h2>Overview</h2><p>Paint living entities with shared, team-restricted and local layers, with a mod API for brushes, layer access rules and server-side painting.</p><h2>Features</h2><ul><li>Operator commands (<code>/entitypaint</code>) to inspect, clear, fill and copy paint and to manage layers without a paint tool.</li><li>Paint lands on the exact texel under the crosshair, captured from the model as it is actually drawn, and each limb holds its own paint.</li><li>Layers with blend modes, visibility and opacity, synchronized between players. Rename, reorder and delete them right in the layer manager. Layers other mods lock (like dirt) stay put above your own.</li><li>Local layers only you can see, and team layers: servers, datapacks and mods can choose who sees each shared layer and who may paint it.</li><li>Brush opacity for see-through strokes that mix with paint already on the layer.</li><li>A <a href="api.html">modding API</a> for custom brushes, server-side painting, locked layers, layer access rules, local layers, events, snapshots, custom models and mob body shapes.</li><li>Measures nearby mobs' shapes for the server when another mod (like FF Entity Dirt) asks, with client settings for range and rate.</li></ul><h2>Getting started</h2>
+<ol>
+<li>Find the six paint tools and eraser in the Entity Paint Tools creative tab.</li>
+<li>Use first-person view and right-click a living entity that isn't wearing armor, a saddle or a llama carpet. Parts that stick out past the mob, like a wolf's tail, are fair game too. The click waits up to one second for a fresh model draw. A miss or unsupported surface changes nothing.</li>
+<li>Paint once to set up that entity's texture resolution, then sneak and right-click to open the layer manager.</li>
+<li>Add layers, pick the one you paint on, and rename, reorder, hide, fade, blend, clear or delete them. Erasing removes paint from the selected layer and reveals the layers underneath.</li>
+</ol>
+<p>This version captures paint placement from the actual vanilla model draw. Painting a sheep has been checked in game on every supported Minecraft version and loader, but multiplayer, villagers and players on the newer targets still need more testing.</p>
+<h2>Managing layers</h2>
+<p>The layer manager lists layers top first, the same order they stack on the mob. Click a layer to paint on it (it gets a <code>&gt;</code> marker). Each row has <strong>^</strong> and <strong>v</strong> to move the layer, and <strong>x</strong> to delete it. The button turns into <strong>?</strong> so a stray click can't wipe your work; click again to confirm.</p>
+<p>Below the list, type a new name and press <strong>Rename</strong> (or Enter). <strong>Blend</strong> cycles normal, multiply, additive, screen and overlay; <strong>Show / Hide</strong>, <strong>Clear Layer</strong> and <strong>Opacity</strong> round things out. The list has page buttons when a mob has more layers than fit.</p>
+<h3>Opacity</h3>
+<p><strong>Brush Opacity</strong> cycles 100%, 75%, 50%, 25% and 10%. See-through strokes mix with paint already on that layer, so dabbing again builds the color up, and translucent blue over red gives purple. The eraser follows the same setting. <strong>Layer Opacity</strong> (100%, 75%, 50%, 25%) fades a whole layer without touching its pixels. Brush opacity is your own setting; layer opacity is shared with everyone.</p>
+<h3>Locked layers</h3>
+<p>Layers marked <strong>[locked]</strong> belong to another mod (team colors, markings, dirt and the like). You can see them, but you can't select, paint, clear, move or change them, and your own layers can't hop over them. New layers slide in just under any locked layers on top. If every layer on a mob is locked, your first stroke makes a fresh layer of your own.</p>
+<h3>Local layers</h3>
+<p><strong>Add Local</strong> makes a layer that lives only in your game. Nobody else sees it and the server never hears about it. Local layers sit on top of everyone's paint, are marked <strong>[local]</strong>, and work like any other layer. They are saved on your computer, filed under the world or server world you painted them in, so they survive server address changes. A mob's local layers go away when it dies, and ones you haven't seen for a while are tidied up (see <code>localLayers</code> below).</p>
+<h3>Team layers</h3>
+<p>A server, a datapack or another mod can decide who sees each shared layer and who can paint it. For example: everyone paints an "ALL" layer but only the red team can paint "Red"; only the red team can even see "Red"; or a secret mark only the player wearing it can see. Layers you can see but can't paint show <strong>[view only]</strong>. Layers you can't see simply aren't there for you. When your team or tags change, what you see catches up within about a second.</p>
+<p>The server confirms changes. If another editor changes the same entity first, your stale edit is rejected and the latest state is sent back. Brushes use texture pixels, not a fixed world-space size.</p>
+<h2>Supported scope and limitations</h2>
+<ul>
+<li>First-person painting only. Armor, wool, held items, equipment layers, emissive passes, invisible entities and custom rendering engines need separate adapters. Mobs wearing armor (an elytra counts), wolf or horse armor, llama carpets or a saddle can't be painted until it's removed. Shear sheep before painting their body.</li>
+<li>Paint stays put when a mob changes looks with its mood (tamed or angry wolves, sleeping foxes, angry bees, cold striders). Dyed wool, collars and fish patterns show paint in its real color. Paint shows in the inventory preview and on a horse in its inventory screen.</li>
+<li><strong>Sodium</strong> works the same as without it. <strong>ETF</strong> texture variants are followed. <strong>EMF</strong> custom models paint on Minecraft 1.21.1, including extra pieces a resource pack adds; paint made on a pack's model stays with that model, so players without the pack won't see it. Big packs like Fresh Animations haven't been tried. On 1.21.11, EMF custom models can't be painted yet.</li>
+<li><strong>Iris</strong> shader packs work (tried on 1.21.1 with Fabric; 1.21.11 not yet tried with shaders). Painted mobs lose PBR normal and specular maps while shaders are on.</li>
+<li>Each limb and model piece holds its own paint, even when pieces share texture space. Very small pieces may have no paint texel at a reduced resolution.</li>
+<li>Unreadable textures and unrecognized rendering passes are left unchanged. Models with a different texture layout don't inherit paint.</li>
+<li>Old paint from before the capture rework is kept as a read-only legacy surface and isn't displayed until a migration exists.</li>
+<li>No color picker, undo/redo, continuous strokes, eyedropper or fill yet.</li>
+<li>Paint is stored per loader: NeoForge and Fabric name model pieces differently, so paint from a NeoForge world won't line up when opened with Fabric.</li>
+<li>Server and clients must all use 0.9.0; it doesn't connect with 0.8.x. Opening a 0.9.0 world in an older version shows team layers to everyone.</li>
+</ul>
+<h2>Mob shapes for other mods</h2>
+<p>Some mods, like FF Entity Dirt, need to know where each paintable spot sits on a mob's body. Only your game knows what a model looks like, so on those servers FF Entity Painting quietly measures nearby standing mobs now and then (a couple per tick, each again every 30 seconds or so) and tells the server. Your own player is measured too, even in first person. On a server where no mod asks for shapes, nothing is measured. You can turn measuring off in the client settings.</p>
+<p>Paint is saved on ordinary entities. Player paint persists across reconnects and dimension changes, and resets when a player dies unless the server turns on <code>keepPlayerPaintOnDeath</code>.</p>
+<h2>Configuration</h2>
+<p>Painting rules are server settings in <code>ffentitypainting-server.toml</code> in the world's <code>serverconfig</code> folder. Client settings are in <code>ffentitypainting-client.toml</code> in <code>config</code>. On NeoForge the settings screen is in the Mods list; on Fabric it is in Mod Menu.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>maxLayers</code></td>
+<td>4</td>
+<td>Layer count limit, 1 to 16; the pixel memory limit also applies</td>
+</tr>
+<tr>
+<td><code>maxTextureSize</code></td>
+<td>256</td>
+<td>Longest-side paint resolution cap; 0 disables this cap, but the hard 256-pixel limit remains</td>
+</tr>
+<tr>
+<td><code>paintReach</code></td>
+<td>5</td>
+<td>Maximum distance to entity bounds, with line of sight required</td>
+</tr>
+<tr>
+<td><code>requireCreative</code></td>
+<td>false</td>
+<td>Restricts painting and layer edits to creative players</td>
+</tr>
+<tr>
+<td><code>keepPlayerPaintOnDeath</code></td>
+<td>false</td>
+<td>Players keep their paint when they die and respawn</td>
+</tr>
+<tr>
+<td><code>paintOpaqueOnly</code></td>
+<td>true</td>
+<td>Skips base pixels with alpha below 200; fully transparent holes don't capture clicks</td>
+</tr>
+<tr>
+<td><code>brushSize</code></td>
+<td>2</td>
+<td>1 paints one texel; larger values use a circular radius of the setting minus one</td>
+</tr>
+<tr>
+<td><code>shapes.maxCachedShapes</code></td>
+<td>2048</td>
+<td>Most mob shapes the server remembers, cleared when it stops</td>
+</tr>
+<tr>
+<td><code>shapes.maxReportDistance</code></td>
+<td>128</td>
+<td>Farthest away, in blocks, a player's game may report a mob from</td>
+</tr>
+</tbody>
+</table></div>
+<p>Client <code>shapes</code> section:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reportShapes</code></td>
+<td>true</td>
+<td>Measure nearby mobs when the server asks</td>
+</tr>
+<tr>
+<td><code>reportRange</code></td>
+<td>48</td>
+<td>Measure mobs within this many blocks</td>
+</tr>
+<tr>
+<td><code>recaptureSeconds</code></td>
+<td>30</td>
+<td>Re-measure to catch shearing or a villager's new job</td>
+</tr>
+<tr>
+<td><code>capturesPerTick</code></td>
+<td>2</td>
+<td>How many mobs to measure per tick; each costs about one extra model draw</td>
+</tr>
+<tr>
+<td><code>maxGridSize</code></td>
+<td>32</td>
+<td>Detail of each shape report</td>
+</tr>
+</tbody>
+</table></div>
+<p>Client <code>localLayers</code> section:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>saveLocalLayers</code></td>
+<td>true</td>
+<td>Keep local layers when you leave and come back</td>
+</tr>
+<tr>
+<td><code>forgetAfterDays</code></td>
+<td>30</td>
+<td>Forget a mob's saved local layers after this many days without seeing it</td>
+</tr>
+<tr>
+<td><code>maxSavedMegabytes</code></td>
+<td>64</td>
+<td>Most disk space saved local layers may use across all worlds</td>
+</tr>
+</tbody>
+</table></div>
+<p>Each entity has a hard budget of 196,608 paint texels across its layers, so a 256x256 surface allows three layers. Smaller surfaces allow more, up to <code>maxLayers</code>. Locked layers from other mods don't count toward <code>maxLayers</code> but share the texel budget and the hard limit of 16 layers. The first stamp fixes the resolution. Edits are limited to ten per second per player.</p>
+<p>Diagnostics default off: <code>debugUvLog</code>, <code>debugDrawRay</code>, <code>debugDrawHitPoint</code>, <code>debugDrawHitTriangle</code>, <code>debugLineDuration</code> (3 seconds) and <code>debugLogShapeReports</code>. The retained <code>debugForceAabb</code> option disables painting instead of making approximate edits.</p>
+<h2>Commands</h2>
+<p>Operators (permission level 2) can inspect and edit paint with <code>/entitypaint</code>. Targets are ordinary entity selectors; non-living entities are skipped. Layers are picked by name (the first layer with that name), and names with spaces go in quotes, like <code>"Layer 1"</code>. Commands can change locked layers from other mods, so be careful with those.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/entitypaint info &lt;target&gt;</code></td>
+<td>Revision, layers (with lock, visibility, opacity, blend mode and painted texels), part count and budget use</td>
+</tr>
+<tr>
+<td><code>/entitypaint parts &lt;target&gt;</code></td>
+<td>Every established part with its surface hash, name, canvas size and texture rectangle</td>
+</tr>
+<tr>
+<td><code>/entitypaint clear &lt;targets&gt; [layer]</code></td>
+<td>Wipes all paint, or one layer's paint while keeping the layer</td>
+</tr>
+<tr>
+<td><code>/entitypaint fill &lt;targets&gt; &lt;layer&gt; &lt;color&gt; [blend\|replace\|erase]</code></td>
+<td>Paints every established part of a layer (created if missing) with <code>#RRGGBB</code> or <code>#AARRGGBB</code></td>
+</tr>
+<tr>
+<td><code>/entitypaint copy &lt;source&gt; &lt;targets&gt;</code></td>
+<td>Copies one entity's paint onto others</td>
+</tr>
+<tr>
+<td><code>/entitypaint resync &lt;targets&gt;</code></td>
+<td>Sends a fresh copy of the paint to nearby players</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer add &lt;targets&gt; &lt;name&gt; [locked]</code></td>
+<td>Adds a layer on top, optionally locked</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer remove &lt;targets&gt; &lt;layer&gt;</code></td>
+<td>Deletes a layer and its paint</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer rename &lt;targets&gt; &lt;layer&gt; &lt;newName&gt;</code></td>
+<td>Renames a layer</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer move &lt;targets&gt; &lt;layer&gt; &lt;index&gt;</code></td>
+<td>Moves a layer; 0 is the bottom</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer opacity &lt;targets&gt; &lt;layer&gt; &lt;0-1&gt;</code></td>
+<td>Sets layer opacity</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer visible &lt;targets&gt; &lt;layer&gt; &lt;true\|false&gt;</code></td>
+<td>Shows or hides a layer</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer locked &lt;targets&gt; &lt;layer&gt; &lt;true\|false&gt;</code></td>
+<td>Locks or unlocks a layer for players</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer blend &lt;targets&gt; &lt;layer&gt; &lt;mode&gt;</code></td>
+<td>Sets the blend mode: normal, multiply, additive, screen or overlay</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer access &lt;targets&gt; &lt;layer&gt; &lt;view\|paint&gt; &lt;rule&gt; [argument]</code></td>
+<td>Chooses who sees (<code>view</code>) or paints (<code>paint</code>) a layer</td>
+</tr>
+</tbody>
+</table></div>
+<p>Access rules for <code>layer access</code>:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Argument</th>
+<th>Who passes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>everyone</code></td>
+<td>none</td>
+<td>Everybody (the default)</td>
+</tr>
+<tr>
+<td><code>nobody</code></td>
+<td>none</td>
+<td>Nobody; only commands and mods can change the layer</td>
+</tr>
+<tr>
+<td><code>team</code></td>
+<td>team name</td>
+<td>Players on that scoreboard team</td>
+</tr>
+<tr>
+<td><code>same_team</code></td>
+<td>none</td>
+<td>Players on the same scoreboard team as the painted mob</td>
+</tr>
+<tr>
+<td><code>players</code></td>
+<td>names or UUIDs, comma separated</td>
+<td>Those players</td>
+</tr>
+<tr>
+<td><code>tag</code></td>
+<td>tag</td>
+<td>Players with that <code>/tag</code></td>
+</tr>
+<tr>
+<td><code>self</code></td>
+<td>none</td>
+<td>Only the painted player themselves</td>
+</tr>
+</tbody>
+</table></div>
+<p>Rules other mods add are typed with their full quoted ID, like <code>"othermod:captain"</code>.</p>
+<p>Examples: <code>/entitypaint info @e[type=cow,limit=1,sort=nearest]</code>, <code>/entitypaint fill @s "Layer 1" #80FF0000</code> for a see-through red tint, <code>/entitypaint clear @e[type=sheep,distance=..10]</code>, <code>/entitypaint layer access @e[tag=flag] Red view team red</code> so only the red team sees the flag's "Red" layer.</p>
+<p>Parts only exist once a player has painted them (or another mod has set them up), so <code>fill</code> on a never-painted mob does nothing.</p>
+<h2>Datapacks and functions</h2>
+<p>There is no mod-specific datapack file format. Functions can use the <code>/entitypaint</code> commands above (functions have permission level 2), including team layers: combine <code>layer add</code> and <code>layer access</code> with vanilla teams and tags. For example, a capture-the-flag map can give each team's banner mob a layer only that team sees, and move a <code>captain</code> tag between players to decide who may paint it. Players see tag and team changes within about a second.</p>
+<h2>Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.21.1 and 1.21.11</td></tr><tr><th>NeoForge</th><td>21.1.211 or newer (1.21.1), 21.11.45 or newer (1.21.11)</td></tr><tr><th>Fabric</th><td>Fabric Loader 0.16.1 or newer (1.21.1) or 0.18.0 or newer (1.21.11), plus Fabric API</td></tr><tr><th>Included</th><td>FFUtilities is bundled in the download</td></tr><tr><th>Source version</th><td>0.9.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

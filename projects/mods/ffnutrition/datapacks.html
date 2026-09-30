@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datapacks — FFNutrition — Fyxe's Mod Wiki</title>
+<meta name="description" content="Nutrition categories, name rules and per-food makeup files.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFNutrition</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<h2>Datapacks</h2>
+<p>FF Nutrition is built to be extended by datapacks, and it already ships makeups for vanilla food and many popular food mods. Reload with <code>/reload</code> and changes apply, including tooltips for everyone on the server. Run <code>/ffnutrition listUncategorizedFoods</code> to find foods you haven't covered yet.</p>
+<h2>Categories</h2>
+<p><code>data/ffnutrition/nutrition_categories.json</code> lists the categories, in order:</p>
+<pre><code class="language-json">{ &quot;categories&quot;: [&quot;meat&quot;, &quot;fruit&quot;, &quot;veg&quot;, &quot;carbs&quot;, &quot;sweets&quot;] }
+</code></pre>
+<p>The order matters: every food's values line up with it by position, so change it carefully. New categories appear on the gauge and in tooltips automatically. Your datapack's <code>nutrition_categories.json</code> replaces the built-in one completely, so copy the default patterns you want to keep.</p>
+<h3>Name rules</h3>
+<p>A category can also be an object with a list of regular expressions. Any food without a file of its own is matched by name, and each category with a matching pattern gets an equal share:</p>
+<pre><code class="language-json">{
+  &quot;categories&quot;: [
+    &quot;meat&quot;,
+    { &quot;name&quot;: &quot;fruit&quot;, &quot;patterns&quot;: [&quot;\\bapple\\b&quot;] },
+    &quot;veg&quot;,
+    { &quot;name&quot;: &quot;carbs&quot;, &quot;patterns&quot;: [&quot;\\bbread\\b&quot;] },
+    &quot;sweets&quot;
+  ]
+}
+</code></pre>
+<p>With that, an item named "apple bread" is 0.5 fruit and 0.5 carbs. Patterns aren't case sensitive and are checked against the item ID's name both as written (<code>apple_bread</code>) and with spaces (<code>apple bread</code>), so <code>\b</code> word boundaries work. Plain names and objects can be mixed. Foods with a file of their own always use that file, and a food matching no pattern stays uncategorized.</p>
+<p>The built-in categories come with name rules for several hundred food words, plurals included. House rules: potatoes, corn, grains, beans, peas, nuts, seeds and dairy count as carbs; eggs, tofu, fish and seafood count as meat; soups count as veg and stews as veg and carbs; juices, jams and desserts count as sweets. Savory pies and cakes (shepherd's pie, fish cakes) aren't counted as sweets.</p>
+<h2>Foods</h2>
+<p>Add a file for each food under <code>data/ffnutrition/item_nutrition/&lt;modid&gt;/&lt;item&gt;.json</code>. The folder name is the mod the item comes from, so <code>item_nutrition/minecraft/apple.json</code> describes <code>minecraft:apple</code>:</p>
+<pre><code class="language-json">{ &quot;values&quot;: [0.0, 1.0, 0.0, 0.0, 0.0] }
+</code></pre>
+<ul>
+<li><code>values</code> says how much of each category the food is made of, in category order. <code>1.0</code> means "all of it"; a mixed food might be <code>[0.5, 0.0, 0.5, 0.0, 0.0]</code>.</li>
+<li>You can name the item directly with an <code>"item": "modid:item"</code> field instead of relying on the file path.</li>
+<li>The final gain is these values multiplied by how filling the food is, so bigger meals give more.</li>
+<li>For food blocks such as cake, use the ID of the block's item.</li>
+<li>Entries for mods that aren't installed are ignored, so it's safe to ship support for many mods in one pack.</li>
+<li>Keep the number of values equal to the number of categories.</li>
+</ul>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

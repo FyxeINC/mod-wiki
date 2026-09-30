@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datapacks — FF Entity Dirt — Fyxe's Mod Wiki</title>
+<meta name="description" content="Block and entity tags for dirt, mining specks and clean mobs.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Entity Dirt</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<h2>Datapacks</h2>
+<p>FF Entity Dirt has no datapack file format of its own. Instead, five tags let you tweak which blocks and mobs take part without touching the config. Add entries with <code>"replace": false</code> to extend them, and use <code>/reload</code> after changing a datapack.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Type</th>
+<th>What it does</th>
+<th>Ships with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ffentitydirt:dirty_surfaces</code></td>
+<td>block</td>
+<td>Extra natural blocks that leave dirt, on top of the vanilla ground tags in the dirt whitelist</td>
+<td>Gravel, clay, farmland, dirt paths, soul sand and soil, calcite, dripstone, sculk, moss carpet, magma and end stone</td>
+</tr>
+<tr>
+<td><code>ffentitydirt:mining_blocks</code></td>
+<td>block</td>
+<td>Extra blocks that fling specks when broken, on top of overworld stone and <code>#minecraft:dirt</code></td>
+<td>Farmland, dirt paths, short and tall grass, and ferns</td>
+</tr>
+<tr>
+<td><code>ffentitydirt:clean_surfaces</code></td>
+<td>block</td>
+<td>Blocks that never leave dirt</td>
+<td>Ice, wool, carpets and glass</td>
+</tr>
+<tr>
+<td><code>ffentitydirt:never_dirty</code></td>
+<td>entity type</td>
+<td>Mobs that never get dirty (or snowy)</td>
+<td>Empty</td>
+</tr>
+<tr>
+<td><code>ffentitydirt:never_damaged</code></td>
+<td>entity type</td>
+<td>Mobs that never get damage marks</td>
+<td>Empty</td>
+</tr>
+</tbody>
+</table></div>
+<p>Files live at <code>data/ffentitydirt/tags/block/&lt;name&gt;.json</code> and <code>data/ffentitydirt/tags/entity_type/&lt;name&gt;.json</code>.</p>
+<h3>Example</h3>
+<p>Keep armor stands and iron golems spotless:</p>
+<pre><code class="language-json">{
+  &quot;replace&quot;: false,
+  &quot;values&quot;: [
+    &quot;minecraft:armor_stand&quot;,
+    &quot;minecraft:iron_golem&quot;
+  ]
+}
+</code></pre>
+<p>Save it as <code>data/ffentitydirt/tags/entity_type/never_dirty.json</code> in your datapack.</p>
+<h3>Notes</h3>
+<ul>
+<li><code>never_dirty</code> also keeps drips off those mobs, unless a player changes their <code>particlePaint.entityBlacklist</code> client setting.</li>
+<li>Snow follows the dirt entity lists and the <code>never_dirty</code> tag.</li>
+<li>Every config list also accepts any block or entity tag, so your own tags work there too. For example, put <code>#c:glass_blocks</code> in <code>mining.blacklist</code> to keep glass from leaving specks.</li>
+<li>There is no datapack support for rain, snow, cauldrons, explosions or drips beyond these tags and the config. Which particles paint is a client setting, since drips are painted on each player's own game.</li>
+</ul>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

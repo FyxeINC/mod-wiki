@@ -11,7 +11,207 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>Random Quests</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Adds periodic personal and shared quests, rewards, and a Quest Board.</p><h2>Features</h2><ul><li>Daily, weekly, and monthly quests track play activity.</li><li>A Random Quests screen (opened next to the inventory recipe book) lets you pick which quests track on your HUD.</li><li>A HUD tracker, board, and public registries support integration.</li></ul><h2>Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.21.1</td></tr><tr><th>Loader</th><td>NeoForge 21.1.211 or newer</td></tr><tr><th>Source version</th><td>0.0.10</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2>For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, events, and integration examples.</p>
+<h2>Overview</h2><p>Adds periodic personal and shared quests, rewards, and a Quest Board.</p><h2>Features</h2><ul><li>Daily, weekly, and monthly quests track play activity.</li><li>A Random Quests screen (opened next to the inventory recipe book) lets you pick which quests track on your HUD.</li><li>A HUD tracker, board, and public registries support integration.</li></ul><h2>Quest Board</h2>
+<p>Craftable block: <strong>8 oak planks + 1 book</strong>.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Interaction</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Right-click (empty hand)</td>
+<td>Show active quests and claim completed rewards</td>
+</tr>
+<tr>
+<td>Right-click (holding an item)</td>
+<td>Deliver that item toward matching <strong>Collect</strong> quests</td>
+</tr>
+<tr>
+<td>Sneak + right-click</td>
+<td>Hand in all matching items from your inventory</td>
+</tr>
+</tbody>
+</table></div>
+<p>Completed quests can always be claimed at the board, even if global auto-claim is off.</p>
+<h2>Main goals</h2>
+<p>Long-term objectives with no time limit, separate from daily, weekly and monthly quests.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Personal</strong></td>
+<td>One per player, for example complete 15 daily quests, defeat 250 mobs, or reach adaptive rating +1.5</td>
+</tr>
+<tr>
+<td><strong>Server</strong></td>
+<td>One per world: <strong>all players must finish their personal main goal</strong> (the target scales with player count)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Main goals never expire, show on the HUD (pink and red) and at the Quest Board, and give exclusive rewards (diamonds, netherite scrap, enchanted golden apples, the server legendary pool). Claim with <code>/quests goal claim</code>, <code>/quests goal claimserver</code>, or at the Quest Board. Personal goal types (configurable): complete any, daily, weekly or monthly quests; complete N of a quest type; reach an adaptive rating; claim N rewards; total kills; travel distance; survive days.</p>
+<h2>Random Quests screen</h2>
+<p>Click the square <strong>Q</strong> button next to the recipe book in your inventory. It has three tabs:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Tab</th>
+<th>Shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>My Quests</strong></td>
+<td>Your personal daily, weekly and monthly quests and your main goal</td>
+</tr>
+<tr>
+<td><strong>Shared Quests</strong></td>
+<td>The server-wide shared quests and the server goal</td>
+</tr>
+<tr>
+<td><strong>Info</strong></td>
+<td>Read-only details about your game state, starting with your difficulty breakdown</td>
+</tr>
+</tbody>
+</table></div>
+<p>Each quest tab lists every category as a header card (Daily, Weekly, Monthly, Main Goal or Server Goal) in one scrollable list. A header shows even when the category currently has no quests, as long as it's enabled, and counts down to the next reset. Every quest gets a card with its description, progress and a <strong>TrackOnHUD</strong> checkbox. Each header's checkbox sets the default for new quests in that category. Completed quests stay listed here even after they leave the HUD.</p>
+<h2>HUD tracker</h2>
+<p>The top-left tracker lists every <em>unfinished</em> quest whose TrackOnHUD box is checked, shared quests first. Completed quests drop off the list. Progress and countdown timers (<code>showTimer</code>) show automatically. Position, scale, colors and background are in the config. You also get a private chat message when you complete a quest, even for shared ones.</p>
+<h2>Rewards</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ITEM</strong></td>
+<td>Any item stack</td>
+</tr>
+<tr>
+<td><strong>EXPERIENCE</strong></td>
+<td>XP points</td>
+</tr>
+<tr>
+<td><strong>EFFECT</strong></td>
+<td>A potion effect from a configurable list (defaults: speed, strength, regeneration, haste, resistance, fire resistance, night vision, jump boost, absorption, luck). Modded effects can be added in the config</td>
+</tr>
+<tr>
+<td><strong>HEAL</strong></td>
+<td>Restore hearts</td>
+</tr>
+<tr>
+<td><strong>EMERALDS</strong></td>
+<td>Emeralds as simple currency</td>
+</tr>
+<tr>
+<td><strong>COMMAND</strong></td>
+<td>Run a server command (<code>%player%</code>, <code>%uuid%</code> placeholders)</td>
+</tr>
+<tr>
+<td><strong>LOOT_TABLE</strong></td>
+<td>Roll a vanilla or modded loot table</td>
+</tr>
+<tr>
+<td><strong>RANDOM_POOL</strong></td>
+<td>Pick one of several sub-rewards at grant time</td>
+</tr>
+</tbody>
+</table></div>
+<p>Harder and monthly quests get bonus surprise pools and dungeon loot rolls.</p>
+<h2>Dynamic difficulty</h2>
+<p>Difficulty is computed per player when quests generate:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Base</strong></td>
+<td>Config <code>baseDifficulty</code></td>
+</tr>
+<tr>
+<td><strong>Player level</strong></td>
+<td>XP level times a factor</td>
+</tr>
+<tr>
+<td><strong>World age</strong></td>
+<td>In-game days</td>
+</tr>
+<tr>
+<td><strong>Play time</strong></td>
+<td>Vanilla play-time stats (hours)</td>
+</tr>
+<tr>
+<td><strong>Distance</strong></td>
+<td>Distance from world spawn</td>
+</tr>
+<tr>
+<td><strong>Equipment</strong></td>
+<td>Armor and held tool tier (leather to netherite)</td>
+</tr>
+<tr>
+<td><strong>Dimension</strong></td>
+<td>Bonus in the Nether and End; late-game gear in the Overworld</td>
+</tr>
+<tr>
+<td><strong>Deaths</strong></td>
+<td>Soft ease after many deaths</td>
+</tr>
+<tr>
+<td><strong>Adaptive rating</strong></td>
+<td>Learns from completions and failures</td>
+</tr>
+<tr>
+<td><strong>Period multiplier</strong></td>
+<td>Daily x1, weekly x1.8, monthly x3 (configurable)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Completing quests (especially hard ones, quickly) raises your adaptive rating; letting quests expire lowers it. It is clamped by <code>adaptiveMin</code> / <code>adaptiveMax</code>, and final difficulty by <code>difficultyMin</code> / <code>difficultyMax</code>. The HUD title shows the rating when it isn't zero (for example <code>Quests  +0.3</code>).</p>
+<h2>Commands</h2>
+<p>Players:</p>
+<pre><code class="language-text">/quests list | list shared
+/quests info &lt;id&gt;
+/quests claim &lt;id&gt;
+/quests submit
+/rq   (alias)
+</code></pre>
+<p>Operators (<code>/quests debug ...</code>):</p>
+<pre><code class="language-text">complete &lt;id&gt; | completeall
+progress &lt;id&gt; &lt;amount&gt;
+generate &lt;type&gt; [period] [shared]
+clear | refresh | claimall
+types | dump | difficulty
+adaptive reset | adaptive set &lt;value&gt;
+give_rewards &lt;id&gt;
+giveboard
+</code></pre>
+<p><code>/quests debug types</code> lists the 24+ quest types (combat, gathering, crafting, exploration, social and survival).</p>
+<h2>Configuration</h2>
+<p><code>config/randomquests-common.toml</code>:</p>
+<ul>
+<li><code>hudShowTimer</code> / <code>hudCompactTimer</code>: reset countdown on the HUD tracker</li>
+<li><code>hudEnabled</code>, offsets, scale, and the most tracked quests shown at once</li>
+<li><code>showDaily</code> / <code>showWeekly</code> / <code>showMonthly</code> / <code>showShared</code> / <code>showMainGoal</code> / <code>showServerGoal</code>: whether each category appears on the HUD tracker, the Random Quests screen, or both</li>
+<li><code>claimMode</code>, <code>playCompleteSound</code></li>
+<li>Per-type enable flags and reward multipliers</li>
+<li>Every dynamic difficulty factor, plus adaptive gain and loss</li>
+</ul>
+<p>There is no datapack format; quest content, weights and generation come from this config.</p>
+<h2>Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.21.1</td></tr><tr><th>Loader</th><td>NeoForge 21.1.211 or newer</td></tr><tr><th>Source version</th><td>0.0.10</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2>For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, events, and integration examples.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

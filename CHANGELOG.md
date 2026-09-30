@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-30
+
+- Added Datapacks pages for FF Crop Evaporation, FF Entity Dirt, FF Expanded Biome Tint, FFFoodSpoilageAndPreservation, FFInjury, FFItemRarityModifiers, FFItemWeight and FF Nutrition, with the formats, paths and examples moved out of the mod descriptions.
+- Moved the detailed configuration tables, commands, compatibility and loader notes from the shortened mod READMEs onto each mod's Overview page.
+- Documented FFItemCreationTracker tooltip lang keys and Random Quests reward helpers on their API pages.
+
 ## 2026-09-25
 
 - Reworked project navigation and catalog filtering, added in-page guides and API code copy controls, and fixed iconless mod pages collapsing into a narrow column on mobile.

@@ -14,10 +14,58 @@ window.WIKI_DATA = {
     },
     "recentUpdates": [
       {
+        "date": "2026-09-30",
+        "project": "ffcropevaporation",
+        "page": "datapacks.html",
+        "change": "New Datapacks page with the datapack formats, paths and examples moved from the mod description."
+      },
+      {
+        "date": "2026-09-30",
+        "project": "ffentitydirt",
+        "page": "datapacks.html",
+        "change": "New Datapacks page with the datapack formats, paths and examples moved from the mod description."
+      },
+      {
+        "date": "2026-09-30",
+        "project": "ffexpandedbiometint",
+        "page": "datapacks.html",
+        "change": "New Datapacks page with the datapack formats, paths and examples moved from the mod description."
+      },
+      {
+        "date": "2026-09-30",
+        "project": "fffoodspoilageandpreservation",
+        "page": "datapacks.html",
+        "change": "New Datapacks page with the datapack formats, paths and examples moved from the mod description."
+      },
+      {
+        "date": "2026-09-30",
+        "project": "ffinjury",
+        "page": "datapacks.html",
+        "change": "New Datapacks page with the datapack formats, paths and examples moved from the mod description."
+      },
+      {
+        "date": "2026-09-30",
+        "project": "ffitemraritymodifiers",
+        "page": "datapacks.html",
+        "change": "New Datapacks page with the datapack formats, paths and examples moved from the mod description."
+      },
+      {
+        "date": "2026-09-30",
+        "project": "ffitemweight",
+        "page": "datapacks.html",
+        "change": "New Datapacks page with the datapack formats, paths and examples moved from the mod description."
+      },
+      {
+        "date": "2026-09-30",
+        "project": "ffnutrition",
+        "page": "datapacks.html",
+        "change": "New Datapacks page with the datapack formats, paths and examples moved from the mod description."
+      },
+      {
         "date": "2026-09-29",
         "project": "ffentitypainting",
         "page": "api.html",
-        "change": "0.9.0: per-layer view and paint access (teams, tags, players, or your own LayerRules), and client-only local layers (saved per world on the player's computer) with editLocal and paintLocal."
+        "change": "0.9.0: per-layer view and paint access (teams, tags, players, or your own LayerRules), client-only local layers (saved per world on the player's computer) with editLocal and paintLocal, and SurfaceAliases so state textures (tame wolves, sleeping foxes) share one paint surface."
       },
       {
         "date": "2026-09-29",
@@ -50,6 +98,12 @@ window.WIKI_DATA = {
         "change": "0.9.0: now also on Fabric and NeoForge for 1.21.11; the API is unchanged, and third-party storage on the transfer API stays strict about freshness there."
       },
       {
+        "date": "2026-09-30",
+        "project": "ffexhaustion",
+        "page": "api.html",
+        "change": "0.9.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities 0.2.8 bundled; the API is unchanged, with per-target Maven coordinates."
+      },
+      {
         "date": "2026-09-28",
         "project": "ffexhaustion",
         "page": "api.html",
@@ -66,6 +120,12 @@ window.WIKI_DATA = {
         "project": "ffitemweight",
         "page": "api.html",
         "change": "0.7.0: now on Fabric and NeoForge for 1.21.1 with FFUtilities bundled; EncumbranceChangedEvent can be heard on any loader with EncumbranceApiEvents."
+      },
+      {
+        "date": "2026-09-30",
+        "project": "ffitemweight",
+        "page": "api.html",
+        "change": "0.8.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities 0.2.8 bundled; the API is unchanged, with per-target Maven coordinates."
       },
       {
         "date": "2026-09-28",
@@ -319,8 +379,16 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FF Crop Evaporation features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-30",
           "searchExcerpt": "Crop growth can consume nearby water and require water access."
+        },
+        {
+          "file": "datapacks.html",
+          "title": "Datapacks",
+          "index": "02",
+          "description": "FF Crop Evaporation datapack formats: tags for modded farmland and evaporating fluids.",
+          "updated": "2026-09-30",
+          "searchExcerpt": "Farmland and evaporatable water tags, file paths per Minecraft version, and examples."
         }
       ]
     },
@@ -361,7 +429,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FF Entity Painting features, requirements, and source version.",
-          "updated": "2026-09-29",
+          "updated": "2026-09-30",
           "searchExcerpt": "Paint living entities with layers, blend modes and brush opacity, local layers and team layers."
         },
         {
@@ -411,8 +479,16 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FF Entity Dirt features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-30",
           "searchExcerpt": "Dirt from walking, falls and mining, soot from fire and explosions, snow, damage marks from projectiles and melee, washed off by water, rain or a cauldron, stored as FF Entity Painting paint on locked layers."
+        },
+        {
+          "file": "datapacks.html",
+          "title": "Datapacks",
+          "index": "02",
+          "description": "FF Entity Dirt datapack formats: block and entity tags for dirt, mining specks and clean mobs.",
+          "updated": "2026-09-30",
+          "searchExcerpt": "Dirty surface, mining block, clean surface, never dirty and never damaged tags."
         }
       ]
     },
@@ -453,13 +529,21 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FF Expanded Biome Tint features, requirements, and source version.",
-          "updated": "2026-09-29",
+          "updated": "2026-09-30",
           "searchExcerpt": "Datapack rules and a mod API assign grass, foliage, or water tint to blocks and breaking particles."
+        },
+        {
+          "file": "datapacks.html",
+          "title": "Datapacks",
+          "index": "02",
+          "description": "FF Expanded Biome Tint datapack formats: tint rule files: blocks, tags and regex with biome channels and strength.",
+          "updated": "2026-09-30",
+          "searchExcerpt": "Tint rules by block, tag or regex, grass foliage and water channels, strength and override order."
         },
         {
           "file": "api.html",
           "title": "Modding API",
-          "index": "02",
+          "index": "03",
           "description": "Java registration API and datapack format for block biome tint rules.",
           "updated": "2026-09-29",
           "searchExcerpt": "BiomeTintAPI Java methods, exact IDs, block tags, regex, tint channels, strengths, and datapack precedence."
@@ -507,7 +591,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFBandage features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-30",
           "searchExcerpt": "A configurable healing bandage item."
         }
       ]
@@ -520,8 +604,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Tracks player fatigue from actions with configurable recovery and effects.",
       "tagline": "Tracks player fatigue from actions with configurable recovery and effects.",
-      "version": "0.8.0",
-      "minecraftVersion": "1.21.1",
+      "version": "0.9.0",
+      "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffexhaustion",
       "icon": "",
       "tags": [
@@ -530,11 +614,15 @@ window.WIKI_DATA = {
           "class": "tag--blue"
         },
         {
+          "label": "Forge",
+          "class": ""
+        },
+        {
           "label": "NeoForge",
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "MC 1.20.1-1.21.11",
           "class": ""
         }
       ],
@@ -549,7 +637,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFExhaustion features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-30",
           "searchExcerpt": "Tracks player fatigue from actions with configurable recovery and effects."
         },
         {
@@ -557,7 +645,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFExhaustion API, finite values, events, and integration examples.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-30",
           "searchExcerpt": "FFExhaustion public API, finite value validation, and integration guide."
         }
       ]
@@ -599,13 +687,21 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFFoodSpoilageAndPreservation features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-30",
           "searchExcerpt": "Food spoilage stages, preservation methods, storage rates, stacking, and requirements."
+        },
+        {
+          "file": "datapacks.html",
+          "title": "Datapacks",
+          "index": "02",
+          "description": "FFFoodSpoilageAndPreservation datapack formats: modifier categories, preservation modifiers, cooking recipes and food tags.",
+          "updated": "2026-09-30",
+          "searchExcerpt": "Preservation modifier and category JSON fields, smoker and campfire modifier recipes, never spoil tags."
         },
         {
           "file": "api.html",
           "title": "Modding API",
-          "index": "02",
+          "index": "03",
           "description": "FFFoodSpoilageAndPreservation API, events, and integration examples.",
           "updated": "2026-09-28",
           "searchExcerpt": "Food spoilage events, modifier definitions, custom inventory stacking, and integration examples."
@@ -653,13 +749,21 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFInjury features, requirements, and source version.",
-          "updated": "2026-09-29",
+          "updated": "2026-09-30",
           "searchExcerpt": "Adds tiered injuries, adrenaline, treatment, and healing."
+        },
+        {
+          "file": "datapacks.html",
+          "title": "Datapacks",
+          "index": "02",
+          "description": "FFInjury datapack formats: injury type files, damage weights, effects, attributes and hurt levels.",
+          "updated": "2026-09-30",
+          "searchExcerpt": "Injury JSON fields, damage weights, tiered effects and attributes, overrides and hurt level rules."
         },
         {
           "file": "api.html",
           "title": "Modding API",
-          "index": "02",
+          "index": "03",
           "description": "FFInjury API, events, and integration examples.",
           "updated": "2026-09-29",
           "searchExcerpt": "FFInjury public API and integration guide."
@@ -703,7 +807,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemCreationTracker features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-30",
           "searchExcerpt": "Records who created an item, when, where, and how."
         },
         {
@@ -711,7 +815,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFItemCreationTracker API, events, and integration examples.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-30",
           "searchExcerpt": "FFItemCreationTracker public API and integration guide."
         }
       ]
@@ -753,13 +857,21 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemRarityModifiers features, requirements, and source version.",
-          "updated": "2026-09-29",
+          "updated": "2026-09-30",
           "searchExcerpt": "Adds configurable rarity rolls and small modifiers to gear."
+        },
+        {
+          "file": "datapacks.html",
+          "title": "Datapacks",
+          "index": "02",
+          "description": "FFItemRarityModifiers datapack formats: modifier types, rarity weights, rarity sources, overrides and item tags.",
+          "updated": "2026-09-30",
+          "searchExcerpt": "Modifier type fields, rarity weights, rarity source chances, mob and loot table overrides, eligible item tags."
         },
         {
           "file": "api.html",
           "title": "Modding API",
-          "index": "02",
+          "index": "03",
           "description": "FFItemRarityModifiers API, gear tags, modifier targeting, and integration examples.",
           "updated": "2026-09-24",
           "searchExcerpt": "FFItemRarityModifiers API, durable gear tags, required_item_tag modifier targeting, and integration guide."
@@ -774,8 +886,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Gives items weight and players configurable encumbrance bands.",
       "tagline": "Gives items weight and players configurable encumbrance bands.",
-      "version": "0.7.0",
-      "minecraftVersion": "1.21.1",
+      "version": "0.8.0",
+      "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffitemweight",
       "icon": "",
       "tags": [
@@ -784,11 +896,15 @@ window.WIKI_DATA = {
           "class": "tag--blue"
         },
         {
+          "label": "Forge",
+          "class": ""
+        },
+        {
           "label": "NeoForge",
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "MC 1.20.1-1.21.11",
           "class": ""
         }
       ],
@@ -803,15 +919,23 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemWeight features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-30",
           "searchExcerpt": "Gives items weight and players configurable encumbrance bands."
+        },
+        {
+          "file": "datapacks.html",
+          "title": "Datapacks",
+          "index": "02",
+          "description": "FFItemWeight datapack formats: item weight files, weight references, recipe derivation and encumbrance bands.",
+          "updated": "2026-09-30",
+          "searchExcerpt": "Item weight JSON, regex and force, weight_from references, recipe derivation, encumbrance band fields."
         },
         {
           "file": "api.html",
           "title": "Modding API",
-          "index": "02",
+          "index": "03",
           "description": "FFItemWeight API, weight references, events, and integration examples.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-30",
           "searchExcerpt": "FFItemWeight public API, weight_from datapack references, and copper variant weights."
         }
       ]
@@ -825,7 +949,7 @@ window.WIKI_DATA = {
       "description": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs.",
       "tagline": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs.",
       "version": "1.2.0",
-      "minecraftVersion": "1.21.1",
+      "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "",
       "icon": "",
       "tags": [
@@ -853,7 +977,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFMobSunBurnAngle features, requirements, and source version.",
-          "updated": "2026-09-29",
+          "updated": "2026-09-30",
           "searchExcerpt": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs."
         }
       ]
@@ -929,7 +1053,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFModsSubfolders features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-30",
           "searchExcerpt": "Loads mods from nested folders in the mods directory."
         }
       ]
@@ -971,13 +1095,21 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFNutrition features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-30",
           "searchExcerpt": "Rewards diet variety with nutrition categories that affect maximum health."
+        },
+        {
+          "file": "datapacks.html",
+          "title": "Datapacks",
+          "index": "02",
+          "description": "FFNutrition datapack formats: nutrition categories, name rules and per-food makeup files.",
+          "updated": "2026-09-30",
+          "searchExcerpt": "Nutrition categories, regex name rules and item_nutrition food value files."
         },
         {
           "file": "api.html",
           "title": "Modding API",
-          "index": "02",
+          "index": "03",
           "description": "FFNutrition API, events, and integration examples.",
           "updated": "2026-09-28",
           "searchExcerpt": "FFNutrition public API and integration guide."
@@ -1063,7 +1195,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFUtilities features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-30",
           "searchExcerpt": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge."
         },
         {
@@ -1117,7 +1249,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFWaterFalls features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-30",
           "searchExcerpt": "Makes liquid source blocks fall under gravity."
         }
       ]
@@ -1155,7 +1287,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "Random Quests features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-30",
           "searchExcerpt": "Adds periodic personal and shared quests, rewards, and a Quest Board."
         },
         {
@@ -1163,7 +1295,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "Random Quests API, events, and integration examples.",
-          "updated": "2026-09-26",
+          "updated": "2026-09-30",
           "searchExcerpt": "Random Quests public API and integration guide."
         }
       ]

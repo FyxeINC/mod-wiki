@@ -11,7 +11,106 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Crop Evaporation</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Crop growth can consume nearby water and require water access.</p><h2>Features</h2><ul><li>Configure evaporation chance, search radius, and weighted replacement blocks.</li><li>Optionally prevent growth when suitable water is absent.</li></ul><p>FFUtilities is included in this mod JAR; no separate library download is needed.</p><h2>Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr></tbody></table></div><p>Source version: <strong>0.2.0</strong>. FFUtilities 0.2.8 is included in every jar.</p><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
+<h2>Overview</h2><p>Crop growth can consume nearby water and require water access.</p><h2>Features</h2><ul><li>Configure evaporation chance, search radius, and weighted replacement blocks.</li><li>Optionally prevent growth when suitable water is absent.</li></ul><p>FFUtilities is included in this mod JAR; no separate library download is needed.</p><h2>How evaporation works</h2>
+<ul>
+<li>When a crop successfully grows, there is a chance that a nearby water block is replaced with a block picked from a weighted table.</li>
+<li>Optionally (on by default), crops refuse to grow at all when no suitable water is found within range of their farmland.</li>
+<li>Splash particles show when water is replaced.</li>
+<li>Farmland and water are found through tags, so other mods and datapacks can opt in. See the <a href="datapacks.html">Datapacks</a> page.</li>
+<li>Crop coverage: on NeoForge and Forge, any crop that fires the loader's crop-grow events. On Fabric, vanilla-style crops and stems (wheat, carrots, potatoes, beetroots, torchflowers, melons, pumpkins, and modded crops built on them).</li>
+</ul>
+<h2>Default behaviour</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prevent dry growth</td>
+<td>On</td>
+<td>Crops will not grow if no water is found nearby</td>
+</tr>
+<tr>
+<td>Require source for growth</td>
+<td>On</td>
+<td>Only full source water counts for the growth check</td>
+</tr>
+<tr>
+<td>Replace mode</td>
+<td>SOURCE</td>
+<td>SOURCE = sources only, FLOWING = flowing only, BOTH = any water</td>
+</tr>
+<tr>
+<td>Evaporate chance</td>
+<td>15%</td>
+<td>Probability that a successful growth removes a water block</td>
+</tr>
+<tr>
+<td>Search radius</td>
+<td>6</td>
+<td>Horizontal blocks searched around the farmland under the crop</td>
+</tr>
+<tr>
+<td>Search Y min / max</td>
+<td>0 / 1</td>
+<td>Relative Y range (matches vanilla farmland hydration by default)</td>
+</tr>
+<tr>
+<td>Replacement table</td>
+<td>Coarse dirt (5), Rooted dirt (5), Gravel (3), Moss block (1)</td>
+<td>Weighted random block used as the replacement</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Biome temperature scaling</h3>
+<p>When enabled (default), the base evaporation chance is multiplied by a value based on biome temperature:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Region</th>
+<th>Approx. temp</th>
+<th>Default multiplier</th>
+<th>Effective chance (base 15%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Snowy / frozen</td>
+<td>0.0 or below</td>
+<td>0.4x</td>
+<td>about 6%</td>
+</tr>
+<tr>
+<td>Plains / forests</td>
+<td>about 0.7 to 0.8</td>
+<td>about 0.9x</td>
+<td>about 13 to 14%</td>
+</tr>
+<tr>
+<td>Desert / badlands</td>
+<td>2.0 or above</td>
+<td>1.75x</td>
+<td>about 26% (capped at 100%)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Temperatures between the cold and hot anchors are linearly interpolated. All values are configurable.</p>
+<h2>Configuration</h2>
+<p>All options live in the <strong>common</strong> config, shared between client and server: <code>config/ffcropevaporation-common.toml</code>, created on first run. You can also use the in-game config screen (the Mods list on NeoForge 1.21.1 and newer, or Mod Menu on Fabric 1.21.1 and newer). 1.20.1 and 1.20.6 have no in-game screen.</p>
+<h3>Weighted replacement table</h3>
+<p>Each entry uses the format <code>"modid:block_name,weight"</code>. Higher weight means more likely to be chosen:</p>
+<pre><code class="language-toml">evaporateWeightedTable = [
+    &quot;minecraft:coarse_dirt,5&quot;,
+    &quot;minecraft:rooted_dirt,5&quot;,
+    &quot;minecraft:gravel,3&quot;,
+    &quot;minecraft:moss_block,1&quot;
+]
+</code></pre>
+<h2>Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr></tbody></table></div><p>Source version: <strong>0.2.0</strong>. FFUtilities 0.2.8 is included in every jar.</p><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

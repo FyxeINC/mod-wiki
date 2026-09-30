@@ -150,9 +150,10 @@ EntityPaintingAPI.edit(golem, editor -&gt; {
 <ul>
 <li>A <code>ModelPart</code> field uses its field name: <code>head</code>, <code>leftLeg</code>.</li>
 <li>Parts in an array, list or map field use <code>field[index]</code> or <code>field[key]</code>.</li>
-<li>Parts with no Java field use their path from the root: <code>body/jacket</code>.</li>
+<li>Parts with no Java field use their path from the root: <code>body/jacket</code>. On NeoForge 1.21.1, a model that is not a <code>HierarchicalModel</code> (a horse, a fox) names such a part by its path below its nearest named part instead: <code>headParts/head/upper_mouth</code> (0.9.0).</li>
 <li>A part with more than one cube gets one canvas per cube: <code>arms#0</code>, <code>arms#1</code>.</li>
-<li>Players use <code>EntityPaintingAPI.playerSurfaceId(modelClassName, &quot;wide&quot;|&quot;slim&quot;)</code>.</li>
+<li>Players use <code>EntityPaintingAPI.playerSurfaceId(modelClassName, &quot;default&quot;|&quot;slim&quot;)</code>.</li>
+<li>A texture a mob only shows in some state is painted as its canonical texture (0.9.0): wolves as their tame texture (wild and angry textures, every variant the client knows), sleeping foxes as awake ones, angry or nectar bees as <code>bee.png</code>, cold striders as warm ones. <code>surfaceId</code> applies this for you. If your mob swaps textures with the same layout, register them with <code>SurfaceAliases.alias(texture, canonical)</code> on both sides, before the first paint; <code>SurfaceAliases.canonical(texture)</code> looks one up.</li>
 <li>When Entity Model Features draws the entity with a custom (jem) model (0.8.1), the client appends <code>+emf:&lt;namespace&gt;:&lt;model&gt;#&lt;variant&gt;</code> to the model class name, so a resource pack&#x27;s model has surfaces of its own. Vanilla parts keep their names; parts the jem adds are <code>head/EMF_horn</code> (its <code>id</code>), or <code>head/emf@&lt;hex&gt;</code> (a geometry fingerprint) when the jem part has no <code>id</code>. A jem part with its own texture is a separate surface with that texture. Take these IDs from <code>captureGeometry</code>, <code>BodyShapes</code> or <code>view</code> rather than building them.</li>
 </ul>
 <p>The rectangle must cover every face of the part, or paint lands in the wrong place. For entities you don&#x27;t own, let a player paint first and use the parts listed by <code>view</code> or <code>editor.parts()</code>.</p>

@@ -11,7 +11,46 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFBandage</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>A configurable healing bandage item.</p><h2>Features</h2><ul><li>Heal with a bandage item.</li><li>Configure healing and use speed.</li></ul><h2>Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Fabric</th><th>NeoForge</th><th>Forge</th></tr></thead><tbody><tr><td>1.20.1</td><td>Loader 0.14.21+ and Fabric API</td><td></td><td>47.1 or newer</td></tr><tr><td>1.20.6</td><td>Loader 0.15.11+ and Fabric API</td><td>20.6.141 or newer</td><td></td></tr><tr><td>1.21.1</td><td>Loader 0.16.1+ and Fabric API</td><td>21.1.211 or newer</td><td></td></tr><tr><td>1.21.11</td><td>Loader 0.18.0+ and Fabric API</td><td>21.11.45 or newer</td><td></td></tr></tbody></table></div><p>Source version: 0.1.0. FFUtilities 0.2.8 is bundled in every jar, so it needs no separate download.</p><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
+<h2>Overview</h2><p>A configurable healing bandage item.</p><h2>Features</h2><ul><li>Heal with a bandage item.</li><li>Configure healing and use speed.</li></ul><h2>Using the bandage</h2>
+<ol>
+<li>Craft a bandage: put <strong>paper, a stick, and paper</strong> in a row on a crafting table. You get one bandage. It is also in the <strong>Combat</strong> tab of the Creative inventory.</li>
+<li>Hold use with the bandage, just like eating. After 24 ticks (a little over a second) it heals you.</li>
+<li>Each bandage heals <strong>1 to 2 health</strong> (half a heart to one heart) by default and is used up. In Creative mode it is not used up.</li>
+</ol>
+<p>The mod is needed on both the server and the client.</p>
+<h2>Configuration</h2>
+<p>Settings live in <code>config/ffbandage-common.toml</code>:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>healAmountMin</code></td>
+<td><code>1</code></td>
+<td>The least health a bandage heals. 2 health is one heart.</td>
+</tr>
+<tr>
+<td><code>healAmountMax</code></td>
+<td><code>2</code></td>
+<td>The most health a bandage heals. Each use picks a random amount between the min and max.</td>
+</tr>
+<tr>
+<td><code>healDuration</code></td>
+<td><code>24</code></td>
+<td>How long you hold the bandage before it heals, in ticks (20 ticks is one second).</td>
+</tr>
+</tbody>
+</table></div>
+<p>For example, set both heal amounts to <code>6</code> for a sturdy bandage that always heals three hearts, and <code>healDuration</code> to <code>40</code> so it takes two seconds to apply. If <code>healAmountMin</code> ends up above <code>healAmountMax</code>, the mod simply swaps them.</p>
+<p>You can also change these in game: use the config button in the Mods list on NeoForge 1.21.1 and newer, or Mod Menu on Fabric 1.21.1 and newer. On older versions, edit the file.</p>
+<h2>Replacing the recipe</h2>
+<p>The bandage recipe is a normal crafting recipe. Override <code>data/ffbandage/recipe/bandage.json</code> (<code>data/ffbandage/recipes/bandage.json</code> on 1.20.1 and 1.20.6) in a datapack with your own shaped or shapeless recipe. The mod has no other datapack options.</p>
+<h2>Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Fabric</th><th>NeoForge</th><th>Forge</th></tr></thead><tbody><tr><td>1.20.1</td><td>Loader 0.14.21+ and Fabric API</td><td></td><td>47.1 or newer</td></tr><tr><td>1.20.6</td><td>Loader 0.15.11+ and Fabric API</td><td>20.6.141 or newer</td><td></td></tr><tr><td>1.21.1</td><td>Loader 0.16.1+ and Fabric API</td><td>21.1.211 or newer</td><td></td></tr><tr><td>1.21.11</td><td>Loader 0.18.0+ and Fabric API</td><td>21.11.45 or newer</td><td></td></tr></tbody></table></div><p>Source version: 0.1.0. FFUtilities 0.2.8 is bundled in every jar, so it needs no separate download.</p><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datapacks — FFItemWeight — Fyxe's Mod Wiki</title>
+<meta name="description" content="Item weight files, weight references, recipe derivation and encumbrance bands.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemWeight</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<h2>Datapacks</h2>
+<p>FFItemWeight reads two datapack formats: <strong>item weights</strong> and <strong>encumbrance bands</strong>. Use <code>/reload</code> after changing a datapack; the server log then prints an audit of what loaded.</p>
+<h2>Item weights</h2>
+<p>Path: <code>data/&lt;namespace&gt;/item_weights/&lt;name&gt;.json</code></p>
+<pre><code class="language-json">{
+  &quot;comment&quot;: &quot;optional&quot;,
+  &quot;weights&quot;: [
+    { &quot;id&quot;: &quot;mymod:widget&quot;, &quot;weight&quot;: 2.5 },
+    { &quot;id&quot;: &quot;mymod:.*_ore&quot;, &quot;weight&quot;: 6.0, &quot;regex&quot;: true },
+    { &quot;id&quot;: &quot;mymod:boss_core&quot;, &quot;weight&quot;: 50.0, &quot;force&quot;: true }
+  ]
+}
+</code></pre>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>required</td>
+<td>Item ID, or a Java regex on the full registry ID when <code>regex</code> is true</td>
+</tr>
+<tr>
+<td><code>weight</code></td>
+<td>required unless <code>weight_from</code> is set</td>
+<td>Unit weight (one item). Clamped by <code>maxUnitWeight</code></td>
+</tr>
+<tr>
+<td><code>weight_from</code></td>
+<td>unset</td>
+<td>Exact source item ID; locks this item to that item's final unit weight instead of supplying <code>weight</code></td>
+</tr>
+<tr>
+<td><code>regex</code></td>
+<td><code>false</code></td>
+<td>Treat <code>id</code> as a regex</td>
+</tr>
+<tr>
+<td><code>force</code></td>
+<td><code>false</code></td>
+<td>Lock the base. Recipes can't overwrite it</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Resolution order:</strong> valid <code>weight_from</code> references take precedence over numeric bases and recipes; otherwise forced exact, forced regex (HEAVIEST or LIGHTEST), non-forced exact, longest non-forced regex, recipes, then <code>defaultWeight</code>.</p>
+<h3>Sharing another item's weight</h3>
+<p>To keep variants equal to another item, use an exact reference (no numeric <code>weight</code>, no regex):</p>
+<pre><code class="language-json">{ &quot;weights&quot;: [{ &quot;id&quot;: &quot;minecraft:oxidized_copper&quot;, &quot;weight_from&quot;: &quot;minecraft:copper_block&quot; }] }
+</code></pre>
+<p>References are always locked, regardless of <code>force</code>. They follow recipe-derived weights, configuration clamps and fallback weights, and work with recipe calculation disabled. Chains are supported; missing items, self-references and cycles are warned about and ignored. Stack contents are still counted separately.</p>
+<p>The defaults cover all 63 exposed, weathered, oxidized and waxed copper variants across blocks, cut blocks, stairs, slabs, chiseled blocks, grates, bulbs, doors and trapdoors. Each follows its matching unwaxed, unoxidized shape. Override the same resource path to replace these defaults. Within loaded files, a later exact numeric entry replaces a reference and vice versa; use the same resource path for predictable pack overrides.</p>
+<p>Use <code>force: true</code> for balance anchors and items with bad recipe graphs. Leave normal craft chains unforced so tools and armor can derive from their ingredients.</p>
+<h3>Shipped packs</h3>
+<p>Under <code>data/ffitemweight/item_weights/</code>:</p>
+<ul>
+<li><code>default_minecraft.json</code>: vanilla exact IDs and <code>minecraft:</code> regex only</li>
+<li><code>default_compat.json</code>: family regex that skips the <code>minecraft</code> namespace</li>
+<li>Specialized packs where a mod needs its own names or forced anchors: <code>default_create.json</code>, <code>default_create_aeronautics.json</code>, <code>default_farmersdelight.json</code>, <code>default_supplementaries.json</code>, <code>default_handcrafted.json</code>, <code>default_macaws.json</code>, <code>default_tide.json</code>, <code>default_naturalist.json</code>, <code>default_benssharks.json</code></li>
+</ul>
+<p>Override any exact <code>id</code> from another datapack (optional <code>force</code>). The longer regex wins when several non-forced patterns match.</p>
+<h3>Recipe derivation</h3>
+<p>Server config <code>calculation</code>: multi-pass HEAVIEST or LIGHTEST, recipe type modifiers, ignored types, and skip patterns for recycling. Repairs and dyes (where the result is also an ingredient) are skipped. Diamond to netherite smithing still applies unless the result is forced.</p>
+<p>Shipped modifiers cover vanilla plus Create processing and Farmer's Delight <code>cooking</code> / <code>cutting</code> (and a few add-ons). Types that flatten weights are ignored by default: <code>minecraft:smithing_trim</code>, <code>create:conversion</code>, <code>sawmill:woodcutting</code>, <code>corail_woodcutter:woodcutting</code>, <code>woodworks:sawing</code>.</p>
+<p>On server start and <code>/reload</code> the log prints an audit (disable with <code>calculation.auditLog</code>): JSON packs, recipe types used or skipped, and items still on <code>defaultWeight</code>. Cap the ID list with <code>auditFallbackListLimit</code>.</p>
+<pre><code class="language-toml">ignoredRecipeTypes = [&quot;minecraft:smithing_trim&quot;, &quot;sawmill:woodcutting&quot;, &quot;mymod:assembler&quot;]
+containerContentModifiers = [&quot;.*:.*_shulker_box=0.5&quot;]
+</code></pre>
+<p>If many items stay on the default weight, add JSON bases and use <code>/ffitemweight defaults</code> or <code>/ffitemweight exportdefaults</code> for the full list. If a machine mod inflates materials, ignore its recipe types or force anchors.</p>
+<h2>Encumbrance bands</h2>
+<p>Path: <code>data/&lt;namespace&gt;/ffitemweight/encumbrance/&lt;id&gt;.json</code></p>
+<p>Override a built-in by shipping the same path, for example <code>data/ffitemweight/ffitemweight/encumbrance/heavy_load.json</code>. Gameplay and other mods compare <code>level</code>, not the display name.</p>
+<pre><code class="language-json">{
+  &quot;level&quot;: 3,
+  &quot;display_name&quot;: &quot;Heavy Load&quot;,
+  &quot;color&quot;: &quot;#FFAA00&quot;,
+  &quot;capacity&quot;: 2000,
+  &quot;icon&quot;: &quot;ffitemweight:textures/gui/encumbrance/heavy_load.png&quot;,
+  &quot;shake&quot;: 1.5,
+  &quot;effects&quot;: [
+    { &quot;id&quot;: &quot;minecraft:slowness&quot;, &quot;amplifier&quot;: 0 }
+  ],
+  &quot;attributes&quot;: [
+    { &quot;id&quot;: &quot;minecraft:generic.movement_speed&quot;, &quot;operation&quot;: &quot;multiply_total&quot;, &quot;amount&quot;: -0.20 }
+  ]
+}
+</code></pre>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>level</code></td>
+<td>Integer band. <code>0</code> is lightest</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>HUD and tooltip label only</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td><code>#RRGGBB</code></td>
+</tr>
+<tr>
+<td><code>capacity</code></td>
+<td>Base max total weight before player capacity scaling</td>
+</tr>
+<tr>
+<td><code>icon</code></td>
+<td>HUD texture ID</td>
+</tr>
+<tr>
+<td><code>shake</code></td>
+<td>HUD icon amplitude in pixels (<code>0</code> = none)</td>
+</tr>
+<tr>
+<td><code>effects</code></td>
+<td>Potions applied while this band is active. Amplifier 0 is potion level I</td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td>Attribute modifiers for this band (<code>add</code>, <code>multiply_base</code>, <code>multiply_total</code>). Attribute IDs follow the game version, so on 1.21.11 use <code>minecraft:movement_speed</code> instead of <code>minecraft:generic.movement_speed</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>A player is in the first band whose scaled capacity is at least their total weight:</p>
+<pre><code class="language-text">threshold = capacity * levelMultiplier + flatBonus
+</code></pre>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

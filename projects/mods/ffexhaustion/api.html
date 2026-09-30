@@ -11,12 +11,12 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFExhaustion</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.8.0</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.9.0</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
 <h2>FFExhaustion — Modding API</h2>
 <p>Guide for other mods (and AI agents) integrating with <strong>FFExhaustion</strong> (<code>ffexhaustion</code>).</p>
 <div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
-<tr><td><strong>Minecraft</strong></td><td>1.21.1</td></tr>
-<tr><td><strong>Loader</strong></td><td>NeoForge 21.1.x and Fabric</td></tr>
+<tr><td><strong>Minecraft</strong></td><td>1.20.1, 1.20.6, 1.21.1, 1.21.11</td></tr>
+<tr><td><strong>Loader</strong></td><td>Fabric (all four), Forge 47.1 (1.20.1), NeoForge (1.20.6, 1.21.1, 1.21.11)</td></tr>
 <tr><td><strong>Mod ID</strong></td><td><code>ffexhaustion</code></td></tr>
 <tr><td><strong>API package</strong></td><td><code>com.fyxe.ffexhaustion.api</code></td></tr>
 <tr><td><strong>Exhaustion range</strong></td><td><code>0.0</code> – <code>1.0</code> (higher = more fatigued)</td></tr>
@@ -28,13 +28,13 @@
     versionRange=&quot;[0,)&quot;
     ordering=&quot;NONE&quot;
     side=&quot;BOTH&quot;</code></pre>
-<p>On Fabric, list <code>&quot;ffexhaustion&quot;: &quot;*&quot;</code> under <code>suggests</code> (or <code>depends</code> when required) in <code>fabric.mod.json</code>. The first Fabric build is 0.8.0, so use a version range starting there when you need it.</p>
-<p>Use <code>ModList.get().isLoaded(&quot;ffexhaustion&quot;)</code> on NeoForge, <code>FabricLoader.getInstance().isModLoaded(&quot;ffexhaustion&quot;)</code> on Fabric, or FFUtilities&#x27; <code>Mods.isLoaded</code>, together with an optional compile-only dependency, before calling API classes. Each target is published as <code>com.fyxe.ffexhaustion:ffexhaustion-&lt;minecraft&gt;-&lt;loader&gt;:&lt;version&gt;</code> (for example <code>ffexhaustion-1.21.1-fabric</code>).</p>
+<p>On Fabric, list <code>&quot;ffexhaustion&quot;: &quot;*&quot;</code> under <code>suggests</code> (or <code>depends</code> when required) in <code>fabric.mod.json</code>. The first Fabric build is 0.8.0, so use a version range starting there when you need it. Forge 1.20.1 (<code>mods.toml</code>) uses <code>mandatory=false</code> in place of <code>type=&quot;optional&quot;</code>; builds for Forge, 1.20.x and 1.21.11 start at 0.9.0.</p>
+<p>Use <code>ModList.get().isLoaded(&quot;ffexhaustion&quot;)</code> on NeoForge, <code>FabricLoader.getInstance().isModLoaded(&quot;ffexhaustion&quot;)</code> on Fabric, or FFUtilities&#x27; <code>Mods.isLoaded</code>, together with an optional compile-only dependency, before calling API classes. Each target is published as <code>com.fyxe.ffexhaustion:ffexhaustion-&lt;minecraft&gt;-&lt;loader&gt;:&lt;version&gt;</code> (for example <code>ffexhaustion-1.21.1-fabric</code>, <code>ffexhaustion-1.21.11-neoforge</code> or <code>ffexhaustion-1.20.1-forge</code>).</p>
 <hr>
 <h3>Core concepts</h3>
 <ul>
 <li><strong>Server-authoritative.</strong> Mutations only apply on the logical server (<code>ServerPlayer</code>). Client calls are no-ops.</li>
-<li><strong>Persisted</strong> on the player as a data attachment (NeoForge attachment or Fabric API attachment, same saved format). Read it through <code>ExhaustionData.of(player)</code>.</li>
+<li><strong>Persisted</strong> on the player as a data attachment (NeoForge attachment or Fabric API attachment, same saved format; on 1.20.1 it is overworld saved data keyed by player UUID). Read it through <code>ExhaustionData.of(player)</code>.</li>
 <li><strong>Death:</strong> controlled by server config <code>copyOnDeath</code> (default <code>false</code> → resets on death). Non-death clones (e.g. leaving the End) always keep the value.</li>
 <li><strong>Recovery delay:</strong> after many actions, recovery waits N ticks before draining toward 0.</li>
 <li><strong>Level modifiers (optional):</strong> vanilla <code>Player.experienceLevel</code> can reduce gain and recovery delay when enabled in config.</li>

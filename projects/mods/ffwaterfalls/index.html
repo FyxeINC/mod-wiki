@@ -11,7 +11,100 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFWaterFalls</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Makes liquid source blocks fall under gravity.</p><h2>Features</h2><ul><li>Supports water, lava, and modded fluids.</li><li>Configure falling speed and interaction with waterloggable blocks.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR; no separate library download is needed.</p><h2>Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr></tbody></table></div><p>Source version: <strong>0.3.0</strong>. FFUtilities is included in every jar. Water and lava react while falling on every loader; reactions added by other mods only apply on NeoForge.</p><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
+<h2>Overview</h2><p>Makes liquid source blocks fall under gravity.</p><h2>Features</h2><ul><li>Supports water, lava, and modded fluids.</li><li>Configure falling speed and interaction with waterloggable blocks.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR; no separate library download is needed.</p><h2>How falling works</h2>
+<ul>
+<li>Liquid source blocks fall when nothing supports them, with a configurable speed (ticks per block) for each liquid.</li>
+<li>No startup delay: unsupported sources begin falling on the next tick.</li>
+<li>Other liquid source blocks count as solid, so a falling source stops on top of them.</li>
+<li>Optional <strong>per-liquid</strong> removal of a source that lands on another source of the same type (after one fall-speed interval). Settled waterlogged blocks count as sources here.</li>
+<li>Optional <strong>per-liquid</strong> fall-through of waterloggable blocks, so water can waterlog a fence on the way down and keep falling if there is room.</li>
+<li>When the bottom of a stack falls, the whole column above is scheduled in one go.</li>
+<li>Limits for big collapses keep a dramatic drop from turning into lag.</li>
+<li>Unsupported sources are picked up again across chunk load and unload, and steps into unloaded chunks are retried.</li>
+<li>While a source falls, vanilla fluid spreading is paused so it doesn't fan out mid-air.</li>
+<li>Optional <strong>always fall at least one block</strong> (on by default): hanging films may drop one extra block, and grounded puddles are left alone.</li>
+<li>Optional <strong>vertical fall limit</strong>: downward spread stops once the distance already traveled plus the depth below the column top passes a per-fluid limit. Sideways spread is unchanged.</li>
+</ul>
+<p>Water and lava react while falling, for example lava landing on water. On NeoForge, reactions added by other mods are picked up too. On Fabric and Forge the vanilla reactions work, but modded fluids that add their own reactions may not react mid-fall.</p>
+<h3>World-generated fluids</h3>
+<p>Oceans, lakes and other worldgen liquids stay still by default. They only start falling once <strong>activated</strong>, for example when a supporting block is broken, a neighbor updates, or a player or dispenser places fluid. The optional <code>rescanChunkOnLoad</code> setting forces a scan whenever a chunk loads (not recommended for normal worlds).</p>
+<h2>Configuration</h2>
+<p>Edit <code>ffwaterfalls-common.toml</code> in your config folder, or use the in-game config screen: the Mods list on NeoForge 1.21.1 and newer, or Mod Menu on Fabric 1.21.1 and newer (1.20.1 and 1.20.6 have no generated screen). Options are grouped into <strong>Performance</strong>, <strong>Liquid Properties</strong>, <strong>Vertical Fall Limit</strong> and <strong>Compatibility</strong>.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Meaning</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>maxFallStepsPerTick</code></td>
+<td>Cap on fall steps processed per dimension per tick</td>
+<td>512</td>
+</tr>
+<tr>
+<td><code>maxStackScan</code></td>
+<td>Max height to scan upward when scheduling a falling stack</td>
+<td>256</td>
+</tr>
+<tr>
+<td><code>rescanChunkOnLoad</code></td>
+<td>Scan each chunk on load and start unsupported fluids falling. Leave off so worldgen fluid stays still until activated</td>
+<td>false</td>
+</tr>
+<tr>
+<td><code>defaultFallSpeed</code></td>
+<td>Ticks per block for a fluid not in the list below</td>
+<td>6</td>
+</tr>
+<tr>
+<td><code>customFluidSpeeds</code></td>
+<td><code>"modid:fluid=ticks"</code> entries</td>
+<td><code>minecraft:water=6</code>, <code>minecraft:lava=12</code></td>
+</tr>
+<tr>
+<td><code>defaultRemoveOnSameSource</code></td>
+<td>Remove-on-same for a fluid not in the list below</td>
+<td>false</td>
+</tr>
+<tr>
+<td><code>customFluidRemoveOnSameSource</code></td>
+<td><code>"modid:fluid=true/false"</code> entries</td>
+<td><code>minecraft:water=false</code>, <code>minecraft:lava=false</code></td>
+</tr>
+<tr>
+<td><code>defaultFallThroughWaterloggable</code></td>
+<td>Waterlog and pass through waterloggable blocks for a fluid not in the list below</td>
+<td>false</td>
+</tr>
+<tr>
+<td><code>customFluidFallThroughWaterloggable</code></td>
+<td><code>"modid:fluid=true/false"</code> entries</td>
+<td><code>minecraft:water=true</code>, <code>minecraft:lava=false</code></td>
+</tr>
+<tr>
+<td><code>enableLimitVerticalFall</code></td>
+<td>Cap downward spread to the vanilla drop-off reach and reduce sideways level after a fall</td>
+<td>true</td>
+</tr>
+<tr>
+<td><code>alwaysFallAtLeastOneBlock</code></td>
+<td>One extra downward block per column so hanging films collapse; the vertical limit still applies</td>
+<td>true</td>
+</tr>
+<tr>
+<td><code>disableFluidSpreadMixin</code></td>
+<td>Turn off the mid-fall spread pause, for compatibility with other fluid mods</td>
+<td>false</td>
+</tr>
+</tbody>
+</table></div>
+<p>Example: to make lava fall as fast as water and a modded acid slowly, set <code>customFluidSpeeds</code> to <code>["minecraft:water=6", "minecraft:lava=6", "examplemod:acid=20"]</code>.</p>
+<p>If another mod's fluids misbehave, try <code>disableFluidSpreadMixin = true</code> first. It takes effect after a config reload or restart.</p>
+<p>There is no datapack support; modded fluids are added by ID in the per-fluid lists.</p>
+<h2>Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr></tbody></table></div><p>Source version: <strong>0.3.0</strong>. FFUtilities is included in every jar. Water and lava react while falling on every loader; reactions added by other mods only apply on NeoForge.</p><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

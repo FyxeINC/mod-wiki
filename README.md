@@ -143,11 +143,11 @@ Before publishing, run `python tools/check_site.py` from this repository. It che
 
 ## Fyxe wiki setup
 
-The **Mods** section includes all 18 Minecraft mod projects in the sibling workspace as of 2026-09-23. Each has an overview page. The nine mods with a public integration API also have a Modding API page. The source version shown in wiki metadata is read from each mod's `gradle.properties`; it may be newer than a published release.
+The **Mods** section includes all 18 Minecraft mod projects in the sibling workspace as of 2026-09-23. Each has an overview page, which holds the full details that the mod READMEs (the Modrinth and CurseForge descriptions) leave out: configuration options and defaults, commands, compatibility and loader notes. The eight mods with datapack support also have a Datapacks page (formats, paths and examples), listed right after the Overview, and the mods with a public integration API have a Modding API page. The source version shown in wiki metadata is read from each mod's `gradle.properties`; it may be newer than a published release.
 
 Only projects with a configured Modrinth slug show a Modrinth button or badge. Leave `modrinthSlug` empty for projects still awaiting publication. `status` describes project development, not publication.
 
-When a mod's API changes, update its API page and `assets/js/wiki-data.js` page metadata in the same change. Keep examples aligned with the current Java source and test local links under a GitHub Pages project path. Additional public projects can still be imported with the importer.
+When a mod's API changes, update its API page and `assets/js/wiki-data.js` page metadata in the same change. When its datapack support changes, update its `datapacks.html` the same way (create one, with a `Datapacks` entry after the Overview in `pages`, when a mod gains datapack support). Keep examples aligned with the current Java source and test local links under a GitHub Pages project path. Additional public projects can still be imported with the importer.
 
 ### Where to edit things
 

@@ -11,7 +11,163 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFInjury</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Adds tiered injuries, adrenaline, treatment, and healing.</p><h2>Features</h2><ul><li>Injuries can worsen with repeated damage and respond to bandages.</li><li>Datapacks define injury types and optional hurt level rules.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR on every loader; no separate library download is needed.</p><h2>Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr><tr><th>Source version</th><td colspan="2">0.9.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2>For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, events, and integration examples.</p>
+<h2>Overview</h2><p>Adds tiered injuries, adrenaline, treatment, and healing.</p><h2>Features</h2><ul><li>Injuries can worsen with repeated damage and respond to bandages.</li><li>Datapacks define injury types and optional hurt level rules.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR on every loader; no separate library download is needed.</p><h2>How injuries work</h2>
+<p>Taking damage can apply an injury. Each type has tiers. A new hit of the same type raises the tier instead of adding a duplicate. You can have several injuries at once; the default cap is three different injuries. At the cap, new types are ignored, but another hit can still worsen an existing type.</p>
+<p><strong>Adrenaline</strong> kicks in when you are injured. It hides injury debuffs for a short time that scales with the hit. When it wears off, untreated effects come back.</p>
+<p><strong>Bandages</strong> treat one untreated injury at a time (hold use). Treatment suppresses that injury's debuffs and can start a heal timer. Hold Shift on an injury icon in the inventory for remaining treat and heal times. If a treated injury has no heal timer at its tier, its tooltip says it needs sleep or a special heal.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Bandage</th>
+<th>Craft</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Improvised</td>
+<td>Paper + Stick + Paper (shapeless). Farmer's Delight Straw can replace Paper.</td>
+<td>Treats for half of the Tier 1 heal time</td>
+</tr>
+<tr>
+<td>Bandage</td>
+<td>Improvised + Bone Meal + String</td>
+<td>Treats for the full Tier 1 heal time</td>
+</tr>
+<tr>
+<td>Sterilized</td>
+<td>Bandage + Honey Bottle + Redstone</td>
+<td>Treats for half of the Tier 2 heal time</td>
+</tr>
+<tr>
+<td>Cauterizing</td>
+<td>Sterilized + Blaze Powder + Clay Ball</td>
+<td>Treats for the full Tier 2 heal time</td>
+</tr>
+<tr>
+<td>Ethereal</td>
+<td>Cauterizing + Chorus Fruit + Ender Pearl</td>
+<td>Instantly reduces one injury by one tier</td>
+</tr>
+</tbody>
+</table></div>
+<p>Other healing:</p>
+<ul>
+<li>Sleeping reduces a configurable number of tiers (higher tiers first).</li>
+<li>An enchanted golden apple reduces every active injury by one tier.</li>
+<li>Milk does not permanently clear injuries.</li>
+<li>Tier 1 injuries recover passively. Higher tiers need treatment or sleep. Death clears injuries.</li>
+</ul>
+<p>The <strong>HUD</strong> shows active injuries as item icons. Open your inventory for tooltips. Almost every layout, color and alert option is in the client config.</p>
+<p><strong>Creative:</strong> injuries are off unless you enable them, which also hides icons and skips healing and effects.</p>
+<p>Default injuries: Twisted Ankle, Ankle Fracture, Broken Leg, Bruised Ribs, Broken Ribs, Concussion, Bleeding, Burn.</p>
+<h2>Commands</h2>
+<p>Operators (<code>/ffinjury</code>, permission 2 or higher): <code>list</code>, <code>details</code>, <code>add</code>, <code>worsen</code>, <code>lessen</code>, <code>remove</code>, <code>clear</code>.</p>
+<h2>Default balance</h2>
+<p>Injuries are short setbacks that leave you able to travel and fight. Built-ins use one percentage attribute penalty each, with no Wither, Weakness, Mining Fatigue, Slowness, nausea or blindness. Penalties stop growing at tier 3 even if a server raises the tier cap. Different injuries still combine multiplicatively.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Injury</th>
+<th>Penalty at tiers 1 / 2 / 3</th>
+<th>Seconds to heal one tier at tiers 1 / 2 / 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Twisted Ankle</td>
+<td>Movement speed -4 / -8 / -12%</td>
+<td>36 / 96 / 120</td>
+</tr>
+<tr>
+<td>Ankle Fracture</td>
+<td>Movement speed -8 / -16 / -24%</td>
+<td>59 / 156 / 195</td>
+</tr>
+<tr>
+<td>Broken Leg</td>
+<td>Movement speed -10 / -20 / -30%</td>
+<td>68 / 180 / 225</td>
+</tr>
+<tr>
+<td>Bruised Ribs</td>
+<td>Attack speed -5 / -10 / -15%</td>
+<td>36 / 96 / 120</td>
+</tr>
+<tr>
+<td>Broken Ribs</td>
+<td>Maximum health -5 / -10 / -15%</td>
+<td>68 / 180 / 225</td>
+</tr>
+<tr>
+<td>Concussion</td>
+<td>Attack speed -8 / -16 / -24%</td>
+<td>50 / 132 / 165</td>
+</tr>
+<tr>
+<td>Bleeding</td>
+<td>Melee damage -5 / -10 / -15%</td>
+<td>36 / 96 / 120</td>
+</tr>
+<tr>
+<td>Burn</td>
+<td>Attack speed -5 / -10 / -15%</td>
+<td>41 / 108 / 135</td>
+</tr>
+</tbody>
+</table></div>
+<p>Times are at zero XP, rounded to seconds, before the once-per-second healing check; XP speeds recovery. Tier 1 heals without treatment. Tiers 2 and 3 require treatment throughout each healing step. Global base times are 90 / 240 / 300 seconds, scaled by each injury's datapack multiplier.</p>
+<p>Bandages suppress penalties for 45 / 90 / 120 / 240 seconds (improvised / standard / sterilized / cauterizing). Standard bandages cover every built-in tier 1 recovery. Sterilized bandages can heal a tier 2 twisted ankle, bruised ribs, bleeding or burn; cauterizing bandages cover one healing step for every built-in tier, including tier 3. Severe injuries can need a fresh bandage for the next step after treatment expires. Sleep heals two tiers, and Ethereal bandages remain an instant option.</p>
+<p>Injury chances per eligible damage event, before XP reduction:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Damage</th>
+<th>Chance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fall</td>
+<td>12%</td>
+</tr>
+<tr>
+<td>Flying into a wall; either explosion type</td>
+<td>15%</td>
+</tr>
+<tr>
+<td>Mob or player melee</td>
+<td>7%</td>
+</tr>
+<tr>
+<td>Mob projectile; arrow</td>
+<td>6%; 8%</td>
+</tr>
+<tr>
+<td>On fire; in fire; lava; hot floor</td>
+<td>1%; 2%; 5%; 1%</td>
+</tr>
+<tr>
+<td>Drowning; suffocation</td>
+<td>2%; 3%</td>
+</tr>
+<tr>
+<td>Magic; Wither</td>
+<td>4%; 1%</td>
+</tr>
+<tr>
+<td>Other types with a matching injury weight</td>
+<td>5%</td>
+</tr>
+</tbody>
+</table></div>
+<p>Repeated environmental damage has especially low chances because each damage event rolls separately. Fractures have lower selection weights than minor injuries. Adrenaline starts at 15 seconds plus damage scaling, capped at 60 seconds. Optional hurt-level regeneration penalties are disabled by default.</p>
+<p><strong>Existing worlds:</strong> existing server config values are preserved when you update. To adopt new defaults, stop the world or server, back up <code>&lt;world&gt;/serverconfig/ffinjury-server.toml</code>, then remove that file so it regenerates (also check any <code>defaultconfigs/ffinjury-server.toml</code> template). This resets your custom server settings; alternatively copy only the changed values. Built-in injury JSON updates with the mod unless a higher-priority datapack overrides it.</p>
+<h2>Configuration</h2>
+<p>Damage chances live in the server config <code>damage_sources.chances</code> as <code>damageTypeId;chance</code> (for example <code>minecraft:fall;0.12</code>). Missing rows use <code>defaultChance</code>. An injury only rolls from a hit if it lists that damage type in its datapack <code>damage_weights</code>. The shared max tier is <code>general.defaultMaxTier</code>.</p>
+<p>The in-game config screen exists on 1.21.1 and newer (on Fabric through Mod Menu); on older versions, edit the config file.</p>
+<p>Injury types and hurt levels are datapack files; see <a href="datapacks.html">Datapacks</a>.</p>
+<h2>Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr><tr><th>Source version</th><td colspan="2">0.9.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2>For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, events, and integration examples.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

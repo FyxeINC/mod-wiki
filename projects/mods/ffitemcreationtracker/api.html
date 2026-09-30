@@ -58,6 +58,14 @@
 </tbody></table></div>
 <p>Compile against it (<code>compileOnly</code> on NeoForge, <code>modCompileOnly</code> on Fabric) and declare a dependency on <code>ffitemcreationtracker</code> in your loader metadata. The mod is not published for Forge or Minecraft 1.20.1.</p>
 <p>The mod requires FFUtilities. Add an optional dependency check before calling this API from another mod when Item Creation Tracker is optional.</p>
+<h3>Tooltip wording for custom sources</h3>
+<p>Register wording in code, or ship lang keys for your source and extra IDs. For a source <code>mymod:cooking</code> and an extra <code>mymod:note</code>:</p>
+<pre><code class="language-text">tooltip.ffitemcreationtracker.source.mymod.cooking.by
+tooltip.ffitemcreationtracker.source.mymod.cooking
+tooltip.ffitemcreationtracker.source.mymod.cooking.first
+tooltip.ffitemcreationtracker.extra.mymod.note
+</code></pre>
+<p>Built-in <code>CreationSource</code> values: CRAFTED, SMELTED, ANVIL, SMITHING, ENCHANTED, TRADED, FISHED, UNKNOWN. Anvil and smithing both print as Smithed.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

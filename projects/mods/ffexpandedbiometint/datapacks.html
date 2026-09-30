@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datapacks — FF Expanded Biome Tint — Fyxe's Mod Wiki</title>
+<meta name="description" content="Tint rule files: blocks, tags and regex with biome channels and strength.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Expanded Biome Tint</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<h2>Datapacks</h2>
+<p>Tint rules are JSON files in a datapack at:</p>
+<pre><code class="language-text">data/&lt;namespace&gt;/ffexpandedbiometint/tint_rules/&lt;name&gt;.json
+</code></pre>
+<p>The server resolves the rules and sends the resulting block tints to clients when they join or when datapacks reload. Use <code>/reload</code> after changing a datapack. Players need the mod installed to see the tints.</p>
+<h3>Rule format</h3>
+<p>Each rule selects blocks with exactly one of:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>block</code></td>
+<td>An exact block ID, such as <code>minecraft:clay</code></td>
+</tr>
+<tr>
+<td><code>tag</code></td>
+<td>A block tag ID, written without <code>#</code></td>
+</tr>
+<tr>
+<td><code>regex</code></td>
+<td>A Java regular expression matched against the complete block ID, such as <code>minecraft:stone</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>and sets:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tint</code></td>
+<td>required</td>
+<td><code>grass</code>, <code>foliage</code> or <code>water</code></td>
+</tr>
+<tr>
+<td><code>strength</code></td>
+<td><code>1.0</code></td>
+<td>From <code>0.0</code> (original texture) to <code>1.0</code> (full biome color)</td>
+</tr>
+</tbody>
+</table></div>
+<pre><code class="language-json">{
+  &quot;rules&quot;: [
+    { &quot;block&quot;: &quot;minecraft:clay&quot;, &quot;tint&quot;: &quot;water&quot;, &quot;strength&quot;: 0.35 },
+    { &quot;tag&quot;: &quot;minecraft:base_stone_overworld&quot;, &quot;tint&quot;: &quot;grass&quot;, &quot;strength&quot;: 0.45 },
+    { &quot;regex&quot;: &quot;examplemod:.*_leaves&quot;, &quot;tint&quot;: &quot;foliage&quot;, &quot;strength&quot;: 0.75 }
+  ]
+}
+</code></pre>
+<h3>Rule order and overrides</h3>
+<p>The bundled defaults live at <code>data/ffexpandedbiometint/ffexpandedbiometint/tint_rules/default.json</code>. A datapack file at that same path replaces all bundled defaults. Otherwise, your files add to them: the bundled default file is applied first, then other files in resource ID order. Within a file, rules run top to bottom. The last matching rule sets a block's tint and strength, so you can override a broad tag or regex with a later exact block entry.</p>
+<p>Rules registered by other mods through the API are defaults too; server datapacks can override them.</p>
+<h3>Built-in ore rules</h3>
+<p>The built-in regex rules cover IDs such as <code>examplemod:tin_ore</code> and <code>examplemod:ore_tin</code> at 45% strength, and names containing <code>deepslate</code> (such as <code>examplemod:deepslate_tin_ore</code> or <code>examplemod:ore_deepslate_tin</code>) at 25%. They skip the <code>minecraft</code> namespace and IDs containing common Nether or End material names (<code>nether</code>, <code>netherrack</code>, <code>end_stone</code>, <code>endstone</code>, <code>the_end</code>, <code>basalt</code> or <code>blackstone</code>). Block IDs alone can't identify every ore's dimension, so add a later rule or replace the defaults if a mod uses a different naming scheme.</p>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

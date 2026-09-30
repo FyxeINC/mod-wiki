@@ -11,7 +11,148 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFNutrition</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Rewards diet variety with nutrition categories that affect maximum health.</p><h2>Features</h2><ul><li>Foods add to datapack defined categories that decay over time.</li><li>The server computes a nutrition score and applies a max health modifier.</li></ul><h2>Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr></tbody></table></div><p>Source version: <strong>0.6.0</strong>. FFUtilities is included in every jar.</p><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2>For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, events, and integration examples.</p>
+<h2>Overview</h2><p>Rewards diet variety with nutrition categories that affect maximum health.</p><h2>Features</h2><ul><li>Foods add to datapack defined categories that decay over time.</li><li>The server computes a nutrition score and applies a max health modifier.</li></ul><h2>How nutrition works</h2>
+<p>Every player has a value from 0 to 100 for each nutrition category. Out of the box the categories are <strong>meat</strong>, <strong>fruit</strong>, <strong>veg</strong>, <strong>carbs</strong> and <strong>sweets</strong>, and everyone starts at 50 in each.</p>
+<ul>
+<li>Eating a food raises the categories it is made of. The gain is the food's makeup multiplied by how filling it is, so bigger meals give more.</li>
+<li>Every category slowly drains over time.</li>
+<li>Your <strong>nutrition score</strong> is the average of all categories. Maximum health follows it: a well-rounded eater climbs toward full health, and a lopsided one settles toward the minimum.</li>
+<li>A category caps at 100, so stuffing yourself with one kind of food only gets you so far.</li>
+<li>Hold <strong>Shift</strong> over a food to see roughly what it is made of ("Mostly meat", "A pinch of sweets").</li>
+<li>Foods can be eaten with a full hunger bar (can be turned off). Cake and other food blocks count too, using what they actually restore.</li>
+<li>Experience slows the drain. Hunger and saturation can also tick down slowly on their own (configurable).</li>
+</ul>
+<h3>The Metabolic Gauge</h3>
+<p>Craft it from four iron ingots around any food (it's also in the Tools &amp; Utilities creative tab). Hold it in either hand and your category percentages appear above the hotbar, color-coded from white through gray and orange to red as they run low.</p>
+<h2>Commands</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Who</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/ffnutrition getNutritionDataVague &lt;player&gt;</code></td>
+<td>everyone</td>
+<td>A friendly hint about how well fed a player is and what they lack</td>
+</tr>
+<tr>
+<td><code>/ffnutrition getNutritionData &lt;player&gt;</code></td>
+<td>operators</td>
+<td>The exact score and every category value</td>
+</tr>
+<tr>
+<td><code>/ffnutrition maxAllNutrients &lt;player&gt;</code></td>
+<td>operators</td>
+<td>Sets every category to 100</td>
+</tr>
+<tr>
+<td><code>/ffnutrition minAllNutrients &lt;player&gt;</code></td>
+<td>operators</td>
+<td>Sets every category to 0</td>
+</tr>
+<tr>
+<td><code>/ffnutrition setAllNutrients &lt;player&gt; &lt;value&gt;</code></td>
+<td>operators</td>
+<td>Sets every category to a value</td>
+</tr>
+<tr>
+<td><code>/ffnutrition addToCategory &lt;player&gt; &lt;category&gt; &lt;value&gt;</code></td>
+<td>operators</td>
+<td>Adds to one category</td>
+</tr>
+<tr>
+<td><code>/ffnutrition setCategory &lt;player&gt; &lt;category&gt; &lt;value&gt;</code></td>
+<td>operators</td>
+<td>Sets one category</td>
+</tr>
+<tr>
+<td><code>/ffnutrition listUncategorizedFoods [modid]</code></td>
+<td>operators</td>
+<td>Lists foods that have no makeup of their own. Ones sorted into categories by name are marked "(pattern)". Click an entry to copy its ID</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Configuration</h2>
+<p>Settings live in the common config (<code>ffnutrition-common.toml</code> in your config folder). The in-game Mods screen has a Config button on 1.21.1 and newer (on Fabric through Mod Menu); on older versions, edit the file. The options you'll most likely want:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>initialDefault</code></td>
+<td>50</td>
+<td>Starting value of every category</td>
+</tr>
+<tr>
+<td><code>decayDefault</code></td>
+<td>0.00083</td>
+<td>How much each category drains per tick</td>
+</tr>
+<tr>
+<td><code>maxHealth</code></td>
+<td>20</td>
+<td>Health a perfectly balanced diet works toward</td>
+</tr>
+<tr>
+<td><code>minHealth</code></td>
+<td>6</td>
+<td>The least health a bad diet can leave you with</td>
+</tr>
+<tr>
+<td><code>allowEatingWhenFull</code></td>
+<td>true</td>
+<td>Lets you eat with a full hunger bar</td>
+</tr>
+<tr>
+<td><code>nutritionModifier</code> and <code>saturationModifier</code></td>
+<td>4 and 2</td>
+<td>How strongly a food's hunger and saturation count toward nutrition</td>
+</tr>
+<tr>
+<td><code>preserveNutritionOnDeath</code></td>
+<td>false</td>
+<td>Keep your nutrition when you respawn</td>
+</tr>
+<tr>
+<td><code>useLevelBasedDecay</code></td>
+<td>true</td>
+<td>Higher experience levels drain nutrition more slowly</td>
+</tr>
+<tr>
+<td><code>useNameBasedDecay</code></td>
+<td>false</td>
+<td>Gives each player a stable, slightly different drain per category, based on their name</td>
+</tr>
+<tr>
+<td><code>useItemNutritionFallback</code></td>
+<td>false</td>
+<td>Gives foods with no makeup a default one instead of nothing</td>
+</tr>
+<tr>
+<td><code>useHungerDecay</code></td>
+<td>true</td>
+<td>Slowly drains hunger and saturation</td>
+</tr>
+<tr>
+<td><code>hideGaugeBelowThreshold</code> and <code>gaugeThreshold</code></td>
+<td>false and 0</td>
+<td>Hide gauge entries that are fine</td>
+</tr>
+</tbody>
+</table></div>
+<p>There are more options for the gauge colors and position, the max health chat messages and the hunger drain; every option has a comment in the config file.</p>
+<h2>Supported food mods</h2>
+<p>Nutrition files ship for vanilla (<code>minecraft</code>) and for these mod IDs: <code>artifacts</code>, <code>benssharks</code>, <code>brewinandchewin</code>, <code>burnt</code>, <code>cold_sweat</code>, <code>corn_delight</code>, <code>create</code>, <code>createaddition</code>, <code>crittersandcompanions</code>, <code>delightfulcreators</code>, <code>enderscape</code>, <code>ends_delight</code>, <code>expandeddelight</code>, <code>farmersdelight</code>, <code>fiahi</code>, <code>minecolonies</code>, <code>moredelight</code>, <code>myths_of_the_sea</code>, <code>netherdepthsupgrade</code>, <code>oceansdelight</code>, <code>rusticdelight</code> and <code>tide</code>. Entries for mods that aren't installed are ignored. Other foods are matched by the built-in name rules; see <a href="datapacks.html">Datapacks</a>.</p>
+<h2>Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr></tbody></table></div><p>Source version: <strong>0.6.0</strong>. FFUtilities is included in every jar.</p><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2>For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, events, and integration examples.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

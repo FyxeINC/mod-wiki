@@ -11,7 +11,34 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Expanded Biome Tint</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Applies biome grass, foliage, or water tint to blocks selected by server datapacks or other mods. The bundled rules include stone and ores, vanilla deepslate and deepslate ores, clay, gravel, andesite, granite, tuff, calcite, and diorite. Deepslate uses 25% grass strength, while the other listed blocks use 45%. Common modded overworld ore names are covered by regex defaults.</p><h2>Features</h2><ul><li>Choose blocks by exact ID, tag, or Java regex in datapacks or through the Java API.</li><li>Assign a channel and strength for each rule.</li><li>Tint block-breaking particles with the same biome color and strength as the block.</li><li>Sync server rules to clients on join and reload.</li><li>Includes optional Sodium compatibility on NeoForge and Fabric.</li></ul><p>See the <a href="api.html">Modding API</a> for Java and datapack examples.</p><h2>Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.21.1</td></tr><tr><th>Loader</th><td>NeoForge 21.1.211 or newer, or Fabric Loader 0.16.1 or newer with Fabric API</td></tr><tr><th>Included library</th><td>FFUtilities 0.2.8 is bundled in the jar</td></tr><tr><th>Source version</th><td>0.5.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
+<h2>Overview</h2><p>Applies biome grass, foliage, or water tint to blocks selected by server datapacks or other mods. The bundled rules include stone and ores, vanilla deepslate and deepslate ores, clay, gravel, andesite, granite, tuff, calcite, and diorite. Deepslate uses 25% grass strength, while the other listed blocks use 45%. Common modded overworld ore names are covered by regex defaults.</p><h2>Features</h2><ul><li>Choose blocks by exact ID, tag, or Java regex in datapacks or through the Java API.</li><li>Assign a channel and strength for each rule.</li><li>Tint block-breaking particles with the same biome color and strength as the block.</li><li>Sync server rules to clients on join and reload.</li><li>Includes optional Sodium compatibility on NeoForge and Fabric.</li></ul><p>See the <a href="api.html">Modding API</a> for Java and datapack examples.</p><h2>How the tint works</h2>
+<p>Install the mod on the server and every client. In singleplayer, install it in your client. Players need the mod on both sides to see server datapack rules.</p>
+<p>The bundled rules tint stone, overworld base stone, all vanilla deepslate variants (including stairs, slabs, walls and the eight deepslate ores), the regular stone variants of those ores, plus clay, gravel, andesite, granite, tuff, calcite and diorite. Regex rules also cover common modded ore IDs ending in <code>_ore</code> or beginning with <code>ore_</code>. The default grass tint is 25% strength for deepslate and deepslate ores, and 45% for the other listed blocks.</p>
+<p>Colors multiply the original texture, so its detail remains visible. Block-breaking particles use the same biome color and strength as the block. Inventory previews have no world biome to sample, so they are untinted.</p>
+<h2>Requirements</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Minecraft</th>
+<th>NeoForge</th>
+<th>Fabric</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.21.1</td>
+<td>21.1.211 or newer</td>
+<td>Fabric Loader 0.16.1 or newer, plus Fabric API</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Java:</strong> 21</li>
+<li><strong>Shared library:</strong> FFUtilities is built into the mod.</li>
+<li><strong>Sodium:</strong> optional; 0.8.12 and newer for Minecraft 1.21.1 are supported on both loaders.</li>
+</ul>
+<p>There is no config file; rules come from datapacks (see <a href="datapacks.html">Datapacks</a>) and from other mods through the API.</p>
+<h2>Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.21.1</td></tr><tr><th>Loader</th><td>NeoForge 21.1.211 or newer, or Fabric Loader 0.16.1 or newer with Fabric API</td></tr><tr><th>Included library</th><td>FFUtilities 0.2.8 is bundled in the jar</td></tr><tr><th>Source version</th><td>0.5.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

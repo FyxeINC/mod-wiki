@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datapacks — FFItemRarityModifiers — Fyxe's Mod Wiki</title>
+<meta name="description" content="Modifier types, rarity weights, rarity sources, overrides and item tags.">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemRarityModifiers</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<h2>Datapacks</h2>
+<p>Datapacks control how often rarities appear and what their modifiers do. All files live under <code>data/&lt;namespace&gt;/ffitemraritymodifiers/</code>, and <code>/reload</code> picks up changes.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Folder</th>
+<th>What it controls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>modifier_type/</code></td>
+<td>One file per modifier: good or bad, which gear it fits, and what it changes</td>
+</tr>
+<tr>
+<td><code>rarity_weights/&lt;rarity&gt;.json</code></td>
+<td>How many good and bad modifiers an item of that rarity rolls</td>
+</tr>
+<tr>
+<td><code>rarity_source/&lt;id&gt;.json</code></td>
+<td>The chance a trigger rolls a rarity at all, and which rarity it picks</td>
+</tr>
+<tr>
+<td><code>rarity_source_override/mob/</code></td>
+<td>Sends specific mobs to a different rarity source</td>
+</tr>
+<tr>
+<td><code>rarity_source_override/loot_table/</code></td>
+<td>Sends specific loot tables to a different rarity source</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Modifier types</h3>
+<pre><code class="language-json">{
+  &quot;category&quot;: &quot;good&quot;,
+  &quot;kind&quot;: &quot;attribute&quot;,
+  &quot;family&quot;: &quot;attack_damage&quot;,
+  &quot;applies_to&quot;: [&quot;weapon&quot;],
+  &quot;required_item_tag&quot;: &quot;c:tools/melee_weapon&quot;,
+  &quot;attribute&quot;: &quot;minecraft:generic.attack_damage&quot;,
+  &quot;operation&quot;: &quot;add_value&quot;,
+  &quot;slot&quot;: &quot;mainhand&quot;,
+  &quot;base_value&quot;: 1.0,
+  &quot;value_per_rarity&quot;: {&quot;common&quot;: 1.0, &quot;uncommon&quot;: 1.5, &quot;rare&quot;: 2.0, &quot;epic&quot;: 3.0},
+  &quot;scales_with_rarity&quot;: true,
+  &quot;short_name&quot;: &quot;ffitemraritymodifiers.modifier.attack_damage_up.short&quot;,
+  &quot;detailed_name&quot;: &quot;ffitemraritymodifiers.modifier.attack_damage_up.detailed&quot;,
+  &quot;value_format&quot;: &quot;%.1f&quot;
+}
+</code></pre>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>category</code></td>
+<td>required</td>
+<td><code>good</code> or <code>bad</code></td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td>required</td>
+<td><code>attribute</code> (changes an attribute) or <code>max_damage</code> (changes durability)</td>
+</tr>
+<tr>
+<td><code>family</code></td>
+<td>required</td>
+<td>Good and bad modifiers with the same family never appear together on one item</td>
+</tr>
+<tr>
+<td><code>applies_to</code></td>
+<td>required</td>
+<td>Any of <code>weapon</code>, <code>armor</code>, <code>tool</code>, <code>accessory</code></td>
+</tr>
+<tr>
+<td><code>required_item_tag</code></td>
+<td>none</td>
+<td>Narrows the modifier to items in this tag, such as <code>c:tools/fishing_rod</code></td>
+</tr>
+<tr>
+<td><code>attribute</code> / <code>operation</code> / <code>slot</code></td>
+<td>none</td>
+<td>For <code>attribute</code> modifiers: the attribute ID, <code>add_value</code> / <code>add_multiplied_base</code> / <code>add_multiplied_total</code>, and the equipment slot group</td>
+</tr>
+<tr>
+<td><code>base_value</code></td>
+<td>required</td>
+<td>The value when there is no per-rarity entry</td>
+</tr>
+<tr>
+<td><code>value_per_rarity</code></td>
+<td>empty</td>
+<td>Values keyed by rarity</td>
+</tr>
+<tr>
+<td><code>scales_with_rarity</code></td>
+<td><code>true</code></td>
+<td>Whether the value follows <code>value_per_rarity</code></td>
+</tr>
+<tr>
+<td><code>short_name</code> / <code>detailed_name</code></td>
+<td>required</td>
+<td>Translation keys for the normal and Shift tooltips</td>
+</tr>
+<tr>
+<td><code>value_format</code></td>
+<td><code>%.1f</code></td>
+<td>How the number is printed</td>
+</tr>
+</tbody>
+</table></div>
+<p>Attribute IDs follow the Minecraft version: on 1.21.11 write <code>minecraft:attack_damage</code> instead of <code>minecraft:generic.attack_damage</code>. Bundled examples include attack, armor, durability, reach, movement, health, mining speed, fishing luck and shield modifiers.</p>
+<h3>Rarity weights</h3>
+<p>File name must be a vanilla rarity ID (<code>common</code>, <code>uncommon</code>, <code>rare</code>, <code>epic</code>). Each list is a weighted table of how many modifiers to roll. This is the bundled <code>rare.json</code>:</p>
+<pre><code class="language-json">{
+  &quot;good_amounts&quot;: [
+    {&quot;amount&quot;: 0, &quot;weight&quot;: 0},
+    {&quot;amount&quot;: 1, &quot;weight&quot;: 2},
+    {&quot;amount&quot;: 2, &quot;weight&quot;: 2},
+    {&quot;amount&quot;: 3, &quot;weight&quot;: 1}
+  ],
+  &quot;bad_amounts&quot;: [
+    {&quot;amount&quot;: 0, &quot;weight&quot;: 8},
+    {&quot;amount&quot;: 1, &quot;weight&quot;: 2},
+    {&quot;amount&quot;: 2, &quot;weight&quot;: 1}
+  ]
+}
+</code></pre>
+<h3>Rarity sources</h3>
+<p><code>chance</code> (0 to 1) is how likely the trigger rolls a rarity at all; <code>rarity_weights</code> picks which one, including Common. A successful Common roll is shown on the item.</p>
+<pre><code class="language-json">{
+  &quot;chance&quot;: 1.00,
+  &quot;rarity_weights&quot;: [
+    {&quot;rarity&quot;: &quot;common&quot;, &quot;weight&quot;: 200},
+    {&quot;rarity&quot;: &quot;uncommon&quot;, &quot;weight&quot;: 50},
+    {&quot;rarity&quot;: &quot;rare&quot;, &quot;weight&quot;: 5},
+    {&quot;rarity&quot;: &quot;epic&quot;, &quot;weight&quot;: 1}
+  ]
+}
+</code></pre>
+<p>Built-in IDs used automatically: <code>crafting</code>, <code>fishing</code>, <code>trading</code>, <code>mob_drops</code>, <code>loot_table</code>. The bundled <code>elite_mobs</code> and <code>dungeon_loot</code> sources are used by the example overrides below. Packs that override <code>trading_before</code> must rename that source to <code>trading</code>. A <code>smithing_default</code> source also ships for future use, but nothing calls it automatically yet. Add your own ID and reference it from an override file or from a mod through the API.</p>
+<h3>Source overrides</h3>
+<p>Redirect specific mobs (or entity tags, with a <code>#</code> prefix) away from <code>mob_drops</code>, or specific loot tables away from <code>loot_table</code>:</p>
+<pre><code class="language-json">{
+  &quot;targets&quot;: [&quot;minecraft:wither_skeleton&quot;, &quot;#minecraft:raiders&quot;],
+  &quot;source&quot;: &quot;ffitemraritymodifiers:elite_mobs&quot;
+}
+</code></pre>
+<p>Save it under <code>rarity_source_override/mob/</code> for mobs or <code>rarity_source_override/loot_table/</code> with loot table IDs as targets.</p>
+<h3>Item tags</h3>
+<p><code>data/ffitemraritymodifiers/tags/item/</code> holds <code>weapons.json</code>, <code>armor.json</code>, <code>tools.json</code>, <code>mining_tools.json</code> and <code>accessories.json</code>, which decide which single-stack items this mod may touch. Use <code>tags/items</code> (plural) on 1.20.6.</p>
+<ul>
+<li>Weapons use the shared melee and ranged weapon tags (<code>c:tools/melee_weapon</code> and <code>c:tools/ranged_weapon</code>).</li>
+<li>Armor uses <code>#c:armors</code> and includes elytra and wolf armor.</li>
+<li>Tools use <code>#c:tools</code> (including rods, shears, brushes, igniters and shields) plus the two riding sticks.</li>
+<li><code>mining_tools</code> includes vanilla mining tools and shears, and takes priority over weapons so axes stay tools.</li>
+<li><code>accessories</code> is empty by default; add items or an accessory mod's own tags to opt them in.</li>
+</ul>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

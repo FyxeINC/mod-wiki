@@ -79,6 +79,13 @@ quest.addReward(QuestReward.custom(kindId, data));</code></pre>
 <pre><code class="language-java">DifficultyRegistry.registerFactor((player, level, period) -&gt; MyReputation.get(player) / 100.0);</code></pre>
 <p>The value is added alongside the built-in factors (base, player level, world age, play time, distance, dimension/equipment, adaptive rating, death penalty) before the period multiplier and difficulty-range clamp are applied. A factor that throws is caught and ignored.</p>
 <p>Main goal and quest progress calls need a <code>ServerPlayer</code>. Use namespaced target keys for custom progress to avoid collisions with other mods.</p>
+<h3>Reward helpers</h3>
+<p>Quests from other mods can use the built-in reward factories on <code>com.randomquests.reward.QuestReward</code>:</p>
+<pre><code class="language-java">QuestReward.command(&quot;give %player% minecraft:diamond 1&quot;);
+QuestReward.lootTable(ResourceLocation.withDefaultNamespace(&quot;chests/simple_dungeon&quot;));
+QuestReward.randomPool(rewardA, rewardB, rewardC);
+</code></pre>
+<p><code>command</code> supports the <code>%player%</code> and <code>%uuid%</code> placeholders. <code>randomPool</code> picks one of its options when the reward is granted.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
