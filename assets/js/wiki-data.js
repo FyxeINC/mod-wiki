@@ -23,7 +23,7 @@ window.WIKI_DATA = {
         "date": "2026-09-29",
         "project": "ffentitydirt",
         "page": "index.html",
-        "change": "0.8.0: now on Fabric and NeoForge for Minecraft 1.21.1 and 1.21.11; needs FF Entity Painting 0.9.0."
+        "change": "0.8.0: now on Fabric and NeoForge for Minecraft 1.21.1 and 1.21.11; needs FF Entity Painting 0.9.0; dripping water and lava paint wet spots and scorch marks that only you see."
       },
       {
         "date": "2026-09-29",
@@ -98,6 +98,18 @@ window.WIKI_DATA = {
         "change": "0.5.0: NeoForge builds for Minecraft 1.20.6, 1.21.1 and 1.21.11, with configuration registration fixed and version-specific startup-service guidance."
       },
       {
+        "date": "2026-09-29",
+        "project": "ffitemraritymodifiers",
+        "page": "index.html",
+        "change": "0.3.0: now on Minecraft 1.20.6, 1.21.1 and 1.21.11 for Fabric and NeoForge."
+      },
+      {
+        "date": "2026-09-29",
+        "project": "ffitemraritymodifiers",
+        "page": "index.html",
+        "change": "0.2.0: now on Fabric and NeoForge for Minecraft 1.21.1 with FFUtilities bundled, and loot table rolls now actually happen on NeoForge."
+      },
+      {
         "date": "2026-09-28",
         "project": "ffitemcreationtracker",
         "page": "index.html",
@@ -114,6 +126,12 @@ window.WIKI_DATA = {
         "project": "ffbandage",
         "page": "index.html",
         "change": "0.1.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities bundled."
+      },
+      {
+        "date": "2026-09-29",
+        "project": "ffutilities",
+        "page": "api.html",
+        "change": "0.2.9: KeyedEntries.split keeps tag keys such as #minecraft:skeletons=value; only # followed by whitespace, or ##, is a comment."
       },
       {
         "date": "2026-09-28",
@@ -706,17 +724,21 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds configurable rarity rolls and small modifiers to gear.",
       "tagline": "Adds configurable rarity rolls and small modifiers to gear.",
-      "version": "0.1.13",
-      "minecraftVersion": "1.21.1",
+      "version": "0.3.0",
+      "minecraftVersion": "1.20.6-1.21.11",
       "modrinthSlug": "",
       "icon": "",
       "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
         {
           "label": "NeoForge",
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "MC 1.20.6-1.21.11",
           "class": ""
         }
       ],
@@ -731,7 +753,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemRarityModifiers features, requirements, and source version.",
-          "updated": "2026-09-28",
+          "updated": "2026-09-29",
           "searchExcerpt": "Adds configurable rarity rolls and small modifiers to gear."
         },
         {
