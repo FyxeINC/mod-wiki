@@ -11,7 +11,7 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Entity Painting</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.9.0</code>. The mod is an experimental checkpoint: the API compiles and its storage rules are covered by automated checks. Most of it has not been exercised by another mod in a running game yet; layer access and local layers were checked in single-player test clients.</p>
+<p>This guide describes the public API in the current source version <code>0.9.1</code>. The mod is an experimental checkpoint: the API compiles and its storage rules are covered by automated checks. Most of it has not been exercised by another mod in a running game yet; layer access and local layers were checked in single-player test clients.</p>
 <h2>FF Entity Painting — Modding API</h2>
 <p>Use this guide when integrating another mod with <strong>FF Entity Painting</strong> (<code>ffentitypainting</code>).</p>
 <div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
@@ -19,8 +19,8 @@
 <tr><td><strong>Loader</strong></td><td>NeoForge (21.1.x, 21.11.x) and Fabric</td></tr>
 <tr><td><strong>Mod ID</strong></td><td><code>ffentitypainting</code></td></tr>
 <tr><td><strong>API packages</strong></td><td><code>com.fyxe.ffentitypainting.api</code>, <code>.api.access</code>, <code>.api.event</code>, <code>.api.client</code>, <code>.api.shape</code></td></tr>
-<tr><td><strong>Source version</strong></td><td>0.9.0</td></tr>
-<tr><td><strong>Maven</strong></td><td>One artifact per target on the Fyxe Gitea registry: <code>com.fyxe.ffentitypainting:ffentitypainting-1.21.1-neoforge:0.9.0</code>, <code>...-1.21.1-fabric</code>, <code>...-1.21.11-neoforge</code> and <code>...-1.21.11-fabric</code>. The 1.21.1 NeoForge jar is also published as <code>com.fyxe.ffentitypainting:ffentitypainting:0.9.0</code>, the coordinate older consumers use.</td></tr>
+<tr><td><strong>Source version</strong></td><td>0.9.1</td></tr>
+<tr><td><strong>Maven</strong></td><td>One artifact per target on the Fyxe Gitea registry: <code>com.fyxe.ffentitypainting:ffentitypainting-1.21.1-neoforge:0.9.1</code>, <code>...-1.21.1-fabric</code>, <code>...-1.21.11-neoforge</code> and <code>...-1.21.11-fabric</code>. The 1.21.1 NeoForge jar is also published as <code>com.fyxe.ffentitypainting:ffentitypainting:0.9.1</code>, the coordinate older consumers use.</td></tr>
 </tbody></table></div>
 <p>Dependency (optional), NeoForge <code>neoforge.mods.toml</code>:</p>
 <pre><code class="language-toml">[[dependencies.yourmod]]
@@ -31,11 +31,11 @@
     side=&quot;BOTH&quot;</code></pre>
 <p>Fabric <code>fabric.mod.json</code> (put it under <code>suggests</code> for an optional dependency, or <code>depends</code> for a required one):</p>
 <pre><code class="language-json">&quot;depends&quot;: { &quot;ffentitypainting&quot;: &quot;&gt;=0.9.0&quot; }</code></pre>
-<p>Use <code>0.8.0</code> as the lower bound instead if you use nothing from 0.9.0 (layer access, local layers). Compile against the artifact for your target without bundling it (players install this mod separately): <code>compileOnly</code> on NeoForge, <code>modCompileOnly</code> on Fabric.</p>
+<p>Use <code>0.9.1</code> as the lower bound if you use the opt-out API (<code>excludeEntities</code>, <code>isPaintable</code>, <code>UNPAINTABLE</code>, <code>excludeModel(s)</code>), or <code>0.8.0</code> if you use nothing from 0.9.0 (layer access, local layers). The <code>unpaintable</code> tag file needs no dependency at all. Compile against the artifact for your target without bundling it (players install this mod separately): <code>compileOnly</code> on NeoForge, <code>modCompileOnly</code> on Fabric.</p>
 <pre><code class="language-kotlin">// NeoForge
-compileOnly(&quot;com.fyxe.ffentitypainting:ffentitypainting-1.21.11-neoforge:0.9.0&quot;)
+compileOnly(&quot;com.fyxe.ffentitypainting:ffentitypainting-1.21.11-neoforge:0.9.1&quot;)
 // Fabric
-modCompileOnly(&quot;com.fyxe.ffentitypainting:ffentitypainting-1.21.11-fabric:0.9.0&quot;)</code></pre>
+modCompileOnly(&quot;com.fyxe.ffentitypainting:ffentitypainting-1.21.11-fabric:0.9.1&quot;)</code></pre>
 <p>Check that the mod is loaded (FFUtilities' <code>Mods.isLoaded(&quot;ffentitypainting&quot;)</code>, or your loader&#x27;s own check) before touching API classes, and keep those calls in a separate class so your mod still loads without it. Never reference <code>api.client</code> classes from common or server code.</p>
 <hr>
 <h3>Pick your integration</h3>
@@ -52,7 +52,7 @@ modCompileOnly(&quot;com.fyxe.ffentitypainting:ffentitypainting-1.21.11-fabric:0
 <tr><td>Refresh client-side effects when paint changes</td><td><code>PaintUpdatedEvent</code></td></tr>
 <tr><td>Keep paint through a mob conversion or clone</td><td><code>EntityPaintingAPI.copyPaint</code></td></tr>
 <tr><td>Know where each paintable spot sits on the body, on the server (paint the feet, the side facing a hit)</td><td><code>BodyShapes</code></td></tr>
-<tr><td>Make your own entity paintable</td><td><code>EntityPaintingClientAPI.registerPaintableModel</code></td></tr>
+<tr><td>Keep your mobs from being painted</td><td>The <code>ffentitypainting:unpaintable</code> entity type tag (no code), or <code>EntityPaintingAPI.excludeEntities</code> (see <a href="#opting-out">Opting mobs out</a>)</td></tr>
 <tr><td>Paint from a keybind or menu</td><td><code>EntityPaintingClientAPI.requestPaint</code></td></tr>
 </tbody></table></div>
 <hr>
@@ -60,7 +60,7 @@ modCompileOnly(&quot;com.fyxe.ffentitypainting:ffentitypainting-1.21.11-fabric:0
 <ul>
 <li><strong>Synced and local layers.</strong> Synced layers are server-authoritative: edits apply only on the logical server, and on a client <code>edit</code>, <code>copyPaint</code> and <code>clearPaint</code> do nothing and return <code>false</code>. Reads work on both sides, since clients hold a synced copy for every tracked entity (only the layers they may see). Local layers live on one client only and are edited there (see <a href="#local-layers">Local layers</a>).</li>
 <li><strong>Layer access.</strong> Each synced layer has a <em>view</em> access (who is sent it at all) and a <em>paint</em> access (who may paint and edit it with a tool or the layer manager). Both default to everyone. See <a href="#layer-access">Who sees and paints a layer</a>.</li>
-<li><strong>Surfaces and parts.</strong> Paint is stored per part of a model, per surface. A <em>surface</em> is one model class drawn with one texture. A <em>part</em> is one named <code>ModelPart</code>, or one cube of a multi-cube part. The storage key is <code>EntityPaintingAPI.partKey(surfaceId, partName)</code>.</li>
+<li><strong>Surfaces and parts.</strong> Paint is stored per part of a model, per surface. A <em>surface</em> is one model drawn with one texture. A <em>part</em> is one named <code>ModelPart</code> (or GeckoLib bone), or one cube of a multi-cube part. Every living entity is paintable unless something opts it out, modded ones included. The storage key is <code>EntityPaintingAPI.partKey(surfaceId, partName)</code>.</li>
 <li><strong>Parts appear on first paint.</strong> Only the client sees exact geometry, so a part normally exists after a player first paints it. A mod that knows its own model can create parts on the server with <code>PaintEditor.establishPart</code>.</li>
 <li><strong>Layers</strong> are composited bottom to top, each with a <code>BlendMode</code> (<code>NORMAL</code>, <code>MULTIPLY</code>, <code>ADDITIVE</code>, <code>SCREEN</code>, <code>OVERLAY</code>; <code>BlendMode.byName(&quot;screen&quot;)</code> parses one), an opacity and a visibility flag. A <strong>locked</strong> layer can only be changed through the API. Players see it but cannot select, paint, clear, edit or move it, their own layers cannot be moved past it, and it does not count toward the server&#x27;s <code>maxLayers</code>. A layer a player adds goes just below the locked layers at the top of the stack, so overlays you keep on top stay there.</li>
 <li><strong>Colors</strong> are straight-alpha ARGB <code>int</code>s. A <code>PixelMode</code> decides how a color meets what a layer already holds: <code>BLEND</code> (source-over, strokes build up), <code>REPLACE</code> (exact color including alpha) or <code>ERASE</code> (alpha is how much coverage to remove).</li>
@@ -153,6 +153,7 @@ EntityPaintingAPI.edit(golem, editor -&gt; {
 <li>Parts with no Java field use their path from the root: <code>body/jacket</code>. On NeoForge 1.21.1, a model that is not a <code>HierarchicalModel</code> (a horse, a fox) names such a part by its path below its nearest named part instead: <code>headParts/head/upper_mouth</code> (0.9.0).</li>
 <li>A part with more than one cube gets one canvas per cube: <code>arms#0</code>, <code>arms#1</code>.</li>
 <li>Players use <code>EntityPaintingAPI.playerSurfaceId(modelClassName, &quot;default&quot;|&quot;slim&quot;)</code>.</li>
+<li>A GeckoLib model (0.9.1) has no model class of its own: its surface uses <code>geckolib:</code> plus its geo model file in place of the class name, for example <code>EntityPaintingAPI.surfaceId(&quot;geckolib:mymod:geo/entity/bear.geo.json&quot;, texture)</code> with GeckoLib 4 (Minecraft 1.21.1) or <code>geckolib:mymod:entity/bear</code> with GeckoLib 5 (1.21.11), whatever your <code>GeoModel.getModelResource</code> returns. Parts are bone names (<code>head</code>, <code>left_leg</code>), and a bone with several cubes gets <code>bone#0</code>, <code>bone#1</code>. A render layer that redraws the same baked model with another texture and a vanilla entity render type is a surface of its own.</li>
 <li>A texture a mob only shows in some state is painted as its canonical texture (0.9.0): wolves as their tame texture (wild and angry textures, every variant the client knows), sleeping foxes as awake ones, angry or nectar bees as <code>bee.png</code>, cold striders as warm ones. <code>surfaceId</code> applies this for you. If your mob swaps textures with the same layout, register them with <code>SurfaceAliases.alias(texture, canonical)</code> on both sides, before the first paint; <code>SurfaceAliases.canonical(texture)</code> looks one up.</li>
 <li>When Entity Model Features draws the entity with a custom (jem) model (0.8.1), the client appends <code>+emf:&lt;namespace&gt;:&lt;model&gt;#&lt;variant&gt;</code> to the model class name, so a resource pack&#x27;s model has surfaces of its own. Vanilla parts keep their names; parts the jem adds are <code>head/EMF_horn</code> (its <code>id</code>), or <code>head/emf@&lt;hex&gt;</code> (a geometry fingerprint) when the jem part has no <code>id</code>. A jem part with its own texture is a separate surface with that texture. Take these IDs from <code>captureGeometry</code>, <code>BodyShapes</code> or <code>view</code> rather than building them.</li>
 </ul>
@@ -236,17 +237,31 @@ public void onPaint(PaintUpdatedEvent e) {
 PaintUpdatedEvent.register(e -&gt; GlowMasks.invalidate(e.getEntity()));</code></pre>
 <p>Part names and surface IDs differ by loader (Fabric names parts by child path and its surface IDs carry the runtime class names), so take them from <code>BodyShapes</code> and <code>PaintView</code> instead of building them yourself.</p>
 <hr>
+<h3 id="opting-out">Opting mobs out</h3>
+<p>Every living entity can be painted, vanilla or modded, with no registration. To keep your own mobs out (a boss, a mob whose look painting would spoil), list them in the <code>ffentitypainting:unpaintable</code> entity type tag. Ship the file in your mod jar; it needs no dependency on this mod, and datapacks can add to it the same way (see the <a href="datapacks.html">Datapacks</a> page):</p>
+<pre><code class="language-json">{
+  &quot;replace&quot;: false,
+  &quot;values&quot;: [
+    { &quot;id&quot;: &quot;mymod:ancient_guardian&quot;, &quot;required&quot;: false }
+  ]
+}</code></pre>
+<p>Save it as <code>data/ffentitypainting/tags/entity_type/unpaintable.json</code> in your mod&#x27;s resources. <code>&quot;required&quot;: false</code> lets the same file list mobs from mods that may not be installed.</p>
+<p>For a decision the tag can&#x27;t make, register a rule in common setup so the server and every client agree. It runs for each draw of a painted or clicked entity, so keep it cheap; a rule that throws counts as not matching.</p>
+<pre><code class="language-java">EntityPaintingAPI.excludeEntities(entity -&gt; entity instanceof AncientGuardian guardian &amp;&amp; guardian.isEnraged());
+boolean ok = EntityPaintingAPI.isPaintable(entity); // the tag and every rule</code></pre>
+<p>An excluded mob shows no paint and reports no body shapes, and players can&#x27;t paint it or open its layer manager (&quot;This mob can&#x27;t be painted.&quot;, checked on the client and the server). Edits made through <code>EntityPaintingAPI.edit</code> are still stored, so lifting the exclusion brings them back.</p>
+<hr>
 <h3>Client API</h3>
 <p><code>com.fyxe.ffentitypainting.api.client.EntityPaintingClientAPI</code>, client only.</p>
-<pre><code class="language-java">// During FMLClientSetupEvent: opt your model into capture.
-EntityPaintingClientAPI.registerPaintableModel(GolemModel.class);
-EntityPaintingClientAPI.registerPaintableModels(model -&gt; model.getClass().getName().startsWith(&quot;com.example.client.&quot;));
+<pre><code class="language-java">// During client setup, only if a model of yours captures the wrong spot: leave it alone.
+EntityPaintingClientAPI.excludeModel(GolemModel.class);
+EntityPaintingClientAPI.excludeModels(model -&gt; model.getClass().getName().startsWith(&quot;com.example.client.weird.&quot;));
 
 // From a keybind: paint what the crosshair is on, as a right-click would.
 EntityPaintingClientAPI.requestPaint(target, InteractionHand.MAIN_HAND);
 EntityPaintingClientAPI.setBrushOpacity(128); // 1 to 255, this client only
 String layer = EntityPaintingClientAPI.selectedLayer(target);</code></pre>
-<p>Only register models that draw like vanilla ones: <code>ModelPart</code> geometry sent through a <code>LivingEntityRenderer</code>&#x27;s main body draw or <code>RenderLayer.renderColoredCutoutModel</code>, using a vanilla entity render type (solid, cutout, cutout no-cull, translucent) with a single texture. Custom shaders, emissive passes and vertex animation outside <code>ModelPart</code> won&#x27;t capture correctly. <code>requestPaint</code> needs first-person view and a <code>PaintTool</code> in that hand, and the server still checks reach, permission and revision (unless the selected layer is local).</p>
+<p>Every model is paintable by default (0.9.1). Painting works on models that draw like vanilla ones (<code>ModelPart</code> geometry sent through a <code>LivingEntityRenderer</code>&#x27;s main body draw or <code>RenderLayer.renderColoredCutoutModel</code>) and on GeckoLib models, using a vanilla entity render type (solid, cutout, cutout no-cull, translucent) with a single texture. Anything else fails closed: custom shaders, emissive passes and geometry drawn outside <code>ModelPart</code>s or GeckoLib bones are left as they are, and a click on them is refused. <code>excludeModel</code> and <code>excludeModels</code> are for a model that does capture but lands paint in the wrong spot; the rule sees the vanilla <code>EntityModel</code> or the GeckoLib <code>GeoModel</code>. <code>registerPaintableModel</code> and <code>registerPaintableModels</code> are deprecated and do nothing since 0.9.1. <code>requestPaint</code> needs first-person view and a <code>PaintTool</code> in that hand, and the server still checks reach, permission and revision (unless the selected layer is local).</p>
 <h4 id="local-layers">Local layers</h4>
 <p>A local layer exists only in one player&#x27;s game: never sent to the server, drawn over every synced layer, and saved on that player&#x27;s computer under the world it was painted in. Players make them with <strong>Add Local</strong> in the layer manager; mods edit them with <code>EntityPaintingClientAPI.editLocal(entity, editor -&gt; ...)</code>, which hands you the same <code>PaintEditor</code> as a server batch (<code>isLocal()</code> is true, and access setters throw). Parts the server already knows are listed in the editor so you can paint over them. Local paint comes back when the player returns (unless they turned the <code>saveLocalLayers</code> client setting off) and is deleted when the entity dies or has gone unseen for the player&#x27;s <code>forgetAfterDays</code> (30 by default). The server&#x27;s only part is a random world ID it sends on login, so saves follow the world, not the server address. <code>localView(entity)</code> reads it back, <code>clearLocalPaint(entity)</code> removes it, and <code>isLocalLayer(entity, id)</code> tells the two kinds apart.</p>
 <pre><code class="language-java">// Client: a paint particle splashes where it lands, on a layer only this player sees.
@@ -298,6 +313,7 @@ EntityPaintingClientAPI.captureGeometry(mob, 1f).ifPresent(geometry -&gt; {
 <hr>
 <h3>Compatibility notes</h3>
 <ul>
+<li>0.9.1 keeps the 0.9.0 network protocol and save format. Its API changes are additions: <code>EntityPaintingAPI.UNPAINTABLE</code>, <code>excludeEntities</code>, <code>isPaintable</code>, <code>EntityPaintingClientAPI.excludeModel</code> and <code>excludeModels</code>. Modded models are now paintable without registering, so <code>registerPaintableModel(s)</code> do nothing. GeckoLib mobs are painted (GeckoLib 4.9 on 1.21.1, 5.4 on 1.21.11), and <code>captureGeometry</code> and <code>BodyShapes</code> include them. A quad whose UVs leave the texture no longer makes a whole draw unpaintable; only that quad is skipped.</li>
 <li>0.9.0 changed the network protocol (per-player layer snapshots), so clients and servers must both run 0.9.0. Its API changes are additions: code built against 0.8.x keeps working, but mods that declare an upper bound below 0.9.0 must widen it. Saves carry over both ways; an older version ignores layer access and shows restricted layers to everyone.</li>
 <li>0.7.0 through 0.8.3 used the same protocol and connect to each other.</li>
 <li>0.8.0 changed the API, so rebuild against it: <code>BlendMode</code> moved to <code>com.fyxe.ffentitypainting.api</code>, and <code>SurfaceShape.part(name)</code> returns an <code>Optional</code>. New in 0.8.0: <code>BlendMode.byName</code>/<code>next</code>, <code>PixelMode.byName</code>, <code>PaintUpdatedEvent</code>, <code>SurfaceShape.Part.canvasCells</code>/<code>height(cell)</code>/<code>covered(cell)</code> and <code>BodyShapes.part</code>.</li>

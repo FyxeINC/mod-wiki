@@ -14,6 +14,18 @@ window.WIKI_DATA = {
     },
     "recentUpdates": [
       {
+        "date": "2026-10-01",
+        "project": "ffentitypainting",
+        "page": "api.html",
+        "change": "0.9.1: every mob is paintable without registering, GeckoLib mobs included; opt mobs out with the unpaintable entity tag, EntityPaintingAPI.excludeEntities or excludeModel(s). registerPaintableModel(s) are deprecated no-ops."
+      },
+      {
+        "date": "2026-10-01",
+        "project": "ffentitypainting",
+        "page": "datapacks.html",
+        "change": "New Datapacks page: the ffentitypainting:unpaintable entity tag, and painting from functions with /entitypaint."
+      },
+      {
         "date": "2026-09-30",
         "project": "ffcropevaporation",
         "page": "datapacks.html",
@@ -80,10 +92,10 @@ window.WIKI_DATA = {
         "change": "0.9.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities 0.2.8 bundled; the API is unchanged, with per-target Maven coordinates."
       },
       {
-        "date": "2026-09-29",
+        "date": "2026-09-30",
         "project": "ffexpandedbiometint",
         "page": "api.html",
-        "change": "0.6.0: food names can now sort foods into categories by regex. 0.5.0: now on Fabric and NeoForge for 1.21.1 with FFUtilities 0.2.8 bundled; the BiomeTintAPI is unchanged, with per-loader dependency snippets and Maven coordinates added."
+        "change": "0.6.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities 0.2.8 bundled; the BiomeTintAPI is unchanged, with a Forge dependency snippet and per-target Maven coordinates."
       },
       {
         "date": "2026-09-29",
@@ -398,9 +410,9 @@ window.WIKI_DATA = {
       "name": "FF Entity Painting",
       "index": "C",
       "status": "active",
-      "description": "Paint living entities with shared, team-restricted and local layers, with a mod API for brushes, layer access rules and server-side painting.",
+      "description": "Paint living entities, modded and GeckoLib mobs included, with shared, team-restricted and local layers, with a mod API for brushes, layer access rules and server-side painting.",
       "tagline": "Add a splash of color to living entities.",
-      "version": "0.9.0",
+      "version": "0.9.1",
       "minecraftVersion": "1.21.1, 1.21.11",
       "modrinthSlug": "",
       "icon": "",
@@ -429,16 +441,24 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FF Entity Painting features, requirements, and source version.",
-          "updated": "2026-09-30",
-          "searchExcerpt": "Paint living entities with layers, blend modes and brush opacity, local layers and team layers."
+          "updated": "2026-10-01",
+          "searchExcerpt": "Paint living entities with layers, blend modes and brush opacity, local layers and team layers, modded and GeckoLib mobs."
+        },
+        {
+          "file": "datapacks.html",
+          "title": "Datapacks",
+          "index": "02",
+          "description": "The unpaintable entity tag and painting from functions with /entitypaint.",
+          "updated": "2026-10-01",
+          "searchExcerpt": "ffentitypainting:unpaintable entity type tag, keep players or modded mobs from being painted, functions, /entitypaint team layers."
         },
         {
           "file": "api.html",
           "title": "Modding API",
-          "index": "02",
-          "description": "Java API for paint tools, server-side paint edits, locked layers, layer access rules, local layers, events, snapshots, body shapes, geometry capture and paintable models.",
-          "updated": "2026-09-29",
-          "searchExcerpt": "EntityPaintingAPI, PaintEditor, PaintView, PaintTool, PixelMode opacity, BlendMode, LayerAccess LayerRules LayerRule team tag view paint access, editLocal paintLocal local layers raycast, PaintEvent, PaintUpdatedEvent, EntityPaintingClientAPI registerPaintableModel, captureGeometry CapturedGeometry rasterize, BodyShapes SurfaceShape canvasCells BodyFrame measureShapes."
+          "index": "03",
+          "description": "Java API for paint tools, server-side paint edits, locked layers, layer access rules, local layers, events, snapshots, body shapes, geometry capture and opting mobs out.",
+          "updated": "2026-10-01",
+          "searchExcerpt": "EntityPaintingAPI, PaintEditor, PaintView, PaintTool, PixelMode opacity, BlendMode, LayerAccess LayerRules LayerRule team tag view paint access, editLocal paintLocal local layers raycast, PaintEvent, PaintUpdatedEvent, UNPAINTABLE excludeEntities isPaintable excludeModel excludeModels GeckoLib surfaces bones, captureGeometry CapturedGeometry rasterize, BodyShapes SurfaceShape canvasCells BodyFrame measureShapes."
         }
       ]
     },
@@ -500,8 +520,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Applies biome tints with datapack rules and a mod integration API.",
       "tagline": "Give blocks local color with datapack rules.",
-      "version": "0.5.0",
-      "minecraftVersion": "1.21.1",
+      "version": "0.6.0",
+      "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "",
       "icon": "",
       "tags": [
@@ -510,11 +530,15 @@ window.WIKI_DATA = {
           "class": "tag--blue"
         },
         {
+          "label": "Forge",
+          "class": ""
+        },
+        {
           "label": "NeoForge",
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "MC 1.20.1-1.21.11",
           "class": ""
         }
       ],
@@ -545,7 +569,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "03",
           "description": "Java registration API and datapack format for block biome tint rules.",
-          "updated": "2026-09-29",
+          "updated": "2026-09-30",
           "searchExcerpt": "BiomeTintAPI Java methods, exact IDs, block tags, regex, tint channels, strengths, and datapack precedence."
         }
       ]
