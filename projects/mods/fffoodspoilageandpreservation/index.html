@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Overview — FFFoodSpoilageAndPreservation — Fyxe's Mod Wiki</title>
 <meta name="description" content="Adds food spoilage stages, preservation modifiers, temperature, and eat effects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
@@ -12,20 +17,21 @@
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFFoodSpoilageAndPreservation</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
 <p class="lead">Food does not stay fresh forever. This mod tracks spoilage, preservation, and temperature so storage choices matter.</p>
-<h2>What changes in game</h2>
+<figure class="figure figure--todo"><div class="figure__todo">A chest inventory full of food where several stacks are at different spoilage stages, with the tooltip of a Stale cooked beef open showing its stage and time remaining.</div></figure>
+<h2 id="what-changes-in-game">What changes in game</h2>
 <ul><li>Food moves through Fresh, Good, Stale, Rotting, and Rotten stages. Later stages provide less hunger and saturation; fully spoiled food is replaced.</li><li>Preservation modifiers and server settings can slow spoilage or make food immune.</li><li>Temperature and storage conditions affect the rate shown in food tooltips. Hold Shift for additional tooltip details.</li></ul>
 <p>Food made through preservation crafting, smoking, or campfires starts aging when it first enters the world.</p>
-<h2>Keeping food fresh</h2>
+<h2 id="keeping-food-fresh">Keeping food fresh</h2>
 <p>Storage matters. By default, an ender chest stops spoilage; barrels, pots, and bundles slow it compared with an ordinary chest or your inventory. You can also preserve food directly:</p>
 <div class="table-wrap"><table><thead><tr><th>Method</th><th>How to use it</th></tr></thead><tbody><tr><td>Cured</td><td>Craft food with bone meal.</td></tr><tr><td>Brined</td><td>Craft suitable food with an awkward potion.</td></tr><tr><td>Candied</td><td>Craft suitable food with a honey bottle.</td></tr><tr><td>Dried or Smoked</td><td>Use a campfire or smoker with suitable food.</td></tr><tr><td>Frozen</td><td>Use ice items or keep food cold. Frozen food must thaw before you can eat it.</td></tr></tbody></table></div>
-<h2>Storage and moving food</h2>
+<h2 id="storage-and-moving-food">Storage and moving food</h2>
 <p>When you open a container, spoilage uses that inventory's location and conditions. If the inventory has no known world location, neutral ambient conditions apply. Moving food accounts for time in its previous storage before using the new conditions.</p>
-<h2>Stacking food</h2>
+<h2 id="stacking-food">Stacking food</h2>
 <p>By default, food with the same spoilage stage and preservation modifiers can stack even when individual pieces have different histories. The resulting stack keeps the worst spoilage progress. This works with inventory clicks, pickups, bundles, hoppers, and furnace outputs.</p>
 <p>Server owners can set <code>mergeSameStageFood</code> to <code>false</code> to require identical freshness histories. With that setting, differently aged food may prevent a furnace output from stacking until the output is emptied.</p>
-<h2>Spoilage in detail</h2>
+<h2 id="spoilage-in-detail">Spoilage in detail</h2>
 <p>Food that is not immune gains a spoilage component and moves through named stages (default 1 / 2 / 3 / 2 / 2 minutes: Fresh, Good, Stale, Rotting, Rotten). Nutrition and saturation drop each stage. Eating restores the reduced amounts up to the normal hunger and saturation limits, without subtracting existing saturation. When the last stage fills, the stack is replaced (default rotten flesh).</p>
-<h3>Preventing or slowing spoilage</h3>
+<h3 id="preventing-or-slowing-spoilage">Preventing or slowing spoilage</h3>
 <ul>
 <li><strong>Never spoil:</strong> the server <code>neverSpoil</code> list accepts item IDs or <code>#tags</code>. Defaults include golden foods, rotten flesh, chorus fruit, honey bottle, <code>#c:foods/honey</code> and <code>#c:foods/golden</code>.</li>
 <li><strong>Rate 0:</strong> a <code>rateOverrides</code> entry <code>id_or_tag=0</code> also stops spoilage.</li>
@@ -34,27 +40,27 @@
 <li><strong>Temperature:</strong> cold biomes and body temperature slow spoilage; heat speeds it up. Frozen food can't be eaten until it thaws (hot items, a fueled Cold Sweat Boiler, or warmth).</li>
 </ul>
 <p>Open-container rates follow the actual inventory, including remotely opened inventories that expose their backing container. Looking away doesn't change tooltip rates. Food keeps the rate from its last storage check for elapsed time; moving it between an ender chest and your inventory settles the old rate at the moment you move it.</p>
-<h3>Stacking rules</h3>
+<h3 id="stacking-rules">Stacking rules</h3>
 <p>The server setting <code>mergeSameStageFood</code> defaults to <code>true</code>. Food with the same spoilage stage and current modifiers can combine through clicks, shift-clicks, pickups, dropped items, bundles, hoppers, and furnace or smoker outputs. All other item properties must still match.</p>
 <p>The combined stack keeps the highest spoilage progress and oldest timestamp, so mixing in fresh food can't refresh older food. Freeze and thaw progress is averaged by item count: combining 3 items at 100 temperature-progress ticks with 1 at 300 gives 150 ticks. Only the items actually transferred count toward the average. Untracked food counts as Fresh with no modifiers and zero progress.</p>
 <p>On NeoForge 1.21.1 this also covers other mods' inventories that use NeoForge item handlers. On Fabric, and on NeoForge 1.21.11 (which replaced item handlers with a new transfer system), it covers everything vanilla, but other mods' storage that moves items through the loader's own transfer system stays strict: only food with identical freshness stacks there.</p>
 <p>Set <code>mergeSameStageFood = false</code> in the world's <code>serverconfig/fffoodspoilageandpreservation-server.toml</code> to require identical freshness and freeze/thaw histories. You may then need to empty furnace or smoker outputs before cooking continues. The master spoilage toggle also disables relaxed merging.</p>
-<h3>Tooltips and visuals</h3>
+<h3 id="tooltips-and-visuals">Tooltips and visuals</h3>
 <p>Tooltips (hold Shift for more lines) show stage, modifiers, container rate, freeze/thaw progress and remaining time. Modifiers also mark food with their color: a <strong>tint</strong> covers the item with a see-through wash in inventories and in your hand, and an <strong>outline</strong> draws a 1-pixel border in inventories. Frozen uses both (icy blue); the rest tint: Brined light yellow green, Candied gold orange, Cured brown, Smoked dark grey, Dried dark yellow. Several tints layer with the higher-ranked modifier in front.</p>
 <p>Client settings: <code>modifierVisuals</code> (default on) turns tints and outlines on or off, and <code>tintOpacity</code> sets tint strength from 0 to 100 percent (default 35).</p>
-<h2>Compatibility details</h2>
+<h2 id="compatibility-details">Compatibility details</h2>
 <ul>
 <li><strong>AppleSkin</strong> (NeoForge and Fabric): hunger and saturation overlays use spoilage-scaled values. The mod's own effective-food tooltip line is hidden so the two don't stack. Frozen food hides the AppleSkin overlay because it can't be eaten.</li>
 <li><strong>Cold Sweat</strong> (NeoForge only): player body temperature can drive inventory food instead of biome air temperature. On Minecraft 1.21.1, the Icebox and Boiler take food in their waterskin slots (by hand or hopper). A fueled Icebox freezes that food and a fueled Boiler thaws it, even when nobody has them open. Without fuel they act like any other container. Server settings under <code>temperature</code> then <code>coldsweat</code> set the speeds: <code>iceboxFreezeDurationTicks</code> (default 1200 ticks, about a minute) and <code>boilerThawDurationTicks</code> (default 400 ticks, about 20 seconds). Lower is faster.</li>
 <li><strong>EMI</strong> (Minecraft 1.21.1, NeoForge and Fabric; EMI has no 1.21.11 release yet): recipe pages for every datapack apply and remove craft, plus smoker (Smoked) and campfire (Dried). Dynamic dummy recipes are hidden.</li>
 </ul>
 <p>The in-game config screen is in the Mods list on NeoForge and, on Fabric, through Mod Menu.</p>
-<h2>Requirements</h2>
+<h2 id="requirements">Requirements</h2>
 <div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.21.1 or 1.21.11</td></tr><tr><th>Loader</th><td>1.21.1: NeoForge 21.1.211 or newer, or Fabric Loader 0.16.1 or newer with Fabric API. 1.21.11: NeoForge 21.11.45 or newer, or Fabric Loader 0.18.0 or newer with Fabric API</td></tr><tr><th>Documented source version</th><td>0.9.0</td></tr></tbody></table></div>
 <p>FFUtilities 0.2.8 is bundled in the mod JAR (with Forge Config API Port on Fabric), so a separate library download is not needed. Gameplay and datapack files are the same on every version and loader. On Fabric, and on NeoForge 1.21.11, food in other mods&#x27; storage that uses the loader&#x27;s own item transfer system only stacks with food of identical freshness, and Cold Sweat support is NeoForge only. EMI recipe pages are available for 1.21.1 only. The documented source version may be newer than the latest published file.</p>
-<h2>For datapack makers</h2>
+<h2 id="for-datapack-makers">For datapack makers</h2>
 <p>Datapacks can define modifier categories and preservation modifiers, add modifier smoking or campfire recipes, and overlay the mod's food tags. See the <a href="datapacks.html">Datapacks</a> page for every field and path.</p>
-<h2>For mod developers</h2><p>The <a href="api.html">Modding API guide</a> covers events, preservation definitions, and custom inventory integration.</p>
+<h2 id="for-mod-developers">For mod developers</h2><p>The <a href="api.html">Modding API guide</a> covers events, preservation definitions, and custom inventory integration.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

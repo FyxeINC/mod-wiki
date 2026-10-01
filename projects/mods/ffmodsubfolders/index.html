@@ -1,24 +1,31 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Overview — FFModsSubfolders — Fyxe's Mod Wiki</title>
 <meta name="description" content="Loads mods from nested folders in the mods directory.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFModsSubfolders</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Loads mods from nested folders in the mods directory.</p><h2>Features</h2><ul><li>Organize other mods into subfolders and disable entire folders by suffix.</li><li>Includes Sinytra Connector integration and configurable scan behavior.</li></ul><h2>Getting started</h2>
+<h2 id="overview">Overview</h2><p>Loads mods from nested folders in the mods directory.</p>
+<figure class="figure figure--todo"><div class="figure__todo">A file explorer window showing the mods folder with the FFModsSubfolders jar at the top level and subfolders named performance, qol, worldgen and testing.disabled.</div></figure>
+<h2 id="features">Features</h2><ul><li>Organize other mods into subfolders and disable entire folders by suffix.</li><li>Includes Sinytra Connector integration and configurable scan behavior.</li></ul><h2 id="getting-started">Getting started</h2>
 <ol>
 <li>Put FFModsSubfolders itself directly in <code>mods</code>.</li>
 <li>Create some subfolders and move your other NeoForge mods into them.</li>
 <li>Start the game. Look for <code>[mod scan]</code> in the log for a scan summary and any warnings.</li>
 </ol>
 <p>Rename a folder to end in <code>.disabled</code> to skip everything inside it, including deeper folders. For example, <code>mods/testing.disabled/</code> is ignored. Renaming it back enables it again on your next launch. Folder suffix matching is case-insensitive.</p>
-<h2>Configuration</h2>
+<h2 id="configuration">Configuration</h2>
 <p>After the first launch, edit <code>config/ffmodsubfolders-common.toml</code>. Changes affect the next launch because mod discovery happens before normal configuration registration. Config editing mods can also show the translated setting names and tooltips.</p>
 <div class="table-wrap"><table>
 <thead>
@@ -75,7 +82,7 @@
 </tbody>
 </table></div>
 <p>The default depth of 32 counts <code>mods/a/</code> as level 1. Symlink loops are skipped. Unreadable folders, empty jars and duplicate filenames produce diagnostic messages.</p>
-<h2>Compatibility and limitations</h2>
+<h2 id="compatibility-and-limitations">Compatibility and limitations</h2>
 <ul>
 <li><strong>FFModsSubfolders must stay directly in <code>mods</code>.</strong> Its startup scanner can't discover itself.</li>
 <li><strong>Minecraft 1.20.6 and 1.21.1:</strong> the early wrapper relay supports embedded mod jars such as Sodium's NeoForge packaging. Sodium should still stay at the top level if you need its pre-window GPU-driver workarounds. A startup hook can't be replayed after it has already run.</li>
@@ -85,8 +92,8 @@
 <li>Only one early loading-screen provider can be active. Unusual startup mods need checking individually; a successful ordinary-mod scan doesn't verify every hook.</li>
 <li>There is no datapack support.</li>
 </ul>
-<h2>Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.20.6, 1.21.1, 1.21.11</td></tr><tr><th>Loader</th><td>NeoForge only: 20.6.141 to below 20.7; 21.1.244 to below 21.2; or 21.11.45 to below 21.12, matching Minecraft.</td></tr><tr><th>Source version</th><td>0.5.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
-<h2>Installation and startup services</h2><p>Choose the jar for your Minecraft version and keep FFModsSubfolders directly in <code>mods</code>. No other mod is required. On 1.21.11, other mods providing early startup services must also stay directly in <code>mods</code>; misplaced jars produce a warning. Connector compatibility was previously checked on 1.21.1 and is not verified for the new targets.</p><div data-page-footer></div>
+<h2 id="requirements-and-source-version">Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.20.6, 1.21.1, 1.21.11</td></tr><tr><th>Loader</th><td>NeoForge only: 20.6.141 to below 20.7; 21.1.244 to below 21.2; or 21.11.45 to below 21.12, matching Minecraft.</td></tr><tr><th>Source version</th><td>0.5.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
+<h2 id="installation-and-startup-services">Installation and startup services</h2><p>Choose the jar for your Minecraft version and keep FFModsSubfolders directly in <code>mods</code>. No other mod is required. On 1.21.11, other mods providing early startup services must also stay directly in <code>mods</code>; misplaced jars produce a warning. Connector compatibility was previously checked on 1.21.1 and is not verified for the new targets.</p><div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
 </body></html>

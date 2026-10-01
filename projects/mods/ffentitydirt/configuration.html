@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configuration — FFEntityDirt — Fyxe's Mod Wiki</title>
+<meta name="description" content="Every FFEntityDirt server and client option with its default: dirt, damage marks, snow, cleaning and drips.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFEntityDirt</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<h2 id="configuration">Configuration</h2>
+<p>Open the settings from the Mods screen (on Fabric, through Mod Menu), or edit the files directly. Dirt, damage, snow and cleaning are server rules in <code>ffentitydirt-server.toml</code> in the world's <code>serverconfig</code> folder, shared with players. Drips are your own settings in <code>ffentitydirt-client.toml</code> in the game's <code>config</code> folder.</p>
+<p>Heights are fractions of the entity's height: 0 is the feet, 1 is the top of the head. Entity and block lists take IDs (<code>minecraft:cow</code>), tags (<code>#minecraft:skeletons</code>) or a whole mod (<code>somemod:*</code>). An empty whitelist means "everything", and the blacklist always wins.</p>
+<h3 id="server-general">Server: general</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>true</td>
+<td>Master switch for everything</td>
+</tr>
+<tr>
+<td><code>updateIntervalTicks</code></td>
+<td>5</td>
+<td>How often movement and water are checked</td>
+</tr>
+<tr>
+<td><code>flushIntervalTicks</code></td>
+<td>20</td>
+<td>How often collected dirt is written into paint. Each write sends that mob's paint to nearby players</td>
+</tr>
+<tr>
+<td><code>maxSplatsPerFlush</code></td>
+<td>96</td>
+<td>Cap on splats per mob per write</td>
+</tr>
+<tr>
+<td><code>affectCreativePlayers</code></td>
+<td>true</td>
+<td>Whether creative players get dirt and marks (spectators never do)</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="server-dirt-the-dirt-layer">Server: dirt (the Dirt layer)</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>true</td>
+<td>Switch the Dirt layer on or off. Existing dirt still washes off</td>
+</tr>
+<tr>
+<td><code>entityWhitelist</code> / <code>entityBlacklist</code></td>
+<td>empty / <code>#ffentitydirt:never_dirty</code></td>
+<td>Which mobs can get dirty</td>
+</tr>
+<tr>
+<td><code>surfaces.whitelist</code></td>
+<td>natural ground tags: <code>#minecraft:dirt</code>, <code>sand</code>, <code>snow</code>, <code>base_stone_overworld</code>, <code>base_stone_nether</code>, <code>nylium</code>, <code>terracotta</code> and <code>#ffentitydirt:dirty_surfaces</code></td>
+<td>Which blocks leave dirt. Empty it to let every block leave dirt</td>
+</tr>
+<tr>
+<td><code>surfaces.blacklist</code></td>
+<td><code>#ffentitydirt:clean_surfaces</code></td>
+<td>Blocks that never leave dirt, even if whitelisted</td>
+</tr>
+<tr>
+<td><code>surfaces.colors</code></td>
+<td>grass, mud, podzol and friends; honey amber, slime green, sculk teal-black</td>
+<td><code>block=#RRGGBB</code> dirt colors</td>
+</tr>
+<tr>
+<td><code>surfaces.multipliers</code></td>
+<td>mud 3, clay, soul sand and sculk 1.5, dirt and sand 1.25, snow 0.75, stone, terracotta and end stone 0.4 to 0.5</td>
+<td><code>block=number</code> for how messy a block is. 0 means no dirt</td>
+</tr>
+<tr>
+<td><code>surfaces.colorVariation</code></td>
+<td>0.12</td>
+<td>Random shading per splat</td>
+</tr>
+<tr>
+<td><code>movement.minSpeed</code></td>
+<td>0.3</td>
+<td>Slowest speed (blocks per second) that picks up dirt</td>
+</tr>
+<tr>
+<td><code>movement.splatsPerBlock</code></td>
+<td>1.0</td>
+<td>Average splats per block traveled at <code>referenceSpeed</code> (4.3, a walking player)</td>
+</tr>
+<tr>
+<td><code>movement.speedExponent</code></td>
+<td>1.5</td>
+<td>How much faster movement boosts the rate</td>
+</tr>
+<tr>
+<td><code>movement.baseReach</code> / <code>reachPerSpeed</code> / <code>maxReach</code></td>
+<td>0.12 / 0.05 / 0.55</td>
+<td>How high walking dirt can reach, growing with speed</td>
+</tr>
+<tr>
+<td><code>movement.lowBias</code> / <code>opacity</code></td>
+<td>2.5 / 0.35</td>
+<td>Higher bias keeps dirt near the feet; strength of one splat</td>
+</tr>
+<tr>
+<td><code>movement.spread</code></td>
+<td>0.2</td>
+<td>Each splat can fly up to this much higher than the reach. Raise it (and lower <code>lowBias</code>) to get dirt all the way up the body</td>
+</tr>
+<tr>
+<td><code>movement.particles</code> / <code>particlesPerSplat</code></td>
+<td>true / 2</td>
+<td>A puff of ground particles whenever walking leaves dirt, and how many per splat (up to 16 per puff)</td>
+</tr>
+<tr>
+<td><code>fall.minDamage</code> / <code>splatsPerDamage</code></td>
+<td>1 / 8</td>
+<td>Least fall damage (half hearts) that splatters, and splats per half heart</td>
+</tr>
+<tr>
+<td><code>fall.baseReach</code> / <code>reachPerDamage</code> / <code>maxReach</code></td>
+<td>0.2 / 0.08 / 1.0</td>
+<td>How high the splatter reaches</td>
+</tr>
+<tr>
+<td><code>fall.lowBias</code> / <code>opacity</code></td>
+<td>1.3 / 0.55</td>
+<td>Spread and strength of fall splats</td>
+</tr>
+<tr>
+<td><code>fall.spread</code></td>
+<td>0.2</td>
+<td>Extra random reach per fall splat</td>
+</tr>
+<tr>
+<td><code>soot.enabled</code> / <code>color</code></td>
+<td>true / <code>#1E1C1A</code></td>
+<td>Fire damage leaves soot, and its color</td>
+</tr>
+<tr>
+<td><code>soot.strengthPerDamage</code></td>
+<td>0.15</td>
+<td>How quickly burning builds up soot</td>
+</tr>
+<tr>
+<td><code>soot.bottomOpacity</code> / <code>topOpacity</code></td>
+<td>0.8 / 0.15</td>
+<td>Heaviest soot at the feet and at the top of the head, blending in between</td>
+</tr>
+<tr>
+<td><code>blast.enabled</code></td>
+<td>true</td>
+<td>Explosion damage leaves soot (in <code>soot.color</code>) on the side facing the blast</td>
+</tr>
+<tr>
+<td><code>blast.opacity</code></td>
+<td>1.0</td>
+<td>Soot strength from a blast right next to you. It fades to nothing at twice the blast's radius</td>
+</tr>
+<tr>
+<td><code>blast.wrap</code></td>
+<td>0.3</td>
+<td>How far blast soot creeps around from the facing side: 0 stops at the sides, 1 reaches all the way around</td>
+</tr>
+<tr>
+<td><code>sticky.enabled</code></td>
+<td>true</td>
+<td>Honey and slime blocks smear the feet in their color</td>
+</tr>
+<tr>
+<td><code>sticky.blocks</code></td>
+<td><code>#ffentitydirt:sticky_surfaces</code></td>
+<td>Blocks that count as sticky; they leave no ordinary walking dirt. Colors come from <code>surfaces.colors</code></td>
+</tr>
+<tr>
+<td><code>sticky.splatsPerSecond</code> / <code>splatsPerBlock</code></td>
+<td>1.5 / 3</td>
+<td>Smears per second on a sticky block, standing or moving, plus extra per block moved (walking on dirt is about 1 per block)</td>
+</tr>
+<tr>
+<td><code>sticky.reach</code> / <code>opacity</code></td>
+<td>0.2 / 0.6</td>
+<td>How high smears reach (feet and ankles) and how strong each one is</td>
+</tr>
+<tr>
+<td><code>powderSnow.enabled</code> / <code>color</code></td>
+<td>true / <code>#F2F6FA</code></td>
+<td>Powder snow coats whatever is sunk in it</td>
+</tr>
+<tr>
+<td><code>powderSnow.buildPerSecond</code></td>
+<td>0.12</td>
+<td>How fast the coat builds, as the share of the way to a full coat per second</td>
+</tr>
+<tr>
+<td><code>powderSnow.bottomOpacity</code> / <code>topOpacity</code> / <code>noise</code></td>
+<td>0.85 / 0.6 / 0.3</td>
+<td>Heaviest coat at the feet and at the snow's surface, and how patchy it is</td>
+</tr>
+<tr>
+<td><code>lava.enabled</code> / <code>color</code></td>
+<td>true / <code>#1A1210</code></td>
+<td>Lava chars whatever is below its surface</td>
+</tr>
+<tr>
+<td><code>lava.darkenPerSecond</code> / <code>opacity</code> / <code>noise</code></td>
+<td>0.05 / 0.9 / 0.25</td>
+<td>How fast it chars, the darkest it gets, and how patchy it is</td>
+</tr>
+<tr>
+<td><code>lava.skipFireImmune</code></td>
+<td>true</td>
+<td>Leave naturally fire-immune mobs (striders, blazes, magma cubes) uncharred. Fire Resistance does not count</td>
+</tr>
+<tr>
+<td><code>mining.enabled</code> / <code>chance</code> / <code>splats</code></td>
+<td>true / 0.3 / 3</td>
+<td>Breaking a block can leave specks of its color; the chance per block and how many specks</td>
+</tr>
+<tr>
+<td><code>mining.spreadDegrees</code> / <code>opacity</code></td>
+<td>35 / 0.4</td>
+<td>How far specks stray from the block's direction, and how strong each one is</td>
+</tr>
+<tr>
+<td><code>mining.whitelist</code></td>
+<td><code>#minecraft:base_stone_overworld</code>, <code>#minecraft:dirt</code>, <code>#ffentitydirt:mining_blocks</code></td>
+<td>Blocks that leave specks. Empty it to let every block leave specks</td>
+</tr>
+<tr>
+<td><code>mining.blacklist</code></td>
+<td>empty</td>
+<td>Blocks that never leave specks. Colors come from <code>surfaces.colors</code>, else the block's map color</td>
+</tr>
+<tr>
+<td><code>appearance.brushMinRadius</code> / <code>brushMaxRadius</code></td>
+<td>0 / 1</td>
+<td>Each splat picks a random size between these, in texture pixels: 0 is a single pixel, 1 a small plus shape, bigger is a round blob</td>
+</tr>
+<tr>
+<td><code>appearance.maxOpacity</code></td>
+<td>0.85</td>
+<td>Dirt stops building up at this opacity</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="server-damage-the-damage-layer">Server: damage (the Damage layer)</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>true</td>
+<td>Switch the Damage layer on or off. Existing marks still wash off</td>
+</tr>
+<tr>
+<td><code>entityWhitelist</code> / <code>entityBlacklist</code></td>
+<td>empty / <code>#ffentitydirt:never_damaged</code></td>
+<td>Which mobs get damage marks</td>
+</tr>
+<tr>
+<td><code>minDamage</code></td>
+<td>0.5</td>
+<td>Least damage (half hearts) that leaves a mark</td>
+</tr>
+<tr>
+<td><code>defaultColor</code></td>
+<td><code>#8A1C1C</code></td>
+<td>Mark color for mobs not listed below</td>
+</tr>
+<tr>
+<td><code>colors</code></td>
+<td>endermen and ender dragon purple, <code>#minecraft:skeletons</code> brown, <code>#minecraft:zombies</code> darker red</td>
+<td><code>entity=#RRGGBB</code>; an exact ID beats a tag</td>
+</tr>
+<tr>
+<td><code>colorVariation</code> / <code>maxOpacity</code></td>
+<td>0.08 / 0.95</td>
+<td>Random shading; marks stop building up at this opacity</td>
+</tr>
+<tr>
+<td><code>roughness</code></td>
+<td>0.5</td>
+<td>How messily wounds go on: samples wander and vary, edges come out ragged, stray droplets land nearby. 0 is perfectly clean</td>
+</tr>
+<tr>
+<td><code>size.baseOpacity</code> / <code>opacityPerDamage</code></td>
+<td>0.6 / 0.08</td>
+<td>Mark strength: base plus a bit per half heart</td>
+</tr>
+<tr>
+<td><code>size.baseRadius</code> / <code>radiusPerDamage</code> / <code>maxRadius</code></td>
+<td>1 / 0.3 / 4</td>
+<td>Mark size in texture pixels, growing with damage</td>
+</tr>
+<tr>
+<td><code>projectiles.enabled</code></td>
+<td>true</td>
+<td>Projectiles mark where they hit</td>
+</tr>
+<tr>
+<td><code>melee.enabled</code></td>
+<td>true</td>
+<td>Melee hits leave a wound</td>
+</tr>
+<tr>
+<td><code>melee.aimFromEyes</code></td>
+<td>true</td>
+<td>Aim slashes along the attacker's line of sight from its eyes, so they land where it was looking. Off: the older placement on the side facing the attacker at a random height</td>
+</tr>
+<tr>
+<td><code>melee.eyeSpread</code></td>
+<td>0.12</td>
+<td>How far a slash aimed from the eyes can land from where the attacker looked, as a fraction of the mob's height</td>
+</tr>
+<tr>
+<td><code>melee.minHeight</code> / <code>maxHeight</code> / <code>sideSpread</code></td>
+<td>0 / 1 / 0.4</td>
+<td>With <code>aimFromEyes</code> off, where on the body the middle of a slash can land</td>
+</tr>
+<tr>
+<td><code>melee.slashMinLength</code> / <code>slashMaxLength</code></td>
+<td>1 / 4</td>
+<td>Slash length in texture pixels: longest when the attacker is close. Every other wound shrinks by the same share of <code>slashMaxLength</code>, down to its own minimum; at 4 wounds are full size</td>
+</tr>
+<tr>
+<td><code>melee.slashNearDistance</code> / <code>slashFarDistance</code></td>
+<td>0.5 / 3</td>
+<td>Attacker distance in blocks for the longest and shortest slash</td>
+</tr>
+<tr>
+<td><code>melee.slashMinThickness</code> / <code>slashMaxThickness</code> / <code>slashThicknessPerDamage</code></td>
+<td>1 / 3 / 0.3</td>
+<td>Slash thickness in texture pixels, growing with damage. Odd widths only, so 2 rounds to 3. Other cutting wounds scale this; blots (stabs, bruises, crushes) scale <code>size.baseRadius</code></td>
+</tr>
+<tr>
+<td><code>wounds.enabled</code></td>
+<td>true</td>
+<td>Weapons leave their own wounds. Off: every melee hit is a slash and every projectile a puncture</td>
+</tr>
+<tr>
+<td><code>wounds.weaponWound</code> / <code>unarmedWound</code> / <code>projectileWound</code></td>
+<td>slash / bruise / puncture</td>
+<td>Fallbacks: a weapon nothing else matched (attack damage or <code>#c:tools/melee_weapon</code>), a bare hand, non-weapon item or untagged mob, and an untagged projectile</td>
+</tr>
+<tr>
+<td><code>wounds.betterCombatCategories</code></td>
+<td>every Better Combat preset</td>
+<td><code>category=wound</code> for weapons Better Combat knows (dagger stabs, claymore cleaves, hammer crushes), used when the item is in no wound tag</td>
+</tr>
+<tr>
+<td><code>wounds.itemKeywords</code></td>
+<td>about 50 weapon words</td>
+<td><code>word=wound</code>, matched against the item's ID as a last guess: <code>sword</code> matches <code>iron_longsword</code>, and the longest word wins, so <code>pickaxe</code> beats <code>axe</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="server-snow-the-snow-layer-uses-the-dirt-entity-lists">Server: snow (the Snow layer; uses the dirt entity lists)</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>true</td>
+<td>Switch the Snow layer on or off. Existing snow still melts and washes off</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td><code>#F4F8FF</code></td>
+<td>Snow color</td>
+</tr>
+<tr>
+<td><code>buildPerSecond</code></td>
+<td>0.02</td>
+<td>How fast snow piles up. At the default, the top of the head is well covered after about a minute</td>
+</tr>
+<tr>
+<td><code>depth</code></td>
+<td>0.8</td>
+<td>How far down from the top snow reaches. 1 goes all the way to the feet</td>
+</tr>
+<tr>
+<td><code>topOpacity</code> / <code>bottomOpacity</code></td>
+<td>0.9 / 0.1</td>
+<td>Heaviest snow at the top and at the lowest point it reaches</td>
+</tr>
+<tr>
+<td><code>noise</code></td>
+<td>0.35</td>
+<td>How patchy snow looks. 0 is a perfectly smooth fade</td>
+</tr>
+<tr>
+<td><code>meltPerMinute</code></td>
+<td>0.3</td>
+<td>How fast snow melts once it stops falling on you. 0 keeps it until washed off</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="server-cleaning-and-debug">Server: cleaning and debug</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cleaning.water.enabled</code></td>
+<td>true</td>
+<td>Water washes dirt and damage marks off</td>
+</tr>
+<tr>
+<td><code>cleaning.water.fadePerSecond</code></td>
+<td>0.1</td>
+<td>How fast it washes off</td>
+</tr>
+<tr>
+<td><code>cleaning.water.submergedOnly</code></td>
+<td>true</td>
+<td>Only wash what's under the water line</td>
+</tr>
+<tr>
+<td><code>cleaning.water.waterlineMargin</code></td>
+<td>0.05</td>
+<td>A little splash above the water line</td>
+</tr>
+<tr>
+<td><code>cleaning.rain.enabled</code> / <code>fadePerSecond</code></td>
+<td>true / 0.02</td>
+<td>Rain from open sky washes the whole body, and how fast</td>
+</tr>
+<tr>
+<td><code>cleaning.cauldron.enabled</code> / <code>fadePerSecond</code></td>
+<td>true / 0.1</td>
+<td>A water cauldron bath washes every layer off, and how fast</td>
+</tr>
+<tr>
+<td><code>cleaning.time.fadePerMinute</code></td>
+<td>0.1</td>
+<td>How fast damage marks fade on their own. 0 keeps them until washed or healed</td>
+</tr>
+<tr>
+<td><code>cleaning.time.stepSeconds</code></td>
+<td>30</td>
+<td>How often that fading is applied. Longer steps mean less network traffic</td>
+</tr>
+<tr>
+<td><code>cleaning.healing.fadePerFullHeal</code></td>
+<td>1.0</td>
+<td>How much of a mark healing removes: at 1, healing half your health halves every mark. 0 turns it off</td>
+</tr>
+<tr>
+<td><code>debug.logPaintWrites</code></td>
+<td>false</td>
+<td>Log each paint write, wash, soot and snow, and work dropped because a mob's shape isn't known yet</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="client-drips-particlepaint">Client: drips (<code>particlePaint</code>)</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>true</td>
+<td>Drips paint mobs at all. Spots already painted keep fading while it's off</td>
+</tr>
+<tr>
+<td><code>maxDistance</code></td>
+<td>48</td>
+<td>Only mobs this many blocks from your camera get painted or fade</td>
+</tr>
+<tr>
+<td><code>maxChecksPerTick</code></td>
+<td>4</td>
+<td>How many mob models are checked for drip hits per tick. Lower is lighter on slow computers</td>
+</tr>
+<tr>
+<td><code>hitsPerEntityPerSecond</code></td>
+<td>4</td>
+<td>Most drips painted on one mob per second</td>
+</tr>
+<tr>
+<td><code>paintSelf</code></td>
+<td>true</td>
+<td>Whether drips paint you too</td>
+</tr>
+<tr>
+<td><code>entityWhitelist</code> / <code>entityBlacklist</code></td>
+<td>empty / <code>#ffentitydirt:never_dirty</code></td>
+<td>Which mobs drips paint</td>
+</tr>
+<tr>
+<td><code>rules</code></td>
+<td>dripping and falling water (<code>wet</code>) and lava (<code>scorch</code>)</td>
+<td>Which particles paint, as <code>particle=style</code>. Add a mod's particles like <code>somemod:falling_slime=wet</code>, or a whole mod with <code>somemod:*=wet</code></td>
+</tr>
+<tr>
+<td><code>logHits</code></td>
+<td>false</td>
+<td>Log every drip that paints a mob</td>
+</tr>
+</tbody>
+</table></div>
+<p>Each style has its own section:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Wet</th>
+<th>Scorch</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>true</td>
+<td>true</td>
+<td>Whether this style paints</td>
+</tr>
+<tr>
+<td><code>layerName</code></td>
+<td><code>Wet</code></td>
+<td><code>Scorch</code></td>
+<td>The local layer it paints on</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td><code>#3A5A78</code></td>
+<td><code>#2B211B</code></td>
+<td>Spot color</td>
+</tr>
+<tr>
+<td><code>strength</code></td>
+<td>0.35</td>
+<td>0.7</td>
+<td>How strong one spot is. Drips on the same place build up</td>
+</tr>
+<tr>
+<td><code>blendMode</code></td>
+<td><code>multiply</code></td>
+<td><code>normal</code></td>
+<td>How the layer mixes with the fur under it</td>
+</tr>
+<tr>
+<td><code>minRadius</code> / <code>maxRadius</code></td>
+<td>0 / 1</td>
+<td>0 / 1</td>
+<td>Spot size in texture pixels</td>
+</tr>
+<tr>
+<td><code>fadeSeconds</code></td>
+<td>90</td>
+<td>600</td>
+<td>How long a full spot takes to fade while the mob is nearby. 0 keeps it</td>
+</tr>
+<tr>
+<td><code>splashParticle</code></td>
+<td><code>minecraft:splash</code></td>
+<td><code>minecraft:landing_lava</code></td>
+<td>What shows where a drip lands. Empty lets the drip fall on through after painting</td>
+</tr>
+</tbody>
+</table></div>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

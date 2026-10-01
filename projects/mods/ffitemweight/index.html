@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Overview — FFItemWeight — Fyxe's Mod Wiki</title>
 <meta name="description" content="Gives items weight and players configurable encumbrance bands.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemWeight</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Gives items weight and players configurable encumbrance bands.</p><h2>Features</h2><ul><li>Counts item stacks and optional nested inventories.</li><li>Datapacks define item weights, capacity, and encumbrance levels.</li><li>Datapack weight_from references keep items equal to another item; all oxidized and waxed copper variants follow their matching fresh copper shape.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR on every loader; no separate library download is needed.</p><h2>How weight works</h2>
+<h2 id="overview">Overview</h2><p>Gives items weight and players configurable encumbrance bands.</p>
+<figure class="figure figure--todo"><div class="figure__todo">Survival HUD close-up of the encumbrance icon at Heavy Load, with its label and the total weight readout next to it.</div></figure>
+<h2 id="features">Features</h2><ul><li>Counts item stacks and optional nested inventories.</li><li>Datapacks define item weights, capacity, and encumbrance levels.</li><li>Datapack weight_from references keep items equal to another item; all oxidized and waxed copper variants follow their matching fresh copper shape.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR on every loader; no separate library download is needed.</p><h2 id="how-weight-works">How weight works</h2>
 <p>Every item has a <strong>unit weight</strong>. Stack weight is unit times count, plus the contents of shulkers, bundles and other nested inventories when that option is on. Your <strong>total</strong> is your inventory plus optional armor, offhand, Accessories and Curios slots.</p>
 <p>Totals map to datapack <strong>encumbrance</strong> bands ordered by integer <code>level</code>. Capacity scaling can raise those capacities from player level, armor, equipment overrides, accessory bonuses and the Burden Bearing / Crushing Load enchantments.</p>
 <div class="table-wrap"><table>
@@ -72,7 +79,7 @@
 <p>Bands can also list attribute modifiers (none shipped by default). Creative mode ignores carry weight unless you turn that on.</p>
 <p>Weights are computed on the <strong>server</strong> (datapack bases plus optional recipe derivation) and synced; display is client-only. Items that hold other items through a loader storage API (a Forge or NeoForge item handler, or Fabric item storage on 1.21 and newer) have their contents counted too, as long as nested inventories are on.</p>
 <p><strong>Enchantments:</strong> Burden Bearing raises carrying capacity and Crushing Load (a treasure curse) lowers it. They are datapack enchantments on 1.21 and newer and built-in enchantments on 1.20.x, with the same levels and costs either way.</p>
-<h3>Client display</h3>
+<h3 id="client-display">Client display</h3>
 <ul>
 <li>Tooltips: item weight category and numeric weight (Shift for precise values)</li>
 <li>Inventory slots: optional outline or background by item weight band</li>
@@ -80,17 +87,17 @@
 <li>Optional <code>showWeightUntilNext</code> draws <code>123.4 /2000 (+45)</code></li>
 <li>Icon shake uses the band's <code>shake</code> field times the client <code>intensity</code></li>
 </ul>
-<h2>Configuration</h2>
+<h2 id="configuration">Configuration</h2>
 <p>Client config: <code>ffitemweight-client.toml</code> (tooltips, slots, HUD). Server config: <code>ffitemweight-server.toml</code> (calculation, nested inventories, tracking, capacity, effect toggles). Encumbrance bands themselves are datapack JSON, not config. The config screens open from the Mods screen (through Mod Menu on Fabric). Forge 1.20.1 has no config screen, so edit the files there.</p>
 <p>Recipe derivation settings live in the server <code>calculation</code> section; see <a href="datapacks.html">Datapacks</a> for how they interact with item weights.</p>
-<h2>Commands</h2>
+<h2 id="commands">Commands</h2>
 <p>Permission level 2:</p>
 <ul>
 <li><code>/ffitemweight defaults [page]</code> lists items still on <code>defaultWeight</code>.</li>
 <li><code>/ffitemweight exportdefaults</code> writes all those item IDs, one per line, to <code>ffitemweight-defaults.txt</code> in the current world's folder. Run it again after changing datapacks or mods to refresh the list.</li>
 <li><code>/ffitemweight help</code> lists commands.</li>
 </ul>
-<h2>Compatibility details</h2>
+<h2 id="compatibility-details">Compatibility details</h2>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -134,7 +141,7 @@
 </tbody>
 </table></div>
 <p>Specialized weight packs also ship for Create, Create Aeronautics, Farmer's Delight, Supplementaries, Handcrafted and Macaw's mods.</p>
-<h2>Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr><tr><th>Source version</th><td colspan="2">0.8.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2>For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, events, and integration examples.</p>
+<h2 id="requirements-and-source-version">Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr><tr><th>Source version</th><td colspan="2">0.8.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2 id="for-mod-developers">For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, events, and integration examples.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

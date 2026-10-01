@@ -1,19 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modding API — FF Entity Dirt — Fyxe's Mod Wiki</title>
-<meta name="description" content="Add wound marks to FF Entity Dirt and choose which weapons and mobs leave them.">
+<title>Modding API — FFEntityDirt — Fyxe's Mod Wiki</title>
+<meta name="description" content="Add wound marks to FFEntityDirt and choose which weapons and mobs leave them.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
-<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Entity Dirt</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFEntityDirt</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
 <p>This guide describes the public API in the current source version <code>0.8.0</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
-<h2>FF Entity Dirt — Modding API</h2>
-<p>The API covers <strong>wound marks</strong>: what a hit leaves on the Damage layer. You can add your own wounds, restyle the built-in ones, assign item and entity type tags to them, and pick wounds in code. Dirt, soot and snow have no public API; they are built on <a href="../ffentitypainting/api.html">FF Entity Painting's API</a>.</p>
+<h2 id="ffentitydirt-modding-api">FFEntityDirt — Modding API</h2>
+<p>The API covers <strong>wound marks</strong>: what a hit leaves on the Damage layer. You can add your own wounds, restyle the built-in ones, assign item and entity type tags to them, and pick wounds in code. Dirt, soot and snow have no public API; they are built on <a href="../ffentitypainting/api.html">FFEntityPainting's API</a>.</p>
 <div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
 <tr><td><strong>Minecraft</strong></td><td>1.21.1, 1.21.11</td></tr>
 <tr><td><strong>Loader</strong></td><td>NeoForge, Fabric</td></tr>
@@ -29,7 +34,7 @@
     ordering=&quot;NONE&quot;
     side=&quot;BOTH&quot;</code></pre>
 <p>Call the API from code that only loads when <code>ffentitydirt</code> is installed. Wounds are decided on the server, so register them on both sides (common setup), during mod construction or setup. Everything is thread safe.</p>
-<h3>How a wound is picked</h3>
+<h3 id="how-a-wound-is-picked">How a wound is picked</h3>
 <ol>
 <li>Resolvers added with <code>WoundAPI.addResolver</code>, in order. The first registered wound ID returned wins.</li>
 <li>Melee: the attacker's main-hand item against the wound item tags. Every wound checks <code>&lt;namespace&gt;:wounds/&lt;path&gt;</code> plus any tags assigned with <code>assignItems</code>, highest wound priority first.</li>
@@ -38,14 +43,14 @@
 <li>Fallbacks: <code>projectileWound</code> for projectiles, <code>weaponWound</code> for an item with attack damage or in <code>#c:tools/melee_weapon</code>, else <code>unarmedWound</code>.</li>
 </ol>
 <p>With <code>damage.wounds.enabled</code> off, melee always slashes and projectiles always puncture.</p>
-<h3>Classes</h3>
+<h3 id="classes">Classes</h3>
 <div class="table-wrap"><table><thead><tr><th>Class</th><th>What it does</th></tr></thead><tbody>
 <tr><td><code>WoundAPI</code></td><td><code>register(id, shape[, priority])</code>, <code>replaceShape(id, shape)</code>, <code>shape(id)</code>, <code>isRegistered(id)</code>, <code>ids()</code>, <code>itemTag(id)</code>, <code>entityTag(id)</code>, <code>assignItems(tag, id)</code>, <code>assignEntities(tag, id)</code>, <code>addResolver(resolver)</code>, <code>resolve(context)</code>. Constants for the 15 built-in wounds: <code>SLASH</code>, <code>GASH</code>, <code>CLEAVE</code>, <code>STAB</code>, <code>PUNCTURE</code>, <code>TRIPLE_PUNCTURE</code>, <code>BRUISE</code>, <code>CRUSH</code>, <code>SCRATCH</code>, <code>CLAW</code>, <code>BITE</code>, <code>GORE</code>, <code>LASH</code>, <code>STING</code>, <code>SPLATTER</code>.</td></tr>
 <tr><td><code>WoundShape</code></td><td>What a wound looks like: strokes and dots in texture pixels, optional spatter, a color tint and a minimum size. Built with <code>WoundShape.builder(Sizing)</code>.</td></tr>
 <tr><td><code>WoundContext</code></td><td>The hit a resolver sees: <code>victim</code>, <code>source</code>, <code>attacker</code>, <code>direct</code>, <code>weapon</code> (never null), <code>projectile</code>, <code>damage</code>.</td></tr>
 <tr><td><code>WoundResolver</code></td><td>Functional interface: return a registered wound ID for a hit, or null to pass.</td></tr>
 </tbody></table></div>
-<h3>Shapes</h3>
+<h3 id="shapes">Shapes</h3>
 <p>Coordinates are texture pixels of the part that was hit, at full size, with the hit spot at (0, 0). <code>x</code> runs along the wound's main axis and <code>y</code> across it. The built-in slash is one stroke from (-2, 0) to (2, 0).</p>
 <ul>
 <li><strong>Sizing</strong>: <code>LINE</code> stroke sizes multiply the slash thickness (<code>damage.melee.slashMin/MaxThickness</code>, growing with damage); <code>BLOT</code> sizes multiply the mark radius (<code>damage.size</code>). Spatter droplets always use the mark radius.</li>
@@ -54,7 +59,7 @@
 <li><strong>Size</strong>: melee wounds shrink with the attacker's distance by <code>slashLength / 4</code> (<code>damage.melee.slashMinLength</code> to <code>slashMaxLength</code>), never below <code>minScale</code>. Projectile wounds are always full size.</li>
 <li><strong>Roughness</strong>: every wound gets <code>damage.roughness</code> applied on top: samples wander, vary in strength and size, leave small gaps, brush edges come out ragged and a stray droplet or two lands nearby.</li>
 </ul>
-<h3>Example: a new wound</h3>
+<h3 id="example-a-new-wound">Example: a new wound</h3>
 <pre><code class="language-java">import com.fyxe.ffentitydirt.api.WoundAPI;
 import com.fyxe.ffentitydirt.api.WoundShape;
 
@@ -70,7 +75,7 @@ WoundAPI.register(SERRATED, WoundShape.builder(WoundShape.Sizing.LINE)
 // Items in #mymod:wounds/serrated now leave it. Assign more tags if you like:
 WoundAPI.assignItems(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(&quot;mymod&quot;, &quot;saw_blades&quot;)), SERRATED);</code></pre>
 <p>On 1.21.11, use <code>Identifier</code> where this shows <code>ResourceLocation</code>.</p>
-<h3>Example: assign tags or decide in code</h3>
+<h3 id="example-assign-tags-or-decide-in-code">Example: assign tags or decide in code</h3>
 <pre><code class="language-java">// Your claw gauntlets rake like a cat.
 WoundAPI.assignItems(MyTags.CLAW_GAUNTLETS, WoundAPI.CLAW);
 // Your werewolf bites when unarmed.
@@ -78,7 +83,7 @@ WoundAPI.assignEntities(MyTags.WEREWOLVES, WoundAPI.BITE);
 // Or decide per hit: a charged spear crushes instead of stabbing.
 WoundAPI.addResolver(context -&gt; context.weapon().is(MyItems.SPEAR) &amp;&amp; MySpear.isCharged(context.weapon())
         ? WoundAPI.CRUSH : null);</code></pre>
-<h3>Notes</h3>
+<h3 id="notes">Notes</h3>
 <ul>
 <li><code>register</code> throws if the ID is taken; use <code>replaceShape</code> to restyle an existing wound (it keeps the priority and tags).</li>
 <li>Priority only matters when an item or entity is in several wound tags: highest wins. The trident's wound is 10 and the crush 5; the others are 0.</li>

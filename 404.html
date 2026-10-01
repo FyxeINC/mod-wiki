@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>/* Served for any missing path: resolve links from the site root, which is the first path segment on a project site (/mod-wiki/) and / on a custom domain. */(function(){var p=location.pathname.split("/");var nested=p.length>2&&!/^(projects|assets)$/.test(p[1])&&!/\.html?$/.test(p[1]);document.write('<base href="'+(nested?"/"+p[1]+"/":"/")+'">');})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page not found — Fyxe's Mod Wiki</title>
+<meta name="description" content="This page does not exist.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
+</head>
+<body>
+
+<div data-site-header></div>
+
+<main class="layout layout--wide">
+  <div class="content content--page">
+
+    <div class="not-found">
+      <p class="not-found__code">404</p>
+      <h1>This page wandered off</h1>
+      <p class="lead">The page you were looking for isn't here. It may have moved when the guides were reorganized. Try the search box at the top, or start from one of these:</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="projects/index.html">Browse projects</a>
+        <a class="btn btn--ghost" href="index.html">Home</a>
+        <a class="btn btn--ghost" href="updates.html">Recent updates</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div data-site-footer></div>
+
+<script>window.SITE_ROOT = "";</script>
+<script src="assets/js/wiki-data.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

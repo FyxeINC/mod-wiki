@@ -1,17 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Datapacks — FFItemRarityModifiers — Fyxe's Mod Wiki</title>
 <meta name="description" content="Modifier types, rarity weights, rarity sources, overrides and item tags.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemRarityModifiers</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Datapacks</h2>
+<h2 id="datapacks">Datapacks</h2>
 <p>Datapacks control how often rarities appear and what their modifiers do. All files live under <code>data/&lt;namespace&gt;/ffitemraritymodifiers/</code>, and <code>/reload</code> picks up changes.</p>
 <div class="table-wrap"><table>
 <thead>
@@ -43,7 +48,7 @@
 </tr>
 </tbody>
 </table></div>
-<h3>Modifier types</h3>
+<h3 id="modifier-types">Modifier types</h3>
 <pre><code class="language-json">{
   &quot;category&quot;: &quot;good&quot;,
   &quot;kind&quot;: &quot;attribute&quot;,
@@ -128,7 +133,7 @@
 </tbody>
 </table></div>
 <p>Attribute IDs follow the Minecraft version: on 1.21.11 write <code>minecraft:attack_damage</code> instead of <code>minecraft:generic.attack_damage</code>. Bundled examples include attack, armor, durability, reach, movement, health, mining speed, fishing luck and shield modifiers.</p>
-<h3>Rarity weights</h3>
+<h3 id="rarity-weights">Rarity weights</h3>
 <p>File name must be a vanilla rarity ID (<code>common</code>, <code>uncommon</code>, <code>rare</code>, <code>epic</code>). Each list is a weighted table of how many modifiers to roll. This is the bundled <code>rare.json</code>:</p>
 <pre><code class="language-json">{
   &quot;good_amounts&quot;: [
@@ -144,7 +149,7 @@
   ]
 }
 </code></pre>
-<h3>Rarity sources</h3>
+<h3 id="rarity-sources">Rarity sources</h3>
 <p><code>chance</code> (0 to 1) is how likely the trigger rolls a rarity at all; <code>rarity_weights</code> picks which one, including Common. A successful Common roll is shown on the item.</p>
 <pre><code class="language-json">{
   &quot;chance&quot;: 1.00,
@@ -157,7 +162,7 @@
 }
 </code></pre>
 <p>Built-in IDs used automatically: <code>crafting</code>, <code>fishing</code>, <code>trading</code>, <code>mob_drops</code>, <code>loot_table</code>. The bundled <code>elite_mobs</code> and <code>dungeon_loot</code> sources are used by the example overrides below. Packs that override <code>trading_before</code> must rename that source to <code>trading</code>. A <code>smithing_default</code> source also ships for future use, but nothing calls it automatically yet. Add your own ID and reference it from an override file or from a mod through the API.</p>
-<h3>Source overrides</h3>
+<h3 id="source-overrides">Source overrides</h3>
 <p>Redirect specific mobs (or entity tags, with a <code>#</code> prefix) away from <code>mob_drops</code>, or specific loot tables away from <code>loot_table</code>:</p>
 <pre><code class="language-json">{
   &quot;targets&quot;: [&quot;minecraft:wither_skeleton&quot;, &quot;#minecraft:raiders&quot;],
@@ -165,7 +170,7 @@
 }
 </code></pre>
 <p>Save it under <code>rarity_source_override/mob/</code> for mobs or <code>rarity_source_override/loot_table/</code> with loot table IDs as targets.</p>
-<h3>Item tags</h3>
+<h3 id="item-tags">Item tags</h3>
 <p><code>data/ffitemraritymodifiers/tags/item/</code> holds <code>weapons.json</code>, <code>armor.json</code>, <code>tools.json</code>, <code>mining_tools.json</code> and <code>accessories.json</code>, which decide which single-stack items this mod may touch. Use <code>tags/items</code> (plural) on 1.20.6.</p>
 <ul>
 <li>Weapons use the shared melee and ranged weapon tags (<code>c:tools/melee_weapon</code> and <code>c:tools/ranged_weapon</code>).</li>

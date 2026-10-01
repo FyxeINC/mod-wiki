@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Overview — FFMobSunBurnAngle — Fyxe's Mod Wiki</title>
 <meta name="description" content="Uses the sun angle for burning and spawn checks on sunlight sensitive mobs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFMobSunBurnAngle</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Uses the sun angle for burning and spawn checks on sunlight sensitive mobs.</p><h2>Features</h2><ul><li>Checks direction to the sun instead of only vertical sky access.</li><li>Configurable mob filters, transparent blocks, and performance controls.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR; no separate library download is needed.</p><h2>How it works in detail</h2>
+<h2 id="overview">Overview</h2><p>Uses the sun angle for burning and spawn checks on sunlight sensitive mobs.</p>
+<figure class="figure figure--todo"><div class="figure__todo">Morning scene with the sun low in the sky: one zombie standing in the long shadow of a cliff is not burning, while another zombie a few blocks away in direct sunlight is on fire.</div></figure>
+<h2 id="features">Features</h2><ul><li>Checks direction to the sun instead of only vertical sky access.</li><li>Configurable mob filters, transparent blocks, and performance controls.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR; no separate library download is needed.</p><h2 id="how-it-works-in-detail">How it works in detail</h2>
 <ul>
 <li><strong>Directional sun burning:</strong> a raycast toward the sun replaces the vertical sky check.</li>
 <li><strong>Day-length friendly:</strong> it follows the dimension's celestial angle, so mods that change day length keep working.</li>
@@ -22,8 +29,8 @@
 <li><strong>Debug rays:</strong> optional in-world lines showing what each mob is checking (green means it would burn, red means it is shaded).</li>
 </ul>
 <p>Open the config screen from the Mods list (Mod Menu on Fabric; optional).</p>
-<h2>Configuration</h2>
-<h3>General</h3>
+<h2 id="configuration">Configuration</h2>
+<h3 id="general">General</h3>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -65,7 +72,7 @@
 </tr>
 </tbody>
 </table></div>
-<h3>Mob filter</h3>
+<h3 id="mob-filter">Mob filter</h3>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -98,7 +105,7 @@
 <li><strong>blacklist:</strong> every mob except the listed IDs</li>
 </ul>
 <p>Mobs outside the filter keep vanilla sun-burn and spawn behavior.</p>
-<h3>Spawning</h3>
+<h3 id="spawning">Spawning</h3>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -120,7 +127,7 @@
 </tr>
 </tbody>
 </table></div>
-<h3>Debug</h3>
+<h3 id="debug">Debug</h3>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -142,7 +149,7 @@
 </tr>
 </tbody>
 </table></div>
-<h2>Good to know</h2>
+<h2 id="good-to-know">Good to know</h2>
 <ul>
 <li>Phantoms: burning is covered, but spawn prevention only applies to monsters that use the standard monster spawn rules (phantoms use their own).</li>
 <li>Helmet protection stays vanilla, and no "seek shade" AI is added.</li>
@@ -151,7 +158,7 @@
 <li>Burning re-applies with the vanilla random chance every tick, so burn time and damage match vanilla while a mob stays in sunlight.</li>
 <li>There is no datapack support. Choose affected mobs with the mob filter config; vanilla tags and data keep working as usual.</li>
 </ul>
-<h2>Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.21.1</td></tr><tr><th>Loader</th><td>NeoForge 21.1.211 or newer, or Fabric Loader 0.16.1 or newer with Fabric API</td></tr><tr><th>Source version</th><td>1.2.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
+<h2 id="requirements-and-source-version">Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.21.1</td></tr><tr><th>Loader</th><td>NeoForge 21.1.211 or newer, or Fabric Loader 0.16.1 or newer with Fabric API</td></tr><tr><th>Source version</th><td>1.2.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

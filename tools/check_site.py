@@ -49,12 +49,24 @@ if siblings:
     for slug in sorted(siblings - documented):
         errors.append(f"Mod missing from wiki-data.js: {slug}")
 
+# Every page, importer templates included, loads the shared fonts and sets
+# the theme in <head> so text never falls back or flashes the wrong theme.
+HEAD_MARKERS = {
+    "fonts.googleapis.com/css2?family=Zilla+Slab": "the Google Fonts stylesheet",
+    'localStorage.getItem("wiki-theme")': "the early theme script",
+    "assets/favicon.svg": "the favicon link",
+}
+
 for page in SITE.rglob("*.html"):
     if ".git" in page.parts:
         continue
+    html = page.read_text(encoding="utf-8")
+    head = html.split("</head>", 1)[0]
+    for marker, label in HEAD_MARKERS.items():
+        if marker not in head:
+            errors.append(f"Missing {label} in <head>: {page.relative_to(SITE)}")
     if page.parent == SITE / "tools":
         continue  # Importer templates are not served from their source path.
-    html = page.read_text(encoding="utf-8")
     parser = Links()
     parser.feed(html)
     for link in parser.links:
@@ -71,6 +83,14 @@ for page in SITE.rglob("*.html"):
             errors.append(f"Broken local link: {page.relative_to(SITE)}: {link}")
     if page.parent.parent == SITE / "projects/mods" and 'window.SITE_ROOT="../../../"' not in html:
         errors.append(f"Wrong SITE_ROOT: {page.relative_to(SITE)}")
+
+# Generated files (heading ids, search index, feed, sitemap, synced project
+# versions) must match what tools/build_site.py would write now.
+sys.path.insert(0, str(SITE / "tools"))
+import build_site  # noqa: E402
+
+for stale in build_site.stale_files():
+    errors.append(f"Out of date: {stale.relative_to(SITE).as_posix()} (run python tools/build_site.py)")
 
 if errors:
     print("\n".join(errors), file=sys.stderr)

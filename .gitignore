@@ -8,6 +8,7 @@ _site/
 .jekyll-metadata
 /tools/*
 !/tools/check_site.py
+!/tools/build_site.py
 import-mod.bat
 import-mod.sh
 # Additional Ruby/bundler ignore for when you run: bundle install

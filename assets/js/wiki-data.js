@@ -4,6 +4,8 @@ window.WIKI_DATA = {
     "name": "Fyxe's Mod Wiki",
     "mark": "FX",
     "description": "Documentation for Fyxe Minecraft mods, including projects awaiting publication.",
+    "url": "https://fyxeinc.github.io/mod-wiki/",
+    "repository": "https://github.com/FyxeINC/mod-wiki",
     "author": {
       "name": "Fyxe",
       "modrinth": "https://modrinth.com/user/Fyxe",
@@ -48,6 +50,24 @@ window.WIKI_DATA = {
         "project": "ffentitydirt",
         "page": "index.html",
         "change": "0.8.0: melee marks land where the attacker was looking, aimed from its eyes; melee.aimFromEyes switches back to the older placement."
+      },
+      {
+        "date": "2026-10-01",
+        "project": "ffentitypainting",
+        "page": "api.html",
+        "change": "0.9.4: 17 new layer blend modes (darken to luminosity, plus erase and mask) and 14 new brush pixel modes (atop, behind, dodge, burn, invert, saturate and more), all available to the modding API."
+      },
+      {
+        "date": "2026-10-01",
+        "project": "ffentitypainting",
+        "page": "index.html",
+        "change": "0.9.3: new Mob AI Wand item; right-click a mob to switch its AI off and on."
+      },
+      {
+        "date": "2026-10-01",
+        "project": "ffentitypainting",
+        "page": "index.html",
+        "change": "0.9.2: 3D Skin Layers support; the 3D hat, jacket, sleeves and pants of a player's skin take paint that lines up with the flat layers."
       },
       {
         "date": "2026-10-01",
@@ -119,7 +139,7 @@ window.WIKI_DATA = {
         "date": "2026-09-29",
         "project": "ffentitydirt",
         "page": "index.html",
-        "change": "0.8.0: now on Fabric and NeoForge for Minecraft 1.21.1 and 1.21.11; needs FF Entity Painting 0.9.0; dripping water and lava paint wet spots and scorch marks that only you see."
+        "change": "0.8.0: now on Fabric and NeoForge for Minecraft 1.21.1 and 1.21.11; needs FFEntityPainting 0.9.0; dripping water and lava paint wet spots and scorch marks that only you see."
       },
       {
         "date": "2026-09-29",
@@ -275,7 +295,7 @@ window.WIKI_DATA = {
         "date": "2026-09-28",
         "project": "ffentitydirt",
         "page": "index.html",
-        "change": "0.7.0: needs FF Entity Painting 0.8.0; smoother with many dirty mobs on screen."
+        "change": "0.7.0: needs FFEntityPainting 0.8.0; smoother with many dirty mobs on screen."
       },
       {
         "date": "2026-09-28",
@@ -287,7 +307,7 @@ window.WIKI_DATA = {
         "date": "2026-09-28",
         "project": "ffentitydirt",
         "page": "index.html",
-        "change": "0.6.0: needs FF Entity Painting 0.7.0, which now measures mob shapes; measuring settings moved there."
+        "change": "0.6.0: needs FFEntityPainting 0.7.0, which now measures mob shapes; measuring settings moved there."
       },
       {
         "date": "2026-09-28",
@@ -317,7 +337,7 @@ window.WIKI_DATA = {
         "date": "2026-09-27",
         "project": "ffentitydirt",
         "page": "index.html",
-        "change": "0.4.0: needs FF Entity Painting 0.6.0; faster dirt writes and model-accurate damage mark facing."
+        "change": "0.4.0: needs FFEntityPainting 0.6.0; faster dirt writes and model-accurate damage mark facing."
       },
       {
         "date": "2026-09-27",
@@ -389,7 +409,7 @@ window.WIKI_DATA = {
     {
       "slug": "ffcropevaporation",
       "type": "mod",
-      "name": "FF Crop Evaporation",
+      "name": "FFCropEvaporation",
       "index": "B",
       "status": "active",
       "description": "Crop growth can consume nearby water and require water access.",
@@ -409,7 +429,7 @@ window.WIKI_DATA = {
         },
         {
           "label": "Forge",
-          "class": ""
+          "class": "tag--amber"
         },
         {
           "label": "MC 1.20.1-1.21.11",
@@ -426,7 +446,7 @@ window.WIKI_DATA = {
           "file": "index.html",
           "title": "Overview",
           "index": "01",
-          "description": "FF Crop Evaporation features, requirements, and source version.",
+          "description": "FFCropEvaporation features, requirements, and source version.",
           "updated": "2026-09-30",
           "searchExcerpt": "Crop growth can consume nearby water and require water access."
         },
@@ -434,21 +454,31 @@ window.WIKI_DATA = {
           "file": "datapacks.html",
           "title": "Datapacks",
           "index": "02",
-          "description": "FF Crop Evaporation datapack formats: tags for modded farmland and evaporating fluids.",
+          "description": "FFCropEvaporation datapack formats: tags for modded farmland and evaporating fluids.",
           "updated": "2026-09-30",
           "searchExcerpt": "Farmland and evaporatable water tags, file paths per Minecraft version, and examples."
         }
+      ],
+      "targets": [
+        "1.20.1-fabric",
+        "1.20.1-forge",
+        "1.20.6-fabric",
+        "1.20.6-neoforge",
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
       ]
     },
     {
       "slug": "ffentitypainting",
       "type": "mod",
-      "name": "FF Entity Painting",
+      "name": "FFEntityPainting",
       "index": "C",
       "status": "active",
       "description": "Paint living entities, modded and GeckoLib mobs included, with shared, team-restricted and local layers, with a mod API for brushes, layer access rules and server-side painting.",
       "tagline": "Add a splash of color to living entities.",
-      "version": "0.9.1",
+      "version": "0.9.4",
       "minecraftVersion": "1.21.1, 1.21.11",
       "modrinthSlug": "",
       "icon": "",
@@ -476,14 +506,22 @@ window.WIKI_DATA = {
           "file": "index.html",
           "title": "Overview",
           "index": "01",
-          "description": "FF Entity Painting features, requirements, and source version.",
+          "description": "FFEntityPainting features, requirements, and source version.",
           "updated": "2026-10-01",
-          "searchExcerpt": "Paint living entities with layers, blend modes and brush opacity, local layers and team layers, modded and GeckoLib mobs."
+          "searchExcerpt": "Paint living entities with layers, blend modes and brush opacity, local layers and team layers, modded and GeckoLib mobs, and 3D Skin Layers on players."
+        },
+        {
+          "file": "configuration.html",
+          "title": "Configuration",
+          "index": "02",
+          "description": "Every FFEntityPainting server and client option with its default, and the /entitypaint operator commands.",
+          "updated": "2026-10-01",
+          "searchExcerpt": "ffentitypainting-server.toml and ffentitypainting-client.toml options and defaults, /entitypaint commands for layers, paint, teams and locks."
         },
         {
           "file": "datapacks.html",
           "title": "Datapacks",
-          "index": "02",
+          "index": "03",
           "description": "The unpaintable entity tag and painting from functions with /entitypaint.",
           "updated": "2026-10-01",
           "searchExcerpt": "ffentitypainting:unpaintable entity type tag, keep players or modded mobs from being painted, functions, /entitypaint team layers."
@@ -491,17 +529,23 @@ window.WIKI_DATA = {
         {
           "file": "api.html",
           "title": "Modding API",
-          "index": "03",
+          "index": "04",
           "description": "Java API for paint tools, server-side paint edits, locked layers, layer access rules, local layers, events, snapshots, body shapes, geometry capture and opting mobs out.",
           "updated": "2026-10-01",
           "searchExcerpt": "EntityPaintingAPI, PaintEditor, PaintView, PaintTool, PixelMode opacity, BlendMode, LayerAccess LayerRules LayerRule team tag view paint access, editLocal paintLocal local layers raycast, PaintEvent, PaintUpdatedEvent, UNPAINTABLE excludeEntities isPaintable excludeModel excludeModels GeckoLib surfaces bones, captureGeometry CapturedGeometry rasterize, BodyShapes SurfaceShape canvasCells BodyFrame measureShapes."
         }
+      ],
+      "targets": [
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
       ]
     },
     {
       "slug": "ffentitydirt",
       "type": "mod",
-      "name": "FF Entity Dirt",
+      "name": "FFEntityDirt",
       "index": "S",
       "status": "active",
       "description": "Entities pick up dirt from the ground, soot, snow and damage marks, and wash it all off in water, rain or a cauldron.",
@@ -534,32 +578,46 @@ window.WIKI_DATA = {
           "file": "index.html",
           "title": "Overview",
           "index": "01",
-          "description": "FF Entity Dirt features, requirements, and source version.",
+          "description": "FFEntityDirt features, requirements, and source version.",
           "updated": "2026-10-01",
-          "searchExcerpt": "Dirt from walking, falls and mining, honey and slime smears, sculk stains, powder snow and lava char, soot from fire and explosions, snow, weapon wounds from projectiles, melee and mobs, washed off by water, rain or a cauldron, stored as FF Entity Painting paint on locked layers."
+          "searchExcerpt": "Dirt from walking, falls and mining, honey and slime smears, sculk stains, powder snow and lava char, soot from fire and explosions, snow, weapon wounds from projectiles, melee and mobs, washed off by water, rain or a cauldron, stored as FFEntityPainting paint on locked layers."
+        },
+        {
+          "file": "configuration.html",
+          "title": "Configuration",
+          "index": "02",
+          "description": "Every FFEntityDirt server and client option with its default: dirt, damage marks, snow, cleaning and drips.",
+          "updated": "2026-10-01",
+          "searchExcerpt": "ffentitydirt-server.toml and ffentitydirt-client.toml options and defaults: dirt rates and colors, damage wounds, snow, cleaning, debug, drip particle paint."
         },
         {
           "file": "datapacks.html",
           "title": "Datapacks",
-          "index": "02",
-          "description": "FF Entity Dirt datapack formats: block and entity tags for dirt, sticky blocks, mining specks, clean mobs and which wound each weapon or mob leaves.",
+          "index": "03",
+          "description": "FFEntityDirt datapack formats: block and entity tags for dirt, sticky blocks, mining specks, clean mobs and which wound each weapon or mob leaves.",
           "updated": "2026-10-01",
           "searchExcerpt": "Dirty surface, sticky surface, mining block, clean surface, never dirty and never damaged tags; wound item and entity type tags: slash, gash, cleave, stab, puncture, triple puncture, bruise, crush, scratch, claw, bite, gore, lash, sting, splatter."
         },
         {
           "file": "api.html",
           "title": "Modding API",
-          "index": "03",
+          "index": "04",
           "description": "Java API for wound marks: register wound shapes, restyle built-ins, assign item and entity tags, and pick wounds in code.",
           "updated": "2026-10-01",
           "searchExcerpt": "WoundAPI register replaceShape assignItems assignEntities addResolver resolve, WoundShape builder Sizing LINE BLOT Rotation RANDOM LEVEL VERTICAL stroke dot ring spatter tint minScale, WoundContext, WoundResolver, Better Combat categories, item keywords."
         }
+      ],
+      "targets": [
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
       ]
     },
     {
       "slug": "ffexpandedbiometint",
       "type": "mod",
-      "name": "FF Expanded Biome Tint",
+      "name": "FFExpandedBiomeTint",
       "index": "E",
       "status": "active",
       "description": "Applies biome tints with datapack rules and a mod integration API.",
@@ -574,12 +632,12 @@ window.WIKI_DATA = {
           "class": "tag--blue"
         },
         {
-          "label": "Forge",
-          "class": ""
-        },
-        {
           "label": "NeoForge",
           "class": "tag--rust"
+        },
+        {
+          "label": "Forge",
+          "class": "tag--amber"
         },
         {
           "label": "MC 1.20.1-1.21.11",
@@ -596,7 +654,7 @@ window.WIKI_DATA = {
           "file": "index.html",
           "title": "Overview",
           "index": "01",
-          "description": "FF Expanded Biome Tint features, requirements, and source version.",
+          "description": "FFExpandedBiomeTint features, requirements, and source version.",
           "updated": "2026-09-30",
           "searchExcerpt": "Datapack rules and a mod API assign grass, foliage, or water tint to blocks and breaking particles."
         },
@@ -604,7 +662,7 @@ window.WIKI_DATA = {
           "file": "datapacks.html",
           "title": "Datapacks",
           "index": "02",
-          "description": "FF Expanded Biome Tint datapack formats: tint rule files: blocks, tags and regex with biome channels and strength.",
+          "description": "FFExpandedBiomeTint datapack formats: tint rule files: blocks, tags and regex with biome channels and strength.",
           "updated": "2026-09-30",
           "searchExcerpt": "Tint rules by block, tag or regex, grass foliage and water channels, strength and override order."
         },
@@ -616,6 +674,16 @@ window.WIKI_DATA = {
           "updated": "2026-09-30",
           "searchExcerpt": "BiomeTintAPI Java methods, exact IDs, block tags, regex, tint channels, strengths, and datapack precedence."
         }
+      ],
+      "targets": [
+        "1.20.1-fabric",
+        "1.20.1-forge",
+        "1.20.6-fabric",
+        "1.20.6-neoforge",
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
       ]
     },
     {
@@ -641,7 +709,7 @@ window.WIKI_DATA = {
         },
         {
           "label": "Forge",
-          "class": ""
+          "class": "tag--amber"
         },
         {
           "label": "MC 1.20.1-1.21.11",
@@ -662,6 +730,16 @@ window.WIKI_DATA = {
           "updated": "2026-09-30",
           "searchExcerpt": "A configurable healing bandage item."
         }
+      ],
+      "targets": [
+        "1.20.1-fabric",
+        "1.20.1-forge",
+        "1.20.6-fabric",
+        "1.20.6-neoforge",
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
       ]
     },
     {
@@ -682,12 +760,12 @@ window.WIKI_DATA = {
           "class": "tag--blue"
         },
         {
-          "label": "Forge",
-          "class": ""
-        },
-        {
           "label": "NeoForge",
           "class": "tag--rust"
+        },
+        {
+          "label": "Forge",
+          "class": "tag--amber"
         },
         {
           "label": "MC 1.20.1-1.21.11",
@@ -716,6 +794,16 @@ window.WIKI_DATA = {
           "updated": "2026-10-01",
           "searchExcerpt": "FFExhaustion public API, finite value validation, and integration guide."
         }
+      ],
+      "targets": [
+        "1.20.1-fabric",
+        "1.20.1-forge",
+        "1.20.6-fabric",
+        "1.20.6-neoforge",
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
       ]
     },
     {
@@ -774,6 +862,12 @@ window.WIKI_DATA = {
           "updated": "2026-10-01",
           "searchExcerpt": "Food spoilage events, modifier definitions, custom inventory stacking, and integration examples."
         }
+      ],
+      "targets": [
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
       ]
     },
     {
@@ -794,12 +888,12 @@ window.WIKI_DATA = {
           "class": "tag--blue"
         },
         {
-          "label": "Forge",
-          "class": ""
-        },
-        {
           "label": "NeoForge",
           "class": "tag--rust"
+        },
+        {
+          "label": "Forge",
+          "class": "tag--amber"
         },
         {
           "label": "MC 1.20.1-1.21.11",
@@ -836,6 +930,16 @@ window.WIKI_DATA = {
           "updated": "2026-10-01",
           "searchExcerpt": "FFInjury public API and integration guide."
         }
+      ],
+      "targets": [
+        "1.20.1-fabric",
+        "1.20.1-forge",
+        "1.20.6-fabric",
+        "1.20.6-neoforge",
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
       ]
     },
     {
@@ -886,6 +990,14 @@ window.WIKI_DATA = {
           "updated": "2026-10-01",
           "searchExcerpt": "FFItemCreationTracker public API and integration guide."
         }
+      ],
+      "targets": [
+        "1.20.6-fabric",
+        "1.20.6-neoforge",
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
       ]
     },
     {
@@ -944,6 +1056,14 @@ window.WIKI_DATA = {
           "updated": "2026-10-01",
           "searchExcerpt": "FFItemRarityModifiers API, durable gear tags, required_item_tag modifier targeting, and integration guide."
         }
+      ],
+      "targets": [
+        "1.20.6-fabric",
+        "1.20.6-neoforge",
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
       ]
     },
     {
@@ -964,12 +1084,12 @@ window.WIKI_DATA = {
           "class": "tag--blue"
         },
         {
-          "label": "Forge",
-          "class": ""
-        },
-        {
           "label": "NeoForge",
           "class": "tag--rust"
+        },
+        {
+          "label": "Forge",
+          "class": "tag--amber"
         },
         {
           "label": "MC 1.20.1-1.21.11",
@@ -1006,6 +1126,16 @@ window.WIKI_DATA = {
           "updated": "2026-10-01",
           "searchExcerpt": "FFItemWeight public API, weight_from datapack references, and copper variant weights."
         }
+      ],
+      "targets": [
+        "1.20.1-fabric",
+        "1.20.1-forge",
+        "1.20.6-fabric",
+        "1.20.6-neoforge",
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
       ]
     },
     {
@@ -1017,7 +1147,7 @@ window.WIKI_DATA = {
       "description": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs.",
       "tagline": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs.",
       "version": "1.2.0",
-      "minecraftVersion": "1.20.1-1.21.11",
+      "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
       "tags": [
@@ -1048,6 +1178,10 @@ window.WIKI_DATA = {
           "updated": "2026-09-30",
           "searchExcerpt": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs."
         }
+      ],
+      "targets": [
+        "1.21.1-fabric",
+        "1.21.1-neoforge"
       ]
     },
     {
@@ -1097,7 +1231,7 @@ window.WIKI_DATA = {
       "description": "Loads mods from nested folders in the mods directory.",
       "tagline": "Loads mods from nested folders in the mods directory.",
       "version": "0.5.0",
-      "minecraftVersion": "1.20.6 / 1.21.1 / 1.21.11",
+      "minecraftVersion": "1.20.6-1.21.11",
       "modrinthSlug": "ffmodsubfolders",
       "icon": "",
       "tags": [
@@ -1106,7 +1240,7 @@ window.WIKI_DATA = {
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.20.6 / 1.21.1 / 1.21.11",
+          "label": "MC 1.20.6-1.21.11",
           "class": ""
         }
       ],
@@ -1124,6 +1258,11 @@ window.WIKI_DATA = {
           "updated": "2026-09-30",
           "searchExcerpt": "Loads mods from nested folders in the mods directory."
         }
+      ],
+      "targets": [
+        "1.20.6-neoforge",
+        "1.21.1-neoforge",
+        "1.21.11-neoforge"
       ]
     },
     {
@@ -1140,12 +1279,16 @@ window.WIKI_DATA = {
       "icon": "icon.png",
       "tags": [
         {
-          "label": "Forge",
-          "class": ""
+          "label": "Fabric",
+          "class": "tag--blue"
         },
         {
           "label": "NeoForge",
           "class": "tag--rust"
+        },
+        {
+          "label": "Forge",
+          "class": "tag--amber"
         },
         {
           "label": "MC 1.20.1-1.21.11",
@@ -1182,6 +1325,16 @@ window.WIKI_DATA = {
           "updated": "2026-10-01",
           "searchExcerpt": "FFNutrition public API and integration guide."
         }
+      ],
+      "targets": [
+        "1.20.1-fabric",
+        "1.20.1-forge",
+        "1.20.6-fabric",
+        "1.20.6-neoforge",
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
       ]
     },
     {
@@ -1245,7 +1398,7 @@ window.WIKI_DATA = {
         },
         {
           "label": "Forge",
-          "class": ""
+          "class": "tag--amber"
         },
         {
           "label": "MC 1.20.1-1.21.11",
@@ -1274,6 +1427,16 @@ window.WIKI_DATA = {
           "updated": "2026-10-01",
           "searchExcerpt": "FFUtilities public API and integration guide."
         }
+      ],
+      "targets": [
+        "1.20.1-fabric",
+        "1.20.1-forge",
+        "1.20.6-fabric",
+        "1.20.6-neoforge",
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
       ]
     },
     {
@@ -1299,7 +1462,7 @@ window.WIKI_DATA = {
         },
         {
           "label": "Forge",
-          "class": ""
+          "class": "tag--amber"
         },
         {
           "label": "MC 1.20.1-1.21.11",
@@ -1320,12 +1483,22 @@ window.WIKI_DATA = {
           "updated": "2026-09-30",
           "searchExcerpt": "Makes liquid source blocks fall under gravity."
         }
+      ],
+      "targets": [
+        "1.20.1-fabric",
+        "1.20.1-forge",
+        "1.20.6-fabric",
+        "1.20.6-neoforge",
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
       ]
     },
     {
       "slug": "ffrandomquests",
       "type": "mod",
-      "name": "Random Quests",
+      "name": "FFRandomQuests",
       "index": "O",
       "status": "active",
       "description": "Adds periodic personal and shared quests, rewards, and a Quest Board.",
@@ -1354,18 +1527,29 @@ window.WIKI_DATA = {
           "file": "index.html",
           "title": "Overview",
           "index": "01",
-          "description": "Random Quests features, requirements, and source version.",
+          "description": "FFRandomQuests features, requirements, and source version.",
           "updated": "2026-09-30",
           "searchExcerpt": "Adds periodic personal and shared quests, rewards, and a Quest Board."
         },
         {
+          "file": "configuration.html",
+          "title": "Configuration",
+          "index": "02",
+          "description": "FFRandomQuests options in randomquests-common.toml and the player and operator /quests commands.",
+          "updated": "2026-10-01",
+          "searchExcerpt": "randomquests-common.toml options and defaults, /quests player commands and operator commands."
+        },
+        {
           "file": "api.html",
           "title": "Modding API",
-          "index": "02",
-          "description": "Random Quests API, events, and integration examples.",
+          "index": "03",
+          "description": "FFRandomQuests API, events, and integration examples.",
           "updated": "2026-09-30",
-          "searchExcerpt": "Random Quests public API and integration guide."
+          "searchExcerpt": "FFRandomQuests public API and integration guide."
         }
+      ],
+      "targets": [
+        "1.21.1-neoforge"
       ]
     },
     {

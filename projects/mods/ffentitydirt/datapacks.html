@@ -1,18 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Datapacks — FF Entity Dirt — Fyxe's Mod Wiki</title>
+<title>Datapacks — FFEntityDirt — Fyxe's Mod Wiki</title>
 <meta name="description" content="Block and entity tags for dirt, mining specks and clean mobs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
-<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Entity Dirt</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Datapacks</h2>
-<p>FF Entity Dirt has no datapack file format of its own. Instead, tags let you tweak which blocks and mobs take part, and which wound each weapon or mob leaves, without touching the config. Add entries with <code>"replace": false</code> to extend them, and use <code>/reload</code> after changing a datapack.</p>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFEntityDirt</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<h2 id="datapacks">Datapacks</h2>
+<p>FFEntityDirt has no datapack file format of its own. Instead, tags let you tweak which blocks and mobs take part, and which wound each weapon or mob leaves, without touching the config. Add entries with <code>"replace": false</code> to extend them, and use <code>/reload</code> after changing a datapack.</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -62,7 +67,7 @@
 </tbody>
 </table></div>
 <p>Files live at <code>data/ffentitydirt/tags/block/&lt;name&gt;.json</code> and <code>data/ffentitydirt/tags/entity_type/&lt;name&gt;.json</code>.</p>
-<h3>Wound tags</h3>
+<h3 id="wound-tags">Wound tags</h3>
 <p>Each wound has an <strong>item</strong> tag and an <strong>entity type</strong> tag, both named <code>ffentitydirt:wounds/&lt;wound&gt;</code>. A melee weapon in the item tag leaves that wound. A projectile in the entity type tag leaves it, and so does a mob that hits with an empty hand (or an item no tag matched). When something is in several wound tags, the trident's three holes beat everything, then the crush, then the rest. Weapons in no tag fall back to Better Combat's weapon type, then words in the item's ID, then a slash for anything with attack damage and a bruise for anything without (all in the <code>damage.wounds</code> settings).</p>
 <div class="table-wrap"><table>
 <thead>
@@ -92,7 +97,7 @@
 </tbody>
 </table></div>
 <p>Mods can add their own wounds with the API; theirs use <code>&lt;their namespace&gt;:wounds/&lt;wound&gt;</code> tags the same way.</p>
-<h3>Example: a modded weapon</h3>
+<h3 id="example-a-modded-weapon">Example: a modded weapon</h3>
 <p>Make a mod's war fork leave three holes like a trident, in <code>data/ffentitydirt/tags/item/wounds/triple_puncture.json</code>:</p>
 <pre><code class="language-json">{
   &quot;replace&quot;: false,
@@ -102,7 +107,7 @@
 }
 </code></pre>
 <p><code>&quot;required&quot;: false</code> keeps the datapack loading when that mod is not installed.</p>
-<h3>Example: spotless mobs</h3>
+<h3 id="example-spotless-mobs">Example: spotless mobs</h3>
 <p>Keep armor stands and iron golems spotless:</p>
 <pre><code class="language-json">{
   &quot;replace&quot;: false,
@@ -113,7 +118,7 @@
 }
 </code></pre>
 <p>Save it as <code>data/ffentitydirt/tags/entity_type/never_dirty.json</code> in your datapack.</p>
-<h3>Notes</h3>
+<h3 id="notes">Notes</h3>
 <ul>
 <li><code>never_dirty</code> also keeps drips off those mobs, unless a player changes their <code>particlePaint.entityBlacklist</code> client setting.</li>
 <li>Snow follows the dirt entity lists and the <code>never_dirty</code> tag.</li>

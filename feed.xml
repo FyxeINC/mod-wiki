@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Fyxe's Mod Wiki: updates</title>
+  <link href="https://fyxeinc.github.io/mod-wiki/updates.html"/>
+  <link rel="self" href="https://fyxeinc.github.io/mod-wiki/feed.xml"/>
+  <id>https://fyxeinc.github.io/mod-wiki/</id>
+  <updated>2026-10-01T00:00:00Z</updated>
+  <author><name>Fyxe</name></author>
+  <entry>
+    <title>FFUtilities: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffutilities/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffutilities-61</id>
+    <updated>2026-10-01T00:00:00Z</updated>
+    <summary>0.2.11: version-proof wrappers for NBT, attributes, effects, commands, inventories, food, the moon and GUI drawing; Accessories/Curios/Trinkets and Cold Sweat bridges; compiled config equations; color, text and duration helpers.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityDirt: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitydirt-60</id>
+    <updated>2026-10-01T00:00:00Z</updated>
+    <summary>0.8.0: new Modding API for wound marks: register wound shapes, assign item and entity tags, and pick wounds in code.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityDirt: Datapacks</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/datapacks.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitydirt-59</id>
+    <updated>2026-10-01T00:00:00Z</updated>
+    <summary>0.8.0: wound tags for every weapon and mob type, and the sticky_surfaces block tag.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityDirt: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitydirt-58</id>
+    <updated>2026-10-01T00:00:00Z</updated>
+    <summary>0.8.0: weapons leave their own wounds (vanilla, Better Combat and modded by name), rougher marks, honey and slime smears, sculk stains, powder snow coats and lava char.</summary>
+  </entry>
+  <entry>
+    <title>FFUtilities: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffutilities/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffutilities-57</id>
+    <updated>2026-10-01T00:00:00Z</updated>
+    <summary>0.2.10: BetterCombat reads Better Combat weapons, weapon types and combo counts; IdKeywords matches config keywords against words in IDs; ColorUtil.tryParseHex and ConfigValidators.hexColor reject malformed colors.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityDirt: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitydirt-56</id>
+    <updated>2026-10-01T00:00:00Z</updated>
+    <summary>0.8.0: melee marks land where the attacker was looking, aimed from its eyes; melee.aimFromEyes switches back to the older placement.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityPainting: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitypainting-55</id>
+    <updated>2026-10-01T00:00:00Z</updated>
+    <summary>0.9.4: 17 new layer blend modes (darken to luminosity, plus erase and mask) and 14 new brush pixel modes (atop, behind, dodge, burn, invert, saturate and more), all available to the modding API.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityPainting: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitypainting-54</id>
+    <updated>2026-10-01T00:00:00Z</updated>
+    <summary>0.9.3: new Mob AI Wand item; right-click a mob to switch its AI off and on.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityPainting: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitypainting-53</id>
+    <updated>2026-10-01T00:00:00Z</updated>
+    <summary>0.9.2: 3D Skin Layers support; the 3D hat, jacket, sleeves and pants of a player's skin take paint that lines up with the flat layers.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityPainting: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitypainting-52</id>
+    <updated>2026-10-01T00:00:00Z</updated>
+    <summary>0.9.1: every mob is paintable without registering, GeckoLib mobs included; opt mobs out with the unpaintable entity tag, EntityPaintingAPI.excludeEntities or excludeModel(s). registerPaintableModel(s) are deprecated no-ops.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityPainting: Datapacks</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/datapacks.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitypainting-51</id>
+    <updated>2026-10-01T00:00:00Z</updated>
+    <summary>New Datapacks page: the ffentitypainting:unpaintable entity tag, and painting from functions with /entitypaint.</summary>
+  </entry>
+  <entry>
+    <title>FFCropEvaporation: Datapacks</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffcropevaporation/datapacks.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-30-ffcropevaporation-50</id>
+    <updated>2026-09-30T00:00:00Z</updated>
+    <summary>New Datapacks page with the datapack formats, paths and examples moved from the mod description.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityDirt: Datapacks</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/datapacks.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-30-ffentitydirt-49</id>
+    <updated>2026-09-30T00:00:00Z</updated>
+    <summary>New Datapacks page with the datapack formats, paths and examples moved from the mod description.</summary>
+  </entry>
+  <entry>
+    <title>FFExpandedBiomeTint: Datapacks</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffexpandedbiometint/datapacks.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-30-ffexpandedbiometint-48</id>
+    <updated>2026-09-30T00:00:00Z</updated>
+    <summary>New Datapacks page with the datapack formats, paths and examples moved from the mod description.</summary>
+  </entry>
+  <entry>
+    <title>FFFoodSpoilageAndPreservation: Datapacks</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/fffoodspoilageandpreservation/datapacks.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-30-fffoodspoilageandpreservation-47</id>
+    <updated>2026-09-30T00:00:00Z</updated>
+    <summary>New Datapacks page with the datapack formats, paths and examples moved from the mod description.</summary>
+  </entry>
+  <entry>
+    <title>FFInjury: Datapacks</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffinjury/datapacks.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-30-ffinjury-46</id>
+    <updated>2026-09-30T00:00:00Z</updated>
+    <summary>New Datapacks page with the datapack formats, paths and examples moved from the mod description.</summary>
+  </entry>
+  <entry>
+    <title>FFItemRarityModifiers: Datapacks</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffitemraritymodifiers/datapacks.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-30-ffitemraritymodifiers-45</id>
+    <updated>2026-09-30T00:00:00Z</updated>
+    <summary>New Datapacks page with the datapack formats, paths and examples moved from the mod description.</summary>
+  </entry>
+  <entry>
+    <title>FFItemWeight: Datapacks</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffitemweight/datapacks.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-30-ffitemweight-44</id>
+    <updated>2026-09-30T00:00:00Z</updated>
+    <summary>New Datapacks page with the datapack formats, paths and examples moved from the mod description.</summary>
+  </entry>
+  <entry>
+    <title>FFNutrition: Datapacks</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffnutrition/datapacks.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-30-ffnutrition-43</id>
+    <updated>2026-09-30T00:00:00Z</updated>
+    <summary>New Datapacks page with the datapack formats, paths and examples moved from the mod description.</summary>
+  </entry>
+  <entry>
+    <title>FFExpandedBiomeTint: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffexpandedbiometint/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-30-ffexpandedbiometint-42</id>
+    <updated>2026-09-30T00:00:00Z</updated>
+    <summary>0.6.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities 0.2.8 bundled; the BiomeTintAPI is unchanged, with a Forge dependency snippet and per-target Maven coordinates.</summary>
+  </entry>
+  <entry>
+    <title>FFExhaustion: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffexhaustion/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-30-ffexhaustion-41</id>
+    <updated>2026-09-30T00:00:00Z</updated>
+    <summary>0.9.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities 0.2.8 bundled; the API is unchanged, with per-target Maven coordinates.</summary>
+  </entry>
+  <entry>
+    <title>FFItemWeight: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffitemweight/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-30-ffitemweight-40</id>
+    <updated>2026-09-30T00:00:00Z</updated>
+    <summary>0.8.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities 0.2.8 bundled; the API is unchanged, with per-target Maven coordinates.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityPainting: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-29-ffentitypainting-39</id>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary>0.9.0: per-layer view and paint access (teams, tags, players, or your own LayerRules), client-only local layers (saved per world on the player's computer) with editLocal and paintLocal, and SurfaceAliases so state textures (tame wolves, sleeping foxes) share one paint surface.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityDirt: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-29-ffentitydirt-38</id>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary>0.8.0: now on Fabric and NeoForge for Minecraft 1.21.1 and 1.21.11; needs FFEntityPainting 0.9.0; dripping water and lava paint wet spots and scorch marks that only you see.</summary>
+  </entry>
+  <entry>
+    <title>FFInjury: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffinjury/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-29-ffinjury-37</id>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary>0.9.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities 0.2.8 bundled; the API is unchanged, with per-target Maven coordinates.</summary>
+  </entry>
+  <entry>
+    <title>FFMobSunBurnAngle: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffmobsunburnangle/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-29-ffmobsunburnangle-36</id>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary>1.2.0: now on Fabric and NeoForge for 1.21.1 with FFUtilities 0.2.8 bundled; no public API.</summary>
+  </entry>
+  <entry>
+    <title>FFFoodSpoilageAndPreservation: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/fffoodspoilageandpreservation/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-29-fffoodspoilageandpreservation-35</id>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary>0.9.0: now also on Fabric and NeoForge for 1.21.11; the API is unchanged, and third-party storage on the transfer API stays strict about freshness there.</summary>
+  </entry>
+  <entry>
+    <title>FFItemRarityModifiers: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffitemraritymodifiers/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-29-ffitemraritymodifiers-34</id>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary>0.3.0: now on Minecraft 1.20.6, 1.21.1 and 1.21.11 for Fabric and NeoForge.</summary>
+  </entry>
+  <entry>
+    <title>FFItemRarityModifiers: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffitemraritymodifiers/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-29-ffitemraritymodifiers-33</id>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary>0.2.0: now on Fabric and NeoForge for Minecraft 1.21.1 with FFUtilities bundled, and loot table rolls now actually happen on NeoForge.</summary>
+  </entry>
+  <entry>
+    <title>FFUtilities: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffutilities/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-29-ffutilities-32</id>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary>0.2.9: KeyedEntries.split keeps tag keys such as #minecraft:skeletons=value; only # followed by whitespace, or ##, is a comment.</summary>
+  </entry>
+  <entry>
+    <title>FFExhaustion: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffexhaustion/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffexhaustion-31</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.8.0: now on Fabric and NeoForge for 1.21.1 with FFUtilities bundled; API events can be heard on any loader with ExhaustionApiEvents, and the attachment is read with ExhaustionData.of(player).</summary>
+  </entry>
+  <entry>
+    <title>FFFoodSpoilageAndPreservation: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/fffoodspoilageandpreservation/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-fffoodspoilageandpreservation-30</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.8.0: now on Fabric and NeoForge for 1.21.1 with FFUtilities bundled; API events can be heard on any loader with SpoilageApiEvents.</summary>
+  </entry>
+  <entry>
+    <title>FFItemWeight: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffitemweight/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffitemweight-29</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.7.0: now on Fabric and NeoForge for 1.21.1 with FFUtilities bundled; EncumbranceChangedEvent can be heard on any loader with EncumbranceApiEvents.</summary>
+  </entry>
+  <entry>
+    <title>FFNutrition: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffnutrition/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffnutrition-28</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.5.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities bundled; API events can be heard on any loader with NutritionEvents.</summary>
+  </entry>
+  <entry>
+    <title>FFInjury: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffinjury/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffinjury-27</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.8.0: now on Fabric and NeoForge for 1.21.1 with FFUtilities bundled; API events can be heard on any loader with InjuryApiEvents.</summary>
+  </entry>
+  <entry>
+    <title>FFNutrition: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffnutrition/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffnutrition-26</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.4.0: now on Fabric and NeoForge for 1.21.1 with FFUtilities bundled; API events can be heard on any loader with NutritionEvents.</summary>
+  </entry>
+  <entry>
+    <title>FFWaterFalls: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffwaterfalls/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffwaterfalls-25</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.3.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities bundled.</summary>
+  </entry>
+  <entry>
+    <title>FFModsSubfolders: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffmodsubfolders/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffmodsubfolders-24</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.5.0: NeoForge builds for Minecraft 1.20.6, 1.21.1 and 1.21.11, with configuration registration fixed and version-specific startup-service guidance.</summary>
+  </entry>
+  <entry>
+    <title>FFItemCreationTracker: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffitemcreationtracker/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffitemcreationtracker-23</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.3.0: now on Fabric and NeoForge for Minecraft 1.20.6, 1.21.1 and 1.21.11, with FFUtilities bundled. CreationStampEvent moved off the NeoForge bus to CreationStampEvents.</summary>
+  </entry>
+  <entry>
+    <title>FFCropEvaporation: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffcropevaporation/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffcropevaporation-22</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.2.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities bundled.</summary>
+  </entry>
+  <entry>
+    <title>FFBandage: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffbandage/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffbandage-21</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.1.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities bundled.</summary>
+  </entry>
+  <entry>
+    <title>FFUtilities: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffutilities/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffutilities-20</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.2.8: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with per-target Maven artifacts.</summary>
+  </entry>
+  <entry>
+    <title>FFUtilities: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffutilities/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffutilities-19</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.2.7: Fyxe mods now work with NeoForge 21.1.211 or newer and bundle FFUtilities 0.2.7.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityPainting: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffentitypainting-18</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.8.3: runs on Fabric and Minecraft 1.21.11 too; PaintEvents.register and PaintUpdatedEvent.register let any loader listen; one Maven artifact per target.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityPainting: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffentitypainting-17</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.8.1: mobs using EMF custom models are paintable, on surfaces of their own; captureGeometry includes them.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityPainting: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffentitypainting-16</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.8.0: BlendMode moved to the api package, client PaintUpdatedEvent, canvas-to-shape-cell lookups, and much cheaper edits and crowds of painted mobs.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityDirt: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffentitydirt-15</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.7.0: needs FFEntityPainting 0.8.0; smoother with many dirty mobs on screen.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityPainting: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffentitypainting-14</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.7.0: BodyShapes, client-measured mob shapes the server can use to place paint by body height and facing.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityDirt: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffentitydirt-13</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.6.0: needs FFEntityPainting 0.7.0, which now measures mob shapes; measuring settings moved there.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityPainting: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffentitypainting-12</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.6.1: /entitypaint operator commands for inspecting, clearing, filling and copying paint and managing layers.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityDirt: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffentitydirt-11</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.5.0: explosion soot, mining specks, walking particles, rain and cauldron washing, and snow that settles and melts.</summary>
+  </entry>
+  <entry>
+    <title>FFUtilities: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffutilities/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-28-ffutilities-10</id>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>0.2.6: WeatherUtil tells whether rain or snow falls on a block or entity from open sky.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityPainting: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-27-ffentitypainting-9</id>
+    <updated>2026-09-27T00:00:00Z</updated>
+    <summary>0.6.0: transform brushes, tool stamp hook, captured face normals, lighter syncs, and layer rename/reorder/delete.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityDirt: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-27-ffentitydirt-8</id>
+    <updated>2026-09-27T00:00:00Z</updated>
+    <summary>0.4.0: needs FFEntityPainting 0.6.0; faster dirt writes and model-accurate damage mark facing.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityDirt: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-27-ffentitydirt-7</id>
+    <updated>2026-09-27T00:00:00Z</updated>
+    <summary>0.2.0: damage marks from projectiles and melee, with per-mob colors.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityDirt: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-27-ffentitydirt-6</id>
+    <updated>2026-09-27T00:00:00Z</updated>
+    <summary>New mod: dirt from walking and falls, washed off by water.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityPainting: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-27-ffentitypainting-5</id>
+    <updated>2026-09-27T00:00:00Z</updated>
+    <summary>0.5.0: geometry capture (where each paintable spot sits on the body) and batch-local pixel reads.</summary>
+  </entry>
+  <entry>
+    <title>FFUtilities: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffutilities/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-27-ffutilities-4</id>
+    <updated>2026-09-27T00:00:00Z</updated>
+    <summary>0.2.5: registry whitelist/blacklist filters and keyed values with IDs, tags and namespaces.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityPainting: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-27-ffentitypainting-3</id>
+    <updated>2026-09-27T00:00:00Z</updated>
+    <summary>Added the modding API: custom brushes, server-side painting, locked layers, events and paintable models.</summary>
+  </entry>
+  <entry>
+    <title>FFFoodSpoilageAndPreservation: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/fffoodspoilageandpreservation/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-25-fffoodspoilageandpreservation-2</id>
+    <updated>2026-09-25T00:00:00Z</updated>
+    <summary>Expanded the player guide with preservation and storage tips.</summary>
+  </entry>
+  <entry>
+    <title>FFFoodSpoilageAndPreservation: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/fffoodspoilageandpreservation/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-09-25-fffoodspoilageandpreservation-1</id>
+    <updated>2026-09-25T00:00:00Z</updated>
+    <summary>Added a clearer path through events and integrations.</summary>
+  </entry>
+</feed>

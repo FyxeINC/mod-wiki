@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modding API — FFUtilities — Fyxe's Mod Wiki</title>
 <meta name="description" content="A shared API library for Fyxe mods on Fabric, NeoForge and Forge.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
@@ -12,7 +17,7 @@
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFUtilities</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
 <p>This guide describes the public API in the current source version <code>0.2.11</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
-<h2>FFUtilities — Modding API</h2>
+<h2 id="ffutilities-modding-api">FFUtilities — Modding API</h2>
 <p>FFUtilities is a shared library for Fabric, NeoForge and Forge. Package root: <code>com.fyxe.ffutilities.api</code>. The same API is built for every target below; gameplay mods bundle the jar for their target with Jar-in-Jar, so players do not need a separate download. Keep the required <code>ffutilities</code> dependency in your loader metadata (<code>neoforge.mods.toml</code>, <code>mods.toml</code> or <code>fabric.mod.json</code>); the embedded mod satisfies it.</p>
 <p>Each target is published to the Fyxe Gitea Maven registry (or a sibling local publication) as <code>com.fyxe.ffutilities:ffutilities-&lt;minecraft&gt;-&lt;loader&gt;:&lt;version&gt;</code>:</p>
 <div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loaders</th><th>Artifacts</th></tr></thead><tbody>
@@ -48,14 +53,14 @@ val ffutilitiesJar = &quot;com.fyxe.ffutilities:ffutilities-1.21.1-fabric:$ffuti
 modImplementation(ffutilitiesJar)
 include(ffutilitiesJar)</code></pre>
 <p>In a Groovy build script the NeoForge form <code>jarJar(implementation(&quot;...&quot;)) { version { ... } }</code> also works.</p>
-<h3>Differences between targets</h3>
+<h3 id="differences-between-targets">Differences between targets</h3>
 <ul>
 <li>Minecraft 1.21.11 renamed <code>ResourceLocation</code> to <code>Identifier</code>; methods that take or return IDs use the name of their version.</li>
 <li>Configs: NeoForge's <code>ModConfigSpec</code> on 1.20.6+ (Fabric included, through Forge Config API Port) and Forge's <code>ForgeConfigSpec</code> on 1.20.1. <code>ConfigValidators</code> and <code>ConfigLists</code> work with both.</li>
 <li><code>ConfigScreens.register(modId)</code> works on every loader: it adds the generated config screen on NeoForge 1.21.1+ (Mods list) and Fabric 1.21.1+ (Mod Menu), and does nothing where no generated screen exists (1.20.x, Forge). <code>ConfigScreens.register(ModContainer)</code> is also available on NeoForge.</li>
 <li><code>SimpleCodecReloadListener</code> registers like any server data reload listener: <code>AddReloadListenerEvent</code> on NeoForge and Forge, Fabric API's resource loader on Fabric.</li>
 </ul>
-<h3>Core utilities</h3>
+<h3 id="core-utilities">Core utilities</h3>
 <div class="table-wrap"><table><thead><tr><th>Class</th><th>Public helpers</th><th>Use</th></tr></thead><tbody>
 <tr><td><code>Ids</code></td><td><code>of(namespace,path)</code>, <code>of(id)</code>, <code>tryParse(raw)</code>, <code>vanilla(path)</code>, <code>ofKey(resourceKey)</code></td><td>Build or parse resource IDs; <code>vanilla</code> and <code>ofKey</code> (0.2.11) give a <code>minecraft:</code> ID and the ID behind a registry key.</td></tr>
 <tr><td><code>Mods</code></td><td><code>isLoaded</code>, <code>ifLoaded</code>, <code>getIfLoaded</code></td><td>Guard optional integrations.</td></tr>
@@ -82,7 +87,7 @@ if (WeatherUtil.isSnowingOn(entity)) {
 } else if (WeatherUtil.precipitationAt(level, pos) == Biome.Precipitation.RAIN) {
     // Rain falls on this block.
 }</code></pre>
-<h3>Version-proof wrappers (0.2.11)</h3>
+<h3 id="version-proof-wrappers-0-2-11">Version-proof wrappers (0.2.11)</h3>
 <p>These wrap vanilla code that changed between Minecraft 1.20.1 and 1.21.11, so a mod calls one method instead of writing its own Stonecutter conditional. Each behaves the same on every target.</p>
 <div class="table-wrap"><table><thead><tr><th>Class</th><th>Public helpers</th><th>What changed between versions</th></tr></thead><tbody>
 <tr><td><code>nbt.NbtUtil</code></td><td><code>getInt</code>, <code>getLong</code>, <code>getFloat</code>, <code>getDouble</code>, <code>getBoolean</code>, <code>getString</code> (each with an optional fallback), <code>getCompound</code>, <code>getCompounds</code>, <code>getStrings</code>, <code>getDoubles</code>, <code>keys</code></td><td>1.21.5 made <code>CompoundTag</code> getters return <code>Optional</code>s. A missing key or a value of the wrong type gives the fallback everywhere.</td></tr>
@@ -103,7 +108,7 @@ int level = NbtUtil.getInt(tag, &quot;level&quot;, 1);
 int nutrition = FoodUtil.food(stack).map(FoodUtil.FoodValues::nutrition).orElse(0);
 dispatcher.register(Commands.literal(&quot;mymod&quot;).requires(CommandUtil.requires(CommandUtil.GAME_MASTER)));</code></pre>
 <p>On 1.21.11 the type is called <code>Identifier</code> instead of <code>ResourceLocation</code>.</p>
-<h3>Config and data</h3>
+<h3 id="config-and-data">Config and data</h3>
 <p><code>ConfigValidators</code> validates resource locations, tags, registry IDs, weighted entries, keyed numbers, booleans, nonblank strings, and hex colors (<code>hexColor</code>, 0.2.10). <code>KeyedEntries.split</code> separates a config entry at the last occurrence of a chosen character. Blank lines and comments (<code>#</code> followed by whitespace, or <code>##</code>) are skipped, while tag keys such as <code>#minecraft:skeletons=#6E5134</code> are kept. <code>ConfigLists</code> parses lists into maps of string or resource ID keys to doubles, integers, or booleans; <code>freezeStringDoubles</code>, <code>freezeStringInts</code>, and <code>freezeStringBooleans</code> return immutable snapshots.</p>
 <p><code>ConfigValidators.keyed(separator, keyCheck, valueCheck)</code> (0.2.11) builds a validator for your own <code>key=value</code> lines, with <code>ConfigValidators.isDouble</code> and <code>isInt</code> for values: <code>keyed(&#x27;=&#x27;, RegistryMatcher::isValid, ConfigValidators::isDouble)</code> accepts <code>#minecraft:logs=2.5</code>. <code>ConfigValidators.expression(&quot;speed&quot;, &quot;weight&quot;)</code> accepts equations that parse and use only those variables.</p>
 <p><code>RegistryUtil.item</code>, <code>.block</code>, and <code>.fluid</code> return <code>Optional</code> lookups by ID. <code>SimpleCodecReloadListener&lt;T&gt;</code> is a base for datapack reload listeners backed by a codec; <code>loaded()</code> returns the current keyed entries. Keep domain-specific rules in the gameplay mod.</p>
@@ -117,7 +122,7 @@ RegistryValues&lt;Block, Double&gt; mess = RegistryValues.parse(Registries.BLOCK
 if (blocks.allows(state.getBlockHolder())) {
     double multiplier = mess.getOrDefault(state.getBlockHolder(), 1.0); // &quot;minecraft:mud=3.0&quot;, &quot;#minecraft:dirt=1.25&quot;
 }</code></pre>
-<h3>Math, time, and selection</h3>
+<h3 id="math-time-and-selection">Math, time, and selection</h3>
 <p><code>MathUtil</code> provides numeric <code>clamp</code>, <code>lerp</code>, <code>inverseLerp</code>, and <code>stageIndex</code>, plus (0.2.11) <code>remap</code>, <code>remapClamped</code>, <code>approach</code> (move toward a target by at most a step) and <code>smoothstep</code>. <code>WeightedRandom.pick(items, weightFn, random)</code> selects by integer weights. <code>TickGate.every</code> and <code>everyStaggered</code> support periodic work without a timer per entity.</p>
 <p><code>ExpressionEvaluator.evaluate(expression, vars)</code> evaluates configurable arithmetic with named variables (keys in lower case) and returns <code>NaN</code> when the text is malformed or a variable is missing. It supports <code>+ - * / %</code>, <code>^</code> (power, right to left, so <code>-2^2</code> is <code>-4</code>), parentheses and the functions <code>abs</code>, <code>min</code>, <code>max</code> (any number of arguments), <code>clamp(x, low, high)</code>, <code>pow</code>, <code>sqrt</code>, <code>floor</code>, <code>ceil</code> and <code>round</code>. From 0.2.11, <code>compile</code> parses once into a reusable <code>Expression</code> with <code>evaluate(vars)</code> and <code>variables()</code>, <code>tryCompile</code> returns an <code>Optional</code>, and <code>isValid(expression, allowedVariables)</code> checks config input. Text after a complete expression (<code>1 2</code>) is now an error.</p>
 <pre><code class="language-java">// Parse when the config loads, evaluate every tick.
@@ -125,7 +130,7 @@ Expression drain = ExpressionEvaluator.compile(DRAIN_EQUATION.get()); // &quot;b
 double value = drain.evaluate(Map.of(&quot;base&quot;, 0.5, &quot;weight&quot;, 40.0)); // 0.98</code></pre>
 <p><code>TimeFormat</code> formats seconds or ticks as minutes and seconds, and (0.2.11) <code>duration</code> / <code>ticksAsDuration</code> give the two largest units: <code>45s</code>, <code>2m 5s</code>, <code>1h 2m</code>, <code>3d 4h</code>. <code>TextUtil</code> (0.2.11) has <code>roman</code> (<code>4</code> is <code>IV</code>, 1 to 3999), <code>decimal(value, maxDecimals)</code> and <code>percent</code> (no trailing zeros, always a dot: <code>decimal(2.50, 2)</code> is <code>2.5</code>), and <code>copyable(text)</code> / <code>copyOnClick(style, text)</code> for chat text that copies itself when clicked.</p>
 <p><code>ColorUtil.parseHex</code> reads <code>#RRGGBB</code> (opaque) or <code>#AARRGGBB</code> with a fallback color; <code>ColorUtil.tryParseHex</code> (0.2.10) returns an empty <code>OptionalInt</code> for malformed input instead, and <code>ColorUtil.isHex</code> checks a value. 0.2.11 adds <code>toHex(argb, withAlpha)</code>, channel getters <code>alpha</code>, <code>red</code>, <code>green</code>, <code>blue</code>, builders <code>argb</code>, <code>rgb</code>, <code>withAlpha</code>, and mixing with <code>fadeAlpha</code>, <code>lerp</code>, <code>scaleRgb</code> and <code>multiply</code> (straight-alpha <code>0xAARRGGBB</code>, channels clamped).</p>
-<h3>HUD and client helpers</h3>
+<h3 id="hud-and-client-helpers">HUD and client helpers</h3>
 <p><code>HudPlacement.anchorX</code>, <code>anchorY</code>, and <code>relativeText</code> calculate positions from anchor enums, offsets, and layout; <code>clusterOffset(index, spacing, orientation, direction)</code> (0.2.11) gives the <code>{dx, dy}</code> of the n-th icon in a row or column. <code>ClientInput</code> and <code>GuiUtil</code> (above) cover modifier keys, texture blits, scaled drawing and tooltips. <code>HudTextStyle</code> and related enums describe bold, outline, shadow, alignment, and expansion. <code>HudTextRenderer.draw</code> and <code>ConfigScreens.register</code> (see above) live under <code>api.client</code>; access those only from client code. <code>TooltipMode.shouldShow(shiftDown)</code> controls tooltip visibility.</p>
 <p>FFUtilities does not define injury, spoilage, rarity, or encumbrance rules. Use each gameplay mod&#x27;s own API for those features.</p>
 <div data-page-footer></div>

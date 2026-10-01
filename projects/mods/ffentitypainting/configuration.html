@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configuration — FFEntityPainting — Fyxe's Mod Wiki</title>
+<meta name="description" content="Every FFEntityPainting server and client option with its default, and the /entitypaint operator commands.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFEntityPainting</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<h2 id="configuration">Configuration</h2>
+<p>Painting rules are server settings in <code>ffentitypainting-server.toml</code> in the world's <code>serverconfig</code> folder. Client settings are in <code>ffentitypainting-client.toml</code> in <code>config</code>. On NeoForge the settings screen is in the Mods list; on Fabric it is in Mod Menu.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>maxLayers</code></td>
+<td>4</td>
+<td>Layer count limit, 1 to 16; the pixel memory limit also applies</td>
+</tr>
+<tr>
+<td><code>maxTextureSize</code></td>
+<td>256</td>
+<td>Longest-side paint resolution cap; 0 disables this cap, but the hard 256-pixel limit remains</td>
+</tr>
+<tr>
+<td><code>paintReach</code></td>
+<td>5</td>
+<td>Maximum distance to entity bounds, with line of sight required</td>
+</tr>
+<tr>
+<td><code>requireCreative</code></td>
+<td>false</td>
+<td>Restricts painting and layer edits to creative players</td>
+</tr>
+<tr>
+<td><code>keepPlayerPaintOnDeath</code></td>
+<td>false</td>
+<td>Players keep their paint when they die and respawn</td>
+</tr>
+<tr>
+<td><code>paintOpaqueOnly</code></td>
+<td>true</td>
+<td>Skips base pixels with alpha below 200; fully transparent holes don't capture clicks</td>
+</tr>
+<tr>
+<td><code>brushSize</code></td>
+<td>2</td>
+<td>1 paints one texel; larger values use a circular radius of the setting minus one</td>
+</tr>
+<tr>
+<td><code>shapes.maxCachedShapes</code></td>
+<td>2048</td>
+<td>Most mob shapes the server remembers, cleared when it stops</td>
+</tr>
+<tr>
+<td><code>shapes.maxReportDistance</code></td>
+<td>128</td>
+<td>Farthest away, in blocks, a player's game may report a mob from</td>
+</tr>
+</tbody>
+</table></div>
+<p>Client <code>shapes</code> section:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reportShapes</code></td>
+<td>true</td>
+<td>Measure nearby mobs when the server asks</td>
+</tr>
+<tr>
+<td><code>reportRange</code></td>
+<td>48</td>
+<td>Measure mobs within this many blocks</td>
+</tr>
+<tr>
+<td><code>recaptureSeconds</code></td>
+<td>30</td>
+<td>Re-measure to catch shearing or a villager's new job</td>
+</tr>
+<tr>
+<td><code>capturesPerTick</code></td>
+<td>2</td>
+<td>How many mobs to measure per tick; each costs about one extra model draw</td>
+</tr>
+<tr>
+<td><code>maxGridSize</code></td>
+<td>32</td>
+<td>Detail of each shape report</td>
+</tr>
+</tbody>
+</table></div>
+<p>Client <code>localLayers</code> section:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>saveLocalLayers</code></td>
+<td>true</td>
+<td>Keep local layers when you leave and come back</td>
+</tr>
+<tr>
+<td><code>forgetAfterDays</code></td>
+<td>30</td>
+<td>Forget a mob's saved local layers after this many days without seeing it</td>
+</tr>
+<tr>
+<td><code>maxSavedMegabytes</code></td>
+<td>64</td>
+<td>Most disk space saved local layers may use across all worlds</td>
+</tr>
+</tbody>
+</table></div>
+<p>Each entity has a hard budget of 196,608 paint texels across its layers, so a 256x256 surface allows three layers. Smaller surfaces allow more, up to <code>maxLayers</code>. Locked layers from other mods don't count toward <code>maxLayers</code> but share the texel budget and the hard limit of 16 layers. The first stamp fixes the resolution. Edits are limited to ten per second per player.</p>
+<p>Diagnostics default off: <code>debugUvLog</code>, <code>debugDrawRay</code>, <code>debugDrawHitPoint</code>, <code>debugDrawHitTriangle</code>, <code>debugLineDuration</code> (3 seconds) and <code>debugLogShapeReports</code>. The retained <code>debugForceAabb</code> option disables painting instead of making approximate edits.</p>
+<h2 id="commands">Commands</h2>
+<p>Operators (permission level 2) can inspect and edit paint with <code>/entitypaint</code>. Targets are ordinary entity selectors; non-living entities are skipped. Layers are picked by name (the first layer with that name), and names with spaces go in quotes, like <code>"Layer 1"</code>. Commands can change locked layers from other mods, so be careful with those.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/entitypaint info &lt;target&gt;</code></td>
+<td>Revision, layers (with lock, visibility, opacity, blend mode and painted texels), part count and budget use</td>
+</tr>
+<tr>
+<td><code>/entitypaint parts &lt;target&gt;</code></td>
+<td>Every established part with its surface hash, name, canvas size and texture rectangle</td>
+</tr>
+<tr>
+<td><code>/entitypaint clear &lt;targets&gt; [layer]</code></td>
+<td>Wipes all paint, or one layer's paint while keeping the layer</td>
+</tr>
+<tr>
+<td><code>/entitypaint fill &lt;targets&gt; &lt;layer&gt; &lt;color&gt; [blend\|replace\|erase\|atop\|behind\|multiply\|screen\|add\|subtract\|darken\|lighten\|difference\|dodge\|burn\|invert\|saturate\|desaturate]</code></td>
+<td>Paints every established part of a layer (created if missing) with <code>#RRGGBB</code> or <code>#AARRGGBB</code></td>
+</tr>
+<tr>
+<td><code>/entitypaint copy &lt;source&gt; &lt;targets&gt;</code></td>
+<td>Copies one entity's paint onto others</td>
+</tr>
+<tr>
+<td><code>/entitypaint resync &lt;targets&gt;</code></td>
+<td>Sends a fresh copy of the paint to nearby players</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer add &lt;targets&gt; &lt;name&gt; [locked]</code></td>
+<td>Adds a layer on top, optionally locked</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer remove &lt;targets&gt; &lt;layer&gt;</code></td>
+<td>Deletes a layer and its paint</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer rename &lt;targets&gt; &lt;layer&gt; &lt;newName&gt;</code></td>
+<td>Renames a layer</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer move &lt;targets&gt; &lt;layer&gt; &lt;index&gt;</code></td>
+<td>Moves a layer; 0 is the bottom</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer opacity &lt;targets&gt; &lt;layer&gt; &lt;0-1&gt;</code></td>
+<td>Sets layer opacity</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer visible &lt;targets&gt; &lt;layer&gt; &lt;true\|false&gt;</code></td>
+<td>Shows or hides a layer</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer locked &lt;targets&gt; &lt;layer&gt; &lt;true\|false&gt;</code></td>
+<td>Locks or unlocks a layer for players</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer blend &lt;targets&gt; &lt;layer&gt; &lt;mode&gt;</code></td>
+<td>Sets the blend mode: normal, multiply, additive, screen, overlay, darken, lighten, color dodge, color burn, linear burn, hard light, soft light, difference, exclusion, subtract, divide, hue, saturation, color, luminosity, erase or mask</td>
+</tr>
+<tr>
+<td><code>/entitypaint layer access &lt;targets&gt; &lt;layer&gt; &lt;view\|paint&gt; &lt;rule&gt; [argument]</code></td>
+<td>Chooses who sees (<code>view</code>) or paints (<code>paint</code>) a layer</td>
+</tr>
+</tbody>
+</table></div>
+<p>Access rules for <code>layer access</code>:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Argument</th>
+<th>Who passes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>everyone</code></td>
+<td>none</td>
+<td>Everybody (the default)</td>
+</tr>
+<tr>
+<td><code>nobody</code></td>
+<td>none</td>
+<td>Nobody; only commands and mods can change the layer</td>
+</tr>
+<tr>
+<td><code>team</code></td>
+<td>team name</td>
+<td>Players on that scoreboard team</td>
+</tr>
+<tr>
+<td><code>same_team</code></td>
+<td>none</td>
+<td>Players on the same scoreboard team as the painted mob</td>
+</tr>
+<tr>
+<td><code>players</code></td>
+<td>names or UUIDs, comma separated</td>
+<td>Those players</td>
+</tr>
+<tr>
+<td><code>tag</code></td>
+<td>tag</td>
+<td>Players with that <code>/tag</code></td>
+</tr>
+<tr>
+<td><code>self</code></td>
+<td>none</td>
+<td>Only the painted player themselves</td>
+</tr>
+</tbody>
+</table></div>
+<p>Rules other mods add are typed with their full quoted ID, like <code>"othermod:captain"</code>.</p>
+<p>Examples: <code>/entitypaint info @e[type=cow,limit=1,sort=nearest]</code>, <code>/entitypaint fill @s "Layer 1" #80FF0000</code> for a see-through red tint, <code>/entitypaint clear @e[type=sheep,distance=..10]</code>, <code>/entitypaint layer access @e[tag=flag] Red view team red</code> so only the red team sees the flag's "Red" layer.</p>
+<p>Parts only exist once a player has painted them (or another mod has set them up), so <code>fill</code> on a never-painted mob does nothing.</p>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

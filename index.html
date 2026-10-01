@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fyxe's Mod Wiki — Wiki</title>
 <meta name="description" content="Documentation for Fyxe's Minecraft mods.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 
@@ -20,28 +23,24 @@
     <p class="hero__lede" data-site-description>Documentation for Fyxe's Minecraft mods, including projects awaiting publication.</p>
     <div class="hero__actions">
       <a class="btn btn--primary" href="projects/index.html">Browse projects</a>
-      <a class="btn btn--ghost" href="about.html">About Fyxe</a>
+      <a class="btn btn--ghost" href="compatibility.html">Check compatibility</a>
     </div>
   </div>
-  <div class="card-stack" aria-hidden="true">
-    <div class="index-card index-card--back"><div class="index-card__title">FFNUTRITION</div><div>status: active</div><div class="index-card__rule"></div><div>loader: neoforge</div></div>
-    <div class="index-card index-card--mid"><div class="index-card__title">FFBANDAGE</div><div>status: active</div><div class="index-card__rule"></div><div>loader: neoforge</div></div>
-    <div class="index-card index-card--front"><div class="index-card__title">FYXE.MODS</div><div>18 mod projects</div><div class="index-card__rule"></div><div>documentation index</div></div>
-  </div>
+  <aside class="hero-stats" data-site-stats aria-label="Wiki at a glance"></aside>
 </section>
 
 <main class="layout layout--wide">
-  <div class="content" style="padding-top:0;">
+  <div class="content content--home">
 
-    <div data-project-grid></div>
+    <section class="home-updates" aria-labelledby="recent-updates">
+      <div class="section-heading"><h2 id="recent-updates">Recent updates</h2><a class="text-link" href="updates.html">All updates →</a></div>
+      <ol class="update-list update-list--compact" data-recent-updates data-limit="3"></ol>
+    </section>
 
-    <h2>Recent updates</h2>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Date</th><th>Page</th><th>Change</th></tr></thead>
-        <tbody data-recent-updates></tbody>
-      </table>
-    </div>
+    <section aria-labelledby="all-projects">
+      <h2 class="sr-only" id="all-projects">All projects</h2>
+      <div data-project-grid></div>
+    </section>
 
   </div>
 </main>

@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modding API — FFItemCreationTracker — Fyxe's Mod Wiki</title>
 <meta name="description" content="Records who created an item, when, where, and how.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
@@ -12,9 +17,9 @@
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemCreationTracker</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
 <p>This guide describes the public API in the current source version <code>0.3.1</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
-<h2>Item Creation Tracker — Modding API</h2>
+<h2 id="item-creation-tracker-modding-api">Item Creation Tracker — Modding API</h2>
 <p>Primary class: <code>com.fyxe.ffitemcreationtracker.api.ItemCreationAPI</code>. The creation component is <code>ffitemcreationtracker:creation</code>; <code>CreationRecord</code> stores creator name and UUID, game day, timestamp, source ID, dimension, biome, moon phase, and custom extras.</p>
-<h3>Read and write stamps</h3>
+<h3 id="read-and-write-stamps">Read and write stamps</h3>
 <div class="table-wrap"><table><thead><tr><th>Method</th><th>Purpose</th></tr></thead><tbody>
 <tr><td><code>get(ItemStack)</code></td><td>Returns <code>Optional&lt;CreationRecord&gt;</code>.</td></tr>
 <tr><td><code>has(ItemStack)</code></td><td>Whether a stamp exists.</td></tr>
@@ -26,10 +31,10 @@
 </tbody></table></div>
 <p><code>tryStamp</code> runs on the logical server, returns <code>true</code> only when it writes a stamp, and respects enabled state, creative/spectator rules, item eligibility, and overwrite settings. It posts <code>CreationStampEvent</code> before writing.</p>
 <p><code>forceStamp</code> ignores those config gates and does not post <code>CreationStampEvent</code>; it backs the OP-only <code>/ffitemcreationtracker stamp</code> command and is meant for explicit admin actions, not automatic gameplay stamping. There is no API method or command to remove a stamp.</p>
-<h3>Custom sources and display</h3>
+<h3 id="custom-sources-and-display">Custom sources and display</h3>
 <p>Use a namespaced source ID such as <code>mymod:cooking</code>. Call <code>ItemCreationAPI.registerSource(sourceId, byKey, nounKey, nounFirstKey)</code> to supply wording, or provide translation keys. <code>registerExtra(extraKey, formatter)</code> formats an extra field in tooltips. Built-in sources include <code>CRAFTED</code>, <code>SMELTED</code>, <code>ANVIL</code>, <code>SMITHING</code>, <code>ENCHANTED</code>, <code>TRADED</code>, <code>FISHED</code>, and <code>UNKNOWN</code>.</p>
 <pre><code class="language-java">ItemCreationAPI.tryStamp(result, player, &quot;mymod:cooking&quot;, Map.of(&quot;mymod:recipe&quot;, &quot;stew&quot;));</code></pre>
-<h3>Built-in detail extras</h3>
+<h3 id="built-in-detail-extras">Built-in detail extras</h3>
 <p><code>com.fyxe.ffitemcreationtracker.api.CreationExtras</code> names the extras keys this mod writes itself when the server config allows it. They are added before <code>CreationStampEvent</code> is posted, so a listener can read or remove them; <code>forceStamp</code> records them as well. Values from the caller's own extras map are never overwritten.</p>
 <div class="table-wrap"><table><thead><tr><th>Constant</th><th>Key</th><th>Values</th><th>Server config</th></tr></thead><tbody>
 <tr><td><code>WEATHER</code></td><td><code>ffitemcreationtracker:weather</code></td><td><code>clear</code>, <code>rain</code>, <code>snow</code>, <code>thunder</code> (skylit dimensions only)</td><td><code>recordWeather</code>, default on</td></tr>
@@ -41,7 +46,7 @@
         .map(rec -&gt; rec.extras().get(CreationExtras.WEATHER))
         .filter(&quot;thunder&quot;::equals)
         .ifPresent(w -&gt; giveStormBonus(player));</code></pre>
-<h3>Pre-write event</h3>
+<h3 id="pre-write-event">Pre-write event</h3>
 <p><code>com.fyxe.ffitemcreationtracker.api.event.CreationStampEvent</code> is a plain class (not a NeoForge bus event) passed to every listener registered with <code>CreationStampEvents.register(Consumer&lt;CreationStampEvent&gt;)</code>. It runs on the logical server after config checks but before the component is written, and works the same on Fabric and NeoForge. Inspect <code>getPlayer()</code>, <code>getStack()</code>, <code>getSourceId()</code>, and <code>getExtras()</code>; call <code>setSourceId</code>, <code>putExtra</code>, or <code>setCanceled(true)</code> to change or stop the stamp. Register once during mod initialization.</p>
 <pre><code class="language-java">CreationStampEvents.register(event -&gt; {
     if (event.getSourceId().equals(&quot;mymod:cooking&quot;)) {
@@ -49,7 +54,7 @@
     }
 });</code></pre>
 <p>Before 0.3.0 this event was posted on <code>NeoForge.EVENT_BUS</code>; listeners written with <code>@SubscribeEvent</code> must move to <code>CreationStampEvents.register</code>.</p>
-<h3>Dependency coordinates</h3>
+<h3 id="dependency-coordinates">Dependency coordinates</h3>
 <p>Each target is published as <code>com.fyxe.ffitemcreationtracker:ffitemcreationtracker-&lt;minecraft&gt;-&lt;loader&gt;:&lt;version&gt;</code> on the Fyxe Gitea Maven registry.</p>
 <div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loaders</th><th>Artifact</th></tr></thead><tbody>
 <tr><td>1.20.6</td><td>Fabric, NeoForge</td><td><code>ffitemcreationtracker-1.20.6-fabric</code>, <code>ffitemcreationtracker-1.20.6-neoforge</code></td></tr>
@@ -58,7 +63,7 @@
 </tbody></table></div>
 <p>Compile against it (<code>compileOnly</code> on NeoForge, <code>modCompileOnly</code> on Fabric) and declare a dependency on <code>ffitemcreationtracker</code> in your loader metadata. The mod is not published for Forge or Minecraft 1.20.1.</p>
 <p>The mod requires FFUtilities. Add an optional dependency check before calling this API from another mod when Item Creation Tracker is optional.</p>
-<h3>Tooltip wording for custom sources</h3>
+<h3 id="tooltip-wording-for-custom-sources">Tooltip wording for custom sources</h3>
 <p>Register wording in code, or ship lang keys for your source and extra IDs. For a source <code>mymod:cooking</code> and an extra <code>mymod:note</code>:</p>
 <pre><code class="language-text">tooltip.ffitemcreationtracker.source.mymod.cooking.by
 tooltip.ffitemcreationtracker.source.mymod.cooking

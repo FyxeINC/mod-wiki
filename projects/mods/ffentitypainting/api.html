@@ -1,25 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modding API — FF Entity Painting — Fyxe's Mod Wiki</title>
+<title>Modding API — FFEntityPainting — Fyxe's Mod Wiki</title>
 <meta name="description" content="Paint entities from other mods: custom brushes, server-side paint edits, locked layers, events, snapshots and custom models.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
-<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Entity Painting</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.9.1</code>. The mod is an experimental checkpoint: the API compiles and its storage rules are covered by automated checks. Most of it has not been exercised by another mod in a running game yet; layer access and local layers were checked in single-player test clients.</p>
-<h2>FF Entity Painting — Modding API</h2>
-<p>Use this guide when integrating another mod with <strong>FF Entity Painting</strong> (<code>ffentitypainting</code>).</p>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFEntityPainting</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<p>This guide describes the public API in the current source version <code>0.9.4</code>. The mod is an experimental checkpoint: the API compiles and its storage rules are covered by automated checks. Most of it has not been exercised by another mod in a running game yet; layer access and local layers were checked in single-player test clients.</p>
+<h2 id="ffentitypainting-modding-api">FFEntityPainting — Modding API</h2>
+<p>Use this guide when integrating another mod with <strong>FFEntityPainting</strong> (<code>ffentitypainting</code>).</p>
 <div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
 <tr><td><strong>Minecraft</strong></td><td>1.21.1 and 1.21.11</td></tr>
 <tr><td><strong>Loader</strong></td><td>NeoForge (21.1.x, 21.11.x) and Fabric</td></tr>
 <tr><td><strong>Mod ID</strong></td><td><code>ffentitypainting</code></td></tr>
 <tr><td><strong>API packages</strong></td><td><code>com.fyxe.ffentitypainting.api</code>, <code>.api.access</code>, <code>.api.event</code>, <code>.api.client</code>, <code>.api.shape</code></td></tr>
-<tr><td><strong>Source version</strong></td><td>0.9.1</td></tr>
+<tr><td><strong>Source version</strong></td><td>0.9.4</td></tr>
 <tr><td><strong>Maven</strong></td><td>One artifact per target on the Fyxe Gitea registry: <code>com.fyxe.ffentitypainting:ffentitypainting-1.21.1-neoforge:0.9.1</code>, <code>...-1.21.1-fabric</code>, <code>...-1.21.11-neoforge</code> and <code>...-1.21.11-fabric</code>. The 1.21.1 NeoForge jar is also published as <code>com.fyxe.ffentitypainting:ffentitypainting:0.9.1</code>, the coordinate older consumers use.</td></tr>
 </tbody></table></div>
 <p>Dependency (optional), NeoForge <code>neoforge.mods.toml</code>:</p>
@@ -33,12 +38,12 @@
 <pre><code class="language-json">&quot;depends&quot;: { &quot;ffentitypainting&quot;: &quot;&gt;=0.9.0&quot; }</code></pre>
 <p>Use <code>0.9.1</code> as the lower bound if you use the opt-out API (<code>excludeEntities</code>, <code>isPaintable</code>, <code>UNPAINTABLE</code>, <code>excludeModel(s)</code>), or <code>0.8.0</code> if you use nothing from 0.9.0 (layer access, local layers). The <code>unpaintable</code> tag file needs no dependency at all. Compile against the artifact for your target without bundling it (players install this mod separately): <code>compileOnly</code> on NeoForge, <code>modCompileOnly</code> on Fabric.</p>
 <pre><code class="language-kotlin">// NeoForge
-compileOnly(&quot;com.fyxe.ffentitypainting:ffentitypainting-1.21.11-neoforge:0.9.1&quot;)
+compileOnly(&quot;com.fyxe.ffentitypainting:ffentitypainting-1.21.11-neoforge:0.9.2&quot;)
 // Fabric
-modCompileOnly(&quot;com.fyxe.ffentitypainting:ffentitypainting-1.21.11-fabric:0.9.1&quot;)</code></pre>
+modCompileOnly(&quot;com.fyxe.ffentitypainting:ffentitypainting-1.21.11-fabric:0.9.2&quot;)</code></pre>
 <p>Check that the mod is loaded (FFUtilities' <code>Mods.isLoaded(&quot;ffentitypainting&quot;)</code>, or your loader&#x27;s own check) before touching API classes, and keep those calls in a separate class so your mod still loads without it. Never reference <code>api.client</code> classes from common or server code.</p>
 <hr>
-<h3>Pick your integration</h3>
+<h3 id="pick-your-integration">Pick your integration</h3>
 <div class="table-wrap"><table><thead><tr><th>You want to…</th><th>Use</th></tr></thead><tbody>
 <tr><td>Add a brush, spray can, stencil or dyeable paint</td><td><code>PaintTool</code> on your item (<code>onStamp</code> to wear it out)</td></tr>
 <tr><td>Custom brush shapes, fades or gradients from the server</td><td><code>PaintEditor.transform</code> / <code>transformRect</code></td></tr>
@@ -56,18 +61,18 @@ modCompileOnly(&quot;com.fyxe.ffentitypainting:ffentitypainting-1.21.11-fabric:0
 <tr><td>Paint from a keybind or menu</td><td><code>EntityPaintingClientAPI.requestPaint</code></td></tr>
 </tbody></table></div>
 <hr>
-<h3>Core concepts</h3>
+<h3 id="core-concepts">Core concepts</h3>
 <ul>
 <li><strong>Synced and local layers.</strong> Synced layers are server-authoritative: edits apply only on the logical server, and on a client <code>edit</code>, <code>copyPaint</code> and <code>clearPaint</code> do nothing and return <code>false</code>. Reads work on both sides, since clients hold a synced copy for every tracked entity (only the layers they may see). Local layers live on one client only and are edited there (see <a href="#local-layers">Local layers</a>).</li>
 <li><strong>Layer access.</strong> Each synced layer has a <em>view</em> access (who is sent it at all) and a <em>paint</em> access (who may paint and edit it with a tool or the layer manager). Both default to everyone. See <a href="#layer-access">Who sees and paints a layer</a>.</li>
 <li><strong>Surfaces and parts.</strong> Paint is stored per part of a model, per surface. A <em>surface</em> is one model drawn with one texture. A <em>part</em> is one named <code>ModelPart</code> (or GeckoLib bone), or one cube of a multi-cube part. Every living entity is paintable unless something opts it out, modded ones included. The storage key is <code>EntityPaintingAPI.partKey(surfaceId, partName)</code>.</li>
 <li><strong>Parts appear on first paint.</strong> Only the client sees exact geometry, so a part normally exists after a player first paints it. A mod that knows its own model can create parts on the server with <code>PaintEditor.establishPart</code>.</li>
-<li><strong>Layers</strong> are composited bottom to top, each with a <code>BlendMode</code> (<code>NORMAL</code>, <code>MULTIPLY</code>, <code>ADDITIVE</code>, <code>SCREEN</code>, <code>OVERLAY</code>; <code>BlendMode.byName(&quot;screen&quot;)</code> parses one), an opacity and a visibility flag. A <strong>locked</strong> layer can only be changed through the API. Players see it but cannot select, paint, clear, edit or move it, their own layers cannot be moved past it, and it does not count toward the server&#x27;s <code>maxLayers</code>. A layer a player adds goes just below the locked layers at the top of the stack, so overlays you keep on top stay there.</li>
-<li><strong>Colors</strong> are straight-alpha ARGB <code>int</code>s. A <code>PixelMode</code> decides how a color meets what a layer already holds: <code>BLEND</code> (source-over, strokes build up), <code>REPLACE</code> (exact color including alpha) or <code>ERASE</code> (alpha is how much coverage to remove).</li>
+<li><strong>Layers</strong> are composited bottom to top, each with a <code>BlendMode</code> (22 of them since 0.9.4, listed <a href="#blend-and-pixel-modes">below</a>; <code>BlendMode.byName(&quot;screen&quot;)</code> parses one), an opacity and a visibility flag. A <strong>locked</strong> layer can only be changed through the API. Players see it but cannot select, paint, clear, edit or move it, their own layers cannot be moved past it, and it does not count toward the server&#x27;s <code>maxLayers</code>. A layer a player adds goes just below the locked layers at the top of the stack, so overlays you keep on top stay there.</li>
+<li><strong>Colors</strong> are straight-alpha ARGB <code>int</code>s. A <code>PixelMode</code> decides how a color meets what a layer already holds: <code>BLEND</code> (source-over, strokes build up), <code>REPLACE</code> (exact color including alpha) or <code>ERASE</code> (alpha is how much coverage to remove), or one of the 14 modes added in 0.9.4 (<a href="#blend-and-pixel-modes">below</a>).</li>
 <li><strong>Hard limits</strong> apply to everyone: <code>MAX_LAYERS</code> 16, <code>MAX_PARTS</code> 64, <code>MAX_TOTAL_PIXELS</code> 196,608 texels per entity, <code>MAX_SIDE</code> 256 texels per canvas side, <code>MAX_BRUSH_RADIUS</code> 7.</li>
 </ul>
 <hr>
-<h3>Custom paint tools</h3>
+<h3 id="custom-paint-tools">Custom paint tools</h3>
 <p>Implement <code>PaintTool</code> on any <code>Item</code>. It gets the built-in behavior: right-click a living entity in first person to paint the texel under the crosshair, sneak-right-click for the layer manager. Every method gets the stack, so the color can live in a data component.</p>
 <pre><code class="language-java">import com.fyxe.ffentitypainting.api.PaintTool;
 import com.fyxe.ffentitypainting.api.PixelMode;
@@ -89,7 +94,44 @@ public class SprayCanItem extends Item implements PaintTool {
 }</code></pre>
 <p>The server reads these methods when it applies a stroke, so they must give the same answer on both sides. For an eraser, return an alpha of the strength you want and <code>PixelMode.ERASE</code>; RGB is ignored. <code>onStamp</code> runs on the server after each stroke that changed paint, once clients have been sent the change; it does not run for cancelled strokes, strokes that changed nothing, or layer manager edits.</p>
 <hr>
-<h3>Editing paint from the server</h3>
+<h3 id="blend-and-pixel-modes">Blend modes and pixel modes (0.9.4)</h3>
+<p>Two enums control how colors combine. They are separate on purpose: a <code>PixelMode</code> decides how a brush color meets the texel a <em>layer</em> already holds, and a <code>BlendMode</code> decides how the finished layer meets everything beneath it, including the mob&#x27;s own texture. Both have <code>byName</code> and a serialized name that commands, saves and <code>PaintEvent</code> use. <code>BlendMode.blend(src, dst, opacity)</code> and <code>PixelMode.apply(dst, src)</code> are pure functions of ARGB ints, so you can call them for previews, tests or your own composites.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>BlendMode</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td><code>NORMAL</code>, <code>MULTIPLY</code>, <code>ADDITIVE</code>, <code>SCREEN</code>, <code>OVERLAY</code></td><td>The original five</td></tr>
+<tr><td><code>DARKEN</code>, <code>LIGHTEN</code></td><td>Per-channel minimum or maximum</td></tr>
+<tr><td><code>COLOR_DODGE</code>, <code>COLOR_BURN</code>, <code>LINEAR_BURN</code></td><td>Brighten or darken by the layer&#x27;s color, with more punch than screen and multiply</td></tr>
+<tr><td><code>HARD_LIGHT</code>, <code>SOFT_LIGHT</code></td><td>The layer acts as a light: strong (hard) or diffuse (soft)</td></tr>
+<tr><td><code>DIFFERENCE</code>, <code>EXCLUSION</code>, <code>SUBTRACT</code>, <code>DIVIDE</code></td><td>Arithmetic on the channels, clamped to 0 to 255</td></tr>
+<tr><td><code>HUE</code>, <code>SATURATION</code>, <code>COLOR</code>, <code>LUMINOSITY</code></td><td>Take one of hue, saturation, both, or brightness from the layer and the rest from what is beneath. <code>COLOR</code> recolors without flattening shading</td></tr>
+<tr><td><code>ERASE</code></td><td>Removes coverage beneath wherever the layer has paint; the layer&#x27;s own color is ignored</td></tr>
+<tr><td><code>MASK</code></td><td>Keeps what is beneath only where the layer has paint and removes it everywhere else on the part, like a clipping mask</td></tr>
+</tbody></table></div>
+<p>The colour modes follow the W3C compositing definitions. As before, a colour mode only mixes where something beneath has coverage; over a transparent backdrop the layer shows as itself. <code>ERASE</code> and <code>MASK</code> change alpha instead (<code>BlendMode.affectsAlpha()</code>), so on a mob drawn with a cutout RenderType they cut holes in the mob&#x27;s own texture, and a <code>MASK</code> layer hides everything beneath it on every part it has a canvas for. <code>next()</code> and <code>previous()</code> step through the modes.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>PixelMode</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td><code>BLEND</code>, <code>REPLACE</code>, <code>ERASE</code></td><td>The original three</td></tr>
+<tr><td><code>ATOP</code></td><td>Recolors only texels that already hold paint, mixing by the color&#x27;s alpha and keeping each texel&#x27;s own alpha</td></tr>
+<tr><td><code>BEHIND</code></td><td>Paints only behind what is there; existing paint stays on top</td></tr>
+<tr><td><code>MULTIPLY</code>, <code>SCREEN</code>, <code>ADD</code>, <code>SUBTRACT</code>, <code>DARKEN</code>, <code>LIGHTEN</code>, <code>DIFFERENCE</code></td><td>The blend mode of the same name applied to the texel at full opacity, with the color&#x27;s alpha as strength. On an empty texel they paint the color as itself</td></tr>
+<tr><td><code>DODGE</code>, <code>BURN</code></td><td>Lighten toward white or darken toward black by the color&#x27;s alpha; RGB is ignored</td></tr>
+<tr><td><code>INVERT</code></td><td>Inverts existing paint by the color&#x27;s alpha; RGB is ignored</td></tr>
+<tr><td><code>SATURATE</code>, <code>DESATURATE</code></td><td>Push existing paint away from grey or pull it toward grey by the color&#x27;s alpha; RGB is ignored</td></tr>
+</tbody></table></div>
+<p><code>PixelMode.existingOnly()</code> is true for the modes that can never add coverage to an empty texel: <code>ATOP</code>, <code>DODGE</code>, <code>BURN</code>, <code>INVERT</code>, <code>SATURATE</code>, <code>DESATURATE</code> and <code>ERASE</code>. Every mode works with <code>PaintTool.pixelMode</code>, <code>PaintEditor.stamp</code>, <code>fill</code>, <code>fillRect</code>, <code>setPixel</code>, <code>writeCanvas</code>, <code>EntityPaintingAPI.fillAllParts</code>, <code>EntityPaintingClientAPI.paintLocal</code> and <code>PaintEvent.PlayerStamp.setMode</code>. A tool that sharpens or recolors without adding paint:</p>
+<pre><code class="language-java">public final class TintBrush extends Item implements PaintTool {
+    @Override public int paintColor(ItemStack stack) { return 0xC0FF8800; }
+    @Override public PixelMode pixelMode(ItemStack stack) { return PixelMode.ATOP; } // only recolors paint that exists
+}
+
+// Make a layer cast a color over the mob&#x27;s own texture without flattening its shading
+editor.setBlendMode(layerId, BlendMode.COLOR);
+// Or cut a window through everything beneath it
+editor.setBlendMode(maskLayerId, BlendMode.ERASE);</code></pre>
+<hr>
+<h3 id="editing-paint-from-the-server">Editing paint from the server</h3>
 <p><code>EntityPaintingAPI.edit</code> hands you a <code>PaintEditor</code> working on a private copy. If the callback returns normally and something changed, the whole batch commits as one revision and fires one <code>PaintEvent.Changed</code>. If it throws, nothing is saved. A batch that only changes texels of parts clients already know sends just those canvases right away. Anything else (layers, layer settings, new parts) sends one full snapshot at the end of the tick, however many batches touched the entity. Calling <code>edit</code> for the same entity from inside its own batch throws <code>IllegalStateException</code>; make every change in the outer batch.</p>
 <pre><code class="language-java">import com.fyxe.ffentitypainting.api.EntityPaintingAPI;
 import com.fyxe.ffentitypainting.api.PixelMode;
@@ -135,7 +177,7 @@ EntityPaintingAPI.copyPaint(oldZombieVillager, newVillager); // conversions and 
 EntityPaintingAPI.clearPaint(mob);</code></pre>
 <p><strong>Keep edits occasional.</strong> Every commit is a new revision. A player whose click was captured against the previous revision has that stroke rejected as stale and must click again. Per-tick effects belong in your renderer, not in paint data.</p>
 <hr>
-<h3>Painting your own entity from the server</h3>
+<h3 id="painting-your-own-entity-from-the-server">Painting your own entity from the server</h3>
 <p>If you know your model&#x27;s class, texture and part layout, establish parts yourself. The surface ID must match what the client capture builds: the model&#x27;s fully qualified class name and the texture it actually binds. Pass the class name as a string so server code never loads client classes.</p>
 <pre><code class="language-java">String surface = EntityPaintingAPI.surfaceId(&quot;com.example.client.GolemModel&quot;,
         ResourceLocation.fromNamespaceAndPath(&quot;mymod&quot;, &quot;textures/entity/golem.png&quot;));
@@ -191,7 +233,7 @@ LayerRules.register(&quot;mymod:captain&quot;, (player, entity, team) -&gt; Capt
 });</code></pre>
 <p>What a player who can&#x27;t see a layer still learns: that the entity&#x27;s paint changed (its revision moves on for everyone, so updates stay in order), and which parts are painted, not their texels. On the client, <code>PaintView.Layer.canPaint()</code> is this player&#x27;s answer and <code>viewAccess()</code>/<code>paintAccess()</code> read <code>EVERYONE</code>, because rules never leave the server. Layers with an access rule don&#x27;t count toward the server&#x27;s <code>maxLayers</code>.</p>
 <hr>
-<h3>Reading paint</h3>
+<h3 id="reading-paint">Reading paint</h3>
 <pre><code class="language-java">EntityPaintingAPI.view(mob).ifPresent(view -&gt; {
     for (var layer : view.layers()) {   // bottom to top
         log(layer.name() + &quot; &quot; + layer.opacity() + (layer.locked() ? &quot; locked&quot; : &quot;&quot;));
@@ -202,7 +244,7 @@ LayerRules.register(&quot;mymod:captain&quot;, (player, entity, team) -&gt; Capt
 });</code></pre>
 <p><code>PaintView</code> is an immutable snapshot: <code>revision()</code>, <code>layers()</code>, <code>parts()</code> (key, surface hash, part name, UV rectangle, canvas size), <code>pixel(layer, part, x, y)</code>, <code>composite(part, x, y)</code>, <code>compositeCanvas(part)</code> (every texel at once), <code>canvas(layer, part)</code> and <code>partsOnSurface(surfaceId)</code>. Each <code>PaintView.Part</code> converts between texture UV and canvas texels with <code>contains(u, v)</code>, <code>texelX(u)</code>, <code>texelY(v)</code>, <code>textureU(x)</code> and <code>textureV(y)</code>. <code>hasPaint</code> and <code>revision</code> are cheap checks that do not copy anything; <code>EntityPaintingAPI.surfaceHash(surfaceId)</code> gives the prefix a surface&#x27;s part keys share.</p>
 <hr>
-<h3>Events (server only)</h3>
+<h3 id="events-server-only">Events (server only)</h3>
 <p>Events are delivered to every listener added with <code>PaintEvents.register(Class, Consumer)</code>, on any loader. On NeoForge they are also posted on <code>NeoForge.EVENT_BUS</code>, so <code>@SubscribeEvent</code> methods work as before. On Fabric, use <code>PaintEvents.register</code>.</p>
 <div class="table-wrap"><table><thead><tr><th>Event</th><th>Cancelable</th><th>When</th></tr></thead><tbody>
 <tr><td><code>PaintEvent.PlayerStamp</code></td><td>Yes</td><td>A player stroke passed every built-in check (including layer access) and is about to apply. Color, mode and radius can be changed, and the access of the layer it creates when <code>getLayerId()</code> is empty.</td></tr>
@@ -251,7 +293,7 @@ PaintUpdatedEvent.register(e -&gt; GlowMasks.invalidate(e.getEntity()));</code><
 boolean ok = EntityPaintingAPI.isPaintable(entity); // the tag and every rule</code></pre>
 <p>An excluded mob shows no paint and reports no body shapes, and players can&#x27;t paint it or open its layer manager (&quot;This mob can&#x27;t be painted.&quot;, checked on the client and the server). Edits made through <code>EntityPaintingAPI.edit</code> are still stored, so lifting the exclusion brings them back.</p>
 <hr>
-<h3>Client API</h3>
+<h3 id="client-api">Client API</h3>
 <p><code>com.fyxe.ffentitypainting.api.client.EntityPaintingClientAPI</code>, client only.</p>
 <pre><code class="language-java">// During client setup, only if a model of yours captures the wrong spot: leave it alone.
 EntityPaintingClientAPI.excludeModel(GolemModel.class);
@@ -274,8 +316,8 @@ String layer = EntityPaintingClientAPI.selectedLayer(target);</code></pre>
 }</code></pre>
 <p><code>paintLocal(entity, from, to, layerName, argb, radius, mode)</code> captures the model once, finds where the segment first meets it, creates the named local layer if needed and stamps there; it returns false on a miss. For more control, <code>captureGeometry(...).raycast(from, to)</code> returns a <code>CapturedGeometry.Hit</code> (surface, part, texture UV, world position, distance) that you can pass to <code>establishPart</code> and <code>stampTexture</code> yourself. Each capture is one extra model draw, so call it when something lands, not every tick for every particle.</p>
 <hr>
-<h3>Where is each spot on the body?</h3>
-<p>Paint lives in texture space, and only a client knows what a model looks like, so on its own the server cannot tell which texel is a foot and which is an ear. Since 0.7.0 FF Entity Painting can measure that for you: call <code>BodyShapes.request()</code> once (mod constructor or common setup) and every client that joins the server measures nearby standing or crouching entities now and then and reports their shape. On a server where no mod asks, clients never measure.</p>
+<h3 id="where-is-each-spot-on-the-body">Where is each spot on the body?</h3>
+<p>Paint lives in texture space, and only a client knows what a model looks like, so on its own the server cannot tell which texel is a foot and which is an ear. Since 0.7.0 FFEntityPainting can measure that for you: call <code>BodyShapes.request()</code> once (mod constructor or common setup) and every client that joins the server measures nearby standing or crouching entities now and then and reports their shape. On a server where no mod asks, clients never measure.</p>
 <p><code>com.fyxe.ffentitypainting.api.shape.BodyShapes</code> (server thread): <code>surfaces(entity)</code> lists the surface IDs the entity was last measured with, in draw order (empty until a player has been near it); <code>shape(surfaceId)</code> and <code>shapes(entity)</code> return the <code>SurfaceShape</code>s reported so far. A <code>SurfaceShape</code> has the surface ID and texture size and, per part, a grid over the part&#x27;s UV rectangle (<code>shape.part(name)</code> finds one, or <code>BodyShapes.part(entity, partKey)</code> straight from a painting part key). Each cell holds its height as a fraction of the entity&#x27;s height (<code>height(gx, gy)</code>, 0 at the feet, 1 at the top, -1 where no face covers it), its sideways position in the body frame in entity heights (<code>x(i)</code>, <code>z(i)</code>) and its outward facing (<code>normal(i)</code>, all zero when unknown). <code>heightAtUv(u, v)</code> and <code>cellAtUv(u, v)</code> look a texture UV up, and <code>canvasCells(paintPart)</code> maps every texel of a paint canvas to the covered cell under it (-1 where none), so <code>height(cell)</code>, <code>x(cell)</code> and <code>normal(cell)</code> describe each texel you paint. Body-frame coordinates turn with the entity&#x27;s body: convert a world offset with <code>BodyFrame.toLocal(dx, dz, entity.yBodyRot)</code>. The IDs, names, texture sizes and rectangles are exactly what <code>PaintEditor.establishPart</code> expects.</p>
 <pre><code class="language-java">// Mod constructor: ask clients to measure shapes.
 BodyShapes.request();
@@ -296,7 +338,7 @@ EntityPaintingAPI.edit(mob, editor -&gt; {
             });
         }
 });</code></pre>
-<p>The first report of each surface is kept until the server stops and shared by every entity drawn with that model and texture. A modified client can therefore misplace paint for surfaces it reports first, so use shapes for where paint goes, never for rules that must not be cheated. Players can turn measuring off or change its range in the client config, and servers limit how many shapes are kept (<code>shapes.maxCachedShapes</code>) and how far away a report may come from. FF Entity Dirt is built this way.</p>
+<p>The first report of each surface is kept until the server stops and shared by every entity drawn with that model and texture. A modified client can therefore misplace paint for surfaces it reports first, so use shapes for where paint goes, never for rules that must not be cheated. Players can turn measuring off or change its range in the client config, and servers limit how many shapes are kept (<code>shapes.maxCachedShapes</code>) and how far away a report may come from. FFEntityDirt is built this way.</p>
 <h4>Measuring on the client yourself</h4>
 <p>For client-side effects, <code>EntityPaintingClientAPI.captureGeometry(entity, partialTick)</code> draws the entity once off-screen (nothing reaches the screen, no click is disturbed, and it works on entities out of view and on your own player in first person) and returns a <code>CapturedGeometry</code>: each surface&#x27;s <code>surfaceId</code> and texture size, and each part&#x27;s name, UV rectangle and quads. Positions are in blocks relative to the entity&#x27;s feet on world axes, so <code>y</code> is height. <code>Part.rasterize(width, height)</code> samples a canvas-shaped grid and returns <code>x, y, z</code> per texel, or <code>NaN</code> where no face covers it. Each part also carries <code>normals()</code>, the outward normal the model submitted for each quad (3 floats per quad, zero when none), and <code>rasterizeNormals(width, height)</code> returns the covering face&#x27;s normal per texel. <code>geometry.surface(id)</code> and <code>surface.part(name)</code> look one up. <code>EntityPaintingClientAPI.measureShapes(geometry, entity.getBbHeight(), entity.yBodyRot, 32)</code> turns a capture into the same <code>SurfaceShape</code>s clients report.</p>
 <pre><code class="language-java">// Client: find how high each texel of each part sits.
@@ -311,8 +353,10 @@ EntityPaintingClientAPI.captureGeometry(mob, 1f).ifPresent(geometry -&gt; {
 });</code></pre>
 <p><code>captureGeometry</code> costs one extra model draw, so cache results and re-measure only occasionally. It returns empty for invisible entities, unreadable textures, or before the first frame has rendered. Since 0.8.1 it includes EMF custom models, with one surface per texture. <code>PaintEditor.part(key)</code>, <code>pixel</code> and <code>canvas</code> read the batch in progress, including changes made earlier in the same callback.</p>
 <hr>
-<h3>Compatibility notes</h3>
+<h3 id="compatibility-notes">Compatibility notes</h3>
 <ul>
+<li>0.9.4 changes the network protocol (blend modes are sent by index), so clients and servers must both run 0.9.4; 0.9.0 through 0.9.3 still play together. Its API changes are additions: 17 new <code>BlendMode</code> constants appended after <code>OVERLAY</code>, 14 new <code>PixelMode</code> constants appended after <code>ERASE</code>, <code>BlendMode.previous()</code>, <code>BlendMode.affectsAlpha()</code> and <code>PixelMode.existingOnly()</code>. Existing constants, ordinals and saves are unchanged, but saves store modes by name, so an older version cannot read a layer that uses a new mode, and code that switches over the enums must handle the new constants. Use <code>0.9.4</code> as the lower bound if you use a new mode.</li>
+<li>0.9.2 changes no API, protocol or save format; it adds 3D Skin Layers support.</li>
 <li>0.9.1 keeps the 0.9.0 network protocol and save format. Its API changes are additions: <code>EntityPaintingAPI.UNPAINTABLE</code>, <code>excludeEntities</code>, <code>isPaintable</code>, <code>EntityPaintingClientAPI.excludeModel</code> and <code>excludeModels</code>. Modded models are now paintable without registering, so <code>registerPaintableModel(s)</code> do nothing. GeckoLib mobs are painted (GeckoLib 4.9 on 1.21.1, 5.4 on 1.21.11), and <code>captureGeometry</code> and <code>BodyShapes</code> include them. A quad whose UVs leave the texture no longer makes a whole draw unpaintable; only that quad is skipped.</li>
 <li>0.9.0 changed the network protocol (per-player layer snapshots), so clients and servers must both run 0.9.0. Its API changes are additions: code built against 0.8.x keeps working, but mods that declare an upper bound below 0.9.0 must widen it. Saves carry over both ways; an older version ignores layer access and shows restricted layers to everyone.</li>
 <li>0.7.0 through 0.8.3 used the same protocol and connect to each other.</li>

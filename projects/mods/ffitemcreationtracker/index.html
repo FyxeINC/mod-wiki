@@ -1,22 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Overview — FFItemCreationTracker — Fyxe's Mod Wiki</title>
 <meta name="description" content="Records who created an item, when, where, and how.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemCreationTracker</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Records who created an item, when, where, and how.</p><h2>Features</h2><ul><li>Stamps crafted and other newly created items with synced provenance.</li><li>Other mods can add custom creation sources and extra fields.</li><li>OP commands (<code>/ffitemcreationtracker info</code> / <code>stamp</code>) to inspect and manually set the stamp on the item in hand. No command removes a stamp.</li><li>Client options to show the tooltip on one line or stacked one detail per line, set separately for the normal and Shift tooltips.</li><li>Optional weather, depth, and coordinate details, hidden by default. Coordinates are only recorded when the server allows it.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR; no separate library download is needed. Fabric players also need Fabric API.</p><h2>How stamping works</h2>
+<h2 id="overview">Overview</h2><p>Records who created an item, when, where, and how.</p>
+<figure class="figure figure--todo"><div class="figure__todo">Tooltip of a diamond sword in the inventory reading "Crafted by Steve" with "on day 12" underneath, the maker's name shown in its color.</div></figure>
+<h2 id="features">Features</h2><ul><li>Stamps crafted and other newly created items with synced provenance.</li><li>Other mods can add custom creation sources and extra fields.</li><li>OP commands (<code>/ffitemcreationtracker info</code> / <code>stamp</code>) to inspect and manually set the stamp on the item in hand. No command removes a stamp.</li><li>Client options to show the tooltip on one line or stacked one detail per line, set separately for the normal and Shift tooltips.</li><li>Optional weather, depth, and coordinate details, hidden by default. Coordinates are only recorded when the server allows it.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR; no separate library download is needed. Fabric players also need Fabric API.</p><h2 id="how-stamping-works">How stamping works</h2>
 <p>When you craft, smelt, take an anvil result, enchant, reel in a catch, or take an item from any menu output slot, the item is stamped. Other mods can stamp extra cases through the API. Hover it to see a line such as <code>Created by Steve, on day 12, in Plains</code>.</p>
 <p>Stamps live on the item as a synced data component. Drop the sword, mail it, or hand it to a friend and they still see your name.</p>
 <p>Custom crafting screens (Farmer's Delight cooking pot, other result slots) are stamped when you take the output; no per-mod module is needed. Create mechanical crafters and other unattended machines don't stamp a player, because nobody took the item from a menu.</p>
 <p>Maker names use a color hashed from the username, so every client paints Steve the same way. Override with <code>Name=#RRGGBB</code>.</p>
-<h3>Defaults</h3>
+<h3 id="defaults">Defaults</h3>
 <ul>
 <li>Survival only (Creative is off)</li>
 <li>Unstackable items only, so cobble and bread keep stacking</li>
@@ -26,16 +33,16 @@
 <li>One detail per line under the <code>Crafted by Steve</code> line (<code>VERTICAL</code>). Set <code>basicLayout</code> (normal tooltip) and/or <code>altLayout</code> (Shift tooltip) to <code>HORIZONTAL</code> for one long line</li>
 <li>Time text is <code>GAME_DAY</code>, <code>EXACT</code> or <code>BOTH</code></li>
 </ul>
-<h3>Extra details (off by default)</h3>
+<h3 id="extra-details-off-by-default">Extra details (off by default)</h3>
 <ul>
 <li><strong>Weather:</strong> <code>in the rain</code>, <code>in the snow</code>, <code>during a thunderstorm</code> or <code>in clear weather</code>. Turn on <code>showWeather</code>.</li>
 <li><strong>Depth:</strong> <code>deep underground</code>, <code>underground</code>, <code>underwater</code>, <code>on the surface</code> or <code>high up</code>. Not recorded in the Nether. Turn on <code>showDepth</code>.</li>
 <li><strong>Coordinates:</strong> <code>at (120, 64, -300)</code>. Turn on <code>showCoordinates</code>. The server must also turn on <code>recordCoordinates</code>, which is off by default because anyone who sees the item can read where it was made.</li>
 </ul>
 <p>Weather and depth are recorded by default (server <code>recordWeather</code> / <code>recordDepth</code>), so turning the client setting on later also works for items made earlier.</p>
-<h2>Configuration</h2>
+<h2 id="configuration">Configuration</h2>
 <p>Server config: <code>ffitemcreationtracker-server.toml</code> (who gets stamped). Client config: <code>ffitemcreationtracker-client.toml</code> (what you see).</p>
-<h3>Choosing which items are stamped</h3>
+<h3 id="choosing-which-items-are-stamped">Choosing which items are stamped</h3>
 <p>The server whitelist and blacklist take item IDs or item tags, one per line:</p>
 <pre><code class="language-text">minecraft:diamond_sword
 #minecraft:pickaxes
@@ -46,13 +53,13 @@
 <li>If the whitelist is empty, every item except the blacklist is stamped, then <code>trackStackables</code> may still skip stackable items.</li>
 </ul>
 <p>Already stamped items keep their data if you later tighten the lists. Tooltips still hide blacklisted items. There is no datapack folder; datapack item tags work in these lists.</p>
-<h2>Commands</h2>
+<h2 id="commands">Commands</h2>
 <p>Server operators (permission level 2) can check and set the stamp on the item in their main hand:</p>
 <pre><code class="language-text">/ffitemcreationtracker info
 /ffitemcreationtracker stamp &lt;source&gt; [player]
 </code></pre>
 <p><code>info</code> prints the creator, source, day, exact time, dimension, biome, moon phase and any extras. <code>stamp</code> writes a new stamp or replaces the existing one, attributed to the given player (or you), using your current day, dimension, biome and moon phase. <code>&lt;source&gt;</code> accepts the built-in IDs (<code>crafted</code>, <code>smelted</code>, <code>anvil</code>, <code>smithing</code>, <code>enchanted</code>, <code>traded</code>, <code>fished</code>, <code>unknown</code>) or a custom ID another mod registered. There is no command to remove a stamp.</p>
-<h2>Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.20.6, 1.21.1, 1.21.11</td></tr><tr><th>Loader</th><td>Fabric (Fabric API required), NeoForge 20.6.141 or newer on 1.20.6, NeoForge 21.1.211 or newer on 1.21.1, NeoForge 21.11.45 or newer on 1.21.11</td></tr><tr><th>Source version</th><td>0.3.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2>For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, events, and integration examples.</p>
+<h2 id="requirements-and-source-version">Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.20.6, 1.21.1, 1.21.11</td></tr><tr><th>Loader</th><td>Fabric (Fabric API required), NeoForge 20.6.141 or newer on 1.20.6, NeoForge 21.1.211 or newer on 1.21.1, NeoForge 21.11.45 or newer on 1.21.11</td></tr><tr><th>Source version</th><td>0.3.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2 id="for-mod-developers">For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, events, and integration examples.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Overview — FFWaterFalls — Fyxe's Mod Wiki</title>
 <meta name="description" content="Makes liquid source blocks fall under gravity.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFWaterFalls</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Makes liquid source blocks fall under gravity.</p><h2>Features</h2><ul><li>Supports water, lava, and modded fluids.</li><li>Configure falling speed and interaction with waterloggable blocks.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR; no separate library download is needed.</p><h2>How falling works</h2>
+<h2 id="overview">Overview</h2><p>Makes liquid source blocks fall under gravity.</p>
+<figure class="figure figure--todo"><div class="figure__todo">Short GIF of a water source block placed at the edge of a cliff, dropping one block at a time down the cliff face until it lands on the ground below.</div></figure>
+<h2 id="features">Features</h2><ul><li>Supports water, lava, and modded fluids.</li><li>Configure falling speed and interaction with waterloggable blocks.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR; no separate library download is needed.</p><h2 id="how-falling-works">How falling works</h2>
 <ul>
 <li>Liquid source blocks fall when nothing supports them, with a configurable speed (ticks per block) for each liquid.</li>
 <li>No startup delay: unsupported sources begin falling on the next tick.</li>
@@ -26,9 +33,9 @@
 <li>Optional <strong>vertical fall limit</strong>: downward spread stops once the distance already traveled plus the depth below the column top passes a per-fluid limit. Sideways spread is unchanged.</li>
 </ul>
 <p>Water and lava react while falling, for example lava landing on water. On NeoForge, reactions added by other mods are picked up too. On Fabric and Forge the vanilla reactions work, but modded fluids that add their own reactions may not react mid-fall.</p>
-<h3>World-generated fluids</h3>
+<h3 id="world-generated-fluids">World-generated fluids</h3>
 <p>Oceans, lakes and other worldgen liquids stay still by default. They only start falling once <strong>activated</strong>, for example when a supporting block is broken, a neighbor updates, or a player or dispenser places fluid. The optional <code>rescanChunkOnLoad</code> setting forces a scan whenever a chunk loads (not recommended for normal worlds).</p>
-<h2>Configuration</h2>
+<h2 id="configuration">Configuration</h2>
 <p>Edit <code>ffwaterfalls-common.toml</code> in your config folder, or use the in-game config screen: the Mods list on NeoForge 1.21.1 and newer, or Mod Menu on Fabric 1.21.1 and newer (1.20.1 and 1.20.6 have no generated screen). Options are grouped into <strong>Performance</strong>, <strong>Liquid Properties</strong>, <strong>Vertical Fall Limit</strong> and <strong>Compatibility</strong>.</p>
 <div class="table-wrap"><table>
 <thead>
@@ -104,7 +111,7 @@
 <p>Example: to make lava fall as fast as water and a modded acid slowly, set <code>customFluidSpeeds</code> to <code>["minecraft:water=6", "minecraft:lava=6", "examplemod:acid=20"]</code>.</p>
 <p>If another mod's fluids misbehave, try <code>disableFluidSpreadMixin = true</code> first. It takes effect after a config reload or restart.</p>
 <p>There is no datapack support; modded fluids are added by ID in the per-fluid lists.</p>
-<h2>Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr></tbody></table></div><p>Source version: <strong>0.3.0</strong>. FFUtilities is included in every jar. Water and lava react while falling on every loader; reactions added by other mods only apply on NeoForge.</p><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
+<h2 id="requirements-and-source-version">Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr></tbody></table></div><p>Source version: <strong>0.3.0</strong>. FFUtilities is included in every jar. Water and lava react while falling on every loader; reactions added by other mods only apply on NeoForge.</p><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

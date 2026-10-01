@@ -1,6 +1,18 @@
 # Field Index — Minecraft Mod Wiki
 
-A plain HTML/CSS/JavaScript wiki template designed for GitHub Pages.
+A plain HTML/CSS/JavaScript wiki for GitHub Pages. The site has no runtime build step; a small Python tool regenerates the search index, heading ids, feed and sitemap before you commit.
+
+## What readers get
+
+- **Sidebar** with every project grouped by type and a quick filter. The current project opens to show its pages.
+- **On this page**: a sticky contents rail on wide screens (it follows your scroll), or a collapsible list under the page title on narrower ones. Every section heading has a `#` link that copies its address.
+- **Search** (`/` or Ctrl+K) across the full text of every page section, including config keys, tags and class names. Use the arrow keys and Enter to jump straight to the matching section.
+- **Code examples** with syntax colors (Java, Kotlin, Groovy, JSON, TOML and command lists), Copy and Wrap buttons, and long examples folded behind "Show all lines".
+- **Tables**: long tables get a filter box, and option keys in the first column copy on click.
+- **Projects catalog** with search plus loader, Minecraft version and guide filters and sorting. Filters are kept in the address, so a filtered view can be shared.
+- **Compatibility** page: every mod by Minecraft version and loader, with a "what runs on 1.20.1 Forge?" picker.
+- **Updates** page grouped by day with a project filter, and an Atom feed (`feed.xml`).
+- Previous/next links between a project's pages, "Edit this page on GitHub", back to top, light/dark theme, print styles and a 404 page that works under the project subpath.
 
 ## The important part: one source of truth
 
@@ -43,9 +55,29 @@ A tag has a label and optional CSS class:
 ```js
 { label: "Fabric", class: "tag--blue" }
 { label: "NeoForge", class: "tag--rust" }
+{ label: "Forge", class: "tag--amber" }
 { label: "Stable", class: "tag--green" }
 { label: "MC 1.21", class: "" }
 ```
+
+Loaders keep these colors everywhere; a tag with no class (Minecraft versions, for example) is neutral grey.
+
+### Names, colors and icons
+
+- Project names have no spaces: `FF` plus the words in CamelCase (`FFEntityDirt`, `FFRandomQuests`). Long names wrap between their words automatically.
+- Each project gets a stable accent color from its slug, used for the stripe on its card and header and for its icon tile. To pick one yourself, add `accent: "#7A3FA0"` to the project; choose a mid-dark color, since the tile puts white letters on it.
+- Projects without an `icon` show a two-letter monogram tile (`FFEntityDirt` shows `ED`).
+- The site color is grass green. Green text is kept for links and "you are here" states; labels, inline code and plain tags stay neutral. Every colored text token is checked at 4.5:1 contrast in both themes, so add new colors as `*-ink` tokens in `style.css` rather than raw hex.
+
+### Screenshot slots
+
+Mark a picture that still needs taking with a placeholder figure:
+
+```html
+<figure class="figure figure--todo"><div class="figure__todo">What the screenshot should show.</div></figure>
+```
+
+It shows as a dashed "Screenshot needed" box on a local preview (`localhost`, `127.0.0.1` or a `file:` page) and is removed on the published site. When the picture exists, replace the `div` with `<img src="..." alt="...">`, keeping `class="figure"` and dropping `figure--todo`. Each mod Overview starts with a slot describing the main shot from that mod's README.
 
 ### Project links
 
@@ -99,9 +131,11 @@ Add it to the project's `pages` array:
 }
 ```
 
-Then create `/projects/<section>/<slug>/changelog.html`.
+Then create `/projects/<section>/<slug>/changelog.html`. Copy the `<head>` of an existing page in the same folder: every page needs the shared Google Fonts link, the stylesheet, the favicon link, and the small inline theme script that sets light or dark mode before the page paints. `tools/check_site.py` reports pages missing any of them.
 
-`sub: true` indents the page in the project sidebar. Remove it for a top-level tab.
+Pages appear in the sidebar, the previous/next links and the catalog's guide chips in `pages` order. For mods, use: Overview, Configuration (when the options are too long for the Overview), Datapacks, Modding API.
+
+Write sections as `h2` and `h3` headings: they become the page contents, search results and section links. `tools/build_site.py` gives each one a stable `id`; keep an existing id when you reword a heading so old links keep working.
 
 ## Metadata inside HTML
 
@@ -127,27 +161,36 @@ For code examples, the following are available:
 <span data-project-code="github-clone"></span>
 ```
 
-## Search
+## Code examples
 
-Search is generated automatically from the `pages` entries in `wiki-data.js`. There is no second list to maintain.
+Write examples as `<pre><code class="language-...">`. Supported labels and colors: `language-java`, `language-kotlin`, `language-groovy`, `language-json`, `language-toml`, `language-properties` and `language-text` (command listings: lines starting with `/` and `<placeholders>` are colored). Other languages get a label but no colors. Examples longer than 26 lines are folded until the reader expands them.
 
-The project directory also has a client-side name and feature filter. Project pages show their own page links first, with the rest of the section in a collapsible list. Pages with several headings get an automatic "On this page" guide; use clear `h2` and `h3` headings so those links remain useful. API code examples in `pre` blocks get a copy button.
+## Before you commit: build and check
 
+```text
+python tools/build_site.py
+python tools/check_site.py
+```
 
-## GitHub Pages
+`build_site.py` regenerates everything derived from the pages and `wiki-data.js`:
 
-There is no build step. Push the repository to GitHub and enable GitHub Pages for the repository/branch containing these files.
+- **Project versions and targets.** For each mod with a sibling `../<slug>_repo`, it copies `mod.version` and the build targets (`[<loader>."<minecraft>"]` tables) from `stonecutter.properties.toml` (or `mod_version`/`minecraft_version` from `gradle.properties`) into `wiki-data.js`. It also rebuilds that mod's loader and `MC` tags. Mods without a sibling repo keep their hand-written values.
+- **Heading ids** on every project page.
+- `assets/js/search-index.js`: the full-text search index, loaded only when someone searches.
+- `feed.xml` and `sitemap.xml`, from `site.recentUpdates` and `site.url`.
 
-Before publishing, run `python tools/check_site.py` from this repository. It checks that every page and icon listed in `wiki-data.js` exists, that local links resolve, and that project pages use relative paths compatible with a GitHub Pages project subpath. The published site needs only the static HTML, CSS, JavaScript, and assets; the checker is a maintainer tool. Preview under a repository path such as `/mod-wiki/` to catch runtime URL mistakes too.
+`check_site.py` fails when any of those are out of date. It also checks that every page and icon listed in `wiki-data.js` exists, that every page has the shared `<head>` pieces, that local links resolve, and that project pages use relative paths that work under a GitHub Pages project subpath.
+
+The published site needs only the static files; both tools are maintainer steps. Preview under a repository path such as `/mod-wiki/` (for example `python -m http.server` from the parent folder) to catch URL mistakes.
 
 
 ## Fyxe wiki setup
 
-The **Mods** section includes all 18 Minecraft mod projects in the sibling workspace as of 2026-09-23. Each has an overview page, which holds the full details that the mod READMEs (the Modrinth and CurseForge descriptions) leave out: configuration options and defaults, commands, compatibility and loader notes. The eight mods with datapack support also have a Datapacks page (formats, paths and examples), listed right after the Overview, and the mods with a public integration API have a Modding API page. The source version shown in wiki metadata is read from each mod's `gradle.properties`; it may be newer than a published release.
+The **Mods** section covers every Minecraft mod project in the sibling workspace. Each has an Overview page with the full details that the mod READMEs (the Modrinth and CurseForge descriptions) leave out: configuration options and defaults, commands, compatibility and loader notes. Mods with long option lists (FFEntityDirt, FFEntityPainting, FFRandomQuests) keep them on a separate Configuration page instead, with a short pointer on the Overview. Mods with datapack support have a Datapacks page (formats, paths and examples), and mods with a public integration API have a Modding API page. Versions and targets come from each mod's source through `tools/build_site.py`, so they can be newer than a published release.
 
 Only projects with a configured Modrinth slug show a Modrinth button or badge. Leave `modrinthSlug` empty for projects still awaiting publication. `status` describes project development, not publication.
 
-When a mod's API changes, update its API page and `assets/js/wiki-data.js` page metadata in the same change. When its datapack support changes, update its `datapacks.html` the same way (create one, with a `Datapacks` entry after the Overview in `pages`, when a mod gains datapack support). Keep examples aligned with the current Java source and test local links under a GitHub Pages project path. Additional public projects can still be imported with the importer.
+When a mod's API changes, update its API page and `assets/js/wiki-data.js` page metadata in the same change. When its datapack support changes, update its `datapacks.html` the same way (create one, with a `Datapacks` entry after the Overview, or after the Configuration page when there is one, in `pages`, when a mod gains datapack support). Options and commands go on the mod's Configuration page when it has one, otherwise on the Overview. Keep examples aligned with the current Java source and test local links under a GitHub Pages project path. Additional public projects can still be imported with the importer.
 
 ### Where to edit things
 
@@ -168,6 +211,6 @@ py tools/import_mod.py https://modrinth.com/resourcepack/your-pack
 py tools/import_mod.py https://modrinth.com/datapack/your-pack
 ```
 
-The importer uses Modrinth's public API, detects the project type, creates the correct section and project folders, downloads the icon, creates an Overview page, and adds the project to `assets/js/wiki-data.js`.
+The importer uses Modrinth's public API, detects the project type, creates the correct section and project folders, downloads the icon, creates an Overview page, and adds the project to `assets/js/wiki-data.js`. Run `python tools/build_site.py` afterwards to index the new page.
 
 See `tools/IMPORTER.md` for the full workflow and requirements.

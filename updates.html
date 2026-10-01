@@ -3,39 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Projects — Fyxe's Mod Wiki</title>
-<meta name="description" content="Directory of every mod tracked in this wiki.">
+<title>Updates — Fyxe's Mod Wiki</title>
+<meta name="description" content="Every documented change to Fyxe's mods, newest first, with an Atom feed.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/style.css">
-<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 
 <div data-site-header></div>
 
-<div class="layout">
-  <aside class="sidebar" data-project-sidebar></aside>
+<main class="layout layout--wide">
+  <div class="content content--page">
 
-  <main class="content">
     <div data-site-breadcrumb></div>
-
-    <span class="ledger-stamp"><span class="dot"></span> <span data-project-count>projects</span></span>
-    <h1>Projects</h1>
-    <p>Explore Fyxe's mods, modpacks, resource packs, and datapacks. Search by project name or what it does, then open a project for its overview and any available API guide.</p>
-
-    <div data-project-grid></div>
+    <span class="ledger-stamp"><span class="dot"></span> CHANGE LOG</span>
+    <h1>Updates</h1>
+    <p class="lead">What changed in each mod and its guides, newest first. Follow along in a feed reader with the <a href="feed.xml">Atom feed</a>.</p>
+    <div data-updates-page></div>
 
     <div data-page-footer></div>
-  </main>
-</div>
+  </div>
+</main>
 
 <div data-site-footer></div>
 
-<script>window.SITE_ROOT = "../";</script>
-<script src="../assets/js/wiki-data.js"></script>
-<script src="../assets/js/main.js"></script>
+<script>window.SITE_ROOT = "";</script>
+<script src="assets/js/wiki-data.js"></script>
+<script src="assets/js/main.js"></script>
 </body>
 </html>

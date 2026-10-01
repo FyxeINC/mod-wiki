@@ -1,19 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Datapacks — FFInjury — Fyxe's Mod Wiki</title>
 <meta name="description" content="Injury type files, damage weights, effects, attributes and hurt levels.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFInjury</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Datapacks</h2>
+<h2 id="datapacks">Datapacks</h2>
 <p>Injuries are <strong>not</strong> config lists. They load from datapacks (and other mods' <code>data/</code> folders), and <code>/reload</code> picks up changes. Ship injury JSON on <strong>both</strong> sides when it comes from a mod, so clients get names and icons.</p>
-<h3>Injury files</h3>
+<h3 id="injury-files">Injury files</h3>
 <pre><code class="language-text">data/&lt;namespace&gt;/ffinjury/injuries/&lt;id&gt;.json
 </code></pre>
 <p>Built-ins live under <code>data/ffinjury/ffinjury/injuries/</code>. The file <code>bleeding.json</code> in namespace <code>ffinjury</code> is ID <code>bleeding</code>; the file <code>data/mymod/ffinjury/injuries/fracture.json</code> is ID <code>mymod:fracture</code>.</p>
@@ -120,11 +125,11 @@
 <p><strong>Effects</strong> use <code>min_tier</code> / <code>max_tier</code> (omit max or use <code>0</code> for no cap). <code>scale_amplifier</code> raises the amplifier by 1 per tier above the minimum (capped at 4).</p>
 <p><strong>Attributes</strong> use <code>add_value</code>, <code>add_multiplied_base</code> or <code>add_multiplied_total</code>. <code>scale_amount</code> grows the amount above <code>min_tier</code>. Write attribute IDs the way your Minecraft version names them (<code>minecraft:generic.movement_speed</code> up to 1.21.1, <code>minecraft:movement_speed</code> from 1.21.2); FFInjury accepts either spelling. An attribute the game version doesn't have is skipped.</p>
 <p>Effects and attributes are suppressed during adrenaline or while that injury is treated.</p>
-<h3>Overriding a built-in</h3>
+<h3 id="overriding-a-built-in">Overriding a built-in</h3>
 <p>Ship the same path in a higher-priority datapack, for example <code>&lt;world&gt;/datapacks/my_injuries/data/ffinjury/ffinjury/injuries/bleeding.json</code>.</p>
-<h3>Damage chance</h3>
+<h3 id="damage-chance">Damage chance</h3>
 <p>The chance that a hit injures you at all stays in the server config <code>damage_sources.chances</code> as <code>damageTypeId;chance</code> (for example <code>minecraft:fall;0.12</code>). Missing rows use <code>defaultChance</code>. An injury only rolls from a hit if it lists that damage type in <code>damage_weights</code>.</p>
-<h3>Hurt levels</h3>
+<h3 id="hurt-levels">Hurt levels</h3>
 <p>The hurt level is your highest active injury tier. Rules for it are a separate datapack folder:</p>
 <pre><code class="language-text">data/&lt;namespace&gt;/ffinjury/hurt_levels/&lt;id&gt;.json
 </code></pre>

@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Overview — FFItemRarityModifiers — Fyxe's Mod Wiki</title>
 <meta name="description" content="Adds configurable rarity rolls and small modifiers to gear.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemRarityModifiers</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Adds configurable rarity rolls and small modifiers to gear.</p><h2>Features</h2><ul><li>Items can receive positive and negative modifiers based on rarity when first obtained.</li><li>Trader offers show their final item before purchase.</li><li>Durable gear now includes bows, shields, fishing rods, shears, brushes, elytra, wolf armor, and riding sticks.</li><li>Datapacks define source chances, rarity weights, eligible item categories, and optional item-tag restrictions on modifiers.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR; no separate library download is needed. Fabric players also need Fabric API.</p><h2>How rarities work</h2>
+<h2 id="overview">Overview</h2><p>Adds configurable rarity rolls and small modifiers to gear.</p>
+<figure class="figure figure--todo"><div class="figure__todo">Tooltip of an Epic diamond sword showing the purple "Epic" rarity line and its modifiers on one line, with good modifiers in blue and a bad one in red-orange.</div></figure>
+<h2 id="features">Features</h2><ul><li>Items can receive positive and negative modifiers based on rarity when first obtained.</li><li>Trader offers show their final item before purchase.</li><li>Durable gear now includes bows, shields, fishing rods, shears, brushes, elytra, wolf armor, and riding sticks.</li><li>Datapacks define source chances, rarity weights, eligible item categories, and optional item-tag restrictions on modifiers.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR; no separate library download is needed. Fabric players also need Fabric API.</p><h2 id="how-rarities-work">How rarities work</h2>
 <p>Single-stack weapons, armor and tools can receive a rarity (Common, Uncommon, Rare or Epic) with small stat modifiers attached, good and bad alike.</p>
 <ul>
 <li>Rarer items can roll more (and stronger) positive modifiers, and fewer negative ones. Common items can still roll a modifier or two.</li>
@@ -23,19 +30,19 @@
 <li>Bows, crossbows, fishing rods, shears, brushes, flint and steel, shields, elytra, wolf armor and the two riding sticks count too. Gear only rolls modifiers that match its category and any item-tag restriction; for example, fishing luck is for rods and mining speed is for mining tools and shears.</li>
 <li>Automatic sources assign rarity when an item is first obtained and don't replace it later.</li>
 </ul>
-<h2>Configuration</h2>
+<h2 id="configuration">Configuration</h2>
 <p>The common config holds:</p>
 <ul>
 <li><code>tooltip.basicLayout</code> (normal tooltip) and <code>tooltip.altLayout</code> (Shift tooltip): <code>HORIZONTAL</code> puts rarity and modifiers on one line (like "Rare: Swift, Sturdy"), <code>VERTICAL</code> lists each modifier on its own line. By default the normal tooltip is one line and the Shift tooltip is a list.</li>
 <li><code>enableTrading</code>, <code>enableMobDrops</code> and <code>enableLootTables</code> turn those sources on or off. If you previously used <code>tradingMode=DISABLED</code>, set <code>enableTrading</code> to <code>false</code> instead.</li>
 </ul>
 <p>Chances, weights and modifiers are datapack files; see <a href="datapacks.html">Datapacks</a>.</p>
-<h2>Operator command</h2>
+<h2 id="operator-command">Operator command</h2>
 <p>Operators can assign a specific rarity to the item a player holds in their main hand. The command rolls fresh modifiers with that rarity's weights and replaces any rarity and modifiers this mod assigned before. The item must be an eligible single-stack weapon, armor piece, tool or opted-in accessory.</p>
 <pre><code class="language-text">/ffitemraritymodifiers apply &lt;common|uncommon|rare|epic&gt; [player]
 </code></pre>
 <p>In game, omit <code>player</code> to target yourself. From the server console, include an online player name, for example <code>ffitemraritymodifiers apply epic Alex</code>.</p>
-<h2>Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.20.6, 1.21.1, 1.21.11</td></tr><tr><th>Loader</th><td>Fabric (plus Fabric API) or NeoForge: 1.20.6 needs Fabric Loader 0.15.11 or NeoForge 20.6.141, 1.21.1 needs Fabric Loader 0.16.1 or NeoForge 21.1.211, 1.21.11 needs Fabric Loader 0.18.0 or NeoForge 21.11.45 (or newer)</td></tr><tr><th>Source version</th><td>0.3.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2>For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, tags, modifier targeting, and integration examples.</p>
+<h2 id="requirements-and-source-version">Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.20.6, 1.21.1, 1.21.11</td></tr><tr><th>Loader</th><td>Fabric (plus Fabric API) or NeoForge: 1.20.6 needs Fabric Loader 0.15.11 or NeoForge 20.6.141, 1.21.1 needs Fabric Loader 0.16.1 or NeoForge 21.1.211, 1.21.11 needs Fabric Loader 0.18.0 or NeoForge 21.11.45 (or newer)</td></tr><tr><th>Source version</th><td>0.3.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2 id="for-mod-developers">For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, tags, modifier targeting, and integration examples.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

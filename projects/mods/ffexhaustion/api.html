@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modding API — FFExhaustion — Fyxe's Mod Wiki</title>
 <meta name="description" content="Tracks player fatigue from actions with configurable recovery and effects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
@@ -12,7 +17,7 @@
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFExhaustion</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
 <p>This guide describes the public API in the current source version <code>0.9.1</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
-<h2>FFExhaustion — Modding API</h2>
+<h2 id="ffexhaustion-modding-api">FFExhaustion — Modding API</h2>
 <p>Guide for other mods (and AI agents) integrating with <strong>FFExhaustion</strong> (<code>ffexhaustion</code>).</p>
 <div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
 <tr><td><strong>Minecraft</strong></td><td>1.20.1, 1.20.6, 1.21.1, 1.21.11</td></tr>
@@ -31,7 +36,7 @@
 <p>On Fabric, list <code>&quot;ffexhaustion&quot;: &quot;*&quot;</code> under <code>suggests</code> (or <code>depends</code> when required) in <code>fabric.mod.json</code>. The first Fabric build is 0.8.0, so use a version range starting there when you need it. Forge 1.20.1 (<code>mods.toml</code>) uses <code>mandatory=false</code> in place of <code>type=&quot;optional&quot;</code>; builds for Forge, 1.20.x and 1.21.11 start at 0.9.0.</p>
 <p>Use <code>ModList.get().isLoaded(&quot;ffexhaustion&quot;)</code> on NeoForge, <code>FabricLoader.getInstance().isModLoaded(&quot;ffexhaustion&quot;)</code> on Fabric, or FFUtilities&#x27; <code>Mods.isLoaded</code>, together with an optional compile-only dependency, before calling API classes. Each target is published as <code>com.fyxe.ffexhaustion:ffexhaustion-&lt;minecraft&gt;-&lt;loader&gt;:&lt;version&gt;</code> (for example <code>ffexhaustion-1.21.1-fabric</code>, <code>ffexhaustion-1.21.11-neoforge</code> or <code>ffexhaustion-1.20.1-forge</code>).</p>
 <hr>
-<h3>Core concepts</h3>
+<h3 id="core-concepts">Core concepts</h3>
 <ul>
 <li><strong>Server-authoritative.</strong> Mutations only apply on the logical server (<code>ServerPlayer</code>). Client calls are no-ops.</li>
 <li><strong>Persisted</strong> on the player as a data attachment (NeoForge attachment or Fabric API attachment, same saved format; on 1.20.1 it is overworld saved data keyed by player UUID). Read it through <code>ExhaustionData.of(player)</code>.</li>
@@ -40,7 +45,7 @@
 <li><strong>Level modifiers (optional):</strong> vanilla <code>Player.experienceLevel</code> can reduce gain and recovery delay when enabled in config.</li>
 </ul>
 <hr>
-<h3>Reading exhaustion</h3>
+<h3 id="reading-exhaustion">Reading exhaustion</h3>
 <p>These player-based queries read the server-owned attachment. Use them on the logical server only. Client player attachments are not updated by HUD packets and can report zero or stale values. Recovery delay, recovery state, and status queries are also server-only.</p>
 <pre><code class="language-java">import com.fyxe.ffexhaustion.api.ExhaustionAPI;
 import net.minecraft.world.entity.player.Player;
@@ -58,7 +63,7 @@ float local = ClientExhaustionAPI.getExhaustion();
 boolean tired = ClientExhaustionAPI.isAtLeast(0.9f);</code></pre>
 <p>This is a <strong>synced cache</strong>, not authoritative. It may lag continuous server changes by up to five ticks. Do not use it for gameplay rules.</p>
 <hr>
-<h3>Changing exhaustion (server)</h3>
+<h3 id="changing-exhaustion-server">Changing exhaustion (server)</h3>
 <p>All of these fire the cancellable pre-change event. When the value actually changes, they also fire the changed event and sync the client HUD immediately. Non-finite inputs are ignored; finite values outside 0 to 1 are clamped.</p>
 <pre><code class="language-java">import com.fyxe.ffexhaustion.api.ExhaustionAPI;
 
@@ -90,7 +95,7 @@ ExhaustionAPI.setRecoveryDelayTicks(player, 40);</code></pre>
 <tr><td><code>resetExhaustion(p)</code></td><td>N/A</td><td>Death effects, commands</td></tr>
 </tbody></table></div>
 <hr>
-<h3>Events</h3>
+<h3 id="events">Events</h3>
 <p>On every loader listen with <code>ExhaustionApiEvents.register(EventType.class, listener)</code>; listeners run on the server thread, in registration order. On NeoForge the same events are also posted on <code>NeoForge.EVENT_BUS</code> (they extend NeoForge&#x27;s <code>Event</code>), so <code>@SubscribeEvent</code> listeners keep working. Fabric has no separate bus, so use <code>ExhaustionApiEvents</code> there. <code>ExhaustionChangeEvent</code> implements <code>Cancellable</code>, which is NeoForge&#x27;s <code>ICancellableEvent</code> on NeoForge and a plain <code>isCanceled</code> / <code>setCanceled</code> interface elsewhere.</p>
 <pre><code class="language-java">import com.fyxe.ffexhaustion.api.ExhaustionApiEvents;
 import com.fyxe.ffexhaustion.api.ExhaustionChangeEvent;
@@ -137,13 +142,13 @@ public void onExhaustionChanged(ExhaustionChangedEvent event) {
 }</code></pre>
 <p><strong>Note:</strong> Continuous built-in drains (sprint per tick, shield hold, glider) may update the attachment <strong>without</strong> posting these events every tick (performance). Discrete API calls and most one-shot actions (jump, attack, Better Combat swing) <strong>do</strong> post them. On the server, re-read <code>ExhaustionAPI.getExhaustion(player)</code> if you need the live value each tick.</p>
 <hr>
-<h3>Level helpers</h3>
+<h3 id="level-helpers">Level helpers</h3>
 <pre><code class="language-java">int level = ExhaustionAPI.getEffectiveLevel(player);  // capped by config
 float gainMult = ExhaustionAPI.getGainMultiplier(player);  // 1.0 if disabled
 int delayTicks = ExhaustionAPI.getEffectiveDelayTicks(player);</code></pre>
 <p>These respect <code>ServerConfig</code> level-modifier toggles. They use vanilla <code>experienceLevel</code> only (no custom level store).</p>
 <hr>
-<h3>Attachment (advanced)</h3>
+<h3 id="attachment-advanced">Attachment (advanced)</h3>
 <pre><code class="language-java">import com.fyxe.ffexhaustion.data.ExhaustionData;
 
 ExhaustionData data = ExhaustionData.of(player);
@@ -151,7 +156,7 @@ float v = data.getValue();</code></pre>
 <p>Before 0.8.0 the attachment type was <code>ModAttachments.EXHAUSTION</code> on NeoForge. That class is gone because the attachment now lives in each loader&#x27;s own package; use <code>ExhaustionData.of(player)</code>.</p>
 <p>Prefer <code>ExhaustionAPI</code> for writes so events and client sync stay consistent.</p>
 <hr>
-<h3>Configurable status systems (potions + attributes)</h3>
+<h3 id="configurable-status-systems-potions-attributes">Configurable status systems (potions + attributes)</h3>
 <p>Optional server features (all <strong>disabled by default</strong>). Other mods can query state without reading config classes.</p>
 <pre><code class="language-java">boolean potionsOn = ExhaustionAPI.arePotionEffectsEnabled();
 boolean thresholdAttrs = ExhaustionAPI.areThresholdAttributesEnabled();
@@ -190,7 +195,7 @@ double atHalf = ExhaustionAPI.getScalingAmountAt(scales.get(0), 0.5f);</code></p
 </ul>
 <p>These are independent of built-in sprint / attack-speed decay modifiers.</p>
 <hr>
-<h3>Soft compatibility patterns</h3>
+<h3 id="soft-compatibility-patterns">Soft compatibility patterns</h3>
 <p>FFExhaustion uses <strong>optional</strong> soft compat (reflection / soft mixins) for:</p>
 <ul>
 <li><strong>Better Combat</strong> (<code>bettercombat</code>) — multi-hit + miss via combo hooks</li>
@@ -198,7 +203,7 @@ double atHalf = ExhaustionAPI.getScalingAmountAt(scales.get(0), 0.5f);</code></p
 </ul>
 <p>Other mods should <strong>not</strong> depend on those packages. Integrate through <code>ExhaustionAPI</code> instead.</p>
 <hr>
-<h3>Config surface (for documentation only)</h3>
+<h3 id="config-surface-for-documentation-only">Config surface (for documentation only)</h3>
 <p>Server configs live under <code>ffexhaustion-server.toml</code> (names illustrative):</p>
 <ul>
 <li><code>copyOnDeath</code> — keep exhaustion after death (default <code>false</code>)</li>
@@ -208,7 +213,7 @@ double atHalf = ExhaustionAPI.getScalingAmountAt(scales.get(0), 0.5f);</code></p
 </ul>
 <p>Do not hard-code config class field names in foreign mods; treat them as user-facing, not API.</p>
 <hr>
-<h3>Minimal integration example</h3>
+<h3 id="minimal-integration-example">Minimal integration example</h3>
 <pre><code class="language-java">@EventBusSubscriber(modid = &quot;yourmod&quot;)
 public class YourExhaustionHooks {
     @SubscribeEvent
@@ -224,7 +229,7 @@ public class YourExhaustionHooks {
     }
 }</code></pre>
 <hr>
-<h3>Stability</h3>
+<h3 id="stability">Stability</h3>
 <ul>
 <li>Package <code>com.fyxe.ffexhaustion.api</code> and <code>com.fyxe.ffexhaustion.api.client</code> are <strong>public API</strong>.</li>
 <li><code>ExhaustionStatusApplier</code> entry records and <code>ExhaustionAPI</code> status query helpers are <strong>public</strong> for read/integration.</li>

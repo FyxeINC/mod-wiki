@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modding API — FF Expanded Biome Tint — Fyxe's Mod Wiki</title>
+<title>Modding API — FFExpandedBiomeTint — Fyxe's Mod Wiki</title>
 <meta name="description" content="Java registration API and datapack rules for biome tint blocks, channels, and strengths.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
@@ -12,8 +17,8 @@
 <div data-site-breadcrumb></div>
 <h1>Modding API</h1>
 <p>Current source version: <strong>0.6.0</strong>, for Minecraft 1.20.1 (Fabric, Forge), 1.20.6 (Fabric, NeoForge), 1.21.1 (Fabric, NeoForge) and 1.21.11 (Fabric, NeoForge). The API classes are identical on every target. Install the mod on the server and clients. The server resolves all tint rules and syncs the selected blocks when a player joins or the server runs <code>/reload</code>.</p>
-<h2>Java registration</h2>
-<p>Other mods can call <code>com.fyxe.ffexpandedbiometint.BiomeTintAPI</code> during mod construction (the <code>@Mod</code> constructor on NeoForge and Forge, <code>onInitialize</code> on Fabric) to supply defaults. Require FF Expanded Biome Tint 0.4.0 or newer on NeoForge 1.21.1, 0.5.0 or newer on Fabric 1.21.1, and 0.6.0 or newer on 1.20.1, 1.20.6 and 1.21.11, and load after it. Registrations close when server datapacks first load; a later call throws <code>IllegalStateException</code>. Strength must be finite and between <code>0.0</code> and <code>1.0</code>.</p>
+<h2 id="java-registration">Java registration</h2>
+<p>Other mods can call <code>com.fyxe.ffexpandedbiometint.BiomeTintAPI</code> during mod construction (the <code>@Mod</code> constructor on NeoForge and Forge, <code>onInitialize</code> on Fabric) to supply defaults. Require FFExpandedBiomeTint 0.4.0 or newer on NeoForge 1.21.1, 0.5.0 or newer on Fabric 1.21.1, and 0.6.0 or newer on 1.20.1, 1.20.6 and 1.21.11, and load after it. Registrations close when server datapacks first load; a later call throws <code>IllegalStateException</code>. Strength must be finite and between <code>0.0</code> and <code>1.0</code>.</p>
 <pre><code class="language-java">import com.fyxe.ffexpandedbiometint.BiomeTintAPI;
 import net.minecraft.resources.ResourceLocation;
 
@@ -43,10 +48,10 @@ BiomeTintAPI.registerRegex("examplemod:.*_leaves",
 <pre><code class="language-json">"depends": {
   "ffexpandedbiometint": ">=0.6.0"
 }</code></pre>
-<h2>Compile-time coordinates</h2>
+<h2 id="compile-time-coordinates">Compile-time coordinates</h2>
 <p>Each target is published to the Fyxe Gitea Maven registry as <code>com.fyxe.ffexpandedbiometint:ffexpandedbiometint-&lt;minecraft&gt;-&lt;loader&gt;:&lt;version&gt;</code>. For 0.6.0 the artifacts are <code>ffexpandedbiometint-1.20.1-fabric</code>, <code>ffexpandedbiometint-1.20.1-forge</code>, <code>ffexpandedbiometint-1.20.6-fabric</code>, <code>ffexpandedbiometint-1.20.6-neoforge</code>, <code>ffexpandedbiometint-1.21.1-fabric</code>, <code>ffexpandedbiometint-1.21.1-neoforge</code>, <code>ffexpandedbiometint-1.21.11-fabric</code> and <code>ffexpandedbiometint-1.21.11-neoforge</code>. Use them as compile-only dependencies (<code>compileOnly</code> on NeoForge, <code>modCompileOnly</code> on Forge and Fabric); players install the mod separately, and it is not bundled into other mods.</p>
-<h2>Datapack rules</h2>
-<h2>Rule files</h2>
+<h2 id="datapack-rules">Datapack rules</h2>
+<h2 id="rule-files">Rule files</h2>
 <p>Put a JSON file at <code>data/&lt;namespace&gt;/ffexpandedbiometint/tint_rules/&lt;name&gt;.json</code>. Each entry in <code>rules</code> has exactly one selector: <code>block</code> for an exact block ID, <code>tag</code> for a block tag ID without <code>#</code>, or <code>regex</code> for a Java regular expression matched against the full block ID. Set <code>tint</code> to <code>grass</code>, <code>foliage</code>, or <code>water</code>. Optional <code>strength</code> ranges from <code>0.0</code> to <code>1.0</code> and defaults to <code>1.0</code>.</p>
 <pre><code class="language-json">{
   "rules": [
@@ -55,9 +60,9 @@ BiomeTintAPI.registerRegex("examplemod:.*_leaves",
     { "regex": "examplemod:.*_leaves", "tint": "foliage", "strength": 0.75 }
   ]
 }</code></pre>
-<h2>Order and overrides</h2>
+<h2 id="order-and-overrides">Order and overrides</h2>
 <p>The bundled default file is applied first, Java API registrations next in registration order, then other datapack rule files in resource ID order. Entries in each file run top to bottom. The last matching rule sets the block's channel and strength. To replace bundled defaults, override <code>data/ffexpandedbiometint/ffexpandedbiometint/tint_rules/default.json</code> with a higher priority datapack file at the same path. This does not remove Java API registrations.</p>
-<h2>Bundled modded ore patterns</h2>
+<h2 id="bundled-modded-ore-patterns">Bundled modded ore patterns</h2>
 <p>The bundled JSON names the vanilla deepslate family and its eight ore variants explicitly. This includes cobbled, polished, brick, tile, chiseled, reinforced, and infested deepslate blocks, plus stairs, slabs, and walls for each available style. They use grass tint at 0.25 strength.</p>
 <p>Four default regex selectors cover non-Minecraft ore IDs ending in <code>_ore</code> or beginning with <code>ore_</code>. Names containing <code>deepslate</code> use grass at 0.25 strength; other matching ores use grass at 0.45. All skip IDs containing common Nether or End material names. Names cannot prove a block's dimension, so add later rules or replace the defaults for exceptions.</p>
 <p>Existing model tint indices are preserved. Rules choose the biome color for the entire selected block, including its already tinted faces and block-breaking particles. Inventory previews have no biome to sample.</p>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configuration — FFRandomQuests — Fyxe's Mod Wiki</title>
+<meta name="description" content="FFRandomQuests options in randomquests-common.toml and the player and operator /quests commands.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFRandomQuests</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<h2 id="configuration">Configuration</h2>
+<p><code>config/randomquests-common.toml</code>:</p>
+<ul>
+<li><code>hudShowTimer</code> / <code>hudCompactTimer</code>: reset countdown on the HUD tracker</li>
+<li><code>hudEnabled</code>, offsets, scale, and the most tracked quests shown at once</li>
+<li><code>showDaily</code> / <code>showWeekly</code> / <code>showMonthly</code> / <code>showShared</code> / <code>showMainGoal</code> / <code>showServerGoal</code>: whether each category appears on the HUD tracker, the FFRandomQuests screen, or both</li>
+<li><code>claimMode</code>, <code>playCompleteSound</code></li>
+<li>Per-type enable flags and reward multipliers</li>
+<li>Every dynamic difficulty factor, plus adaptive gain and loss</li>
+</ul>
+<p>There is no datapack format; quest content, weights and generation come from this config.</p>
+<h2 id="commands">Commands</h2>
+<p>Players:</p>
+<pre><code class="language-text">/quests list | list shared
+/quests info &lt;id&gt;
+/quests claim &lt;id&gt;
+/quests submit
+/rq   (alias)
+</code></pre>
+<p>Operators (<code>/quests debug ...</code>):</p>
+<pre><code class="language-text">complete &lt;id&gt; | completeall
+progress &lt;id&gt; &lt;amount&gt;
+generate &lt;type&gt; [period] [shared]
+clear | refresh | claimall
+types | dump | difficulty
+adaptive reset | adaptive set &lt;value&gt;
+give_rewards &lt;id&gt;
+giveboard
+</code></pre>
+<p><code>/quests debug types</code> lists the 24+ quest types (combat, gathering, crafting, exploration, social and survival).</p>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

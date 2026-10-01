@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About — Fyxe's Mod Wiki</title>
 <meta name="description" content="Who makes these mods, and where to find them elsewhere.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 
@@ -22,16 +25,13 @@
     <h1>About Me</h1>
 
     <!--
-      Fill this card out: swap the placeholder avatar for a real image URL,
-      update the bio, and point each link at your real profiles. Delete any
-      link row you don't use.
+      The avatar shows the site mark from wiki-data.js. To use a picture,
+      replace the div with <img class="profile-card__avatar" src="..." alt="Fyxe">.
     -->
     <div class="profile-card">
-      <img class="profile-card__avatar"
-           src="https://placehold.co/240x240/1D6F6F/FFFFFF?text=Fyxe"
-           alt="Fyxe profile image">
-      <div>
-        <h3 style="margin:0 0 0.2em;" data-site-author-name>Your Name / Handle</h3>
+      <div class="profile-card__avatar profile-card__avatar--mark" data-site-mark aria-hidden="true">FX</div>
+      <div class="profile-card__body">
+        <h3 style="margin:0 0 0.2em;" data-site-author-name>Fyxe</h3>
         <p style="color:var(--ink-soft); margin:0 0 0.6em;">Minecraft mod developer</p>
         <p>Game developer by trade, mod dev for added fun! This wiki covers my Minecraft mod projects, including work that is not on Modrinth yet, with guides for developers, pack makers, and tinkerers.</p>
         <div class="profile-links">

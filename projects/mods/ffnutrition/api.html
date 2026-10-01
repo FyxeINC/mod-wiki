@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modding API — FFNutrition — Fyxe's Mod Wiki</title>
 <meta name="description" content="Rewards diet variety with nutrition categories that affect maximum health.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
@@ -12,12 +17,12 @@
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFNutrition</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
 <p>This guide describes the public API in the current source version <code>0.6.1</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
-<h2>FF Nutrition — Modding API</h2>
+<h2 id="ff-nutrition-modding-api">FF Nutrition — Modding API</h2>
 <p>This document describes the public API other mods (and agents) can use to interact with FF Nutrition on Minecraft 1.20.1, 1.20.6, 1.21.1 and 1.21.11 (Fabric, Forge and NeoForge).</p>
 <p>Primary entry point: <code>com.fyxeinc.ffnutrition.api.FFNutritionAPI</code></p>
 <p>Events live under <code>com.fyxeinc.ffnutrition.api.event</code>.</p>
 <hr>
-<h3>Dependency</h3>
+<h3 id="dependency">Dependency</h3>
 <p>Optional (recommended). NeoForge (<code>neoforge.mods.toml</code>):</p>
 <pre><code class="language-toml">[[dependencies.yourmod]]
     modId=&quot;ffnutrition&quot;
@@ -30,7 +35,7 @@
 <p>Compile against the per-target Maven artifact <code>com.fyxeinc.ffnutrition:ffnutrition-&lt;minecraft&gt;-&lt;loader&gt;:0.6.1</code>, for example <code>ffnutrition-1.21.1-neoforge</code>, <code>ffnutrition-1.21.11-fabric</code> or <code>ffnutrition-1.20.1-forge</code>. NeoForge 1.21.1 builds before 0.4.0 used <code>com.fyxeinc.ffnutrition:ffnutrition</code>.</p>
 <p>Always prefer the API over writing the <code>nutrition_data</code> attachment or attribute base value directly. The API keeps events, the max-health modifier, and the Metabolic Gauge client sync consistent.</p>
 <hr>
-<h3>Max-health compatibility</h3>
+<h3 id="max-health-compatibility">Max-health compatibility</h3>
 <p>FF Nutrition no longer calls <code>AttributeInstance#setBaseValue</code> on <code>Attributes.MAX_HEALTH</code>.</p>
 <p>It applies a <strong>permanent</strong> <code>AttributeModifier</code> with a stable id:</p>
 <pre><code class="language-text">ffnutrition:nutrition_max_health</code></pre>
@@ -49,7 +54,7 @@
 <li>Adjust the target before application by listening to <code>ComputeMaxHealthEvent</code>.</li>
 </ul>
 <hr>
-<h3>Queries (safe on both sides when the attachment exists)</h3>
+<h3 id="queries-safe-on-both-sides-when-the-attachment-exists">Queries (safe on both sides when the attachment exists)</h3>
 <div class="table-wrap"><table><thead><tr><th>Method</th><th>Returns</th></tr></thead><tbody>
 <tr><td><code>getNutritionData(LivingEntity)</code></td><td>Attachment instance (creates defaults if needed)</td></tr>
 <tr><td><code>getNutritionScore(Player)</code></td><td>Score in <code>[0.0, 1.0]</code></td></tr>
@@ -64,7 +69,7 @@
 <tr><td><code>getMaxHealthModifierAmount(Player)</code></td><td><code>Optional&lt;Double&gt;</code> of current modifier amount</td></tr>
 </tbody></table></div>
 <hr>
-<h3>Mutations (server only; no-ops on client)</h3>
+<h3 id="mutations-server-only-no-ops-on-client">Mutations (server only; no-ops on client)</h3>
 <p>All mutation helpers:</p>
 <ol>
 <li>Post a cancellable <code>NutritionChangeEvent</code>.</li>
@@ -86,7 +91,7 @@
 </tbody></table></div>
 <p><code>Cause</code> values: <code>FOOD</code>, <code>DECAY</code>, <code>COMMAND</code>, <code>API</code>, <code>DEATH_CLONE</code>, <code>OTHER</code>.</p>
 <hr>
-<h3>Events (server-side)</h3>
+<h3 id="events-server-side">Events (server-side)</h3>
 <p>All events extend <code>NutritionEvent</code>. On every loader, listen with <code>NutritionEvents.register(EventClass.class, listener)</code>; listeners run on the server thread in registration order. On NeoForge 1.20.6 and newer the events also extend NeoForge's <code>Event</code> and are posted on <code>NeoForge.EVENT_BUS</code>, so <code>@SubscribeEvent</code> listeners work there. <code>NutritionChangeEvent</code> implements <code>Cancellable</code> (NeoForge's <code>ICancellableEvent</code> on NeoForge). Forge 1.20.1 uses the listener registry only.</p>
 <div class="table-wrap"><table><thead><tr><th>Event</th><th>Cancellable</th><th>When</th></tr></thead><tbody>
 <tr><td><code>NutritionChangeEvent</code></td><td>Yes</td><td>Before a category mutation</td></tr>
@@ -121,7 +126,7 @@ public static void onComputeMaxHealth(ComputeMaxHealthEvent event) {
     }
 }</code></pre>
 <hr>
-<h3>Notes for agents / integrators</h3>
+<h3 id="notes-for-agents-integrators">Notes for agents / integrators</h3>
 <ul>
 <li>Category names and order come from the datapack (<code>nutrition_categories.json</code>). Do not hard-code indices without also reading <code>getCategories()</code>.</li>
 <li>Item vectors are <strong>raw composition</strong>; the server scales them by vanilla food nutrition/saturation and the common-config multipliers before applying.</li>
@@ -131,7 +136,7 @@ public static void onComputeMaxHealth(ComputeMaxHealthEvent event) {
 <li><code>NutritionData</code> no longer implements NeoForge's <code>INBTSerializable</code> (0.4.0). <code>serializeNBT</code> and <code>deserializeNBT</code> remain as plain methods, and <code>NutritionData.CODEC</code> is the save codec.</li>
 </ul>
 <hr>
-<h3>Package layout</h3>
+<h3 id="package-layout">Package layout</h3>
 <pre><code class="language-text">com.fyxeinc.ffnutrition.api
 ├── FFNutritionAPI.java
 └── event

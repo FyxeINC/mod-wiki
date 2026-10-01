@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Overview — FFInjury — Fyxe's Mod Wiki</title>
 <meta name="description" content="Adds tiered injuries, adrenaline, treatment, and healing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFInjury</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Adds tiered injuries, adrenaline, treatment, and healing.</p><h2>Features</h2><ul><li>Injuries can worsen with repeated damage and respond to bandages.</li><li>Datapacks define injury types and optional hurt level rules.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR on every loader; no separate library download is needed.</p><h2>How injuries work</h2>
+<h2 id="overview">Overview</h2><p>Adds tiered injuries, adrenaline, treatment, and healing.</p>
+<figure class="figure figure--todo"><div class="figure__todo">Survival HUD close-up showing three injury icons (leather boots for Twisted Ankle, netherite boots for Broken Leg and redstone for Bleeding) next to the hotbar.</div></figure>
+<h2 id="features">Features</h2><ul><li>Injuries can worsen with repeated damage and respond to bandages.</li><li>Datapacks define injury types and optional hurt level rules.</li></ul><p>FFUtilities 0.2.8 is included in this mod JAR on every loader; no separate library download is needed.</p><h2 id="how-injuries-work">How injuries work</h2>
 <p>Taking damage can apply an injury. Each type has tiers. A new hit of the same type raises the tier instead of adding a duplicate. You can have several injuries at once; the default cap is three different injuries. At the cap, new types are ignored, but another hit can still worsen an existing type.</p>
 <p><strong>Adrenaline</strong> kicks in when you are injured. It hides injury debuffs for a short time that scales with the hit. When it wears off, untreated effects come back.</p>
 <p><strong>Bandages</strong> treat one untreated injury at a time (hold use). Treatment suppresses that injury's debuffs and can start a heal timer. Hold Shift on an injury icon in the inventory for remaining treat and heal times. If a treated injury has no heal timer at its tier, its tooltip says it needs sleep or a special heal.</p>
@@ -61,9 +68,9 @@
 <p>The <strong>HUD</strong> shows active injuries as item icons. Open your inventory for tooltips. Almost every layout, color and alert option is in the client config.</p>
 <p><strong>Creative:</strong> injuries are off unless you enable them, which also hides icons and skips healing and effects.</p>
 <p>Default injuries: Twisted Ankle, Ankle Fracture, Broken Leg, Bruised Ribs, Broken Ribs, Concussion, Bleeding, Burn.</p>
-<h2>Commands</h2>
+<h2 id="commands">Commands</h2>
 <p>Operators (<code>/ffinjury</code>, permission 2 or higher): <code>list</code>, <code>details</code>, <code>add</code>, <code>worsen</code>, <code>lessen</code>, <code>remove</code>, <code>clear</code>.</p>
-<h2>Default balance</h2>
+<h2 id="default-balance">Default balance</h2>
 <p>Injuries are short setbacks that leave you able to travel and fight. Built-ins use one percentage attribute penalty each, with no Wither, Weakness, Mining Fatigue, Slowness, nausea or blindness. Penalties stop growing at tier 3 even if a server raises the tier cap. Different injuries still combine multiplicatively.</p>
 <div class="table-wrap"><table>
 <thead>
@@ -163,11 +170,11 @@
 </table></div>
 <p>Repeated environmental damage has especially low chances because each damage event rolls separately. Fractures have lower selection weights than minor injuries. Adrenaline starts at 15 seconds plus damage scaling, capped at 60 seconds. Optional hurt-level regeneration penalties are disabled by default.</p>
 <p><strong>Existing worlds:</strong> existing server config values are preserved when you update. To adopt new defaults, stop the world or server, back up <code>&lt;world&gt;/serverconfig/ffinjury-server.toml</code>, then remove that file so it regenerates (also check any <code>defaultconfigs/ffinjury-server.toml</code> template). This resets your custom server settings; alternatively copy only the changed values. Built-in injury JSON updates with the mod unless a higher-priority datapack overrides it.</p>
-<h2>Configuration</h2>
+<h2 id="configuration">Configuration</h2>
 <p>Damage chances live in the server config <code>damage_sources.chances</code> as <code>damageTypeId;chance</code> (for example <code>minecraft:fall;0.12</code>). Missing rows use <code>defaultChance</code>. An injury only rolls from a hit if it lists that damage type in its datapack <code>damage_weights</code>. The shared max tier is <code>general.defaultMaxTier</code>.</p>
 <p>The in-game config screen exists on 1.21.1 and newer (on Fabric through Mod Menu); on older versions, edit the config file.</p>
 <p>Injury types and hurt levels are datapack files; see <a href="datapacks.html">Datapacks</a>.</p>
-<h2>Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr><tr><th>Source version</th><td colspan="2">0.9.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2>For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, events, and integration examples.</p>
+<h2 id="requirements-and-source-version">Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr><tr><th>Source version</th><td colspan="2">0.9.0</td></tr></tbody></table></div><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2 id="for-mod-developers">For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, events, and integration examples.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

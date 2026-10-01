@@ -1,22 +1,27 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Datapacks — FF Expanded Biome Tint — Fyxe's Mod Wiki</title>
+<title>Datapacks — FFExpandedBiomeTint — Fyxe's Mod Wiki</title>
 <meta name="description" content="Tint rule files: blocks, tags and regex with biome channels and strength.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
-<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Expanded Biome Tint</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Datapacks</h2>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFExpandedBiomeTint</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
+<h2 id="datapacks">Datapacks</h2>
 <p>Tint rules are JSON files in a datapack at:</p>
 <pre><code class="language-text">data/&lt;namespace&gt;/ffexpandedbiometint/tint_rules/&lt;name&gt;.json
 </code></pre>
 <p>The server resolves the rules and sends the resulting block tints to clients when they join or when datapacks reload. Use <code>/reload</code> after changing a datapack. Players need the mod installed to see the tints.</p>
-<h3>Rule format</h3>
+<h3 id="rule-format">Rule format</h3>
 <p>Each rule selects blocks with exactly one of:</p>
 <div class="table-wrap"><table>
 <thead>
@@ -70,10 +75,10 @@
   ]
 }
 </code></pre>
-<h3>Rule order and overrides</h3>
+<h3 id="rule-order-and-overrides">Rule order and overrides</h3>
 <p>The bundled defaults live at <code>data/ffexpandedbiometint/ffexpandedbiometint/tint_rules/default.json</code>. A datapack file at that same path replaces all bundled defaults. Otherwise, your files add to them: the bundled default file is applied first, then other files in resource ID order. Within a file, rules run top to bottom. The last matching rule sets a block's tint and strength, so you can override a broad tag or regex with a later exact block entry.</p>
 <p>Rules registered by other mods through the API are defaults too; server datapacks can override them.</p>
-<h3>Built-in ore rules</h3>
+<h3 id="built-in-ore-rules">Built-in ore rules</h3>
 <p>The built-in regex rules cover IDs such as <code>examplemod:tin_ore</code> and <code>examplemod:ore_tin</code> at 45% strength, and names containing <code>deepslate</code> (such as <code>examplemod:deepslate_tin_ore</code> or <code>examplemod:ore_deepslate_tin</code>) at 25%. They skip the <code>minecraft</code> namespace and IDs containing common Nether or End material names (<code>nether</code>, <code>netherrack</code>, <code>end_stone</code>, <code>endstone</code>, <code>the_end</code>, <code>basalt</code> or <code>blackstone</code>). Block IDs alone can't identify every ore's dimension, so add a later rule or replace the defaults if a mod uses a different naming scheme.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>

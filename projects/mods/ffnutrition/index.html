@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Overview — FFNutrition — Fyxe's Mod Wiki</title>
 <meta name="description" content="Rewards diet variety with nutrition categories that affect maximum health.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
 </head>
 <body>
 <div data-site-header></div>
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFNutrition</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Rewards diet variety with nutrition categories that affect maximum health.</p><h2>Features</h2><ul><li>Foods add to datapack defined categories that decay over time.</li><li>The server computes a nutrition score and applies a max health modifier.</li></ul><h2>How nutrition works</h2>
+<h2 id="overview">Overview</h2><p>Rewards diet variety with nutrition categories that affect maximum health.</p>
+<figure class="figure figure--todo"><div class="figure__todo">Survival screenshot with the Metabolic Gauge held in hand and its five colored category percentages (meat, fruit, veg, carbs, sweets) shown above the hotbar, one of them low and red.</div></figure>
+<h2 id="features">Features</h2><ul><li>Foods add to datapack defined categories that decay over time.</li><li>The server computes a nutrition score and applies a max health modifier.</li></ul><h2 id="how-nutrition-works">How nutrition works</h2>
 <p>Every player has a value from 0 to 100 for each nutrition category. Out of the box the categories are <strong>meat</strong>, <strong>fruit</strong>, <strong>veg</strong>, <strong>carbs</strong> and <strong>sweets</strong>, and everyone starts at 50 in each.</p>
 <ul>
 <li>Eating a food raises the categories it is made of. The gain is the food's makeup multiplied by how filling it is, so bigger meals give more.</li>
@@ -22,9 +29,9 @@
 <li>Foods can be eaten with a full hunger bar (can be turned off). Cake and other food blocks count too, using what they actually restore.</li>
 <li>Experience slows the drain. Hunger and saturation can also tick down slowly on their own (configurable).</li>
 </ul>
-<h3>The Metabolic Gauge</h3>
+<h3 id="the-metabolic-gauge">The Metabolic Gauge</h3>
 <p>Craft it from four iron ingots around any food (it's also in the Tools &amp; Utilities creative tab). Hold it in either hand and your category percentages appear above the hotbar, color-coded from white through gray and orange to red as they run low.</p>
-<h2>Commands</h2>
+<h2 id="commands">Commands</h2>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -76,7 +83,7 @@
 </tr>
 </tbody>
 </table></div>
-<h2>Configuration</h2>
+<h2 id="configuration">Configuration</h2>
 <p>Settings live in the common config (<code>ffnutrition-common.toml</code> in your config folder). The in-game Mods screen has a Config button on 1.21.1 and newer (on Fabric through Mod Menu); on older versions, edit the file. The options you'll most likely want:</p>
 <div class="table-wrap"><table>
 <thead>
@@ -150,9 +157,9 @@
 </tbody>
 </table></div>
 <p>There are more options for the gauge colors and position, the max health chat messages and the hunger drain; every option has a comment in the config file.</p>
-<h2>Supported food mods</h2>
+<h2 id="supported-food-mods">Supported food mods</h2>
 <p>Nutrition files ship for vanilla (<code>minecraft</code>) and for these mod IDs: <code>artifacts</code>, <code>benssharks</code>, <code>brewinandchewin</code>, <code>burnt</code>, <code>cold_sweat</code>, <code>corn_delight</code>, <code>create</code>, <code>createaddition</code>, <code>crittersandcompanions</code>, <code>delightfulcreators</code>, <code>enderscape</code>, <code>ends_delight</code>, <code>expandeddelight</code>, <code>farmersdelight</code>, <code>fiahi</code>, <code>minecolonies</code>, <code>moredelight</code>, <code>myths_of_the_sea</code>, <code>netherdepthsupgrade</code>, <code>oceansdelight</code>, <code>rusticdelight</code> and <code>tide</code>. Entries for mods that aren't installed are ignored. Other foods are matched by the built-in name rules; see <a href="datapacks.html">Datapacks</a>.</p>
-<h2>Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr></tbody></table></div><p>Source version: <strong>0.6.0</strong>. FFUtilities is included in every jar.</p><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2>For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, events, and integration examples.</p>
+<h2 id="requirements-and-source-version">Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr></tbody></table></div><p>Source version: <strong>0.6.0</strong>. FFUtilities is included in every jar.</p><p>A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p><h2 id="for-mod-developers">For mod developers</h2><p>See the <a href="api.html">Modding API guide</a> for public classes, events, and integration examples.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
