@@ -55,6 +55,12 @@ window.WIKI_DATA = {
         "date": "2026-10-01",
         "project": "ffentitypainting",
         "page": "api.html",
+        "change": "0.9.6: a throwing event listener no longer breaks painting, off-thread edits throw, PaintEvent.Changed fires for commands and respawns, and SurfaceShape.Part is read-only with withHeights."
+      },
+      {
+        "date": "2026-10-01",
+        "project": "ffentitypainting",
+        "page": "api.html",
         "change": "0.9.4: 17 new layer blend modes (darken to luminosity, plus erase and mask) and 14 new brush pixel modes (atop, behind, dodge, burn, invert, saturate and more), all available to the modding API."
       },
       {
@@ -478,7 +484,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Paint living entities, modded and GeckoLib mobs included, with shared, team-restricted and local layers, with a mod API for brushes, layer access rules and server-side painting.",
       "tagline": "Add a splash of color to living entities.",
-      "version": "0.9.4",
+      "version": "0.9.6",
       "minecraftVersion": "1.21.1, 1.21.11",
       "modrinthSlug": "",
       "icon": "",

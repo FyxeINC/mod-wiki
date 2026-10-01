@@ -9,44 +9,51 @@
   <entry>
     <title>FFUtilities: Modding API</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffutilities/api.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffutilities-61</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffutilities-62</id>
     <updated>2026-10-01T00:00:00Z</updated>
     <summary>0.2.11: version-proof wrappers for NBT, attributes, effects, commands, inventories, food, the moon and GUI drawing; Accessories/Curios/Trinkets and Cold Sweat bridges; compiled config equations; color, text and duration helpers.</summary>
   </entry>
   <entry>
     <title>FFEntityDirt: Modding API</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/api.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitydirt-60</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitydirt-61</id>
     <updated>2026-10-01T00:00:00Z</updated>
     <summary>0.8.0: new Modding API for wound marks: register wound shapes, assign item and entity tags, and pick wounds in code.</summary>
   </entry>
   <entry>
     <title>FFEntityDirt: Datapacks</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/datapacks.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitydirt-59</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitydirt-60</id>
     <updated>2026-10-01T00:00:00Z</updated>
     <summary>0.8.0: wound tags for every weapon and mob type, and the sticky_surfaces block tag.</summary>
   </entry>
   <entry>
     <title>FFEntityDirt: Overview</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/index.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitydirt-58</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitydirt-59</id>
     <updated>2026-10-01T00:00:00Z</updated>
     <summary>0.8.0: weapons leave their own wounds (vanilla, Better Combat and modded by name), rougher marks, honey and slime smears, sculk stains, powder snow coats and lava char.</summary>
   </entry>
   <entry>
     <title>FFUtilities: Modding API</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffutilities/api.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffutilities-57</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffutilities-58</id>
     <updated>2026-10-01T00:00:00Z</updated>
     <summary>0.2.10: BetterCombat reads Better Combat weapons, weapon types and combo counts; IdKeywords matches config keywords against words in IDs; ColorUtil.tryParseHex and ConfigValidators.hexColor reject malformed colors.</summary>
   </entry>
   <entry>
     <title>FFEntityDirt: Overview</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/index.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitydirt-56</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitydirt-57</id>
     <updated>2026-10-01T00:00:00Z</updated>
     <summary>0.8.0: melee marks land where the attacker was looking, aimed from its eyes; melee.aimFromEyes switches back to the older placement.</summary>
+  </entry>
+  <entry>
+    <title>FFEntityPainting: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-01-ffentitypainting-56</id>
+    <updated>2026-10-01T00:00:00Z</updated>
+    <summary>0.9.6: a throwing event listener no longer breaks painting, off-thread edits throw, PaintEvent.Changed fires for commands and respawns, and SurfaceShape.Part is read-only with withHeights.</summary>
   </entry>
   <entry>
     <title>FFEntityPainting: Modding API</title>
