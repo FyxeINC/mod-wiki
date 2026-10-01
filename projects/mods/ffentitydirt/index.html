@@ -11,7 +11,7 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Entity Dirt</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<h2>Overview</h2><p>Entities pick up dirt from the ground, soot from fire and explosions, snow in snowfall and damage marks where they are hit, and wash it all off in water, rain or a cauldron bath.</p><h2>Features</h2><ul><li>Moving on natural ground (soil, sand, gravel, clay, mud, snow, stone) leaves dirt low on the body in the color of the block underneath; floors like planks and carpet stay clean. Faster movement means more dirt that reaches higher, with a configurable spread that flings stray flecks further up; standing still adds none. Each time dirt lands, a small puff of the ground's particles kicks up (can be turned off).</li><li>Breaking a block sometimes flings specks of its color onto the player, on the side facing the block.</li><li>Fall damage splatters dirt from the bottom up, scaled by the damage taken.</li><li>Fire damage leaves soot, heaviest at the feet and fading smoothly toward the head. Explosion damage leaves soot on the side facing the blast, darker the closer it went off.</li><li>Hits leave damage marks: projectiles where they land, melee hits as a slash at a random angle across the side facing the attacker, longer when the attacker is close and thicker when the hit is hard. Each mob or tag can have its own color.</li><li>Damage marks fade slowly over time and much faster as the entity heals.</li><li>Water slowly washes dirt and damage marks off, only below the water line. Rain from open sky washes the whole body more slowly, and a water cauldron bath scrubs off every layer.</li><li>Snowfall from open sky builds up on its own locked Snow layer, heaviest on the head and thinning out down the body in patches, under any damage marks. It melts once the snow stops.</li><li>Dirt and damage marks are real <a href="../ffentitypainting/index.html">FF Entity Painting</a> paint on their own locked layers, each with its own on/off switch and mob filters, so hand-painted art is never washed away.</li><li>Drips, on each player's own game: water and lava dripping from pools, pointed dripstone, wet sponges and rainy leaves land on mobs and players instead of falling through, leaving wet spots or scorch marks that fade. They are painted on FF Entity Painting local layers (Wet and Scorch) that only that player sees; client settings choose which particles paint and how.</li><li>Server settings for mob and block whitelists and blacklists (IDs, tags or whole mods), dirt colors, messiness, rates, reach and wash speed. Mob shapes are measured by FF Entity Painting, which has the measuring settings.</li><li>Datapack tags <code>ffentitydirt:dirty_surfaces</code> and <code>ffentitydirt:clean_surfaces</code> (blocks) <code>ffentitydirt:never_dirty</code> and <code>ffentitydirt:never_damaged</code> (entity types).</li></ul><h2>How it works in detail</h2>
+<h2>Overview</h2><p>Entities pick up dirt from the ground, soot from fire and explosions, snow in snowfall and damage marks where they are hit, and wash it all off in water, rain or a cauldron bath.</p><h2>Features</h2><ul><li>Moving on natural ground (soil, sand, gravel, clay, mud, snow, stone) leaves dirt low on the body in the color of the block underneath; floors like planks and carpet stay clean. Faster movement means more dirt that reaches higher, with a configurable spread that flings stray flecks further up; standing still adds none. Each time dirt lands, a small puff of the ground's particles kicks up (can be turned off).</li><li>Breaking a block sometimes flings specks of its color onto the player, on the side facing the block.</li><li>Fall damage splatters dirt from the bottom up, scaled by the damage taken.</li><li>Fire damage leaves soot, heaviest at the feet and fading smoothly toward the head. Explosion damage leaves soot on the side facing the blast, darker the closer it went off.</li><li>Hits leave wounds that match the weapon: swords slash, axes gash, spears and daggers stab, tridents leave three holes, maces and hammers crush, fists and shovels bruise, and wolves, cats, bees and hoglins bite, claw, sting and gore. Melee wounds land where the attacker was looking (a hit to the head marks the head), bigger when the attacker is close and thicker when the hit is hard, and go on a little unevenly so they look messy rather than stamped. Modded weapons are recognized through tags, Better Combat weapon types and their names. Each mob or tag can have its own color.</li><li>Damage marks fade slowly over time and much faster as the entity heals.</li><li>Water slowly washes dirt and damage marks off, only below the water line. Rain from open sky washes the whole body more slowly, and a water cauldron bath scrubs off every layer.</li><li>Honey and slime blocks smear the feet amber or green, faster than walking on dirt and even standing still. Sculk leaves teal-black stains. Sinking into powder snow coats whatever is under its surface in white, and lava slowly chars whatever is sunk in it.</li><li>Snowfall from open sky builds up on its own locked Snow layer, heaviest on the head and thinning out down the body in patches, under any damage marks. It melts once the snow stops.</li><li>Dirt and damage marks are real <a href="../ffentitypainting/index.html">FF Entity Painting</a> paint on their own locked layers, each with its own on/off switch and mob filters, so hand-painted art is never washed away.</li><li>Drips, on each player's own game: water and lava dripping from pools, pointed dripstone, wet sponges and rainy leaves land on mobs and players instead of falling through, leaving wet spots or scorch marks that fade. They are painted on FF Entity Painting local layers (Wet and Scorch) that only that player sees; client settings choose which particles paint and how.</li><li>Server settings for mob and block whitelists and blacklists (IDs, tags or whole mods), dirt colors, messiness, rates, reach and wash speed. Mob shapes are measured by FF Entity Painting, which has the measuring settings.</li><li>Datapack tags <code>ffentitydirt:dirty_surfaces</code> and <code>ffentitydirt:clean_surfaces</code> (blocks) <code>ffentitydirt:never_dirty</code> and <code>ffentitydirt:never_damaged</code> (entity types).</li></ul><h2>How it works in detail</h2>
 <ul>
 <li><strong>Walking and running:</strong> every step on natural ground (soil, grass, sand, gravel, clay, mud, snow, stone and the like) has a good chance to leave a speck of dirt low on the body, with a little puff of ground particles at the feet. Wooden floors, wool, carpet and other indoor surfaces stay clean. The faster you go, the more often it happens and the higher it can reach, and a few stray flecks fly even higher. Standing still never adds dirt, and neither do swimming, riding or flying.</li>
 <li><strong>Colors come from the ground:</strong> grass leaves green, mud dark brown, sand sandy yellow, snow white. Blocks without a custom color use their map color, and every splat gets a little random shading so it looks speckled rather than flat.</li>
@@ -19,7 +19,12 @@
 <li><strong>Mining:</strong> breaking stone, dirt or grass now and then flings a few specks of its color onto the player, on the side facing the block. Dig at your feet and your legs get grubby; dig overhead and the specks land on your head and arms.</li>
 <li><strong>Soot:</strong> catching fire, touching lava or standing in a campfire leaves soot, blackest at the feet and fading up to the head. It keeps building while you burn (up to a limit), even with Fire Resistance. The default soot is near black, so it stands out on light mobs and is subtler on dark ones; change <code>soot.color</code> for a bolder look.</li>
 <li><strong>Explosions:</strong> a blast leaves soot on the side facing it, creeping a little way around the sides. The closer you were, the darker the scorch. Hiding fully behind a wall keeps you clean, creative players get scorched too, and wind charges never leave soot. Soot darkens any dirt already there.</li>
-<li><strong>Damage marks:</strong> an arrow, trident or snowball leaves a mark where it hit. A melee hit leaves a slash across the side facing the attacker, at a random angle. Closer attackers leave longer slashes, harder hits thicker and darker ones.</li>
+<li><strong>Damage marks:</strong> an arrow, trident or snowball leaves a wound where it hit. A melee hit leaves a wound where the attacker's line of sight from its eyes meets the body, scattered a little so repeated hits don't stack on one spot. When a mob looks just past its target, the line from its eyes to the nearest part of the body is used instead. With <code>melee.aimFromEyes</code> off, wounds land on the side facing the attacker at a random height, as before 0.8.0. Closer attackers leave bigger wounds, harder hits thicker and darker ones, and every wound goes on a little unevenly (<code>damage.roughness</code>).</li>
+<li><strong>Weapon wounds:</strong> what hits you decides the wound. Swords leave a slash, axes a thick gash, claymores, glaives, halberds and scythes a long cleave, spears, daggers and rapiers a stab with a drip running down, arrows and pickaxes a puncture, tridents three holes side by side, maces, hammers and iron golems a dark crater with spatter, fists, shovels and staffs a purplish bruise, hoes, shears and sickles two scratches, cats and polar bears three claw rakes, zombies, wolves and spiders a bite, hoglins two tusk tears, bees a sting, whips a lash, and llama spit and slimes a splatter. Weapons from other mods are matched by the wound tags, then by Better Combat's weapon type when it is installed, then by words in the item's name (a <code>katana</code> slashes, a <code>warhammer</code> crushes). Anything else with attack damage slashes and anything without bruises. The Datapacks page lists the tags.</li>
+<li><strong>Sticky blocks:</strong> standing or walking on honey or slime blocks smears your feet and ankles amber or green, much faster than walking on dirt and even while standing still. Bouncing in the air adds nothing.</li>
+<li><strong>Sculk:</strong> walking on sculk leaves teal-black stains, a bit messier than dirt.</li>
+<li><strong>Powder snow:</strong> sink into powder snow and whatever is under its surface slowly coats white, heaviest at the feet. It stays until washed off.</li>
+<li><strong>Lava:</strong> whatever is sunk in lava slowly chars dark, on top of the soot from burning, so a player with Fire Resistance wading through lava comes out with blackened legs. Naturally fire-immune mobs like striders stay uncharred.</li>
 <li><strong>Water:</strong> standing in water slowly fades dirt, soot, damage marks and snow, but only below the water line. Wading cleans your legs; a full swim cleans everything.</li>
 <li><strong>Rain:</strong> rain from open sky washes the whole body, more slowly than a swim. Any block overhead keeps you dry (and dirty).</li>
 <li><strong>Cauldron baths:</strong> sitting in a water cauldron (any fill level) slowly scrubs off every layer this mod adds.</li>
@@ -104,12 +109,12 @@
 </tr>
 <tr>
 <td><code>surfaces.colors</code></td>
-<td>grass, mud, podzol and friends</td>
+<td>grass, mud, podzol and friends; honey amber, slime green, sculk teal-black</td>
 <td><code>block=#RRGGBB</code> dirt colors</td>
 </tr>
 <tr>
 <td><code>surfaces.multipliers</code></td>
-<td>mud 3, clay and soul sand 1.5, dirt and sand 1.25, snow 0.75, stone, terracotta and end stone 0.4 to 0.5</td>
+<td>mud 3, clay, soul sand and sculk 1.5, dirt and sand 1.25, snow 0.75, stone, terracotta and end stone 0.4 to 0.5</td>
 <td><code>block=number</code> for how messy a block is. 0 means no dirt</td>
 </tr>
 <tr>
@@ -203,6 +208,56 @@
 <td>How far blast soot creeps around from the facing side: 0 stops at the sides, 1 reaches all the way around</td>
 </tr>
 <tr>
+<td><code>sticky.enabled</code></td>
+<td>true</td>
+<td>Honey and slime blocks smear the feet in their color</td>
+</tr>
+<tr>
+<td><code>sticky.blocks</code></td>
+<td><code>#ffentitydirt:sticky_surfaces</code></td>
+<td>Blocks that count as sticky; they leave no ordinary walking dirt. Colors come from <code>surfaces.colors</code></td>
+</tr>
+<tr>
+<td><code>sticky.splatsPerSecond</code> / <code>splatsPerBlock</code></td>
+<td>1.5 / 3</td>
+<td>Smears per second on a sticky block, standing or moving, plus extra per block moved (walking on dirt is about 1 per block)</td>
+</tr>
+<tr>
+<td><code>sticky.reach</code> / <code>opacity</code></td>
+<td>0.2 / 0.6</td>
+<td>How high smears reach (feet and ankles) and how strong each one is</td>
+</tr>
+<tr>
+<td><code>powderSnow.enabled</code> / <code>color</code></td>
+<td>true / <code>#F2F6FA</code></td>
+<td>Powder snow coats whatever is sunk in it</td>
+</tr>
+<tr>
+<td><code>powderSnow.buildPerSecond</code></td>
+<td>0.12</td>
+<td>How fast the coat builds, as the share of the way to a full coat per second</td>
+</tr>
+<tr>
+<td><code>powderSnow.bottomOpacity</code> / <code>topOpacity</code> / <code>noise</code></td>
+<td>0.85 / 0.6 / 0.3</td>
+<td>Heaviest coat at the feet and at the snow's surface, and how patchy it is</td>
+</tr>
+<tr>
+<td><code>lava.enabled</code> / <code>color</code></td>
+<td>true / <code>#1A1210</code></td>
+<td>Lava chars whatever is below its surface</td>
+</tr>
+<tr>
+<td><code>lava.darkenPerSecond</code> / <code>opacity</code> / <code>noise</code></td>
+<td>0.05 / 0.9 / 0.25</td>
+<td>How fast it chars, the darkest it gets, and how patchy it is</td>
+</tr>
+<tr>
+<td><code>lava.skipFireImmune</code></td>
+<td>true</td>
+<td>Leave naturally fire-immune mobs (striders, blazes, magma cubes) uncharred. Fire Resistance does not count</td>
+</tr>
+<tr>
 <td><code>mining.enabled</code> / <code>chance</code> / <code>splats</code></td>
 <td>true / 0.3 / 3</td>
 <td>Breaking a block can leave specks of its color; the chance per block and how many specks</td>
@@ -275,6 +330,11 @@
 <td>Random shading; marks stop building up at this opacity</td>
 </tr>
 <tr>
+<td><code>roughness</code></td>
+<td>0.5</td>
+<td>How messily wounds go on: samples wander and vary, edges come out ragged, stray droplets land nearby. 0 is perfectly clean</td>
+</tr>
+<tr>
 <td><code>size.baseOpacity</code> / <code>opacityPerDamage</code></td>
 <td>0.6 / 0.08</td>
 <td>Mark strength: base plus a bit per half heart</td>
@@ -292,17 +352,27 @@
 <tr>
 <td><code>melee.enabled</code></td>
 <td>true</td>
-<td>Melee hits leave a slash on the side facing the attacker</td>
+<td>Melee hits leave a wound</td>
+</tr>
+<tr>
+<td><code>melee.aimFromEyes</code></td>
+<td>true</td>
+<td>Aim slashes along the attacker's line of sight from its eyes, so they land where it was looking. Off: the older placement on the side facing the attacker at a random height</td>
+</tr>
+<tr>
+<td><code>melee.eyeSpread</code></td>
+<td>0.12</td>
+<td>How far a slash aimed from the eyes can land from where the attacker looked, as a fraction of the mob's height</td>
 </tr>
 <tr>
 <td><code>melee.minHeight</code> / <code>maxHeight</code> / <code>sideSpread</code></td>
 <td>0 / 1 / 0.4</td>
-<td>Where on the body the middle of a slash can land</td>
+<td>With <code>aimFromEyes</code> off, where on the body the middle of a slash can land</td>
 </tr>
 <tr>
 <td><code>melee.slashMinLength</code> / <code>slashMaxLength</code></td>
 <td>1 / 4</td>
-<td>Slash length in texture pixels: longest when the attacker is close. Set both to 0 for round marks</td>
+<td>Slash length in texture pixels: longest when the attacker is close. Every other wound shrinks by the same share of <code>slashMaxLength</code>, down to its own minimum; at 4 wounds are full size</td>
 </tr>
 <tr>
 <td><code>melee.slashNearDistance</code> / <code>slashFarDistance</code></td>
@@ -312,7 +382,27 @@
 <tr>
 <td><code>melee.slashMinThickness</code> / <code>slashMaxThickness</code> / <code>slashThicknessPerDamage</code></td>
 <td>1 / 3 / 0.3</td>
-<td>Slash thickness in texture pixels, growing with damage. Odd widths only, so 2 rounds to 3</td>
+<td>Slash thickness in texture pixels, growing with damage. Odd widths only, so 2 rounds to 3. Other cutting wounds scale this; blots (stabs, bruises, crushes) scale <code>size.baseRadius</code></td>
+</tr>
+<tr>
+<td><code>wounds.enabled</code></td>
+<td>true</td>
+<td>Weapons leave their own wounds. Off: every melee hit is a slash and every projectile a puncture</td>
+</tr>
+<tr>
+<td><code>wounds.weaponWound</code> / <code>unarmedWound</code> / <code>projectileWound</code></td>
+<td>slash / bruise / puncture</td>
+<td>Fallbacks: a weapon nothing else matched (attack damage or <code>#c:tools/melee_weapon</code>), a bare hand, non-weapon item or untagged mob, and an untagged projectile</td>
+</tr>
+<tr>
+<td><code>wounds.betterCombatCategories</code></td>
+<td>every Better Combat preset</td>
+<td><code>category=wound</code> for weapons Better Combat knows (dagger stabs, claymore cleaves, hammer crushes), used when the item is in no wound tag</td>
+</tr>
+<tr>
+<td><code>wounds.itemKeywords</code></td>
+<td>about 50 weapon words</td>
+<td><code>word=wound</code>, matched against the item's ID as a last guess: <code>sword</code> matches <code>iron_longsword</code>, and the longest word wins, so <code>pickaxe</code> beats <code>axe</code></td>
 </tr>
 </tbody>
 </table></div>
@@ -549,7 +639,7 @@
 <li>Lava drips only leave marks; they don't set anything on fire.</li>
 </ul>
 <p>Datapack tags are covered on the <a href="datapacks.html">Datapacks</a> page.</p>
-<h2>Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.21.1 and 1.21.11</td></tr><tr><th>NeoForge</th><td>21.1.211 or newer (1.21.1), 21.11.45 or newer (1.21.11)</td></tr><tr><th>Fabric</th><td>Fabric Loader 0.16.1 or newer (1.21.1) or 0.18.0 or newer (1.21.11), plus Fabric API</td></tr><tr><th>Requires</th><td>FF Entity Painting 0.9.0 or newer (below 0.10.0), on server and clients</td></tr><tr><th>Source version</th><td>0.8.0</td></tr></tbody></table></div><p>FFUtilities is bundled. There is no public modding API yet. A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
+<h2>Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.21.1 and 1.21.11</td></tr><tr><th>NeoForge</th><td>21.1.211 or newer (1.21.1), 21.11.45 or newer (1.21.11)</td></tr><tr><th>Fabric</th><td>Fabric Loader 0.16.1 or newer (1.21.1) or 0.18.0 or newer (1.21.11), plus Fabric API</td></tr><tr><th>Requires</th><td>FF Entity Painting 0.9.0 or newer (below 0.10.0), on server and clients</td></tr><tr><th>Source version</th><td>0.8.0</td></tr></tbody></table></div><p>FFUtilities 0.2.10 is bundled. The <a href="api.html">Modding API</a> lets other mods add wound marks and choose which weapons and mobs leave them. A Modrinth link appears only when a project link is configured. The source version above may be newer than the latest published file.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

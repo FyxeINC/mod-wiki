@@ -15,6 +15,42 @@ window.WIKI_DATA = {
     "recentUpdates": [
       {
         "date": "2026-10-01",
+        "project": "ffutilities",
+        "page": "api.html",
+        "change": "0.2.11: version-proof wrappers for NBT, attributes, effects, commands, inventories, food, the moon and GUI drawing; Accessories/Curios/Trinkets and Cold Sweat bridges; compiled config equations; color, text and duration helpers."
+      },
+      {
+        "date": "2026-10-01",
+        "project": "ffentitydirt",
+        "page": "api.html",
+        "change": "0.8.0: new Modding API for wound marks: register wound shapes, assign item and entity tags, and pick wounds in code."
+      },
+      {
+        "date": "2026-10-01",
+        "project": "ffentitydirt",
+        "page": "datapacks.html",
+        "change": "0.8.0: wound tags for every weapon and mob type, and the sticky_surfaces block tag."
+      },
+      {
+        "date": "2026-10-01",
+        "project": "ffentitydirt",
+        "page": "index.html",
+        "change": "0.8.0: weapons leave their own wounds (vanilla, Better Combat and modded by name), rougher marks, honey and slime smears, sculk stains, powder snow coats and lava char."
+      },
+      {
+        "date": "2026-10-01",
+        "project": "ffutilities",
+        "page": "api.html",
+        "change": "0.2.10: BetterCombat reads Better Combat weapons, weapon types and combo counts; IdKeywords matches config keywords against words in IDs; ColorUtil.tryParseHex and ConfigValidators.hexColor reject malformed colors."
+      },
+      {
+        "date": "2026-10-01",
+        "project": "ffentitydirt",
+        "page": "index.html",
+        "change": "0.8.0: melee marks land where the attacker was looking, aimed from its eyes; melee.aimFromEyes switches back to the older placement."
+      },
+      {
+        "date": "2026-10-01",
         "project": "ffentitypainting",
         "page": "api.html",
         "change": "0.9.1: every mob is paintable without registering, GeckoLib mobs included; opt mobs out with the unpaintable entity tag, EntityPaintingAPI.excludeEntities or excludeModel(s). registerPaintableModel(s) are deprecated no-ops."
@@ -499,16 +535,24 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FF Entity Dirt features, requirements, and source version.",
-          "updated": "2026-09-30",
-          "searchExcerpt": "Dirt from walking, falls and mining, soot from fire and explosions, snow, damage marks from projectiles and melee, washed off by water, rain or a cauldron, stored as FF Entity Painting paint on locked layers."
+          "updated": "2026-10-01",
+          "searchExcerpt": "Dirt from walking, falls and mining, honey and slime smears, sculk stains, powder snow and lava char, soot from fire and explosions, snow, weapon wounds from projectiles, melee and mobs, washed off by water, rain or a cauldron, stored as FF Entity Painting paint on locked layers."
         },
         {
           "file": "datapacks.html",
           "title": "Datapacks",
           "index": "02",
-          "description": "FF Entity Dirt datapack formats: block and entity tags for dirt, mining specks and clean mobs.",
-          "updated": "2026-09-30",
-          "searchExcerpt": "Dirty surface, mining block, clean surface, never dirty and never damaged tags."
+          "description": "FF Entity Dirt datapack formats: block and entity tags for dirt, sticky blocks, mining specks, clean mobs and which wound each weapon or mob leaves.",
+          "updated": "2026-10-01",
+          "searchExcerpt": "Dirty surface, sticky surface, mining block, clean surface, never dirty and never damaged tags; wound item and entity type tags: slash, gash, cleave, stab, puncture, triple puncture, bruise, crush, scratch, claw, bite, gore, lash, sting, splatter."
+        },
+        {
+          "file": "api.html",
+          "title": "Modding API",
+          "index": "03",
+          "description": "Java API for wound marks: register wound shapes, restyle built-ins, assign item and entity tags, and pick wounds in code.",
+          "updated": "2026-10-01",
+          "searchExcerpt": "WoundAPI register replaceShape assignItems assignEntities addResolver resolve, WoundShape builder Sizing LINE BLOT Rotation RANDOM LEVEL VERTICAL stroke dot ring spatter tint minScale, WoundContext, WoundResolver, Better Combat categories, item keywords."
         }
       ]
     },
@@ -628,7 +672,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Tracks player fatigue from actions with configurable recovery and effects.",
       "tagline": "Tracks player fatigue from actions with configurable recovery and effects.",
-      "version": "0.9.0",
+      "version": "0.9.1",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffexhaustion",
       "icon": "",
@@ -669,7 +713,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFExhaustion API, finite values, events, and integration examples.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-01",
           "searchExcerpt": "FFExhaustion public API, finite value validation, and integration guide."
         }
       ]
@@ -682,7 +726,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
       "tagline": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
-      "version": "0.9.0",
+      "version": "0.9.2",
       "minecraftVersion": "1.21.1, 1.21.11",
       "modrinthSlug": "fffoodspoilageandpreservation",
       "icon": "",
@@ -727,7 +771,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "03",
           "description": "FFFoodSpoilageAndPreservation API, events, and integration examples.",
-          "updated": "2026-09-28",
+          "updated": "2026-10-01",
           "searchExcerpt": "Food spoilage events, modifier definitions, custom inventory stacking, and integration examples."
         }
       ]
@@ -740,7 +784,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds tiered injuries, adrenaline, treatment, and healing.",
       "tagline": "Adds tiered injuries, adrenaline, treatment, and healing.",
-      "version": "0.9.0",
+      "version": "0.9.1",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffinjury",
       "icon": "",
@@ -789,7 +833,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "03",
           "description": "FFInjury API, events, and integration examples.",
-          "updated": "2026-09-29",
+          "updated": "2026-10-01",
           "searchExcerpt": "FFInjury public API and integration guide."
         }
       ]
@@ -802,7 +846,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Records who created an item, when, where, and how.",
       "tagline": "Records who created an item, when, where, and how.",
-      "version": "0.3.0",
+      "version": "0.3.1",
       "minecraftVersion": "1.20.6-1.21.11",
       "modrinthSlug": "",
       "icon": "",
@@ -839,7 +883,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFItemCreationTracker API, events, and integration examples.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-01",
           "searchExcerpt": "FFItemCreationTracker public API and integration guide."
         }
       ]
@@ -852,7 +896,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds configurable rarity rolls and small modifiers to gear.",
       "tagline": "Adds configurable rarity rolls and small modifiers to gear.",
-      "version": "0.3.0",
+      "version": "0.3.1",
       "minecraftVersion": "1.20.6-1.21.11",
       "modrinthSlug": "",
       "icon": "",
@@ -897,7 +941,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "03",
           "description": "FFItemRarityModifiers API, gear tags, modifier targeting, and integration examples.",
-          "updated": "2026-09-24",
+          "updated": "2026-10-01",
           "searchExcerpt": "FFItemRarityModifiers API, durable gear tags, required_item_tag modifier targeting, and integration guide."
         }
       ]
@@ -910,7 +954,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Gives items weight and players configurable encumbrance bands.",
       "tagline": "Gives items weight and players configurable encumbrance bands.",
-      "version": "0.8.0",
+      "version": "0.8.1",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffitemweight",
       "icon": "",
@@ -959,7 +1003,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "03",
           "description": "FFItemWeight API, weight references, events, and integration examples.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-01",
           "searchExcerpt": "FFItemWeight public API, weight_from datapack references, and copper variant weights."
         }
       ]
@@ -1090,7 +1134,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Rewards diet variety with nutrition categories that affect maximum health.",
       "tagline": "Rewards diet variety with nutrition categories that affect maximum health.",
-      "version": "0.6.0",
+      "version": "0.6.1",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffnutrition",
       "icon": "icon.png",
@@ -1135,7 +1179,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "03",
           "description": "FFNutrition API, events, and integration examples.",
-          "updated": "2026-09-28",
+          "updated": "2026-10-01",
           "searchExcerpt": "FFNutrition public API and integration guide."
         }
       ]
@@ -1186,7 +1230,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge.",
       "tagline": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge.",
-      "version": "0.2.8",
+      "version": "0.2.11",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "",
       "icon": "",
@@ -1219,7 +1263,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFUtilities features, requirements, and source version.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-01",
           "searchExcerpt": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge."
         },
         {
@@ -1227,7 +1271,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFUtilities API, events, and integration examples.",
-          "updated": "2026-09-28",
+          "updated": "2026-10-01",
           "searchExcerpt": "FFUtilities public API and integration guide."
         }
       ]

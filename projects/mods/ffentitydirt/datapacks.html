@@ -12,7 +12,7 @@
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FF Entity Dirt</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
 <h2>Datapacks</h2>
-<p>FF Entity Dirt has no datapack file format of its own. Instead, five tags let you tweak which blocks and mobs take part without touching the config. Add entries with <code>"replace": false</code> to extend them, and use <code>/reload</code> after changing a datapack.</p>
+<p>FF Entity Dirt has no datapack file format of its own. Instead, tags let you tweak which blocks and mobs take part, and which wound each weapon or mob leaves, without touching the config. Add entries with <code>"replace": false</code> to extend them, and use <code>/reload</code> after changing a datapack.</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -27,7 +27,13 @@
 <td><code>ffentitydirt:dirty_surfaces</code></td>
 <td>block</td>
 <td>Extra natural blocks that leave dirt, on top of the vanilla ground tags in the dirt whitelist</td>
-<td>Gravel, clay, farmland, dirt paths, soul sand and soil, calcite, dripstone, sculk, moss carpet, magma and end stone</td>
+<td>Gravel, clay, farmland, dirt paths, soul sand and soil, calcite, dripstone, sculk and sculk catalysts, moss carpet, magma and end stone</td>
+</tr>
+<tr>
+<td><code>ffentitydirt:sticky_surfaces</code></td>
+<td>block</td>
+<td>Blocks that smear the feet in their color, faster than walking and even standing still (used by the <code>sticky.blocks</code> setting)</td>
+<td>Honey and slime blocks</td>
 </tr>
 <tr>
 <td><code>ffentitydirt:mining_blocks</code></td>
@@ -56,7 +62,47 @@
 </tbody>
 </table></div>
 <p>Files live at <code>data/ffentitydirt/tags/block/&lt;name&gt;.json</code> and <code>data/ffentitydirt/tags/entity_type/&lt;name&gt;.json</code>.</p>
-<h3>Example</h3>
+<h3>Wound tags</h3>
+<p>Each wound has an <strong>item</strong> tag and an <strong>entity type</strong> tag, both named <code>ffentitydirt:wounds/&lt;wound&gt;</code>. A melee weapon in the item tag leaves that wound. A projectile in the entity type tag leaves it, and so does a mob that hits with an empty hand (or an item no tag matched). When something is in several wound tags, the trident's three holes beat everything, then the crush, then the rest. Weapons in no tag fall back to Better Combat's weapon type, then words in the item's ID, then a slash for anything with attack damage and a bruise for anything without (all in the <code>damage.wounds</code> settings).</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Wound</th>
+<th>Looks like</th>
+<th>Items that ship in it</th>
+<th>Mobs and projectiles that ship in it</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><code>slash</code></td><td>One long cut</td><td><code>#minecraft:swords</code></td><td>None</td></tr>
+<tr><td><code>gash</code></td><td>A short, thick, ragged cut with a few drops</td><td><code>#minecraft:axes</code></td><td>None</td></tr>
+<tr><td><code>cleave</code></td><td>A long, heavy cut</td><td>None (claymores and friends come from Better Combat or their names)</td><td>None</td></tr>
+<tr><td><code>stab</code></td><td>A deep hole with a drip running down</td><td><code>#minecraft:spears</code> (1.21.11), <code>#c:tools/spear</code>, <code>#c:tools/knife</code>, <code>#c:tools/knives</code></td><td>None</td></tr>
+<tr><td><code>puncture</code></td><td>A round hole</td><td><code>#minecraft:pickaxes</code></td><td><code>#minecraft:arrows</code></td></tr>
+<tr><td><code>triple_puncture</code></td><td>Three holes side by side</td><td>Trident</td><td>Thrown trident</td></tr>
+<tr><td><code>bruise</code></td><td>A wide, soft, purplish mark</td><td><code>#minecraft:shovels</code></td><td>Goat</td></tr>
+<tr><td><code>crush</code></td><td>A dark crater with spatter</td><td>Mace, <code>#c:tools/mace</code></td><td>Iron golem, warden, ravager</td></tr>
+<tr><td><code>scratch</code></td><td>Two thin parallel lines</td><td><code>#minecraft:hoes</code>, shears, <code>#c:tools/shear</code></td><td>None</td></tr>
+<tr><td><code>claw</code></td><td>Three parallel rakes</td><td>None</td><td>Cat, ocelot, polar bear, panda</td></tr>
+<tr><td><code>bite</code></td><td>Two rows of tooth marks</td><td>None</td><td><code>#minecraft:zombies</code>, wolf, spider, cave spider, phantom, fox, silverfish, endermite, axolotl, dolphin</td></tr>
+<tr><td><code>gore</code></td><td>Two tusk tears</td><td>None</td><td>Hoglin, zoglin</td></tr>
+<tr><td><code>lash</code></td><td>One long, thin welt</td><td>None (whips come from their names)</td><td>None</td></tr>
+<tr><td><code>sting</code></td><td>A tiny dot in a swollen patch</td><td>None</td><td>Bee</td></tr>
+<tr><td><code>splatter</code></td><td>A splat with droplets</td><td>None</td><td>Llama spit, slime, magma cube</td></tr>
+</tbody>
+</table></div>
+<p>Mods can add their own wounds with the API; theirs use <code>&lt;their namespace&gt;:wounds/&lt;wound&gt;</code> tags the same way.</p>
+<h3>Example: a modded weapon</h3>
+<p>Make a mod's war fork leave three holes like a trident, in <code>data/ffentitydirt/tags/item/wounds/triple_puncture.json</code>:</p>
+<pre><code class="language-json">{
+  &quot;replace&quot;: false,
+  &quot;values&quot;: [
+    { &quot;id&quot;: &quot;somemod:war_fork&quot;, &quot;required&quot;: false }
+  ]
+}
+</code></pre>
+<p><code>&quot;required&quot;: false</code> keeps the datapack loading when that mod is not installed.</p>
+<h3>Example: spotless mobs</h3>
 <p>Keep armor stands and iron golems spotless:</p>
 <pre><code class="language-json">{
   &quot;replace&quot;: false,
@@ -72,7 +118,8 @@
 <li><code>never_dirty</code> also keeps drips off those mobs, unless a player changes their <code>particlePaint.entityBlacklist</code> client setting.</li>
 <li>Snow follows the dirt entity lists and the <code>never_dirty</code> tag.</li>
 <li>Every config list also accepts any block or entity tag, so your own tags work there too. For example, put <code>#c:glass_blocks</code> in <code>mining.blacklist</code> to keep glass from leaving specks.</li>
-<li>There is no datapack support for rain, snow, cauldrons, explosions or drips beyond these tags and the config. Which particles paint is a client setting, since drips are painted on each player's own game.</li>
+<li>Wound shapes themselves come from code (the modding API); datapacks pick which wound things leave.</li>
+<li>There is no datapack support for rain, snow, powder snow, lava, cauldrons, explosions or drips beyond these tags and the config. Which particles paint is a client setting, since drips are painted on each player's own game.</li>
 </ul>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
