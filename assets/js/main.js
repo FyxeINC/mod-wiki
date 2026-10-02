@@ -422,6 +422,15 @@
       el.setAttribute("src", urls[type]);
       el.setAttribute("alt", "Modrinth " + type + " badge for " + project.name);
     });
+    // CurseForge download count (shields.io needs the numeric project id, not the slug).
+    if (project.curseforgeId) {
+      document.querySelectorAll(".badge-row").forEach(function (row) {
+        const img = document.createElement("img");
+        img.setAttribute("src", "https://img.shields.io/curseforge/dt/" + project.curseforgeId + "?logo=curseforge&label=downloads&color=f16436");
+        img.setAttribute("alt", "CurseForge downloads badge for " + project.name);
+        row.appendChild(img);
+      });
+    }
     // Drop link and badge rows that ended up empty (no Modrinth slug, no source link).
     document.querySelectorAll(".mod-meta__actions, .badge-row").forEach(function (row) {
       row.hidden = !Array.from(row.children).some(function (child) { return !child.hidden; });

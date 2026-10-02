@@ -462,7 +462,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffcropevaporation",
         "discord": ""
       },
       "pages": [
@@ -492,7 +492,8 @@ window.WIKI_DATA = {
         "1.21.1-neoforge",
         "1.21.11-fabric",
         "1.21.11-neoforge"
-      ]
+      ],
+      "curseforgeId": "1715331"
     },
     {
       "slug": "ffentitypainting",
@@ -505,7 +506,7 @@ window.WIKI_DATA = {
       "version": "0.9.11",
       "minecraftVersion": "1.21.1, 1.21.11",
       "modrinthSlug": "",
-      "icon": "",
+      "icon": "icon.png",
       "tags": [
         {
           "label": "Fabric",
@@ -522,7 +523,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffentitypainting",
         "discord": ""
       },
       "pages": [
@@ -564,7 +565,8 @@ window.WIKI_DATA = {
         "1.21.1-neoforge",
         "1.21.11-fabric",
         "1.21.11-neoforge"
-      ]
+      ],
+      "curseforgeId": "1716393"
     },
     {
       "slug": "ffentitydirt",
@@ -649,7 +651,7 @@ window.WIKI_DATA = {
       "version": "0.6.0",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "",
-      "icon": "",
+      "icon": "icon.png",
       "tags": [
         {
           "label": "Fabric",
@@ -670,7 +672,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffexpandedbiometint",
         "discord": ""
       },
       "pages": [
@@ -708,7 +710,8 @@ window.WIKI_DATA = {
         "1.21.1-neoforge",
         "1.21.11-fabric",
         "1.21.11-neoforge"
-      ]
+      ],
+      "curseforgeId": "1716383"
     },
     {
       "slug": "ffbandage",
@@ -742,7 +745,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffbandage",
         "discord": ""
       },
       "pages": [
@@ -764,7 +767,8 @@ window.WIKI_DATA = {
         "1.21.1-neoforge",
         "1.21.11-fabric",
         "1.21.11-neoforge"
-      ]
+      ],
+      "curseforgeId": "1716425"
     },
     {
       "slug": "ffexhaustion",
@@ -777,7 +781,7 @@ window.WIKI_DATA = {
       "version": "0.9.1",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffexhaustion",
-      "icon": "",
+      "icon": "icon.png",
       "tags": [
         {
           "label": "Fabric",
@@ -798,7 +802,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffexhaustion",
         "discord": ""
       },
       "pages": [
@@ -828,7 +832,8 @@ window.WIKI_DATA = {
         "1.21.1-neoforge",
         "1.21.11-fabric",
         "1.21.11-neoforge"
-      ]
+      ],
+      "curseforgeId": "1716363"
     },
     {
       "slug": "fffoodspoilageandpreservation",
@@ -841,7 +846,7 @@ window.WIKI_DATA = {
       "version": "0.9.2",
       "minecraftVersion": "1.21.1, 1.21.11",
       "modrinthSlug": "fffoodspoilageandpreservation",
-      "icon": "",
+      "icon": "icon.png",
       "tags": [
         {
           "label": "Fabric",
@@ -858,7 +863,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/fffoodspoilageandpreservation",
         "discord": ""
       },
       "pages": [
@@ -892,7 +897,8 @@ window.WIKI_DATA = {
         "1.21.1-neoforge",
         "1.21.11-fabric",
         "1.21.11-neoforge"
-      ]
+      ],
+      "curseforgeId": "1716349"
     },
     {
       "slug": "ffinjury",
@@ -905,7 +911,7 @@ window.WIKI_DATA = {
       "version": "0.9.1",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffinjury",
-      "icon": "",
+      "icon": "icon.png",
       "tags": [
         {
           "label": "Fabric",
@@ -926,7 +932,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffinjury",
         "discord": ""
       },
       "pages": [
@@ -964,7 +970,8 @@ window.WIKI_DATA = {
         "1.21.1-neoforge",
         "1.21.11-fabric",
         "1.21.11-neoforge"
-      ]
+      ],
+      "curseforgeId": "1716368"
     },
     {
       "slug": "ffitemcreationtracker",
@@ -977,7 +984,7 @@ window.WIKI_DATA = {
       "version": "0.3.1",
       "minecraftVersion": "1.20.6-1.21.11",
       "modrinthSlug": "",
-      "icon": "",
+      "icon": "icon.png",
       "tags": [
         {
           "label": "Fabric",
@@ -994,7 +1001,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffitemcreationtracker",
         "discord": ""
       },
       "pages": [
@@ -1022,7 +1029,8 @@ window.WIKI_DATA = {
         "1.21.1-neoforge",
         "1.21.11-fabric",
         "1.21.11-neoforge"
-      ]
+      ],
+      "curseforgeId": "1716378"
     },
     {
       "slug": "ffitemraritymodifiers",
@@ -1035,7 +1043,7 @@ window.WIKI_DATA = {
       "version": "0.3.1",
       "minecraftVersion": "1.20.6-1.21.11",
       "modrinthSlug": "",
-      "icon": "",
+      "icon": "icon.png",
       "tags": [
         {
           "label": "Fabric",
@@ -1052,7 +1060,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffitemraritymodifiers",
         "discord": ""
       },
       "pages": [
@@ -1088,7 +1096,8 @@ window.WIKI_DATA = {
         "1.21.1-neoforge",
         "1.21.11-fabric",
         "1.21.11-neoforge"
-      ]
+      ],
+      "curseforgeId": "1716386"
     },
     {
       "slug": "ffitemweight",
@@ -1101,7 +1110,7 @@ window.WIKI_DATA = {
       "version": "0.8.1",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffitemweight",
-      "icon": "",
+      "icon": "icon.png",
       "tags": [
         {
           "label": "Fabric",
@@ -1122,7 +1131,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffitemweight",
         "discord": ""
       },
       "pages": [
@@ -1160,7 +1169,8 @@ window.WIKI_DATA = {
         "1.21.1-neoforge",
         "1.21.11-fabric",
         "1.21.11-neoforge"
-      ]
+      ],
+      "curseforgeId": "1716354"
     },
     {
       "slug": "ffmobsunburnangle",
@@ -1173,7 +1183,7 @@ window.WIKI_DATA = {
       "version": "1.2.0",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
-      "icon": "",
+      "icon": "icon.png",
       "tags": [
         {
           "label": "Fabric",
@@ -1190,7 +1200,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffmobsunburnangle",
         "discord": ""
       },
       "pages": [
@@ -1206,7 +1216,8 @@ window.WIKI_DATA = {
       "targets": [
         "1.21.1-fabric",
         "1.21.1-neoforge"
-      ]
+      ],
+      "curseforgeId": "1716390"
     },
     {
       "slug": "ffmodfavorites",
@@ -1257,7 +1268,7 @@ window.WIKI_DATA = {
       "version": "0.5.0",
       "minecraftVersion": "1.20.6-1.21.11",
       "modrinthSlug": "ffmodsubfolders",
-      "icon": "",
+      "icon": "icon.png",
       "tags": [
         {
           "label": "NeoForge",
@@ -1270,7 +1281,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffmodsubfolders",
         "discord": ""
       },
       "pages": [
@@ -1287,7 +1298,8 @@ window.WIKI_DATA = {
         "1.20.6-neoforge",
         "1.21.1-neoforge",
         "1.21.11-neoforge"
-      ]
+      ],
+      "curseforgeId": "1716376"
     },
     {
       "slug": "ffnutrition",
@@ -1321,7 +1333,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "https://github.com/FyxeINC/ffnutrition",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffnutrition",
         "discord": ""
       },
       "pages": [
@@ -1359,7 +1371,8 @@ window.WIKI_DATA = {
         "1.21.1-neoforge",
         "1.21.11-fabric",
         "1.21.11-neoforge"
-      ]
+      ],
+      "curseforgeId": "1715311"
     },
     {
       "slug": "fftorchburnout",
@@ -1410,7 +1423,7 @@ window.WIKI_DATA = {
       "version": "0.2.12",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "",
-      "icon": "",
+      "icon": "icon.png",
       "tags": [
         {
           "label": "Fabric",
@@ -1431,7 +1444,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffutilities",
         "discord": ""
       },
       "pages": [
@@ -1461,7 +1474,8 @@ window.WIKI_DATA = {
         "1.21.1-neoforge",
         "1.21.11-fabric",
         "1.21.11-neoforge"
-      ]
+      ],
+      "curseforgeId": "1716382"
     },
     {
       "slug": "ffwaterfalls",
@@ -1474,7 +1488,7 @@ window.WIKI_DATA = {
       "version": "0.3.0",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffwaterfalls",
-      "icon": "",
+      "icon": "icon.png",
       "tags": [
         {
           "label": "Fabric",
@@ -1495,7 +1509,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffwaterfalls",
         "discord": ""
       },
       "pages": [
@@ -1517,7 +1531,8 @@ window.WIKI_DATA = {
         "1.21.1-neoforge",
         "1.21.11-fabric",
         "1.21.11-neoforge"
-      ]
+      ],
+      "curseforgeId": "1716357"
     },
     {
       "slug": "ffrandomquests",
