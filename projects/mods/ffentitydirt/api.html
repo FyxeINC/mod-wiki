@@ -37,8 +37,8 @@
 <h3 id="how-a-wound-is-picked">How a wound is picked</h3>
 <ol>
 <li>Resolvers added with <code>WoundAPI.addResolver</code>, in order. The first registered wound ID returned wins.</li>
-<li>Melee: the attacker's main-hand item against the wound item tags. Every wound checks <code>&lt;namespace&gt;:wounds/&lt;path&gt;</code> plus any tags assigned with <code>assignItems</code>, highest wound priority first.</li>
-<li>Melee: the item's Better Combat weapon category (when Better Combat is installed), through the <code>damage.wounds.betterCombatCategories</code> setting; then words in the item's ID through <code>damage.wounds.itemKeywords</code>.</li>
+<li>Melee: the attacker's main-hand item (for an Epic Fight attack, the item of the hand that swung) against the wound item tags. Every wound checks <code>&lt;namespace&gt;:wounds/&lt;path&gt;</code> plus any tags assigned with <code>assignItems</code>, highest wound priority first.</li>
+<li>Melee: the item's Better Combat weapon category (when Better Combat is installed), through the <code>damage.wounds.betterCombatCategories</code> setting; then its Epic Fight weapon category (when Epic Fight is installed), through <code>damage.wounds.epicFightCategories</code>; then words in the item's ID through <code>damage.wounds.itemKeywords</code>.</li>
 <li>The projectile's entity type (or, for melee, the attacker's) against the wound entity type tags, the same way.</li>
 <li>Fallbacks: <code>projectileWound</code> for projectiles, <code>weaponWound</code> for an item with attack damage or in <code>#c:tools/melee_weapon</code>, else <code>unarmedWound</code>.</li>
 </ol>

@@ -17,7 +17,7 @@
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFEntityPainting</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
 <h2 id="datapacks">Datapacks</h2>
-<p>FFEntityPainting has no datapack file format of its own. One entity type tag decides which mobs can't be painted, and functions can set up paint and team layers with the <code>/entitypaint</code> commands. Add entries with <code>"replace": false</code> to extend the tag, and use <code>/reload</code> after changing a datapack.</p>
+<p>An entity type tag and a folder of exclusion rules decide which mobs can't be painted, and functions can set up paint and team layers with the <code>/entitypaint</code> commands. Add tag entries with <code>"replace": false</code> to extend the tag, and use <code>/reload</code> after changing a datapack. Resource packs can also fix modded mobs: see <a href="#resource-pack-surfaces">Resource pack surface data</a> below.</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -48,13 +48,94 @@
 }
 </code></pre>
 <p>Save it as <code>data/ffentitypainting/tags/entity_type/unpaintable.json</code> in your datapack. <code>"required": false</code> keeps the tag loading when that mod isn't installed.</p>
+<h3 id="exclusion-rules">Exclusion rules (0.9.8)</h3>
+<p>For mobs the tag can't pick out, put a rule file at <code>data/&lt;namespace&gt;/ffentitypainting/exclusions/&lt;name&gt;.json</code>. A file holds one rule, or <code>{"rules": [ ... ]}</code>. A rule excludes a mob when <strong>every</strong> condition it lists holds, and needs at least one:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>entity_types</code></td>
+<td>list of text</td>
+<td>Entity type IDs, or <code>#tag</code> IDs. The mob matches when its type is any of them</td>
+</tr>
+<tr>
+<td><code>baby</code></td>
+<td>true or false</td>
+<td>Babies (true) or adults (false)</td>
+</tr>
+<tr>
+<td><code>custom_name</code></td>
+<td>text</td>
+<td>The mob's custom name, compared exactly and ignoring case</td>
+</tr>
+<tr>
+<td><code>dimensions</code></td>
+<td>list of text</td>
+<td>Dimension IDs. The mob matches when it is in any of them</td>
+</tr>
+</tbody>
+</table></div>
+<pre><code class="language-json">{
+  "rules": [
+    { "entity_types": ["somemod:training_dummy"], "custom_name": "Statue" },
+    { "entity_types": ["minecraft:villager"], "baby": true },
+    { "dimensions": ["minecraft:the_end"] }
+  ]
+}
+</code></pre>
+<p>The first rule keeps a dummy named "Statue" unpaintable, the second keeps baby villagers unpaintable and the third keeps everything in the End unpaintable. A rule with no conditions, an unknown field, a wrong type or a malformed ID is skipped and logged on the server. At most 256 rules are used (64 entries per list). Only conditions both the server and the player's game can read are offered; the server sends its rules to each player when they join and after every <code>/reload</code>, and a player's game only ever uses the server's.</p>
+<p>A mob excluded this way behaves exactly like one in the tag: it shows no paint, players can't paint it or open its layer manager, and its paint is kept until the rule stops matching. Code can add rules too with <code>EntityPaintingAPI.excludeEntities</code> (see the <a href="api.html#opting-out">modding API</a>).</p>
+<h3 id="resource-pack-surfaces">Resource pack surface data (0.9.8)</h3>
+<p>Resource packs (not datapacks) can tell FFEntityPainting how to treat textures and models without any code, for example to fix a modded mob. Put a file at <code>assets/&lt;namespace&gt;/ffentitypainting/surfaces/&lt;name&gt;.json</code>; every such file in every enabled pack is read when resources load, lower packs first, so a higher pack wins for the same texture. A file can hold:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aliases</code></td>
+<td>An object from a texture to the canonical texture it is painted as, so paint stays put when a mob swaps texture with its state (angry, sleeping, tamed). Both sides are full texture paths</td>
+</tr>
+<tr>
+<td><code>groups</code></td>
+<td>A list of <code>{ "canonical": id, "textures": [id, ...] }</code>, for several textures that share one</td>
+</tr>
+<tr>
+<td><code>exclude_models</code></td>
+<td>Model class names that are left unpainted: use it when a modded model captures the wrong spot. A name ending in <code>*</code> matches every class starting with it, and a class also matches through its superclasses</td>
+</tr>
+</tbody>
+</table></div>
+<pre><code class="language-json">{
+  "aliases": {
+    "somemod:textures/entity/wolfish_angry.png": "somemod:textures/entity/wolfish.png"
+  },
+  "groups": [
+    {
+      "canonical": "somemod:textures/entity/golem.png",
+      "textures": ["somemod:textures/entity/golem_cracked.png", "somemod:textures/entity/golem_mossy.png"]
+    }
+  ],
+  "exclude_models": ["com.somemod.client.model.GhostModel", "com.somemod.client.weird.*"]
+}
+</code></pre>
+<p>Only alias textures with the same layout, because paint is placed by texture position. A pack alias wins over one a mod registers in code. Malformed entries are skipped and logged. Reloading resources (<code>F3 + T</code>) applies changes; paint already on a mob keeps working because paint is stored under the canonical texture.</p>
 <h3 id="functions-and-commands">Functions and commands</h3>
 <p>Functions can use the <a href="index.html">overview page</a>'s <code>/entitypaint</code> commands (functions have permission level 2), including team layers: combine <code>layer add</code> and <code>layer access</code> with vanilla teams and tags. For example, a capture-the-flag map can give each team's banner mob a layer only that team sees, and move a <code>captain</code> tag between players to decide who may paint it. Players see tag and team changes within about a second.</p>
 <h3 id="notes">Notes</h3>
 <ul>
-<li>Listing a mob hides paint it already has without deleting it. Remove it from the tag again (and <code>/reload</code>) and the paint comes back.</li>
+<li>Listing a mob, or matching it with a rule, hides paint it already has without deleting it. Remove it from the tag or rule again (and <code>/reload</code>) and the paint comes back.</li>
 <li>Commands and other mods' code can still change an unpainted mob's paint; it just isn't shown until the mob is paintable again.</li>
-<li>Clicking a listed mob with a paint tool says "This mob can't be painted." Both the server and the player's game check the tag, which reaches players when they join or after <code>/reload</code>.</li>
+<li>Clicking a listed mob with a paint tool says "This mob can't be painted." Both the server and the player's game check the tag and the exclusion rules, which reach players when they join or after <code>/reload</code>.</li>
 <li>Mobs listed here also report no body shapes to mods that use them (like FFEntityDirt).</li>
 </ul>
 <div data-page-footer></div>

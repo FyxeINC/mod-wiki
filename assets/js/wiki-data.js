@@ -55,6 +55,18 @@ window.WIKI_DATA = {
         "date": "2026-10-01",
         "project": "ffentitypainting",
         "page": "api.html",
+        "change": "0.9.8: paintedTexture returns a mob's painted texture for statues and other renderers, preview paint shows a temporary ghost overlay, and resource packs and datapacks can set aliases and exclusions with no code."
+      },
+      {
+        "date": "2026-10-01",
+        "project": "ffentitypainting",
+        "page": "api.html",
+        "change": "0.9.7: layers get a stable owner, a stacking band and priority, and saved data tags; access rules can be combined with anyOf, allOf and not and can see their layer. Also editResult and editLocalResult return a value, PaintEditor.stampHit paints a raycast hit, and PlayerLayerEdit has typed getters."
+      },
+      {
+        "date": "2026-10-01",
+        "project": "ffentitypainting",
+        "page": "api.html",
         "change": "0.9.6: a throwing event listener no longer breaks painting, off-thread edits throw, PaintEvent.Changed fires for commands and respawns, and SurfaceShape.Part is read-only with withHeights."
       },
       {
@@ -484,7 +496,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Paint living entities, modded and GeckoLib mobs included, with shared, team-restricted and local layers, with a mod API for brushes, layer access rules and server-side painting.",
       "tagline": "Add a splash of color to living entities.",
-      "version": "0.9.6",
+      "version": "0.9.9",
       "minecraftVersion": "1.21.1, 1.21.11",
       "modrinthSlug": "",
       "icon": "",
@@ -513,7 +525,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFEntityPainting features, requirements, and source version.",
-          "updated": "2026-10-01",
+          "updated": "2026-10-02",
           "searchExcerpt": "Paint living entities with layers, blend modes and brush opacity, local layers and team layers, modded and GeckoLib mobs, and 3D Skin Layers on players."
         },
         {
@@ -528,17 +540,17 @@ window.WIKI_DATA = {
           "file": "datapacks.html",
           "title": "Datapacks",
           "index": "03",
-          "description": "The unpaintable entity tag and painting from functions with /entitypaint.",
+          "description": "The unpaintable entity tag, exclusion rules, resource pack aliases and painting from functions with /entitypaint.",
           "updated": "2026-10-01",
-          "searchExcerpt": "ffentitypainting:unpaintable entity type tag, keep players or modded mobs from being painted, functions, /entitypaint team layers."
+          "searchExcerpt": "ffentitypainting:unpaintable entity type tag, exclusion rules entity_types baby custom_name dimensions, resource pack surfaces aliases groups exclude_models, keep players or modded mobs from being painted, functions, /entitypaint team layers."
         },
         {
           "file": "api.html",
           "title": "Modding API",
           "index": "04",
-          "description": "Java API for paint tools, server-side paint edits, locked layers, layer access rules, local layers, events, snapshots, body shapes, geometry capture and opting mobs out.",
-          "updated": "2026-10-01",
-          "searchExcerpt": "EntityPaintingAPI, PaintEditor, PaintView, PaintTool, PixelMode opacity, BlendMode, LayerAccess LayerRules LayerRule team tag view paint access, editLocal paintLocal local layers raycast, PaintEvent, PaintUpdatedEvent, UNPAINTABLE excludeEntities isPaintable excludeModel excludeModels GeckoLib surfaces bones, captureGeometry CapturedGeometry rasterize, BodyShapes SurfaceShape canvasCells BodyFrame measureShapes."
+          "description": "Java API for paint tools, server-side paint edits, locked, owned and stacked layers with data tags, layer access rules (combinable, layer-aware), local layers, events, snapshots, body shapes, geometry capture, the painted texture for other renderers, preview paint and opting mobs out.",
+          "updated": "2026-10-02",
+          "searchExcerpt": "EntityPaintingAPI, PaintEditor, PaintView, PaintTool, PixelMode opacity, BlendMode, LayerBand owner stacking band priority layer data tag, LayerAccess anyOf allOf not LayerRules LayerRule ForLayer team tag view paint access, editLocal paintLocal local layers raycast, PaintEvent, PaintUpdatedEvent, UNPAINTABLE excludeEntities isPaintable excludeModel excludeModels GeckoLib surfaces bones, captureGeometry CapturedGeometry rasterize, BodyShapes SurfaceShape canvasCells BodyFrame measureShapes, paintedTexture PaintedTexture statue mannequin portrait, preview previewFor previewHit clearPreview ghost brush, surfaces aliases exclusions datapack resource pack."
         }
       ],
       "targets": [
@@ -556,7 +568,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Entities pick up dirt from the ground, soot, snow and damage marks, and wash it all off in water, rain or a cauldron.",
       "tagline": "Mobs that look like they've been somewhere.",
-      "version": "0.8.0",
+      "version": "0.8.1",
       "minecraftVersion": "1.21.1, 1.21.11",
       "modrinthSlug": "",
       "icon": "",
@@ -585,7 +597,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFEntityDirt features, requirements, and source version.",
-          "updated": "2026-10-01",
+          "updated": "2026-10-02",
           "searchExcerpt": "Dirt from walking, falls and mining, honey and slime smears, sculk stains, powder snow and lava char, soot from fire and explosions, snow, weapon wounds from projectiles, melee and mobs, washed off by water, rain or a cauldron, stored as FFEntityPainting paint on locked layers."
         },
         {
@@ -593,7 +605,7 @@ window.WIKI_DATA = {
           "title": "Configuration",
           "index": "02",
           "description": "Every FFEntityDirt server and client option with its default: dirt, damage marks, snow, cleaning and drips.",
-          "updated": "2026-10-01",
+          "updated": "2026-10-02",
           "searchExcerpt": "ffentitydirt-server.toml and ffentitydirt-client.toml options and defaults: dirt rates and colors, damage wounds, snow, cleaning, debug, drip particle paint."
         },
         {
@@ -609,7 +621,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "04",
           "description": "Java API for wound marks: register wound shapes, restyle built-ins, assign item and entity tags, and pick wounds in code.",
-          "updated": "2026-10-01",
+          "updated": "2026-10-02",
           "searchExcerpt": "WoundAPI register replaceShape assignItems assignEntities addResolver resolve, WoundShape builder Sizing LINE BLOT Rotation RANDOM LEVEL VERTICAL stroke dot ring spatter tint minScale, WoundContext, WoundResolver, Better Combat categories, item keywords."
         }
       ],
@@ -1389,7 +1401,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge.",
       "tagline": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge.",
-      "version": "0.2.11",
+      "version": "0.2.12",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "",
       "icon": "",
@@ -1430,7 +1442,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFUtilities API, events, and integration examples.",
-          "updated": "2026-10-01",
+          "updated": "2026-10-02",
           "searchExcerpt": "FFUtilities public API and integration guide."
         }
       ],

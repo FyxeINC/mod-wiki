@@ -339,6 +339,11 @@
 <td>Aim slashes along the attacker's line of sight from its eyes, so they land where it was looking. Off: the older placement on the side facing the attacker at a random height</td>
 </tr>
 <tr>
+<td><code>melee.epicFightWeaponAim</code></td>
+<td>true</td>
+<td>With Epic Fight installed, aim a hit from one of its attack animations from the attacker's eyes through where the weapon was when it landed, so a low sweep marks the legs and an overhead blow the head. Off: Epic Fight hits are aimed like any other</td>
+</tr>
+<tr>
 <td><code>melee.eyeSpread</code></td>
 <td>0.12</td>
 <td>How far a slash aimed from the eyes can land from where the attacker looked, as a fraction of the mob's height</td>
@@ -377,6 +382,11 @@
 <td><code>wounds.betterCombatCategories</code></td>
 <td>every Better Combat preset</td>
 <td><code>category=wound</code> for weapons Better Combat knows (dagger stabs, claymore cleaves, hammer crushes), used when the item is in no wound tag</td>
+</tr>
+<tr>
+<td><code>wounds.epicFightCategories</code></td>
+<td>all 15 Epic Fight categories</td>
+<td><code>category=wound</code> for weapons Epic Fight knows (dagger and spear stab, greatsword cleaves, longsword, tachi and uchigatana slash), used when the item is in no wound tag and has no Better Combat category. Epic Fight hits use the item that swung, so an off-hand weapon leaves its own wound</td>
 </tr>
 <tr>
 <td><code>wounds.itemKeywords</code></td>

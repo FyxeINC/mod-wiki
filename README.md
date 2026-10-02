@@ -1,5 +1,7 @@
 # Field Index — Minecraft Mod Wiki
 
+Agent task routing: [.AI_CONTEXT/README.md](.AI_CONTEXT/README.md). Read the sections relevant to the task.
+
 A plain HTML/CSS/JavaScript wiki for GitHub Pages. The site has no runtime build step; a small Python tool regenerates the search index, heading ids, feed and sitemap before you commit.
 
 ## What readers get

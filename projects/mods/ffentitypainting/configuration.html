@@ -152,7 +152,7 @@
 <tbody>
 <tr>
 <td><code>/entitypaint info &lt;target&gt;</code></td>
-<td>Revision, layers (with lock, visibility, opacity, blend mode and painted texels), part count and budget use</td>
+<td>Revision, layers (with lock, visibility, opacity, blend mode and painted texels, plus owner, band and priority when set), part count and budget use</td>
 </tr>
 <tr>
 <td><code>/entitypaint parts &lt;target&gt;</code></td>
@@ -256,6 +256,16 @@
 <td><code>self</code></td>
 <td>none</td>
 <td>Only the painted player themselves</td>
+</tr>
+<tr>
+<td><code>any_of</code>, <code>all_of</code></td>
+<td>JSON list of <code>[rule]</code> or <code>[rule, argument]</code> pairs, such as <code>"[[\"ffentitypainting:team\",\"red\"],[\"ffentitypainting:tag\",\"operator\"]]"</code></td>
+<td>Players who pass at least one (<code>any_of</code>) or every one (<code>all_of</code>) of the listed rules (0.9.7)</td>
+</tr>
+<tr>
+<td><code>not</code></td>
+<td>JSON list with exactly one pair</td>
+<td>Players who do not pass that rule; a rule that is not installed never passes, so the layer stays closed (0.9.7)</td>
 </tr>
 </tbody>
 </table></div>

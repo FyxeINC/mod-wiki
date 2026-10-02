@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modding API — FFEntityPainting — Fyxe's Mod Wiki</title>
-<meta name="description" content="Paint entities from other mods: custom brushes, server-side paint edits, locked layers, events, snapshots and custom models.">
+<meta name="description" content="Paint entities from other mods: custom brushes, server-side paint edits, owned and stacked layers, layer data, access rules, events, snapshots, custom models, the painted texture for other renderers and preview paint.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFEntityPainting</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ↗</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ↗</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.9.6</code>. The mod is an experimental checkpoint: the API compiles and its storage rules are covered by automated checks. Most of it has not been exercised by another mod in a running game yet; layer access and local layers were checked in single-player test clients.</p>
+<p>This guide describes the public API in the current source version <code>0.9.7</code>. The mod is an experimental checkpoint: the API compiles and its storage rules are covered by automated checks. Most of it has not been exercised by another mod in a running game yet; layer access and local layers were checked in single-player test clients.</p>
 <h2 id="ffentitypainting-modding-api">FFEntityPainting — Modding API</h2>
 <p>Use this guide when integrating another mod with <strong>FFEntityPainting</strong> (<code>ffentitypainting</code>).</p>
 <div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
@@ -24,7 +24,7 @@
 <tr><td><strong>Loader</strong></td><td>NeoForge (21.1.x, 21.11.x) and Fabric</td></tr>
 <tr><td><strong>Mod ID</strong></td><td><code>ffentitypainting</code></td></tr>
 <tr><td><strong>API packages</strong></td><td><code>com.fyxe.ffentitypainting.api</code>, <code>.api.access</code>, <code>.api.event</code>, <code>.api.client</code>, <code>.api.shape</code></td></tr>
-<tr><td><strong>Source version</strong></td><td>0.9.6</td></tr>
+<tr><td><strong>Source version</strong></td><td>0.9.7</td></tr>
 <tr><td><strong>Maven</strong></td><td>One artifact per target on the Fyxe Gitea registry: <code>com.fyxe.ffentitypainting:ffentitypainting-1.21.1-neoforge:0.9.1</code>, <code>...-1.21.1-fabric</code>, <code>...-1.21.11-neoforge</code> and <code>...-1.21.11-fabric</code>. The 1.21.1 NeoForge jar is also published as <code>com.fyxe.ffentitypainting:ffentitypainting:0.9.1</code>, the coordinate older consumers use.</td></tr>
 </tbody></table></div>
 <p>Dependency (optional), NeoForge <code>neoforge.mods.toml</code>:</p>
@@ -36,7 +36,7 @@
     side=&quot;BOTH&quot;</code></pre>
 <p>Fabric <code>fabric.mod.json</code> (put it under <code>suggests</code> for an optional dependency, or <code>depends</code> for a required one):</p>
 <pre><code class="language-json">&quot;depends&quot;: { &quot;ffentitypainting&quot;: &quot;&gt;=0.9.0&quot; }</code></pre>
-<p>Use <code>0.9.1</code> as the lower bound if you use the opt-out API (<code>excludeEntities</code>, <code>isPaintable</code>, <code>UNPAINTABLE</code>, <code>excludeModel(s)</code>), or <code>0.8.0</code> if you use nothing from 0.9.0 (layer access, local layers). The <code>unpaintable</code> tag file needs no dependency at all. Compile against the artifact for your target without bundling it (players install this mod separately): <code>compileOnly</code> on NeoForge, <code>modCompileOnly</code> on Fabric.</p>
+<p>Use <code>0.9.1</code> as the lower bound if you use the opt-out API (<code>excludeEntities</code>, <code>isPaintable</code>, <code>UNPAINTABLE</code>, <code>excludeModel(s)</code>), or <code>0.8.0</code> if you use nothing from 0.9.0 (layer access, local layers). Use <code>0.9.7</code> for layer owners, bands, data tags, combined access rules and rules that see their layer. The <code>unpaintable</code> tag file needs no dependency at all. Compile against the artifact for your target without bundling it (players install this mod separately): <code>compileOnly</code> on NeoForge, <code>modCompileOnly</code> on Fabric.</p>
 <pre><code class="language-kotlin">// NeoForge
 compileOnly(&quot;com.fyxe.ffentitypainting:ffentitypainting-1.21.11-neoforge:0.9.2&quot;)
 // Fabric
@@ -51,10 +51,12 @@ modCompileOnly(&quot;com.fyxe.ffentitypainting:ffentitypainting-1.21.11-fabric:0
 <tr><td>Team layers: choose who sees a layer and who may paint it</td><td><code>PaintEditor.setViewAccess</code> / <code>setPaintAccess</code> with <code>LayerAccess</code>, your own rules through <code>LayerRules.register</code></td></tr>
 <tr><td>Give layers players create a team or owner</td><td><code>setNewLayerView</code> / <code>setNewLayerPaint</code> on <code>PlayerStamp</code> / <code>PlayerLayerEdit</code></td></tr>
 <tr><td>Paint only one player sees (particles, previews, hints)</td><td><code>EntityPaintingClientAPI.editLocal</code> / <code>paintLocal</code></td></tr>
-<tr><td>Block painting in claims, arenas or for some mobs</td><td>Cancel <code>PaintEvent.PlayerStamp</code> / <code>PlayerLayerEdit</code></td></tr>
+<tr><td>Block painting in claims, arenas or for some mobs</td><td>Cancel <code>PaintEvent.PlayerStamp</code> / <code>PlayerLayerEdit</code> for players, <code>PaintEvent.ApiEdit</code> for other mods&#x27; and commands&#x27; edits</td></tr>
+<tr><td>Region protection, mirror brushes, stroke logs</td><td><code>PlayerStamp.getLocalU/V</code>, <code>getTextureU/V</code> and <code>getHand</code></td></tr>
 <tr><td>React to paint (quests, logging, achievements)</td><td><code>PaintEvent.Changed</code></td></tr>
 <tr><td>Read paint back (renderers, maps, exports)</td><td><code>EntityPaintingAPI.view</code></td></tr>
-<tr><td>Refresh client-side effects when paint changes</td><td><code>PaintUpdatedEvent</code></td></tr>
+<tr><td>Refresh client-side effects when paint changes</td><td><code>PaintUpdatedEvent</code> (synced paint), <code>LocalPaintEvent.Changed</code> (local layers)</td></tr>
+<tr><td>Veto or react to a click on a local layer</td><td><code>LocalPaintEvent.Stamp</code></td></tr>
 <tr><td>Keep paint through a mob conversion or clone</td><td><code>EntityPaintingAPI.copyPaint</code></td></tr>
 <tr><td>Know where each paintable spot sits on the body, on the server (paint the feet, the side facing a hit)</td><td><code>BodyShapes</code></td></tr>
 <tr><td>Keep your mobs from being painted</td><td>The <code>ffentitypainting:unpaintable</code> entity type tag (no code), or <code>EntityPaintingAPI.excludeEntities</code> (see <a href="#opting-out">Opting mobs out</a>)</td></tr>
@@ -93,6 +95,20 @@ public class SprayCanItem extends Item implements PaintTool {
     }
 }</code></pre>
 <p>The server reads these methods when it applies a stroke, so they must give the same answer on both sides. For an eraser, return an alpha of the strength you want and <code>PixelMode.ERASE</code>; RGB is ignored. <code>onStamp</code> runs on the server after each stroke that changed paint, once clients have been sent the change; it does not run for cancelled strokes, strokes that changed nothing, or layer manager edits.</p>
+<h4 id="tool-layer-shape-and-refusal">A tool's layer, shape and refusal (0.9.7)</h4>
+<p>Three more optional methods. <code>canUse(stack, player, target)</code> runs on the client before a click is captured and again on the server before the stroke is applied, so an empty spray can costs no raycast and no packet (layer manager use is never asked). <code>targetLayer(stack, player, entity)</code> returns an <code>Optional&lt;LayerTarget&gt;</code>: <code>LayerTarget.owned(owner)</code> paints the lowest layer owned by that ID and is refused when there is none, <code>LayerTarget.ownedOrCreate(owner, name[, band, priority])</code> adds it on the first stroke. The server decides with it and ignores the layer the client sent; locks and access rules still apply, and it never targets a client's local layer. <code>stroke(stack)</code> returns an <code>Optional&lt;StrokeMask&gt;</code> in place of the round brush (<code>brushRadius</code> is then ignored): <code>StrokeMask.weights(w, h, anchorX, anchorY, weights...)</code> scales the stroke alpha per texel (stencils, spray) and <code>StrokeMask.pattern(w, h, anchorX, anchorY, argb...)</code> paints its own colors (stamps, decals), up to 15 by 15 texels, laid out in canvas texels with the anchor on the texel under the crosshair. <code>PlayerStamp</code> and <code>LocalPaintEvent.Stamp</code> have <code>getStroke()</code>/<code>setStroke()</code>, and <code>PaintEditor.stamp(layerId, partKey, u, v, argb, mask, mode)</code> stamps a mask from the server.</p>
+<pre><code class="language-java">public class TattooNeedle extends Item implements PaintTool {
+    private static final ResourceLocation TATTOOS = ResourceLocation.fromNamespaceAndPath("mymod", "tattoos");
+    // A cross: the center and its four neighbors.
+    private static final StrokeMask CROSS = StrokeMask.weights(3, 3, 1, 1, 0, 255, 0, 255, 255, 255, 0, 255, 0);
+
+    @Override public int paintColor(ItemStack stack) { return 0xFF202020; }
+    @Override public boolean canUse(ItemStack stack, Player player, LivingEntity target) { return stack.getDamageValue() &lt; stack.getMaxDamage(); }
+    @Override public Optional&lt;LayerTarget&gt; targetLayer(ItemStack stack, Player player, LivingEntity entity) {
+        return Optional.of(LayerTarget.ownedOrCreate(TATTOOS, "Tattoos"));
+    }
+    @Override public Optional&lt;StrokeMask&gt; stroke(ItemStack stack) { return Optional.of(CROSS); }
+}</code></pre>
 <hr>
 <h3 id="blend-and-pixel-modes">Blend modes and pixel modes (0.9.4)</h3>
 <p>Two enums control how colors combine. They are separate on purpose: a <code>PixelMode</code> decides how a brush color meets the texel a <em>layer</em> already holds, and a <code>BlendMode</code> decides how the finished layer meets everything beneath it, including the mob&#x27;s own texture. Both have <code>byName</code> and a serialized name that commands, saves and <code>PaintEvent</code> use. <code>BlendMode.blend(src, dst, opacity)</code> and <code>PixelMode.apply(dst, src)</code> are pure functions of ARGB ints, so you can call them for previews, tests or your own composites.</p>
@@ -136,9 +152,11 @@ editor.setBlendMode(maskLayerId, BlendMode.ERASE);</code></pre>
 <pre><code class="language-java">import com.fyxe.ffentitypainting.api.EntityPaintingAPI;
 import com.fyxe.ffentitypainting.api.PixelMode;
 
+static final ResourceLocation TEAM_LAYER = ResourceLocation.fromNamespaceAndPath(&quot;mymod&quot;, &quot;team&quot;);
+
 // Tint every painted part with a translucent team color on a layer players can&#x27;t touch.
 EntityPaintingAPI.edit(mob, editor -&gt; {
-    var layer = editor.getOrCreateLayer(&quot;mymod:team&quot;, true);
+    var layer = editor.getOrCreateLayer(TEAM_LAYER, &quot;Team color&quot;, true);
     if (layer.isEmpty()) return; // 16 layers already
     for (var part : editor.parts()) {
         editor.fill(layer.get(), part.key(), 0x60FF2020, PixelMode.REPLACE);
@@ -146,8 +164,10 @@ EntityPaintingAPI.edit(mob, editor -&gt; {
 });</code></pre>
 <p>Common <code>PaintEditor</code> calls:</p>
 <div class="table-wrap"><table><thead><tr><th>Method</th><th>Notes</th></tr></thead><tbody>
-<tr><td><code>addLayer(name[, locked])</code>, <code>getOrCreateLayer(name, locked)</code></td><td>Return <code>Optional&lt;String&gt;</code> layer ID; empty at 16 layers. New layers go on top. Names are 1 to 64 characters.</td></tr>
-<tr><td><code>removeLayer</code>, <code>moveLayer(id, index)</code>, <code>rename</code></td><td>Index 0 is the bottom. Removing a layer forgets parts no other layer paints.</td></tr>
+<tr><td><code>addLayer(owner, name, locked[, band, priority])</code>, <code>getOrCreateLayer(owner, displayName, locked[, band, priority])</code></td><td>0.9.7. Return <code>Optional&lt;String&gt;</code> layer ID; empty at 16 layers. The layer is owned by the namespaced <code>owner</code> and goes on top of its band; <code>getOrCreateLayer</code> finds your layer by owner, whatever it is called now. See <a href="#owners-bands-and-data">Owning, stacking and annotating layers</a>.</td></tr>
+<tr><td><code>addLayer(name[, locked])</code>, <code>getOrCreateLayer(name, locked)</code></td><td>Layers without an owner, found by display name (only among layers that have no owner, and a player can name theirs anything, so prefer the owner forms). Names are 1 to 64 characters; new layers go on top of the normal band.</td></tr>
+<tr><td><code>layersOwnedBy(owner)</code>, <code>setBand(id, band, priority)</code>, <code>setData(id, key, tag, synced)</code>, <code>removeData(id, key)</code></td><td>0.9.7. Read an owner&#x27;s layers, change where a layer sits in the stack, and keep small data on a layer.</td></tr>
+<tr><td><code>removeLayer</code>, <code>moveLayer(id, index)</code>, <code>rename</code></td><td>Index 0 is the bottom, clamped to the layers of the same band and priority. Removing a layer forgets parts no other layer paints.</td></tr>
 <tr><td><code>setOpacity(id, 0..1)</code>, <code>setVisible</code>, <code>setBlendMode</code>, <code>setLocked</code></td><td>Return <code>true</code> when the value changed.</td></tr>
 <tr><td><code>stamp(layer, part, u, v, argb, radius, mode)</code></td><td>Round brush at part-local <code>u, v</code> (0 to 1 across the part).</td></tr>
 <tr><td><code>stampTexture(layer, part, texU, texV, argb, radius, mode)</code></td><td>Same, at a UV on the entity&#x27;s original texture inside the part&#x27;s rectangle.</td></tr>
@@ -160,7 +180,7 @@ EntityPaintingAPI.edit(mob, editor -&gt; {
 </tbody></table></div>
 <p>A soft round brush with <code>transformRect</code>, fading from full strength at the center:</p>
 <pre><code class="language-java">EntityPaintingAPI.edit(mob, editor -&gt; {
-    String layer = editor.getOrCreateLayer(&quot;mymod:mud&quot;, true).orElseThrow();
+    String layer = editor.getOrCreateLayer(MUD_LAYER, &quot;Mud&quot;, true).orElseThrow();
     var part = editor.part(key).orElseThrow();
     int cx = part.texelX(textureU), cy = part.texelY(textureV), r = 3;
     editor.transformRect(layer, key, cx - r, cy - r, cx + r + 1, cy + r + 1, (x, y, old) -&gt; {
@@ -172,9 +192,19 @@ EntityPaintingAPI.edit(mob, editor -&gt; {
 });</code></pre>
 <p>Pixel methods return <code>false</code> only when the layer needs a new canvas for the part and the entity&#x27;s texel budget is full. Unknown layer IDs or part keys and out-of-range values throw <code>IllegalArgumentException</code>. API edits skip player rules (held tool, reach, rate limit, <code>maxLayers</code>, locks) but never the hard limits.</p>
 <p>One-liners:</p>
-<pre><code class="language-java">EntityPaintingAPI.fillAllParts(mob, &quot;mymod:frost&quot;, 0x4080C0FF, PixelMode.BLEND);
+<pre><code class="language-java">EntityPaintingAPI.fillAllParts(mob, &quot;Frost&quot;, 0x4080C0FF, PixelMode.BLEND); // a layer without an owner, found by name
 EntityPaintingAPI.copyPaint(oldZombieVillager, newVillager); // conversions and clones
 EntityPaintingAPI.clearPaint(mob);</code></pre>
+<p><strong>Returning a value (0.9.7).</strong> <code>EntityPaintingAPI.editResult(entity, editor -&gt; value)</code> works like <code>edit</code> but returns an <code>EditResult&lt;T&gt;</code> with <code>changed()</code>, <code>revision()</code> (the new revision, or the current one when nothing changed) and <code>value()</code>, whatever your callback returned. The value is also returned when nothing changed; it is <code>null</code> only when the callback did not run (on a client, or when the entity&#x27;s revision counter is used up). It has its own name rather than an <code>edit</code> overload so that <code>editor -&gt; editor.clearAll()</code> stays unambiguous. <code>EntityPaintingClientAPI.editLocalResult</code> does the same for local layers.</p>
+<pre><code class="language-java">var result = EntityPaintingAPI.editResult(mob, editor -&gt; {
+    int placed = 0;
+    var layer = editor.getOrCreateLayer(SPOTS_LAYER, &quot;Spots&quot;, true);
+    if (layer.isEmpty()) return 0;
+    for (var part : editor.parts()) if (editor.stamp(layer.get(), part.key(), .5f, .5f, 0xFF8040, 1, PixelMode.REPLACE)) placed++;
+    return placed;
+});
+log(result.value() + &quot; spots, revision &quot; + result.revision());</code></pre>
+<p><strong>Looking parts up (0.9.7).</strong> <code>editor.part(surfaceId, partName)</code>, <code>editor.partsOnSurface(surfaceId)</code> and <code>view.part(surfaceId, partName)</code> save building the key with <code>EntityPaintingAPI.partKey</code> first.</p>
 <p><strong>Keep edits occasional.</strong> Every commit is a new revision. A player whose click was captured against the previous revision has that stroke rejected as stale and must click again. Per-tick effects belong in your renderer, not in paint data.</p>
 <hr>
 <h3 id="painting-your-own-entity-from-the-server">Painting your own entity from the server</h3>
@@ -184,7 +214,7 @@ EntityPaintingAPI.clearPaint(mob);</code></pre>
 EntityPaintingAPI.edit(golem, editor -&gt; {
     // &quot;head&quot; is a 8x8x8 cube at texOffs(0, 0) on a 64x64 texture: its faces span u 0..32, v 0..16.
     var head = editor.establishPart(surface, &quot;head&quot;, 64, 64, 0f, 0f, 32 / 64f, 16 / 64f);
-    var layer = editor.getOrCreateLayer(&quot;mymod:runes&quot;, true);
+    var layer = editor.getOrCreateLayer(RUNES_LAYER, &quot;Runes&quot;, true);
     if (head.isPresent() &amp;&amp; layer.isPresent())
         editor.stamp(layer.get(), head.get(), 0.5f, 0.5f, 0xFF40FFE0, 1, PixelMode.REPLACE);
 });</code></pre>
@@ -196,17 +226,41 @@ EntityPaintingAPI.edit(golem, editor -&gt; {
 <li>A part with more than one cube gets one canvas per cube: <code>arms#0</code>, <code>arms#1</code>.</li>
 <li>Players use <code>EntityPaintingAPI.playerSurfaceId(modelClassName, &quot;default&quot;|&quot;slim&quot;)</code>.</li>
 <li>A GeckoLib model (0.9.1) has no model class of its own: its surface uses <code>geckolib:</code> plus its geo model file in place of the class name, for example <code>EntityPaintingAPI.surfaceId(&quot;geckolib:mymod:geo/entity/bear.geo.json&quot;, texture)</code> with GeckoLib 4 (Minecraft 1.21.1) or <code>geckolib:mymod:entity/bear</code> with GeckoLib 5 (1.21.11), whatever your <code>GeoModel.getModelResource</code> returns. Parts are bone names (<code>head</code>, <code>left_leg</code>), and a bone with several cubes gets <code>bone#0</code>, <code>bone#1</code>. A render layer that redraws the same baked model with another texture and a vanilla entity render type is a surface of its own.</li>
-<li>A texture a mob only shows in some state is painted as its canonical texture (0.9.0): wolves as their tame texture (wild and angry textures, every variant the client knows), sleeping foxes as awake ones, angry or nectar bees as <code>bee.png</code>, cold striders as warm ones. <code>surfaceId</code> applies this for you. If your mob swaps textures with the same layout, register them with <code>SurfaceAliases.alias(texture, canonical)</code> on both sides, before the first paint; <code>SurfaceAliases.canonical(texture)</code> looks one up.</li>
+<li>A texture a mob only shows in some state is painted as its canonical texture (0.9.0): wolves as their tame texture (wild and angry textures, every variant the client knows), sleeping foxes as awake ones, angry or nectar bees as <code>bee.png</code>, cold striders as warm ones. <code>surfaceId</code> applies this for you. If your mob swaps textures with the same layout, register them with <code>SurfaceAliases.alias(texture, canonical)</code> on both sides, before the first paint; <code>SurfaceAliases.canonical(texture)</code> looks one up. Since 0.9.8 a resource pack can do the same with no code (<code>assets/&lt;namespace&gt;/ffentitypainting/surfaces/*.json</code>, see <a href="datapacks.html#resource-pack-surfaces">Datapacks</a>), and its aliases win over ones registered in code.</li>
 <li>When Entity Model Features draws the entity with a custom (jem) model (0.8.1), the client appends <code>+emf:&lt;namespace&gt;:&lt;model&gt;#&lt;variant&gt;</code> to the model class name, so a resource pack&#x27;s model has surfaces of its own. Vanilla parts keep their names; parts the jem adds are <code>head/EMF_horn</code> (its <code>id</code>), or <code>head/emf@&lt;hex&gt;</code> (a geometry fingerprint) when the jem part has no <code>id</code>. A jem part with its own texture is a separate surface with that texture. Take these IDs from <code>captureGeometry</code>, <code>BodyShapes</code> or <code>view</code> rather than building them.</li>
 </ul>
 <p>The rectangle must cover every face of the part, or paint lands in the wrong place. For entities you don&#x27;t own, let a player paint first and use the parts listed by <code>view</code> or <code>editor.parts()</code>.</p>
+<hr>
+<h3 id="owners-bands-and-data">Owning, stacking and annotating layers (0.9.7)</h3>
+<p><strong>Owner.</strong> A layer&#x27;s display name is for players: they can rename layers and type any name up to 64 characters, so a mod that finds its layer by name can pick up someone else&#x27;s. Give your layers an <em>owner</em> instead, a namespaced <code>ResourceLocation</code> of your mod. It is saved with the layer, sent to clients, cannot be changed afterwards and cannot be set by a player. <code>getOrCreateLayer(owner, displayName, locked)</code> returns the lowest layer owned by <code>owner</code>, whatever it is called now, and creates one named <code>displayName</code> only when there is none (an existing layer keeps its lock, band and priority). A mod that needs several layers can give them the same owner and use <code>layersOwnedBy(owner)</code> (also on <code>PaintView</code>), or use different owners. The name-based <code>getOrCreateLayer(name, locked)</code> and <code>fillAllParts</code> still work and find only layers without an owner; <code>layerByName</code> finds any layer, which is what commands use.</p>
+<pre><code class="language-java">static final ResourceLocation DIRT = ResourceLocation.fromNamespaceAndPath(&quot;mydirt&quot;, &quot;dirt&quot;);
+
+EntityPaintingAPI.edit(mob, editor -&gt; {
+    String dirt = editor.getOrCreateLayer(DIRT, &quot;Dirt&quot;, true, LayerBand.OVERLAY, 0).orElseThrow();
+    // Someone naming their own layer &quot;Dirt&quot; changes nothing: it has no owner.
+    for (var mine : editor.layersOwnedBy(DIRT)) editor.setOpacity(mine.id(), 0.8f);
+});</code></pre>
+<p><strong>Stacking bands.</strong> Every layer has a <code>LayerBand</code> (<code>BASE</code>, <code>NORMAL</code>, <code>OVERLAY</code>) and an <code>int</code> priority, and the mod keeps the stack ordered by band, then priority, on every add, move, load and sync. New layers go on top of their group, so a <code>BASE</code> tint stays under everything and an <code>OVERLAY</code> stays over everything without you re-sorting after each edit. Layers players make are <code>NORMAL</code> at priority 0: a new one goes on top of that group, under a locked layer at the top of it, and under every overlay. <code>moveLayer</code> and the layer manager&#x27;s arrows only move a layer among layers of the same band and priority (the server refuses other moves). Change a layer&#x27;s place with <code>setBand(id, band, priority)</code>; it moves to the top of its new group. A locked layer no longer has to stand in for &quot;this is an overlay&quot;: a locked <code>BASE</code> layer and a locked <code>OVERLAY</code> layer leave the space between them for players. Layers from older saves are <code>NORMAL</code> at priority 0.</p>
+<p><strong>Data tags.</strong> <code>setData(layerId, key, tag, synced)</code> stores a <code>CompoundTag</code> under a namespaced key of your own: fade timers, which player painted a layer, team IDs, an expiry tick. Tags are saved with the layer and read back as copies with <code>PaintView.Layer.data()</code> or <code>data(key)</code>. A layer holds at most <code>EntityPaintingAPI.MAX_LAYER_DATA_ENTRIES</code> (8) tags and <code>MAX_LAYER_DATA_BYTES</code> (2048, as <code>CompoundTag.sizeInBytes()</code>) together: a tag that does not fit returns <code>false</code>, one larger than the byte limit throws. A <code>synced</code> tag is also sent to clients (and changing it sends a snapshot like any layer property); a tag that is not synced never leaves the server, and a batch that changes only such tags commits without a new revision and sends nothing, so it is cheap to rewrite often. <code>PaintEvent.Changed</code> still fires for it.</p>
+<pre><code class="language-java">static final ResourceLocation FADE = ResourceLocation.fromNamespaceAndPath(&quot;mymod&quot;, &quot;fade&quot;);
+
+// After a player paints your layer, remember who and when (server only, so no snapshot is sent).
+PaintEvents.register(PaintEvent.Changed.class, e -&gt; {
+    if (e.getCause() != PaintEvent.Cause.PLAYER_STAMP) return;
+    EntityPaintingAPI.edit(e.getEntity(), editor -&gt; editor.layersOwnedBy(MY_LAYER).forEach(layer -&gt; {
+        var tag = new CompoundTag();
+        tag.putString(&quot;painter&quot;, e.getPlayer().getUUID().toString());
+        tag.putLong(&quot;expires&quot;, e.getEntity().level().getGameTime() + 6000);
+        editor.setData(layer.id(), FADE, tag, false);
+    }));
+});</code></pre>
 <hr>
 <h3 id="layer-access">Who sees and paints a layer</h3>
 <p>Give a synced layer a <code>com.fyxe.ffentitypainting.api.access.LayerAccess</code> for viewing and one for painting. Players who fail the view access are never sent the layer: its paint doesn't reach their game at all. Players who see it but fail the paint access see it marked <em>view only</em> and cannot select, paint, clear, rename, move or delete it. API edits and <code>/entitypaint</code> commands are never limited.</p>
 <pre><code class="language-java">// Server: an ALL layer everyone paints, and a Red layer only the red team sees and only the captain paints.
 EntityPaintingAPI.edit(flagMob, editor -&gt; {
-    editor.getOrCreateLayer(&quot;ALL&quot;, false);
-    String red = editor.getOrCreateLayer(&quot;Red&quot;, false).orElseThrow();
+    editor.getOrCreateLayer(ALL_LAYER, &quot;ALL&quot;, false);
+    String red = editor.getOrCreateLayer(RED_LAYER, &quot;Red&quot;, false).orElseThrow();
     editor.setViewAccess(red, LayerAccess.team(&quot;red&quot;));
     editor.setPaintAccess(red, LayerAccess.of(&quot;mymod:captain&quot;, &quot;red&quot;));
 });</code></pre>
@@ -218,10 +272,22 @@ EntityPaintingAPI.edit(flagMob, editor -&gt; {
 <tr><td><code>LayerAccess.players(uuid...)</code></td><td>Those players (the argument also accepts names, comma separated)</td></tr>
 <tr><td><code>LayerAccess.tag(tag)</code></td><td>Players with that <code>/tag</code></td></tr>
 <tr><td><code>LayerAccess.self()</code></td><td>The painted player itself</td></tr>
+<tr><td><code>LayerAccess.anyOf(a, b, ...)</code></td><td>0.9.7. Players who pass at least one (nobody when empty)</td></tr>
+<tr><td><code>LayerAccess.allOf(a, b, ...)</code></td><td>0.9.7. Players who pass every one (everybody when empty)</td></tr>
+<tr><td><code>LayerAccess.not(a)</code></td><td>0.9.7. Players who do not pass <code>a</code></td></tr>
 </tbody></table></div>
+<p><strong>Combining accesses (0.9.7).</strong> <code>anyOf</code>, <code>allOf</code> and <code>not</code> are ordinary rules (<code>ffentitypainting:any_of</code>, <code>all_of</code> and <code>not</code>) whose argument encodes the accesses they combine as a JSON array of <code>[rule, argument]</code> pairs, so they are saved, can nest (up to 16 per combination and 4 levels), and work in <code>/entitypaint layer access</code> like any rule. Read them back with <code>children()</code>. A combination that contains a rule that isn&#x27;t registered or that throws never passes, whichever way it combines it, so <code>not(...)</code> of a missing rule is closed to everyone rather than open to everyone. <code>LayerAccess.MAX_ARGUMENT</code> is 1024 to fit them.</p>
+<pre><code class="language-java">// The red team or operators see it; everyone except muted players may paint it.
+editor.setViewAccess(layer, LayerAccess.anyOf(LayerAccess.team(&quot;red&quot;), LayerAccess.tag(&quot;operator&quot;)));
+editor.setPaintAccess(layer, LayerAccess.not(LayerAccess.tag(&quot;muted&quot;)));</code></pre>
 <p>Add your own rule with <code>LayerRules.register(id, rule)</code> during setup. A rule is a <code>LayerRule</code>: <code>test(ServerPlayer player, LivingEntity entity, String argument)</code>, plus an optional <code>acceptsArgument</code> that <code>/entitypaint layer access</code> uses to refuse bad input. The ID is saved with every layer that uses it, so keep it stable; a layer naming a rule that isn&#x27;t registered (its mod was removed) is hidden from and locked for everyone rather than shown to everyone.</p>
 <pre><code class="language-java">// Common setup: only the team&#x27;s captain paints.
 LayerRules.register(&quot;mymod:captain&quot;, (player, entity, team) -&gt; Captains.of(team).equals(player.getUUID()));</code></pre>
+<p><strong>Rules that see the layer (0.9.7).</strong> A rule that needs to know which layer it is judging implements <code>LayerRule.ForLayer</code>, or is registered as a lambda with four parameters. It receives the <code>PaintView.Layer</code> as the server holds it, with its owner, band and data (server-only tags included), so an owner-based rule needs no argument at all. Existing three-parameter rules are unchanged. <code>LayerRules.test(access, player, entity)</code> without a layer passes <code>null</code> to such rules, which then deny.</p>
+<pre><code class="language-java">// Layers owned by mymod:squad pass only the players listed in their own data (one key per member UUID).
+LayerRules.register(&quot;mymod:squad_member&quot;, (player, entity, layer, argument) -&gt;
+        layer.isOwnedBy(SQUAD) &amp;&amp; layer.data(SQUAD_DATA)
+                .map(tag -&gt; tag.contains(player.getUUID().toString())).orElse(false));</code></pre>
 <p>Rules run on the server thread whenever a layer is sent to a player or a player edits it, and about once a second for each player holding a restricted layer, so keep them cheap. When an answer changes (a player joins a team, a captain is replaced), that player gets a fresh copy within a second; call <code>EntityPaintingAPI.refreshAccess(player)</code> or <code>refreshAccess(entity)</code> to update at once. <code>EntityPaintingAPI.canSee(player, entity, layerId)</code> and <code>canPaint(...)</code> ask the same questions from your code.</p>
 <p>Layers players make get <code>EVERYONE</code> by default. To hand them to a team, set the access in the event that creates them: <code>PlayerLayerEdit</code> with action <code>ADD</code>, or a <code>PlayerStamp</code> whose <code>getLayerId()</code> is empty (a player&#x27;s first stroke when there is no layer it may paint).</p>
 <pre><code class="language-java">PaintEvents.register(PaintEvent.PlayerLayerEdit.class, e -&gt; {
@@ -247,10 +313,12 @@ LayerRules.register(&quot;mymod:captain&quot;, (player, entity, team) -&gt; Capt
 <h3 id="events-server-only">Events (server only)</h3>
 <p>Events are delivered to every listener added with <code>PaintEvents.register(Class, Consumer)</code>, on any loader. On NeoForge they are also posted on <code>NeoForge.EVENT_BUS</code>, so <code>@SubscribeEvent</code> methods work as before. On Fabric, use <code>PaintEvents.register</code>. Since 0.9.6, a listener that throws is logged once and skipped: the change it reacted to stays committed, and the other listeners still run.</p>
 <div class="table-wrap"><table><thead><tr><th>Event</th><th>Cancelable</th><th>When</th></tr></thead><tbody>
-<tr><td><code>PaintEvent.PlayerStamp</code></td><td>Yes</td><td>A player stroke passed every built-in check (including layer access) and is about to apply. Color, mode and radius can be changed, and the access of the layer it creates when <code>getLayerId()</code> is empty.</td></tr>
+<tr><td><code>PaintEvent.PlayerStamp</code></td><td>Yes</td><td>A player stroke passed every built-in check (including layer access) and is about to apply. Color, mode and radius can be changed, and the access of the layer it creates when <code>getLayerId()</code> is empty. Since 0.9.7 it says where: <code>getLocalU()</code>/<code>getLocalV()</code> (0 to 1 across the part&#x27;s canvas, the coordinates <code>PaintEditor.stamp</code> takes), <code>getTextureU()</code>/<code>getTextureV()</code> (the same spot on the entity&#x27;s original texture, inside the part&#x27;s rectangle) and <code>getHand()</code>.</td></tr>
+<tr><td><code>PaintEvent.ApiEdit</code></td><td>Yes</td><td>0.9.7: another mod, or an <code>/entitypaint</code> command, is about to commit an <code>EntityPaintingAPI</code> batch (<code>edit</code>, <code>editResult</code>, <code>copyPaint</code>, <code>clearPaint</code>, <code>fillAllParts</code>). It fires after the callback ran on its private copy and before the commit, only when something would change. Cancel to refuse the whole batch: nothing is committed or sent, no revision is used and no <code>Changed</code> follows. <code>getChange()</code>, <code>isStructural()</code>, <code>getTouchedLayers()</code> and <code>getTouchedParts()</code> say what it would change; <code>getCause()</code> is <code>API</code> or <code>COMMAND</code> (with <code>getSource()</code>). It does not say which mod made the edit, and a listener cannot start an edit of the same entity.</td></tr>
 <tr><td><code>PaintEvent.PlayerLayerEdit</code></td><td>Yes</td><td>A layer-manager action (<code>ADD</code>, <code>BLEND_MODE</code>, <code>VISIBILITY</code>, <code>CLEAR</code>, <code>OPACITY</code>, <code>REMOVE</code>, <code>MOVE</code>, <code>RENAME</code>) is about to apply. <code>getValue()</code> is the blend mode, opacity percent, <code>up</code>/<code>down</code> or new name. For <code>ADD</code>, <code>setNewLayerView</code>/<code>setNewLayerPaint</code> set the new layer&#x27;s access.</td></tr>
-<tr><td><code>PaintEvent.Changed</code></td><td>No</td><td>Any committed change, after clients were sent it (or it was queued). <code>getCause()</code> is <code>PLAYER_STAMP</code>, <code>PLAYER_LAYER_EDIT</code>, <code>API</code>, <code>COMMAND</code> (an <code>/entitypaint</code> command; <code>getSource()</code> is its <code>CommandSourceStack</code>) or <code>RESPAWN</code> (a player kept their paint through death, see <code>keepPlayerPaintOnDeath</code>; posted while the new player entity is being created). <code>getPlayer()</code> is the painting player for the two player causes and null otherwise. More causes may be added, so give a <code>switch</code> a default branch. An edit you make here follows in order as its own revision.</td></tr>
+<tr><td><code>PaintEvent.Changed</code></td><td>No</td><td>Any committed change, after clients were sent it (or it was queued). <code>getCause()</code> is <code>PLAYER_STAMP</code>, <code>PLAYER_LAYER_EDIT</code>, <code>API</code>, <code>COMMAND</code> (an <code>/entitypaint</code> command; <code>getSource()</code> is its <code>CommandSourceStack</code>) or <code>RESPAWN</code> (a player kept their paint through death, see <code>keepPlayerPaintOnDeath</code>; posted while the new player entity is being created). <code>getPlayer()</code> is the painting player for the two player causes and null otherwise. More causes may be added, so give a <code>switch</code> a default branch. An edit you make here follows in order as its own revision. Since 0.9.7 it also says what changed: <code>isStructural()</code> is true when layers, parts or properties may have changed and not only texels (re-read everything you derive from paint), and <code>getTouchedLayers()</code>, <code>getTouchedParts()</code> and <code>getTouched()</code> (layer ID to part keys) list the texels written. A stroke that fills an existing canvas is not structural; a respawn copy, a layer-manager change and <code>clearAll</code> are.</td></tr>
 </tbody></table></div>
+<p><code>PlayerLayerEdit</code> still has <code>getValue()</code> as a string, and since 0.9.7 typed getters so you do not parse it: <code>getNewOpacity()</code> (an <code>OptionalDouble</code>, 0 to 1), <code>getMoveDirection()</code> (<code>PaintEvent.MoveDirection.UP</code> or <code>DOWN</code>), <code>getNewBlendMode()</code> and <code>getNewName()</code>. Each is empty unless the action matches.</p>
 <pre><code class="language-java">@SubscribeEvent
 public void onStamp(PaintEvent.PlayerStamp e) {
     if (!Claims.canBuild(e.getPlayer(), e.getEntity().blockPosition())) {
@@ -267,7 +335,25 @@ public void onChanged(PaintEvent.Changed e) {
 PaintEvents.register(PaintEvent.PlayerStamp.class, e -&gt; {
     if (!Claims.canBuild(e.getPlayer(), e.getEntity().blockPosition())) e.setCanceled(true);
 });</code></pre>
-<p>Canceling sends no message by itself, so tell the player why if it helps them. Strokes on a player&#x27;s local layers never reach the server and fire no event.</p>
+<p>Canceling sends no message by itself, so tell the player why if it helps them. Strokes on a player&#x27;s local layers never reach the server; the client posts <code>LocalPaintEvent</code> for those (below).</p>
+<p>Region protection, symmetry and logging use the stroke position and the new pre-event for everyone else&#x27;s edits:</p>
+<pre><code class="language-java">PaintEvents.register(PaintEvent.PlayerStamp.class, e -&gt; {
+    // Keep painters off the face of a player skin: the head&#x27;s front is u 8..16, v 8..16 of 64x64.
+    if (e.getEntity() instanceof Player &amp;&amp; Faces.contains(e.getTextureU() * 64, e.getTextureV() * 64)) e.setCanceled(true);
+    Log.stroke(e.getPlayer(), e.getEntity(), e.getPartKey(), e.getLocalU(), e.getLocalV(), e.getHand());
+});
+
+// Refuse other mods&#x27; paint on players inside a claim, and log the rest.
+PaintEvents.register(PaintEvent.ApiEdit.class, e -&gt; {
+    if (e.getEntity() instanceof Player p &amp;&amp; Claims.isProtected(p)) e.setCanceled(true);
+    else Log.edit(e.getEntity(), e.getCause(), e.isStructural(), e.getTouchedParts());
+});
+
+// React to exactly what changed instead of diffing views.
+PaintEvents.register(PaintEvent.Changed.class, e -&gt; {
+    if (e.isStructural()) Mirrors.rebuild(e.getEntity());
+    else Mirrors.refresh(e.getEntity(), e.getTouched()); // layer ID to the part keys written
+});</code></pre>
 <h4>On the client</h4>
 <p><code>api.client.PaintUpdatedEvent</code> fires on the client main thread (on the NeoForge bus too, and to <code>PaintUpdatedEvent.register(Consumer)</code> listeners on every loader) whenever this client&#x27;s copy of an entity&#x27;s paint changes. <code>isSnapshot()</code> is true when the whole paint was replaced (layers, parts or settings may differ) and false when only some texels changed. Use it to refresh anything you derive from paint instead of polling revisions.</p>
 <pre><code class="language-java">@SubscribeEvent
@@ -277,6 +363,11 @@ public void onPaint(PaintUpdatedEvent e) {
 
 // Any loader:
 PaintUpdatedEvent.register(e -&gt; GlowMasks.invalidate(e.getEntity()));</code></pre>
+<p><code>api.client.LocalPaintEvent</code> (0.9.7) covers the player&#x27;s <a href="#local-layers">local layers</a>, which <code>PaintUpdatedEvent</code> never reports. Listen with <code>LocalPaintEvent.register(Class, Consumer)</code> on any loader, or on <code>NeoForge.EVENT_BUS</code>. <code>LocalPaintEvent.Changed</code> fires after every local stroke, <code>editLocal</code> batch that changed something, layer-manager change and <code>clearLocalPaint</code>; it carries <code>getCause()</code> (<code>STROKE</code>, <code>API</code>, <code>LAYER_MANAGER</code>, <code>CLEARED</code>), <code>getRevision()</code> and the same <code>isStructural()</code> / <code>getTouchedLayers()</code> / <code>getTouchedParts()</code> / <code>getTouched()</code> as the server event. <code>LocalPaintEvent.Stamp</code> is cancelable and fires when the player clicks with a paint tool on a local layer, before the stroke: it has the layer, part, <code>getLocalU/V</code>, <code>getTextureU/V</code>, hand and tool, and can change the color, mode and radius. Edits made with <code>editLocal</code> are not clicks, so they fire only <code>Changed</code>. Local paint loaded from disk, or dropped when its entity dies, fires nothing.</p>
+<pre><code class="language-java">LocalPaintEvent.register(LocalPaintEvent.Stamp.class, e -&gt; {
+    if (Cosmetics.isLocked(e.getEntity())) e.setCanceled(true);
+});
+LocalPaintEvent.register(LocalPaintEvent.Changed.class, e -&gt; GlowMasks.invalidate(e.getEntity()));</code></pre>
 <p>Part names and surface IDs differ by loader (Fabric names parts by child path and its surface IDs carry the runtime class names), so take them from <code>BodyShapes</code> and <code>PaintView</code> instead of building them yourself.</p>
 <hr>
 <h3 id="opting-out">Opting mobs out</h3>
@@ -291,6 +382,7 @@ PaintUpdatedEvent.register(e -&gt; GlowMasks.invalidate(e.getEntity()));</code><
 <p>For a decision the tag can&#x27;t make, register a rule in common setup so the server and every client agree. It runs for each draw of a painted or clicked entity, so keep it cheap; a rule that throws counts as not matching.</p>
 <pre><code class="language-java">EntityPaintingAPI.excludeEntities(entity -&gt; entity instanceof AncientGuardian guardian &amp;&amp; guardian.isEnraged());
 boolean ok = EntityPaintingAPI.isPaintable(entity); // the tag and every rule</code></pre>
+<p>Since 0.9.8 pack makers can exclude mobs with no code too: a datapack file at <code>data/&lt;namespace&gt;/ffentitypainting/exclusions/&lt;name&gt;.json</code> matches by entity type or tag, baby, custom name and dimension (all of a rule&#x27;s conditions must hold), and a resource pack&#x27;s <code>exclude_models</code> list leaves a model class alone. <code>isPaintable</code> includes the datapack rules. Formats are on the <a href="datapacks.html#exclusion-rules">Datapacks</a> page.</p>
 <p>An excluded mob shows no paint and reports no body shapes, and players can&#x27;t paint it or open its layer manager (&quot;This mob can&#x27;t be painted.&quot;, checked on the client and the server). Edits made through <code>EntityPaintingAPI.edit</code> are still stored, so lifting the exclusion brings them back.</p>
 <hr>
 <h3 id="client-api">Client API</h3>
@@ -314,7 +406,28 @@ String layer = EntityPaintingClientAPI.selectedLayer(target);</code></pre>
     for (LivingEntity mob : level.getEntitiesOfClass(LivingEntity.class, new AABB(from, to).inflate(1)))
         if (EntityPaintingClientAPI.paintLocal(mob, from, to, &quot;mymod:splash&quot;, 0xC0FF40A0, 1, PixelMode.BLEND)) { remove(); return; }
 }</code></pre>
+<p>When you need more than <code>paintLocal</code> offers, such as a blend mode for the layer, cast the ray yourself and paint the hit in one call (0.9.7): <code>captureGeometry(entity, 1f).flatMap(g -&gt; g.raycast(from, to))</code> gives a <code>Hit</code>, and inside <code>editLocalResult</code> (or a server <code>edit</code>), <code>editor.stampHit(layerId, hit, argb, radius, mode)</code> establishes the hit&#x27;s part, keeps the spot inside an existing part&#x27;s rectangle and stamps it. <code>editor.establishPart(surface, part)</code> alone makes a captured part paintable. <code>stampHit</code> returns false when the entity has the maximum number of parts or the texel budget is full.</p>
 <p><code>paintLocal(entity, from, to, layerName, argb, radius, mode)</code> captures the model once, finds where the segment first meets it, creates the named local layer if needed and stamps there; it returns false on a miss. For more control, <code>captureGeometry(...).raycast(from, to)</code> returns a <code>CapturedGeometry.Hit</code> (surface, part, texture UV, world position, distance) that you can pass to <code>establishPart</code> and <code>stampTexture</code> yourself. Each capture is one extra model draw, so call it when something lands, not every tick for every particle.</p>
+<h4 id="painted-texture">The painted texture, for your own renderers (0.9.8)</h4>
+<p>A statue, plushie, mannequin, GUI portrait or any renderer that can&#x27;t go through the hooked draw paths can still show a mob&#x27;s paint. <code>EntityPaintingClientAPI.paintedTexture(entity, model, texture)</code> returns the original texture of one surface with every painted part blended in place, as a registered texture of the same size and layout, so your model draws with its normal UVs. <code>model</code> and <code>texture</code> are what you draw with (pass a <code>String</code> model ID such as <code>EntityPaintingAPI.surfaceId</code> takes, or <code>geckolib:</code> plus the geo file, for a model that isn&#x27;t an <code>EntityModel</code>).</p>
+<pre><code class="language-java">// Render thread, every frame you draw the statue.
+var texture = EntityPaintingClientAPI.paintedTexture(mob, model, ORIGINAL_TEXTURE);
+RenderType type = RenderType.entityCutoutNoCull(texture.map(PaintedTexture::location).orElse(ORIGINAL_TEXTURE));</code></pre>
+<p>The result has <code>location</code>, <code>width</code>, <code>height</code> and a <code>revision</code> that changes whenever its content does. It includes the synced layers, this player&#x27;s local layers and any preview, as the mob itself would show, and is empty when the mob or model is excluded, nothing is painted on that surface, or the texture can&#x27;t be read yet. It is rebuilt only when the paint changes. Ask for it again each frame you draw with it: a texture that wasn&#x27;t asked for during a whole frame is released, so don&#x27;t keep <code>location</code> between frames. Parts that share one UV rectangle (the legs of some models) blend into it together, and the mob&#x27;s tint is not applied. The mob needs to be a client entity that holds the paint; a statue that keeps a dummy entity can use <code>EntityPaintingAPI.copyPaint</code> on the server to give it the paint.</p>
+<h4 id="preview-paint">Preview paint (0.9.8)</h4>
+<p>A ghost brush for cursors, stencils and &quot;what would this tint look like&quot;: a temporary overlay that is never saved, never sent to the server, never listed in the layer manager and fires no <code>LocalPaintEvent</code>. It draws over every synced and local layer and shows in <code>paintedTexture</code> too.</p>
+<pre><code class="language-java">// A paint tool&#x27;s ghost cursor, each client tick: capture once, raycast the crosshair, preview the stamp.
+CapturedGeometry geometry = EntityPaintingClientAPI.captureGeometry(mob, 1f).orElse(null);
+if (geometry != null) geometry.raycast(eye, eye.add(look.scale(4))).ifPresentOrElse(
+    hit -&gt; EntityPaintingClientAPI.previewHit(mob, hit, 0x80FF40A0, 2, PixelMode.BLEND, 4),
+    () -&gt; EntityPaintingClientAPI.clearPreview(mob));
+
+// Anything else: the same editor as editLocal, on an empty overlay.
+EntityPaintingClientAPI.previewFor(mob, 40, editor -&gt; {
+    String layer = editor.getOrCreateLayer(&quot;mymod:tint&quot;, false).orElseThrow();
+    for (PaintView.Part part : editor.parts()) editor.fill(layer, part.key(), 0x40FF0000, PixelMode.BLEND);
+});</code></pre>
+<p><code>preview(entity, changes)</code> lasts until <code>clearPreview(entity)</code>, the entity leaving, the world being left or resources reloading; <code>previewFor(entity, ticks, changes)</code> (and the <code>ticks</code> of <code>previewHit</code>) ends by itself that many client ticks after the last call, so a cursor needs no cleanup when the player looks away. Each call replaces the whole preview, and a call that paints nothing clears it. Setting the same content again (a cursor that hasn&#x27;t moved) costs no texture rebuild. <code>hasPreview</code> and <code>previewView</code> read it back. Call from the client main thread; <code>captureGeometry</code> is one extra model draw, so capture rarely and raycast often.</p>
 <hr>
 <h3 id="where-is-each-spot-on-the-body">Where is each spot on the body?</h3>
 <p>Paint lives in texture space, and only a client knows what a model looks like, so on its own the server cannot tell which texel is a foot and which is an ear. Since 0.7.0 FFEntityPainting can measure that for you: call <code>BodyShapes.request()</code> once (mod constructor or common setup) and every client that joins the server measures nearby standing or crouching entities now and then and reports their shape. On a server where no mod asks, clients never measure.</p>
@@ -324,7 +437,7 @@ BodyShapes.request();
 
 // Server: mud up to a third of the way up the body.
 EntityPaintingAPI.edit(mob, editor -&gt; {
-    String layer = editor.getOrCreateLayer(&quot;mymod:mud&quot;, true).orElseThrow();
+    String layer = editor.getOrCreateLayer(MUD_LAYER, &quot;Mud&quot;, true).orElseThrow();
     for (SurfaceShape shape : BodyShapes.shapes(mob))
         for (SurfaceShape.Part part : shape.parts()) {
             var key = editor.establishPart(shape.surfaceId(), part.name(), shape.textureWidth(), shape.textureHeight(),
@@ -355,6 +468,8 @@ EntityPaintingClientAPI.captureGeometry(mob, 1f).ifPresent(geometry -&gt; {
 <hr>
 <h3 id="compatibility-notes">Compatibility notes</h3>
 <ul>
+<li>0.9.9 changes no API, protocol or save format (protocol 9, so it plays with 0.9.8); it adds Epic Fight support on NeoForge 1.21.1. Entities Epic Fight draws keep their vanilla surface IDs and part names. <code>CapturedGeometry.Part</code> vertices from those draws are triangles given as quads whose last two vertices are the same, and a mesh piece that can&#x27;t be matched to one vanilla part (mirrored spider legs) is named <code>epicfight/&lt;mesh part&gt;</code>.</li>
+<li>0.9.7 changes the network protocol (8: layers now travel with their owner, band, priority and synced data), so clients and servers must both run 0.9.7. Saves carry over both ways: layers gain optional <code>owner</code>, <code>band</code>, <code>priority</code> and <code>data</code> fields that an older version ignores. Its API changes are additions: <code>EditResult</code> with <code>editResult</code> and <code>editLocalResult</code>, <code>PaintEditor.stampHit</code> and <code>establishPart(Surface, Part)</code>, part lookup by surface and name, typed <code>PlayerLayerEdit</code> getters, layer owners (<code>getOrCreateLayer(owner, displayName, locked)</code>, <code>layersOwnedBy</code>), <code>LayerBand</code> with <code>setBand</code>, layer data tags (<code>setData</code>, <code>removeData</code>), <code>LayerAccess.anyOf</code>/<code>allOf</code>/<code>not</code> and <code>LayerRule.ForLayer</code>. <code>PaintView.Layer</code> gained <code>owner</code>, <code>band</code>, <code>priority</code> and <code>data</code> (the earlier constructors still work), <code>LayerAccess.MAX_ARGUMENT</code> went from 256 to 1024, and <code>getOrCreateLayer(name, locked)</code> and <code>fillAllParts</code> skip layers that have an owner. Layers now stay ordered by band and priority, which only differs from before for layers that declare a band.</li>
 <li>0.9.6 keeps the 0.9.4 network protocol and save format. API changes: listeners that throw no longer break painting; edits off the server thread (local edits off the client main thread) throw; <code>PaintEvent.Cause</code> gains <code>COMMAND</code> and <code>RESPAWN</code> (so <code>Changed</code> now fires for <code>/entitypaint</code> and for paint kept through death), with <code>Changed.getSource()</code>; <code>SurfaceShape.Part</code> copies its arrays and adds <code>cells</code>, <code>rawHeight</code>, <code>rawX</code>, <code>rawZ</code>, <code>packedNormal</code> and <code>withHeights</code>. The internal bridges <code>PaintView.local</code> and <code>PaintEditor.runLocal</code> were removed; use <code>EntityPaintingClientAPI.localView</code> and <code>editLocal</code>. Code built against 0.9.x keeps working unless it called those two or edits paint off-thread.</li>
 <li>0.9.4 changes the network protocol (blend modes are sent by index), so clients and servers must both run 0.9.4; 0.9.0 through 0.9.3 still play together. Its API changes are additions: 17 new <code>BlendMode</code> constants appended after <code>OVERLAY</code>, 14 new <code>PixelMode</code> constants appended after <code>ERASE</code>, <code>BlendMode.previous()</code>, <code>BlendMode.affectsAlpha()</code> and <code>PixelMode.existingOnly()</code>. Existing constants, ordinals and saves are unchanged, but saves store modes by name, so an older version cannot read a layer that uses a new mode, and code that switches over the enums must handle the new constants. Use <code>0.9.4</code> as the lower bound if you use a new mode.</li>
 <li>0.9.2 changes no API, protocol or save format; it adds 3D Skin Layers support.</li>
