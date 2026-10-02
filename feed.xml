@@ -4,8 +4,15 @@
   <link href="https://fyxeinc.github.io/mod-wiki/updates.html"/>
   <link rel="self" href="https://fyxeinc.github.io/mod-wiki/feed.xml"/>
   <id>https://fyxeinc.github.io/mod-wiki/</id>
-  <updated>2026-10-01T00:00:00Z</updated>
+  <updated>2026-10-02T00:00:00Z</updated>
   <author><name>Fyxe</name></author>
+  <entry>
+    <title>FFEntityPainting: Configuration</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/configuration.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-02-ffentitypainting-65</id>
+    <updated>2026-10-02T00:00:00Z</updated>
+    <summary>0.9.11: armor, elytras, wolf and horse armor, llama decor and saddles can be painted and hide the body under them; new armor.paintArmor and armor.excludedItems server settings, and armorSurfaceId in the API.</summary>
+  </entry>
   <entry>
     <title>FFUtilities: Modding API</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffutilities/api.html"/>

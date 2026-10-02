@@ -63,6 +63,16 @@
 <td>1 paints one texel; larger values use a circular radius of the setting minus one</td>
 </tr>
 <tr>
+<td><code>armor.paintArmor</code></td>
+<td>true</td>
+<td>Players can paint what a mob wears: armor, elytras, wolf and horse armor, llama carpets and saddles. The brush paints the armor where it covers the body and the body only where it shows. Off: armor paint is hidden, and a mob must take off what it wears before it can be painted (the rule before 0.9.11)</td>
+</tr>
+<tr>
+<td><code>armor.excludedItems</code></td>
+<td>[]</td>
+<td>Armor that can't be painted, as item IDs, <code>#tags</code> or <code>namespace:*</code>. A mob wearing one must take it off before it can be painted. Use it for modded armor that paints wrongly</td>
+</tr>
+<tr>
 <td><code>shapes.maxCachedShapes</code></td>
 <td>2048</td>
 <td>Most mob shapes the server remembers, cleared when it stops</td>

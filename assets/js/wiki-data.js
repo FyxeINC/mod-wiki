@@ -16,6 +16,12 @@ window.WIKI_DATA = {
     },
     "recentUpdates": [
       {
+        "date": "2026-10-02",
+        "project": "ffentitypainting",
+        "page": "configuration.html",
+        "change": "0.9.11: armor, elytras, wolf and horse armor, llama decor and saddles can be painted and hide the body under them; new armor.paintArmor and armor.excludedItems server settings, and armorSurfaceId in the API."
+      },
+      {
         "date": "2026-10-01",
         "project": "ffutilities",
         "page": "api.html",
@@ -496,7 +502,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Paint living entities, modded and GeckoLib mobs included, with shared, team-restricted and local layers, with a mod API for brushes, layer access rules and server-side painting.",
       "tagline": "Add a splash of color to living entities.",
-      "version": "0.9.9",
+      "version": "0.9.11",
       "minecraftVersion": "1.21.1, 1.21.11",
       "modrinthSlug": "",
       "icon": "",
@@ -533,8 +539,8 @@ window.WIKI_DATA = {
           "title": "Configuration",
           "index": "02",
           "description": "Every FFEntityPainting server and client option with its default, and the /entitypaint operator commands.",
-          "updated": "2026-10-01",
-          "searchExcerpt": "ffentitypainting-server.toml and ffentitypainting-client.toml options and defaults, /entitypaint commands for layers, paint, teams and locks."
+          "updated": "2026-10-02",
+          "searchExcerpt": "ffentitypainting-server.toml and ffentitypainting-client.toml options and defaults, armor painting paintArmor excludedItems, /entitypaint commands for layers, paint, teams and locks."
         },
         {
           "file": "datapacks.html",
