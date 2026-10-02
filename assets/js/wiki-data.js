@@ -10,6 +10,8 @@ window.WIKI_DATA = {
       "name": "Fyxe",
       "modrinth": "https://modrinth.com/user/Fyxe",
       "github": "https://github.com/FyxeINC",
+      "curseforge": "https://www.curseforge.com/members/fyxe/projects",
+      "buyMeACoffee": "https://buymeacoffee.com/fyxe",
       "discord": "",
       "koFi": "",
       "patreon": ""

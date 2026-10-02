@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-02 (About page)
+
+- The About page links to Fyxe's CurseForge profile and has a Buy Me a Coffee button under Support.
+
 ## 2026-10-02 (CurseForge)
 
 - 15 mods now link to their CurseForge pages and use their CurseForge icons. Project headers also show a CurseForge download-count badge, driven by a new `curseforgeId` field in `wiki-data.js`.

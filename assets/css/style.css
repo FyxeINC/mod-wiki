@@ -707,6 +707,8 @@ html[data-theme="dark"] .btn--modrinth:hover { background: #104224; color: #1bd9
 .btn--curseforge:hover { background: #d3502a; color: #fff; }
 .btn--discord { background: #5865F2; color: #fff; }
 .btn--discord:hover { background: #4752c4; color: #fff; }
+.btn--coffee { background: #ffdd00; color: #1a1a1a; }
+.btn--coffee:hover { background: #e6c700; color: #1a1a1a; }
 .btn--github { background: var(--ink); color: var(--paper); }
 .btn--github:hover { background: var(--ink-soft); color: var(--paper); }
 
