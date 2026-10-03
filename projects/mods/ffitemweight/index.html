@@ -85,7 +85,7 @@
 <li>Inventory slots: optional outline or background by item weight band</li>
 <li>HUD: icon from the band JSON, optional label (<code>labelStyle</code>: NONE / NORMAL / BOLD / UNDERLINE / OUTLINE) and total</li>
 <li>Optional <code>showWeightUntilNext</code> draws <code>123.4 /2000 (+45)</code></li>
-<li>Icon shake uses the band's <code>shake</code> field times the client <code>intensity</code></li>
+<li>Icon shake grows with current weight, interpolating the datapack bands' <code>shake</code> values across capacity-adjusted weight ranges, then multiplying by client <code>intensity</code>. Text stays still</li>
 </ul>
 <h2 id="configuration">Configuration</h2>
 <p>Client config: <code>ffitemweight-client.toml</code> (tooltips, slots, HUD). Server config: <code>ffitemweight-server.toml</code> (calculation, nested inventories, tracking, capacity, effect toggles). Encumbrance bands themselves are datapack JSON, not config. The config screens open from the Mods screen (through Mod Menu on Fabric). Forge 1.20.1 has no config screen, so edit the files there.</p>
@@ -106,6 +106,10 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>Sable 2.x</td>
+<td>Container contents add cargo mass to the owning sub-level, updating mass, center of mass and inertia when filled or emptied. One item-weight unit equals one Sable mass unit. Includes nested contents under the usual weight settings. Reads each physical block inventory once, including unsided modded storage. No separate FFUtilities download is needed. Players, inventory entities, sided-only storage and detached kinematic contraption inventories are not included. API checked against Sable 2.0.5 on Minecraft 1.21.1.</td>
+</tr>
 <tr>
 <td>EMI</td>
 <td>Weights on item tooltips</td>

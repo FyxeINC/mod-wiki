@@ -19,6 +19,30 @@ window.WIKI_DATA = {
     "recentUpdates": [
       {
         "date": "2026-10-02",
+        "project": "ffmodsubfolders",
+        "page": "index.html",
+        "change": "0.6.0: expanded to 19 NeoForge targets across Minecraft 1.20.4, 1.20.6, 1.21 through 1.21.11, and 26.x, with legacy discovery and updated startup-service guidance."
+      },
+      {
+        "date": "2026-10-02",
+        "project": "spirit_of_home",
+        "page": "index.html",
+        "change": "0.3.0: named and colored home spirits, single-home attunement, experience-derived additive benefits, editable names, datapack name pools and a configurable HUD."
+      },
+      {
+        "date": "2026-10-02",
+        "project": "spirit_of_home",
+        "page": "index.html",
+        "change": "0.2.0: saved Cornerstone levels and level GUI, highest-level movement speed auras, fixed mining time, ingredient drops, piston immunity and operator commands."
+      },
+      {
+        "date": "2026-10-02",
+        "project": "spirit_of_home",
+        "page": "index.html",
+        "change": "0.1.0: new NeoForge 1.21.1 mod with a craftable Cornerstone building block."
+      },
+      {
+        "date": "2026-10-02",
         "project": "ffentitypainting",
         "page": "configuration.html",
         "change": "0.9.11: armor, elytras, wolf and horse armor, llama decor and saddles can be painted and hide the body under them; new armor.paintArmor and armor.excludedItems server settings, and armorSurfaceId in the API."
@@ -780,7 +804,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Tracks player fatigue from actions with configurable recovery and effects.",
       "tagline": "Tracks player fatigue from actions with configurable recovery and effects.",
-      "version": "0.9.1",
+      "version": "0.9.2",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffexhaustion",
       "icon": "icon.png",
@@ -813,7 +837,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFExhaustion features, requirements, and source version.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-02",
           "searchExcerpt": "Tracks player fatigue from actions with configurable recovery and effects."
         },
         {
@@ -845,7 +869,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
       "tagline": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
-      "version": "0.9.2",
+      "version": "0.9.3",
       "minecraftVersion": "1.21.1, 1.21.11",
       "modrinthSlug": "fffoodspoilageandpreservation",
       "icon": "icon.png",
@@ -874,7 +898,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFFoodSpoilageAndPreservation features, requirements, and source version.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-02",
           "searchExcerpt": "Food spoilage stages, preservation methods, storage rates, stacking, and requirements."
         },
         {
@@ -890,7 +914,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "03",
           "description": "FFFoodSpoilageAndPreservation API, events, and integration examples.",
-          "updated": "2026-10-01",
+          "updated": "2026-10-02",
           "searchExcerpt": "Food spoilage events, modifier definitions, custom inventory stacking, and integration examples."
         }
       ],
@@ -900,7 +924,8 @@ window.WIKI_DATA = {
         "1.21.11-fabric",
         "1.21.11-neoforge"
       ],
-      "curseforgeId": "1716349"
+      "curseforgeId": "1716349",
+      "updated": "2026-10-02"
     },
     {
       "slug": "ffinjury",
@@ -910,7 +935,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds tiered injuries, adrenaline, treatment, and healing.",
       "tagline": "Adds tiered injuries, adrenaline, treatment, and healing.",
-      "version": "0.9.1",
+      "version": "0.9.2",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffinjury",
       "icon": "icon.png",
@@ -1109,7 +1134,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Gives items weight and players configurable encumbrance bands.",
       "tagline": "Gives items weight and players configurable encumbrance bands.",
-      "version": "0.8.1",
+      "version": "0.8.3",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffitemweight",
       "icon": "icon.png",
@@ -1142,7 +1167,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemWeight features, requirements, and source version.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-02",
           "searchExcerpt": "Gives items weight and players configurable encumbrance bands."
         },
         {
@@ -1150,7 +1175,7 @@ window.WIKI_DATA = {
           "title": "Datapacks",
           "index": "02",
           "description": "FFItemWeight datapack formats: item weight files, weight references, recipe derivation and encumbrance bands.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-02",
           "searchExcerpt": "Item weight JSON, regex and force, weight_from references, recipe derivation, encumbrance band fields."
         },
         {
@@ -1267,8 +1292,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Loads mods from nested folders in the mods directory.",
       "tagline": "Loads mods from nested folders in the mods directory.",
-      "version": "0.5.0",
-      "minecraftVersion": "1.20.6-1.21.11",
+      "version": "0.6.0",
+      "minecraftVersion": "1.20.4-26.3",
       "modrinthSlug": "ffmodsubfolders",
       "icon": "icon.png",
       "tags": [
@@ -1277,7 +1302,7 @@ window.WIKI_DATA = {
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.20.6-1.21.11",
+          "label": "MC 1.20.4-26.3",
           "class": ""
         }
       ],
@@ -1292,14 +1317,30 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFModsSubfolders features, requirements, and source version.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-02",
           "searchExcerpt": "Loads mods from nested folders in the mods directory."
         }
       ],
       "targets": [
+        "1.20.4-neoforge",
         "1.20.6-neoforge",
+        "1.21-neoforge",
         "1.21.1-neoforge",
-        "1.21.11-neoforge"
+        "1.21.2-neoforge",
+        "1.21.3-neoforge",
+        "1.21.4-neoforge",
+        "1.21.5-neoforge",
+        "1.21.6-neoforge",
+        "1.21.7-neoforge",
+        "1.21.8-neoforge",
+        "1.21.9-neoforge",
+        "1.21.10-neoforge",
+        "1.21.11-neoforge",
+        "26.1-neoforge",
+        "26.1.1-neoforge",
+        "26.1.2-neoforge",
+        "26.2-neoforge",
+        "26.3-neoforge"
       ],
       "curseforgeId": "1716376"
     },
@@ -1422,7 +1463,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge.",
       "tagline": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge.",
-      "version": "0.2.12",
+      "version": "0.2.14",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "",
       "icon": "icon.png",
@@ -1455,7 +1496,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFUtilities features, requirements, and source version.",
-          "updated": "2026-10-01",
+          "updated": "2026-10-02",
           "searchExcerpt": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge."
         },
         {
@@ -1477,7 +1518,8 @@ window.WIKI_DATA = {
         "1.21.11-fabric",
         "1.21.11-neoforge"
       ],
-      "curseforgeId": "1716382"
+      "curseforgeId": "1716382",
+      "updated": "2026-10-02"
     },
     {
       "slug": "ffwaterfalls",
@@ -1611,7 +1653,7 @@ window.WIKI_DATA = {
           "class": ""
         },
         {
-          "label": "MC 1.21.1Ã¢â‚¬â€œ1.21",
+          "label": "MC 1.21.1ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“1.21",
           "class": ""
         }
       ],
@@ -1649,7 +1691,7 @@ window.WIKI_DATA = {
           "class": "tag--green"
         },
         {
-          "label": "MC 1.20.1Ã¢â‚¬â€œ1.20",
+          "label": "MC 1.20.1ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“1.20",
           "class": ""
         }
       ],
@@ -1743,6 +1785,56 @@ window.WIKI_DATA = {
           "updated": "2026-08-19",
           "searchExcerpt": "A Vanilla Plus modpack centered around QoL tweaks, performance, and fun additions. Vanilla+"
         }
+      ]
+    },
+    {
+      "slug": "spirit_of_home",
+      "type": "mod",
+      "name": "The Spirit of Home",
+      "index": "A",
+      "status": "active",
+      "description": "Named home spirits with activity meters, homesickness, warm returns and growing benefits.",
+      "tagline": "Set down roots and put a spring in your step.",
+      "version": "0.6.3",
+      "minecraftVersion": "1.21.1",
+      "modrinthSlug": "",
+      "icon": "",
+      "tags": [
+        {
+          "label": "NeoForge",
+          "class": "tag--rust"
+        },
+        {
+          "label": "MC 1.21.1",
+          "class": ""
+        }
+      ],
+      "links": {
+        "modrinth": "",
+        "curseforge": "",
+        "github": "",
+        "discord": ""
+      },
+      "pages": [
+        {
+          "file": "index.html",
+          "title": "Overview",
+          "index": "01",
+          "description": "Spirit customization, activity categories, homesickness, welcome rewards, auras and commands.",
+          "updated": "2026-10-02",
+          "searchExcerpt": "Unlock name and color editing, contribute through player XP levels, manage spiritless and return home for rewards."
+        },
+        {
+          "file": "datapacks.html",
+          "title": "Datapacks",
+          "index": "02",
+          "description": "Define home categories, action gains and filters; expand name pools and replace recipes or drops.",
+          "updated": "2026-10-02",
+          "searchExcerpt": "Reloadable home categories with colors and item, block or entity filters, name pools, recipes and drops."
+        }
+      ],
+      "targets": [
+        "1.21.1-neoforge"
       ]
     }
   ]

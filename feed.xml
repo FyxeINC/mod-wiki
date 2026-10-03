@@ -7,6 +7,34 @@
   <updated>2026-10-02T00:00:00Z</updated>
   <author><name>Fyxe</name></author>
   <entry>
+    <title>FFModsSubfolders: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffmodsubfolders/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-02-ffmodsubfolders-69</id>
+    <updated>2026-10-02T00:00:00Z</updated>
+    <summary>0.6.0: expanded to 19 NeoForge targets across Minecraft 1.20.4, 1.20.6, 1.21 through 1.21.11, and 26.x, with legacy discovery and updated startup-service guidance.</summary>
+  </entry>
+  <entry>
+    <title>The Spirit of Home: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/spirit_of_home/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-02-spirit_of_home-68</id>
+    <updated>2026-10-02T00:00:00Z</updated>
+    <summary>0.3.0: named and colored home spirits, single-home attunement, experience-derived additive benefits, editable names, datapack name pools and a configurable HUD.</summary>
+  </entry>
+  <entry>
+    <title>The Spirit of Home: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/spirit_of_home/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-02-spirit_of_home-67</id>
+    <updated>2026-10-02T00:00:00Z</updated>
+    <summary>0.2.0: saved Cornerstone levels and level GUI, highest-level movement speed auras, fixed mining time, ingredient drops, piston immunity and operator commands.</summary>
+  </entry>
+  <entry>
+    <title>The Spirit of Home: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/spirit_of_home/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-02-spirit_of_home-66</id>
+    <updated>2026-10-02T00:00:00Z</updated>
+    <summary>0.1.0: new NeoForge 1.21.1 mod with a craftable Cornerstone building block.</summary>
+  </entry>
+  <entry>
     <title>FFEntityPainting: Configuration</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitypainting/configuration.html"/>
     <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-02-ffentitypainting-65</id>

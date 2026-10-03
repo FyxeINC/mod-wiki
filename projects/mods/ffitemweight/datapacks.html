@@ -137,7 +137,7 @@ containerContentModifiers = [&quot;.*:.*_shulker_box=0.5&quot;]
 </tr>
 <tr>
 <td><code>shake</code></td>
-<td>HUD icon amplitude in pixels (<code>0</code> = none)</td>
+<td>Target HUD icon amplitude in pixels. Interpolates from the previous band value (initially zero) to this value across the band's capacity-adjusted weight range. The final band uses the preceding range width instead of its sentinel capacity, then caps at its target. Set all bands to <code>0</code> for no shake</td>
 </tr>
 <tr>
 <td><code>effects</code></td>

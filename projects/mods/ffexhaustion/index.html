@@ -32,7 +32,7 @@
 <li><strong>Attribute modifiers</strong> (optional, off by default): fixed threshold modifiers and continuous scaling modifiers driven by exhaustion.</li>
 <li><strong>Player level</strong> (optional): vanilla XP level can reduce gain and recovery delay.</li>
 <li><strong>Death:</strong> <code>copyOnDeath</code> (default off) keeps exhaustion through death; otherwise it resets.</li>
-<li><strong>HUD:</strong> six icon stages, optional shake, configurable anchors and text. Continuous HUD updates are batched for up to five ticks.</li>
+<li><strong>HUD:</strong> six icon stages, optional shake that ramps from zero at the configured threshold to full intensity at 100% exhaustion, configurable anchors and text. A shake threshold of 1 or higher disables it; text stays still. Continuous HUD updates are batched for up to five ticks.</li>
 </ul>
 <h2 id="configuration">Configuration</h2>
 <p>Server settings control gains, recovery and penalties. By default, recovery starts after 40 ticks and removes 0.005 exhaustion per tick, with extra recovery while standing still or sneaking on the ground. Floating gain, threshold potion effects and attribute effects are off by default. Client settings control the HUD position, text and shake. Invalid numeric config entries are ignored, and changing attribute entries removes their previous modifiers.</p>

@@ -64,6 +64,8 @@ public static void onSpoiled(FoodSpoiledEvent event) {
 <h2 id="container-context">Container context</h2>
 <p><code>SpoilageHelper.identifyOpenContainer(player)</code> resolves the backing inventory of the active menu. <code>OpenContainer.pos()</code> may be null for generic or compound inventories without a known world position. These use neutral ambient conditions and pause thermal advancement. Player inventory slots keep player context.</p>
 <p><code>SpoilageComponent.storageRate()</code> stores the rate for elapsed time after <code>lastGameTime()</code>. <code>SpoilageHelper.advance</code> applies that saved rate before recording a new one, so moving food between inventories does not retroactively change its prior aging. The server synchronizes menu rate, ambient conditions, label, and temperature for tooltip estimates. Networking payloads and the client cache setter are internal details.</p>
+<h2 id="temperature-resolution">Temperature resolution</h2>
+<p>In 0.9.3, <code>SpoilageHelper.resolvePlayerInventoryTemperature(player)</code> and <code>resolveContainerTemperature(level, pos)</code> prefer available Cold Sweat temperatures, then Tough As Nails temperature categories, then biome temperature. TAN uses ambient proxies ICY=-0.5, COLD=0, NEUTRAL=0.3, WARM=1, HOT=2; these are not physical units or Cold Sweat BODY values. Disabled or unavailable TAN temperature returns to the fallback. The ambient rate, thermal tick and tooltip helpers share this resolution.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

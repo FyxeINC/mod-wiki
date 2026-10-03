@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datapacks — The Spirit of Home — Fyxe's Mod Wiki</title>
+<meta name="description" content="Expand spirit name pools and override Cornerstone recipes, drops and mining tags.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>The Spirit of Home</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"><img data-project-badge="version"><img data-project-badge="minecraft"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth ÃƒÂ¢Ã¢â‚¬Â —</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source ÃƒÂ¢Ã¢â‚¬Â —</a></div></div></div>
+<h2 id="datapacks">Datapacks</h2>
+<p>The mod adds reloadable spirit names, activity categories, attribute modifiers and welcome status effects alongside vanilla recipes, drops and mining tags. For 1.21.1, a datapack uses <code>pack_format: 48</code> in <code>pack.mcmeta</code>.</p>
+<h2 id="home-names">Spirit name pools</h2>
+<p>Each <code>data/&lt;namespace&gt;/home_names/&lt;id&gt;.json</code> contributes names and descriptors. Override <code>data/spirit_of_home/home_names/default.json</code> to replace the bundled pool, or use a new resource id in your namespace to expand it. The mod combines all valid loaded names and all valid loaded descriptors, then independently picks one of each with a space between them.</p>
+<pre><code class="language-json">{
+  "names": ["Anwen", "Bramble", "Juniper", "Wren"],
+  "descriptors": ["of the Hearth", "Under the Eaves", "Housemate", "by the Kettle"]
+}</code></pre>
+<p>Both arrays are required, nonempty, and contain nonblank printable strings up to 48 characters without controls or formatting codes. Each occurrence is a random choice; repeating an entry increases its weight. Identical resource ids follow normal datapack priority. A malformed file is logged and skipped. If no valid pools remain, new spirits use Anwen of the Hearth. The bundled pool includes all requested names/descriptors plus additional garden, hearth and household choices.</p>
+<p>Run <code>/reload</code> to apply changes. New spirits use the updated pools; existing generated or manually renamed spirits retain their names and colors. Colors are generated in code and cannot be configured with these files. Category activity gains and attribute benefits are datapack-defined; experience conversion, spawn protection and attunement use mod code and configuration.</p>
+<h2 id="home-categories">Home categories</h2>
+<p>Define each category in <code>data/&lt;namespace&gt;/home_categories/&lt;path&gt;.json</code>. Its resource id is namespace:path. One file is one category; there is no fixed category count. The bundled ids are spirit_of_home:rest, craft, board, shelter and vigil (all in the spirit_of_home namespace). Files sort by resource id in the screen; more than five categories use scroll pages. Values belong to the id, so renaming a definition retains its meter, while changing its id starts a new meter.</p>
+<pre><code class="language-json">{
+  "name": "Craft",
+  "color": 15316827,
+  "actions": [
+    { "type": "craft", "amount": 0.02 },
+    { "type": "place_block", "amount": 0.05, "target": "#minecraft:planks" }
+  ],
+  "enabled": true
+}</code></pre>
+<p><code>name</code> is required printable, nonblank text up to 100 characters. It may be a client translation key (the shipped definitions use spirit_of_home.category.rest, craft, board, shelter and vigil), or a literal name when no translation exists. Tooltips translate this name and derive basic activity hints from action types, omitting the category id and meter percentage; target filters still control actual gains. <code>color</code> is a required decimal RGB integer from 0 to 16777215. <code>actions</code> is a required array and may be empty. Each action requires <code>type</code> and <code>amount</code> (0 to 1); optional <code>target</code> is an exact resource id or #tag. An omitted target matches every subject of that action. Multiple matching actions add their gains before the player contribution multiplier. <code>enabled</code> defaults to true. Override a bundled file with enabled=false and actions=[] to remove that category. Higher-priority packs replace identical ids; additional ids add categories. Invalid files are logged and skipped. There is no hardcoded fallback list.</p>
+<div class="table-wrap"><table><thead><tr><th>Action type</th><th>When</th><th>Target registry</th></tr></thead><tbody>
+<tr><td>sleep</td><td>A sleeping player participates in a successful skip to morning.</td><td>No subject; omit target.</td></tr>
+<tr><td>craft</td><td>A player crafting event with a nonempty result; once per event, not per output item.</td><td>Crafted item.</td></tr>
+<tr><td>eat</td><td>Finishing use of an item with a FOOD component.</td><td>Consumed item.</td></tr>
+<tr><td>place_block</td><td>Noncanceled player block placement; once per placement event.</td><td>Placed block.</td></tr>
+<tr><td>kill_monster</td><td>Noncanceled death of an Enemy attributed to a player, including player projectiles.</td><td>Victim entity type.</td></tr>
+</tbody></table></div>
+<p>These action types are supplied by the mod; datapacks choose which types, target filters and gains feed each category. Run <code>/reload</code> to update definitions, commands and open screens. Existing values persist for active ids. Disabled or removed ids lose stored values without XP at the next decay update. Values never exceed 1; excess gains are lost. All loaded spheres covering the action location receive gains independently, after each action amount is scaled through actionGainEquation using the player's Minecraft XP level, then multiplied by 100% for attuned players or the configured visitor multiplier. Default scaling is amount * (1 + level / 30); category JSON amounts remain the base gains.</p>
+<p>Server configuration controls radius, decay and XP conversion. Decay uses elapsed world ticks and catches up after chunk reload; stopped-server time and skipped night/day time do not count. Defaults consume 0.01 per 1200 ticks while someone is home, twice that with nobody inside the sphere (awayDecayMultiplier=2). Unloaded catch-up uses the away rate; presence changes and unloads settle their previous rate first. Both rates use the same XP per consumed unit. They award 100 XP per full value consumed (0.2 = 20 XP). Fractional XP is retained. Category commands and configuration are documented on the <a href="index.html#configuration-and-commands">Overview</a>.</p>
+<h2 id="home-attributes">Home attributes</h2>
+<p>One <code>data/&lt;namespace&gt;/home_attributes/&lt;path&gt;.json</code> defines one transient player attribute modifier. Add new ids for additional modifiers, or override a shipped id to replace or disable it. Definitions reload with <code>/reload</code>; removed, disabled, retargeted and expired modifiers are removed on the next five-tick refresh. Unrelated modifiers are preserved. Invalid files are logged and skipped, with no hardcoded fallback. Unknown attributes or attributes absent from the player are skipped.</p>
+<pre><code class="language-json">{
+  "source": "home",
+  "attribute": "minecraft:generic.movement_speed",
+  "amount": "0.1 * (level + 1) * strength",
+  "operation": "add_multiplied_total",
+  "min_level": 0,
+  "max_level": 100,
+  "enabled": true
+}</code></pre>
+<p>Required: <code>source</code> (home, homesick or welcome), <code>attribute</code> (registered resource id, including modded attributes) and <code>amount</code> (a formula string). Optional: <code>operation</code> (add_value, add_multiplied_base or default add_multiplied_total); <code>min_level</code>/<code>max_level</code> (inclusive spirit level bounds, default 0/100); <code>enabled</code> (true); and <code>duration_ticks</code> (formula string, default "600", used only for welcome). Keep required fields when overriding with enabled=false. Bounds must be ordered and within 0–100.</p>
+<p>Formula variables: <code>level</code> is the active attuned stone's level, or 0 away from home; <code>strength</code> is 1 in the inner half of its spherical range and fades linearly to 0 at the boundary, or 0 away; <code>spiritless</code> is raw absence 0–1; <code>severity</code> is normalized homesickness 0–1; <code>player_level</code> is Minecraft XP level. Amounts are used exactly as written: include strength or severity yourself if desired. Formulas support +, -, *, /, %, ^, parentheses, abs, min, max, clamp, pow, sqrt, floor, ceil and round. Invalid syntax/unknown variables reject the file. Nonfinite or zero amounts apply nothing. Finite amounts clamp to +/-1000000, with multiplicative reductions additionally bounded at -0.95. Operations add a flat value, add a fraction of the base, or multiply the total by 1+amount.</p>
+<p>Home definitions apply only inside your attuned sphere; homesick definitions apply only while homesick. Welcome definitions begin once a homesick return grants either player or spirit XP. They snapshot the post-reward spirit/player levels, pre-reset spiritless/severity and strength=1. Duration and amount use that snapshot, so they can scale with absence and do not reset while standing at home. Durations cap at 1728000 ticks; nonpositive/nonfinite values disable the modifier. Attribute buffs continue away from home and through dimension travel, expire within the five-tick update resolution, and clear on death/logout/server stop. A new rewarded return refreshes them. Reload updates active welcome attributes against the original start and snapshot.</p>
+<div class="table-wrap"><table><thead><tr><th>Shipped id (spirit_of_home:)</th><th>Source</th><th>Attribute</th><th>Amount</th><th>Level / duration</th></tr></thead><tbody>
+<tr><td>home_speed</td><td>home</td><td>minecraft:generic.movement_speed</td><td>0.1 * (level + 1) * strength</td><td>0–100</td></tr>
+<tr><td>home_mining</td><td>home</td><td>minecraft:player.block_break_speed</td><td>0.2 * strength</td><td>1–100</td></tr>
+<tr><td>homesick_mining</td><td>homesick</td><td>minecraft:player.block_break_speed</td><td>-0.5 * severity</td><td>0–100</td></tr>
+<tr><td>homesick_attack</td><td>homesick</td><td>minecraft:generic.attack_speed</td><td>-0.3 * severity</td><td>0–100</td></tr>
+<tr><td>welcome_speed</td><td>welcome</td><td>minecraft:generic.movement_speed</td><td>0.1</td><td>600 ticks</td></tr>
+<tr><td>welcome_mining</td><td>welcome</td><td>minecraft:player.block_break_speed</td><td>0.2</td><td>600 ticks</td></tr>
+</tbody></table></div>
+<p>All shipped attributes use add_multiplied_total. Home and welcome +20% mining modifiers multiply to 1.2 × 1.2 = 1.44. To add a movement penalty, create a homesick definition with attribute minecraft:generic.movement_speed and amount "-0.2 * severity". To scale a welcome duration with absence, use duration_ticks "200 + 400 * spiritless". Operator spiritless edits do not grant buffs by themselves; returning home must award experience. Returns below threshold, or with both XP formulas producing zero, grant none.</p>
+<h2 id="welcome-effects">Welcome status effects</h2>
+<p><code>data/&lt;namespace&gt;/welcome_effects/&lt;path&gt;.json</code> grants one vanilla or modded status effect on the same experience-bearing welcome. These complement welcome attribute modifiers:</p>
+<pre><code class="language-json">{
+  "effect": "minecraft:regeneration",
+  "duration_ticks": "200",
+  "amplifier": "0",
+  "min_level": 0,
+  "max_level": 100,
+  "particles": false,
+  "icon": true,
+  "enabled": true
+}</code></pre>
+<p>Required: effect id and duration_ticks formula. Optional: amplifier formula ("0", meaning level I), min_level/max_level (0/100), particles/icon/enabled (true). Formulas use the same welcome snapshot and syntax as home_attributes. Finite durations of at least 1 tick truncate to integers and cap at 1728000; finite nonnegative amplifiers truncate and cap at 255. Other results skip the effect. Invalid files are logged/skipped; unknown effects are skipped. Definitions apply in resource-id order with vanilla effect merging, persistence, death and expiry rules. They are granted once, not refreshed every five ticks; reload affects future grants and does not remove an existing effect from another source.</p>
+<p>The default <code>spirit_of_home:regeneration</code> gives Regeneration I for 200 ticks (10 seconds), with no particles and a visible icon. Override its file with enabled=false to disable it; new ids add more effects. Removing attribute buffs does not disable these effects, or vice versa.</p>
+<h2 id="recipe">Crafting recipe</h2>
+<p>Override <code>data/spirit_of_home/recipe/cornerstone.json</code> to change the ingredients or result. The shipped recipe is:</p>
+<pre><code class="language-json">{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    " B ",
+    " L ",
+    "SSS"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "L": {
+      "item": "minecraft:stone_slab"
+    },
+    "S": {
+      "item": "minecraft:stone"
+    }
+  },
+  "result": {
+    "id": "spirit_of_home:cornerstone",
+    "count": 1
+  }
+}
+</code></pre>
+<p>The id is <code>spirit_of_home:cornerstone</code>. Minecraft 1.21.1 uses the singular <code>recipe</code> folder and <code>result.id</code>. The recipe book unlock is <code>data/spirit_of_home/advancement/recipes/building_blocks/cornerstone.json</code>; override it if you change the unlock ingredient.</p>
+<p>The Spirit Totem recipe is <code>data/spirit_of_home/recipe/spirit_totem.json</code>: pattern <code>["B", "W", "W"]</code>, B is minecraft:bone, W is the minecraft:logs item tag, and the result is one spirit_of_home:spirit_totem. Its recipe-book advancement is <code>data/spirit_of_home/advancement/recipes/building_blocks/spirit_totem.json</code>, unlocked by acquiring bone. Both can be overridden normally.</p>
+<h2 id="loot">Block drops</h2>
+<p>Override <code>data/spirit_of_home/loot_table/blocks/cornerstone.json</code> to change what the block drops. The shipped table is:</p>
+<pre><code class="language-json">{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bone"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:stone_slab"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:stone",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 3
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}
+</code></pre>
+<p>The shipped table returns one bone, one stone slab and three stones. No correct tool is required. Creative breaking follows vanilla no-drop behavior. Datapacks can override these ingredient drops.</p>
+<p>Spirit Totem self-drops are defined in <code>data/spirit_of_home/loot_table/blocks/spirit_totem.json</code>. Its axe tag is <code>data/minecraft/tags/block/mineable/axe.json</code>.</p>
+<h2 id="mining-tags">Mining tags</h2>
+<p>The Cornerstone is added to <code>minecraft:mineable/pickaxe</code> by <code>data/minecraft/tags/block/mineable/pickaxe.json</code>, with <code>replace: false</code>. The tag remains available for tool classification, but the mod bypasses mining-speed calculations and does not require a correct tool for drops. Tag changes cannot shorten its fixed mining duration. Attribute benefits use the home_attributes definitions; aura radius uses server configuration.</p>
+<h2 id="reload">Applying changes</h2>
+<p>Install the datapack in the world's datapacks folder and run <code>/reload</code>. Existing placed blocks keep their registry id. Resource-pack models and textures are separate from datapack recipes and drops.</p>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>
