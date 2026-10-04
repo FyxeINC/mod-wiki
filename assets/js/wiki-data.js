@@ -18,6 +18,12 @@ window.WIKI_DATA = {
     },
     "recentUpdates": [
       {
+        "date": "2026-10-03",
+        "project": "spirit_of_home",
+        "page": "index.html",
+        "change": "0.6.4: configurable severe-homesickness building restrictions, adventure block exceptions for travel supplies and modded tags, and a red homesick HUD."
+      },
+      {
         "date": "2026-10-02",
         "project": "ffmodsubfolders",
         "page": "index.html",
@@ -497,7 +503,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFCropEvaporation features, requirements, and source version.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-04",
           "searchExcerpt": "Crop growth can consume nearby water and require water access."
         },
         {
@@ -558,7 +564,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFEntityPainting features, requirements, and source version.",
-          "updated": "2026-10-02",
+          "updated": "2026-10-04",
           "searchExcerpt": "Paint living entities with layers, blend modes and brush opacity, local layers and team layers, modded and GeckoLib mobs, and 3D Skin Layers on players."
         },
         {
@@ -631,7 +637,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFEntityDirt features, requirements, and source version.",
-          "updated": "2026-10-02",
+          "updated": "2026-10-04",
           "searchExcerpt": "Dirt from walking, falls and mining, honey and slime smears, sculk stains, powder snow and lava char, soot from fire and explosions, snow, weapon wounds from projectiles, melee and mobs, washed off by water, rain or a cauldron, stored as FFEntityPainting paint on locked layers."
         },
         {
@@ -707,7 +713,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFExpandedBiomeTint features, requirements, and source version.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-04",
           "searchExcerpt": "Datapack rules and a mod API assign grass, foliage, or water tint to blocks and breaking particles."
         },
         {
@@ -780,7 +786,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFBandage features, requirements, and source version.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-04",
           "searchExcerpt": "A configurable healing bandage item."
         }
       ],
@@ -837,7 +843,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFExhaustion features, requirements, and source version.",
-          "updated": "2026-10-02",
+          "updated": "2026-10-04",
           "searchExcerpt": "Tracks player fatigue from actions with configurable recovery and effects."
         },
         {
@@ -898,7 +904,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFFoodSpoilageAndPreservation features, requirements, and source version.",
-          "updated": "2026-10-02",
+          "updated": "2026-10-04",
           "searchExcerpt": "Food spoilage stages, preservation methods, storage rates, stacking, and requirements."
         },
         {
@@ -968,7 +974,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFInjury features, requirements, and source version.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-04",
           "searchExcerpt": "Adds tiered injuries, adrenaline, treatment, and healing."
         },
         {
@@ -1037,7 +1043,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemCreationTracker features, requirements, and source version.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-04",
           "searchExcerpt": "Records who created an item, when, where, and how."
         },
         {
@@ -1096,7 +1102,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemRarityModifiers features, requirements, and source version.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-04",
           "searchExcerpt": "Adds configurable rarity rolls and small modifiers to gear."
         },
         {
@@ -1167,7 +1173,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemWeight features, requirements, and source version.",
-          "updated": "2026-10-02",
+          "updated": "2026-10-04",
           "searchExcerpt": "Gives items weight and players configurable encumbrance bands."
         },
         {
@@ -1236,7 +1242,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFMobSunBurnAngle features, requirements, and source version.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-04",
           "searchExcerpt": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs."
         }
       ],
@@ -1279,7 +1285,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFModFavorites features, requirements, and source version.",
-          "updated": "2026-09-23",
+          "updated": "2026-10-04",
           "searchExcerpt": "A planned mod project; its current source still uses the example mod identity."
         }
       ]
@@ -1317,7 +1323,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFModsSubfolders features, requirements, and source version.",
-          "updated": "2026-10-02",
+          "updated": "2026-10-04",
           "searchExcerpt": "Loads mods from nested folders in the mods directory."
         }
       ],
@@ -1385,7 +1391,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFNutrition features, requirements, and source version.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-04",
           "searchExcerpt": "Rewards diet variety with nutrition categories that affect maximum health."
         },
         {
@@ -1450,7 +1456,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFTorchBurnout features, requirements, and source version.",
-          "updated": "2026-09-23",
+          "updated": "2026-10-04",
           "searchExcerpt": "Makes placed torches burn out, react to rain, and be relit."
         }
       ]
@@ -1496,7 +1502,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFUtilities features, requirements, and source version.",
-          "updated": "2026-10-02",
+          "updated": "2026-10-04",
           "searchExcerpt": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge."
         },
         {
@@ -1562,7 +1568,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFWaterFalls features, requirements, and source version.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-04",
           "searchExcerpt": "Makes liquid source blocks fall under gravity."
         }
       ],
@@ -1611,7 +1617,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFRandomQuests features, requirements, and source version.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-04",
           "searchExcerpt": "Adds periodic personal and shared quests, rewards, and a Quest Board."
         },
         {
@@ -1795,7 +1801,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Named home spirits with activity meters, homesickness, warm returns and growing benefits.",
       "tagline": "Set down roots and put a spring in your step.",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
       "icon": "",
@@ -1820,17 +1826,17 @@ window.WIKI_DATA = {
           "file": "index.html",
           "title": "Overview",
           "index": "01",
-          "description": "Spirit customization, activity categories, homesickness, welcome rewards, auras and commands.",
-          "updated": "2026-10-02",
+          "description": "Spirit customization, activity categories, homesickness building restrictions, welcome rewards, auras and commands.",
+          "updated": "2026-10-04",
           "searchExcerpt": "Unlock name and color editing, contribute through player XP levels, manage spiritless and return home for rewards."
         },
         {
           "file": "datapacks.html",
           "title": "Datapacks",
           "index": "02",
-          "description": "Define home categories, action gains and filters; expand name pools and replace recipes or drops.",
-          "updated": "2026-10-02",
-          "searchExcerpt": "Reloadable home categories with colors and item, block or entity filters, name pools, recipes and drops."
+          "description": "Define level-gated buffs, adventure block exceptions, healing, exhaustion savings, welcome effects, activity categories and name pools.",
+          "updated": "2026-10-03",
+          "searchExcerpt": "Level-scaled attributes, benefit_level formulas, home healing, hunger savings, welcome effects and activity filters."
         }
       ],
       "targets": [

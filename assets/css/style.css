@@ -712,6 +712,16 @@ html[data-theme="dark"] .btn--modrinth:hover { background: #104224; color: #1bd9
 .btn--github { background: var(--ink); color: var(--paper); }
 .btn--github:hover { background: var(--ink-soft); color: var(--paper); }
 
+/* Unpublished platform buttons remain visible without a navigation target. */
+html .btn[aria-disabled="true"],
+html .btn[aria-disabled="true"]:hover {
+  background: var(--paper-card);
+  color: var(--ink-faint);
+  border-color: var(--line-strong);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
 .text-link { font-size: 0.9rem; font-weight: 600; text-decoration: none; }
 .text-link:hover { text-decoration: underline; }
 .link-button { background: none; border: 0; padding: 0; font: inherit; font-size: 0.85rem; font-weight: 600; color: var(--accent-ink); cursor: pointer; text-decoration: underline; text-underline-offset: 0.18em; }

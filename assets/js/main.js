@@ -391,6 +391,22 @@
       if (key === "modrinth" && project.modrinthSlug) href = "https://modrinth.com/" + (project.type || "mod") + "/" + project.modrinthSlug;
       if (key === "modrinth-versions" && project.modrinthSlug) href = "https://modrinth.com/" + (project.type || "mod") + "/" + project.modrinthSlug + "/versions";
       setHref(el, href);
+      if ((key === "modrinth" || key === "curseforge") && el.classList.contains("btn")) {
+        const label = key === "modrinth" ? "Modrinth" : "CurseForge";
+        el.hidden = false;
+        el.textContent = label + (href ? " \u2197" : "");
+        if (href) {
+          el.removeAttribute("aria-disabled");
+          el.removeAttribute("role");
+          el.removeAttribute("tabindex");
+          el.removeAttribute("title");
+        } else {
+          el.setAttribute("aria-disabled", "true");
+          el.setAttribute("role", "link");
+          el.setAttribute("tabindex", "-1");
+          el.setAttribute("title", "Not available on " + label);
+        }
+      }
     });
     document.querySelectorAll("[data-project-tag]").forEach(function (el) {
       const tag = (project.tags || []).find(function (item) { return item.label === el.getAttribute("data-project-tag"); });
@@ -414,16 +430,14 @@
       const type = el.getAttribute("data-project-badge");
       const slug = project.modrinthSlug;
       const urls = slug ? {
-        downloads: "https://img.shields.io/modrinth/dt/" + slug + "?logo=modrinth&label=downloads&color=1bd96a",
-        version: "https://img.shields.io/modrinth/v/" + slug + "?logo=modrinth&label=version&color=1bd96a",
-        minecraft: "https://img.shields.io/modrinth/game-versions/" + slug + "?logo=modrinth&label=minecraft&color=1bd96a"
+        downloads: "https://img.shields.io/modrinth/dt/" + slug + "?logo=modrinth&label=downloads&color=1bd96a"
       } : {};
       if (!urls[type]) { el.remove(); return; }
       el.setAttribute("src", urls[type]);
       el.setAttribute("alt", "Modrinth " + type + " badge for " + project.name);
     });
     // CurseForge download count (shields.io needs the numeric project id, not the slug).
-    if (project.curseforgeId) {
+    if (project.curseforgeId && project.links && project.links.curseforge) {
       document.querySelectorAll(".badge-row").forEach(function (row) {
         const img = document.createElement("img");
         img.setAttribute("src", "https://img.shields.io/curseforge/dt/" + project.curseforgeId + "?logo=curseforge&label=downloads&color=f16436");
@@ -431,7 +445,7 @@
         row.appendChild(img);
       });
     }
-    // Drop link and badge rows that ended up empty (no Modrinth slug, no source link).
+    // Drop link and badge rows that ended up empty.
     document.querySelectorAll(".mod-meta__actions, .badge-row").forEach(function (row) {
       row.hidden = !Array.from(row.children).some(function (child) { return !child.hidden; });
     });

@@ -190,13 +190,13 @@ The published site needs only the static files; both tools are maintainer steps.
 
 The **Mods** section covers every Minecraft mod project in the sibling workspace. Each has an Overview page with the full details that the mod READMEs (the Modrinth and CurseForge descriptions) leave out: configuration options and defaults, commands, compatibility and loader notes. Mods with long option lists (FFEntityDirt, FFEntityPainting, FFRandomQuests) keep them on a separate Configuration page instead, with a short pointer on the Overview. Mods with datapack support have a Datapacks page (formats, paths and examples), and mods with a public integration API have a Modding API page. Versions and targets come from each mod's source through `tools/build_site.py`, so they can be newer than a published release.
 
-Only projects with a configured Modrinth slug show a Modrinth button or badge. Leave `modrinthSlug` empty for projects still awaiting publication. `status` describes project development, not publication.
+Every mod Overview includes Modrinth and CurseForge buttons. A configured `links.modrinth` URL or `modrinthSlug` enables Modrinth; `links.curseforge` enables CurseForge. Leave publication URLs and `modrinthSlug` empty for projects still awaiting publication or approval: their platform buttons stay visible and disabled. Headers show only download-count badges: Modrinth uses `modrinthSlug`, and CurseForge needs both `curseforgeId` and its publication URL. `status` describes project development, not publication.
 
 When a mod's API changes, update its API page and `assets/js/wiki-data.js` page metadata in the same change. When its datapack support changes, update its `datapacks.html` the same way (create one, with a `Datapacks` entry after the Overview, or after the Configuration page when there is one, in `pages`, when a mod gains datapack support). Options and commands go on the mod's Configuration page when it has one, otherwise on the Overview. Keep examples aligned with the current Java source and test local links under a GitHub Pages project path. Additional public projects can still be imported with the importer.
 
 ### Where to edit things
 
-`assets/js/wiki-data.js` is the single source of truth for site identity, profile links, project types, project names, Modrinth slugs, status, versions, compatibility tags, external links, and project pages. Empty optional links are hidden automatically.
+`assets/js/wiki-data.js` is the single source of truth for site identity, profile links, project types, project names, Modrinth slugs, status, versions, compatibility tags, external links, and project pages. Unavailable platform buttons stay visible and disabled; other empty optional links are hidden automatically.
 
 Project types are `mod`, `modpack`, `resourcepack`, and `datapack`. The type controls which section and folder the project belongs to.
 

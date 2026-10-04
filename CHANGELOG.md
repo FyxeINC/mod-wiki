@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-04 (platform buttons and download badges)
+
+- Every mod Overview now includes correctly labelled Modrinth and CurseForge buttons; unavailable platforms remain visible with disabled buttons.
+- Fixed corrupted external-link arrows in project buttons. Headers show only Modrinth and CurseForge download counts, without Modrinth mod-version or Minecraft-version badges.
+
 ## 2026-10-02 (About page)
 
 - The About page links to Fyxe's CurseForge profile and has a Buy Me a Coffee button under Support.

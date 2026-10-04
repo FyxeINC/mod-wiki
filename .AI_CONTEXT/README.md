@@ -6,7 +6,7 @@ Static HTML/CSS/JavaScript documentation for the workspace's mods and other proj
 
 - [wiki-data.js](../assets/js/wiki-data.js) owns project/page metadata and navigation. Edit project content under [projects](../projects/); common behavior/style lives in [assets](../assets/).
 - [build_site.py](../tools/build_site.py) derives versions/targets from sibling build configuration and regenerates headings, search, feed and sitemap. Do not hand-edit generated output.
-- Preserve existing heading IDs and relative URLs; pages must work under a GitHub Pages project subpath. Leave unavailable publication links empty.
+- Preserve existing heading IDs and relative URLs; pages must work under a GitHub Pages project subpath. Leave unavailable publication links empty; platform buttons stay visible and disabled. Every mod Overview includes both platform buttons. Project headers show download-count badges only.
 
 ## Choose by task
 

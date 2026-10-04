@@ -4,8 +4,15 @@
   <link href="https://fyxeinc.github.io/mod-wiki/updates.html"/>
   <link rel="self" href="https://fyxeinc.github.io/mod-wiki/feed.xml"/>
   <id>https://fyxeinc.github.io/mod-wiki/</id>
-  <updated>2026-10-02T00:00:00Z</updated>
+  <updated>2026-10-03T00:00:00Z</updated>
   <author><name>Fyxe</name></author>
+  <entry>
+    <title>The Spirit of Home: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/spirit_of_home/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-03-spirit_of_home-70</id>
+    <updated>2026-10-03T00:00:00Z</updated>
+    <summary>0.6.4: configurable severe-homesickness building restrictions, adventure block exceptions for travel supplies and modded tags, and a red homesick HUD.</summary>
+  </entry>
   <entry>
     <title>FFModsSubfolders: Overview</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffmodsubfolders/index.html"/>
