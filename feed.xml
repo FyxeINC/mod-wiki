@@ -4,8 +4,29 @@
   <link href="https://fyxeinc.github.io/mod-wiki/updates.html"/>
   <link rel="self" href="https://fyxeinc.github.io/mod-wiki/feed.xml"/>
   <id>https://fyxeinc.github.io/mod-wiki/</id>
-  <updated>2026-10-03T00:00:00Z</updated>
+  <updated>2026-10-05T00:00:00Z</updated>
   <author><name>Fyxe</name></author>
+  <entry>
+    <title>FFDeathRules: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffdeathrules/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-05-ffdeathrules-73</id>
+    <updated>2026-10-05T00:00:00Z</updated>
+    <summary>0.2.1: fixed adding keep/discard item filters in generated config screens.</summary>
+  </entry>
+  <entry>
+    <title>FFDeathRules: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffdeathrules/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-05-ffdeathrules-72</id>
+    <updated>2026-10-05T00:00:00Z</updated>
+    <summary>0.1.0: development scaffold with common mod/config classes and all eight Fabric, NeoForge and Forge targets. No gameplay changes yet.</summary>
+  </entry>
+  <entry>
+    <title>The Spirit of Home: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/spirit_of_home/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-04-spirit_of_home-71</id>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary>0.6.4: independent HUD scale, opacity, styles, colors, panels, content toggles and paused homesickness fading.</summary>
+  </entry>
   <entry>
     <title>The Spirit of Home: Overview</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/spirit_of_home/index.html"/>

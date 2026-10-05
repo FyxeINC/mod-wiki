@@ -92,8 +92,39 @@
 <tr><td><code>homeHud.offsetX</code></td><td>0</td><td>-10000..10000</td></tr>
 <tr><td><code>homeHud.offsetY</code></td><td>8</td><td>-10000..10000</td></tr>
 </tbody></table></div>
+<h3 id="hud-appearance">Appearance settings for both HUDs</h3>
+<p>Set these keys separately in the <code>homeHud</code> and <code>homesickHud</code> groups. Edit your client TOML or use the mod's configuration screen. Settings are read each frame when applied; each player controls their own appearance. Colors accept <code>#RRGGBB</code> or <code>#AARRGGBB</code>, with an optional leading #. Color alpha multiplies overall opacity; panels also multiply backgroundOpacity, and paused homesickness also multiplies pausedOpacity. Defaults preserve the original display.</p>
+<div class="table-wrap"><table><thead><tr><th>Option</th><th>Default</th><th>Values</th><th>Effect</th></tr></thead><tbody>
+<tr><td><code>scale</code></td><td>1.0</td><td>0.5–4.0</td><td>Size multiplier; anchor placement uses the scaled content size.</td></tr>
+<tr><td><code>opacity</code></td><td>1.0</td><td>0–1</td><td>Overall text, icon and panel opacity; 0 hides the display.</td></tr>
+<tr><td><code>textStyle</code></td><td>DROP_SHADOW / PLAIN</td><td>NONE, PLAIN, DROP_SHADOW, OUTLINE, BOLD, BOLD_OUTLINE, BOLD_DROP_SHADOW, OUTLINE_SHADOW</td><td>First default is home, second is homesick. NONE renders plain text.</td></tr>
+<tr><td><code>outlineColor</code></td><td>#000000</td><td>Hex color</td><td>Color used by outline styles.</td></tr>
+<tr><td><code>backgroundEnabled</code></td><td>true / false</td><td>Boolean</td><td>Home has a panel by default; homesick does not.</td></tr>
+<tr><td><code>backgroundColor</code></td><td>#202B28</td><td>Hex color</td><td>Panel color.</td></tr>
+<tr><td><code>backgroundOpacity</code></td><td>0.6274509803921569</td><td>0–1</td><td>Panel alpha multiplier (160/255 by default).</td></tr>
+<tr><td><code>paddingX</code></td><td>4</td><td>0–32</td><td>Horizontal panel padding before HUD scaling.</td></tr>
+<tr><td><code>paddingY</code></td><td>3</td><td>0–32</td><td>Vertical panel padding before HUD scaling.</td></tr>
+</tbody></table></div>
+<p>Offsets remain GUI pixels regardless of HUD scale. Padding scales with the HUD and extends beyond the anchored content bounds. Text styles may add shadow/outline pixels outside those bounds. Hide both home fields or all three homesick elements to hide the entire corresponding panel. Zero opacity also hides it; nearly transparent text is omitted to avoid vanilla's opaque-alpha fallback.</p>
+<h3 id="home-hud-content">Home display content</h3>
+<div class="table-wrap"><table><thead><tr><th>Option</th><th>Default</th><th>Values</th><th>Effect</th></tr></thead><tbody>
+<tr><td><code>homeHud.showName</code></td><td>true</td><td>Boolean</td><td>Show the spirit name.</td></tr>
+<tr><td><code>homeHud.showLevel</code></td><td>true</td><td>Boolean</td><td>Show the Cornerstone level.</td></tr>
+<tr><td><code>homeHud.useSpiritColor</code></td><td>true</td><td>Boolean</td><td>Use the spirit color; false selects textColor.</td></tr>
+<tr><td><code>homeHud.textColor</code></td><td>#FFFFFF</td><td>Hex color</td><td>Custom text color when useSpiritColor is false.</td></tr>
+</tbody></table></div>
 <h2 id="homesick-hud">Homesick HUD</h2>
-<p>While homesick, a small house icon and “Homesick: N%” show your raw spiritless value (0–1 converted to a rounded percent). It defaults to top center with an 8-pixel downward offset. The icon and text change from amber to red at <code>homesickBuildingThreshold</code>, even when the breaking/placement restrictions are disabled. They use 50% opacity while a loaded Spirit Totem or another Cornerstone pauses buildup; penalties continue. F1 hides it. The separate <code>homesickHud</code> config group has <code>enabled=true</code>, <code>horizontal=MIDDLE</code>, <code>vertical=TOP</code>, <code>offsetX=0</code> and <code>offsetY=8</code>, with the same anchor choices and offset ranges as homeHud. Disabling the home HUD does not disable this one.</p>
+<p>While homesick, a small house icon and “Homesick: N%” show your raw spiritless value (0–1 converted to a rounded percent). It defaults to top center with an 8-pixel downward offset. The icon and text change from amber to red at <code>homesickBuildingThreshold</code>, even when the breaking/placement restrictions are disabled. They use 50% opacity while a loaded Spirit Totem or another Cornerstone pauses buildup; penalties continue. F1 hides it. The separate <code>homesickHud</code> config group has <code>enabled=true</code>, <code>horizontal=MIDDLE</code>, <code>vertical=TOP</code>, <code>offsetX=0</code> and <code>offsetY=8</code>, with the same anchor choices and offset ranges as homeHud. Disabling the home HUD does not disable this one. The shared appearance controls above also apply here, with these extra options:</p>
+<div class="table-wrap"><table><thead><tr><th>Option</th><th>Default</th><th>Values</th><th>Effect</th></tr></thead><tbody>
+<tr><td><code>homesickHud.showIcon</code></td><td>true</td><td>Boolean</td><td>Show the house icon.</td></tr>
+<tr><td><code>homesickHud.showLabel</code></td><td>true</td><td>Boolean</td><td>Show the Homesick label.</td></tr>
+<tr><td><code>homesickHud.showPercentage</code></td><td>true</td><td>Boolean</td><td>Show raw spiritless as a rounded percentage.</td></tr>
+<tr><td><code>homesickHud.textColor</code></td><td>#E7B66A</td><td>Hex color</td><td>Normal text and icon color.</td></tr>
+<tr><td><code>homesickHud.severeColor</code></td><td>#EF5350</td><td>Hex color</td><td>Text and icon color at the server building threshold.</td></tr>
+<tr><td><code>homesickHud.useSevereColor</code></td><td>true</td><td>Boolean</td><td>False keeps textColor at all severities; gameplay restrictions are unchanged.</td></tr>
+<tr><td><code>homesickHud.pausedOpacity</code></td><td>0.5</td><td>0–1</td><td>Additional opacity multiplier while buildup is paused; 1 removes fading and 0 hides the paused HUD.</td></tr>
+</tbody></table></div>
+
 <h2 id="datapacks">Datapacks</h2>
 <p>Customize home/homesick attribute formulas, healing, exhaustion savings and welcome buffs, replace or extend spirit name/descriptor pools and activity categories, and override crafting recipes, ingredient drops and mining tags. See <a href="datapacks.html">Datapacks</a> for paths and examples.</p>
 <h2 id="compatibility">Compatibility</h2>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overview â€” FFDeathRules â€” Fyxe's Mod Wiki</title>
+<meta name="description" content="A development scaffold for future configurable death rules.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFDeathRules</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth &#8599;</a><a class="btn btn--curseforge" data-project-link="curseforge" target="_blank" rel="noopener">CurseForge &#8599;</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source &#8599;</a></div></div></div>
+<h2 id="api-contract">API contract</h2>
+<p>Use <code>com.fyxe.ffdeathrules.api.DeathRulesApi</code>, <code>RulePatch</code> and immutable <code>DeathRules</code>. <code>API_VERSION</code> is <code>"1"</code>. Partial patches use the same keys/value syntax as operator commands. Access persistent state and resolve rules on the server thread. Register providers during initialization, then close their returned AutoCloseable handles when your integration unloads. Callbacks must not mutate provider registration during resolution.</p>
+<h2 id="live-team-provider">Live team provider</h2>
+<p>A team mod can return a patch based on its own membership system. Returning null/empty inherits existing rules. Providers apply after permission and scoreboard-team profiles, ordered by ascending priority then ID; explicit player overrides apply last. Exceptions are logged and that provider is skipped. Validate your team's combinations so XP drop plus keep stays at most 100.</p>
+<pre><code class="language-java">AutoCloseable registration = DeathRulesApi.registerProvider(
+    "myteams:death_rules", 100, player -&gt; {
+        // Replace this condition with your team's membership lookup.
+        if (player.getTeam() == null || !player.getTeam().getName().equals("Builders")) {
+            return RulePatch.empty();
+        }
+        return new RulePatch(Map.of(
+            "inventory", "HOTBAR",
+            "keepArmor", "true",
+            "xpDropPercent", "25",
+            "xpKeepPercent", "-1",
+            "messageAudience", "TEAM"));
+    });</code></pre>
+<h2 id="persistent-overrides">Persistent overrides</h2>
+<pre><code class="language-java">// These calls replace the partial patch and save immediately.
+DeathRulesApi.setPlayerRules(server, playerUuid,
+    new RulePatch(Map.of("inventory", "ALL", "xpDropPercent", "0")));
+DeathRulesApi.setTeamRules(server, "Builders",
+    RulePatch.of("keepArmor", "true"));
+RulePatch current = DeathRulesApi.playerRules(server, playerUuid);
+DeathRulesApi.setPlayerRules(server, playerUuid,
+    current.with("messageAudience", "SELF"));
+// Empty removes the player override so lower-priority rules apply.
+DeathRulesApi.setPlayerRules(server, playerUuid, RulePatch.empty());
+DeathRules effective = DeathRulesApi.resolve(serverPlayer);</code></pre>
+<p>Team profiles keyed by vanilla scoreboard team names follow live membership. A separate team mod should use a provider or maintain player UUID overrides itself. Providers/resolvers are runtime registrations and must be registered each startup; persisted setter changes survive restarts. Persistence failures throw and roll back the change.</p>
+<h2 id="permission-bridge">Permission bridge</h2>
+<pre><code class="language-java">// Replace permissionsService.hasPermission with your permission system.
+AutoCloseable resolver = DeathRulesApi.registerPermissionResolver(
+    "mypermissions:death_rules",
+    (player, node) -&gt; permissionsService.hasPermission(player.getUUID(), node));</code></pre>
+<p>Create permission profiles through OP commands, or the world rule file. A positive resolver, exact built-in grant or matching op.0–op.4 threshold grants the profile. False from a resolver does not revoke a positive grant from another source. No permission-mod dependency is bundled or automatically detected.</p>
+<h2 id="death-lifecycle-and-compatibility">Death lifecycle and compatibility</h2>
+<p>Rules snapshot once at death, after loader death-cancellation hooks. Item selection runs in vanilla Player.dropEquipment; restoration runs after ServerPlayer.restoreFrom. Ordinary dropped items still use loader capture/drop callbacks. Custom XP amounts and bottles replace vanilla XP emission; consumed XP flags are honored. The public API configures vanilla inventory only, not third-party accessory slots or grave contents. Avoid replacing the same death drops independently; test integrations in game.</p>
+<p>Build against the appropriate per-target artifact <code>com.fyxe.ffdeathrules:ffdeathrules-&lt;minecraft&gt;-&lt;loader&gt;:0.2.0</code> after publication. Until then, use the local Maven publication from this project. API examples require imports for <code>java.util.Map</code> and the three FFDeathRules API classes.</p>
+
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

@@ -22,102 +22,31 @@
 <ul>
 <li>When a crop successfully grows, there is a chance that a nearby water block is replaced with a block picked from a weighted table.</li>
 <li>Optionally (on by default), crops refuse to grow at all when no suitable water is found within range of their farmland.</li>
+<li>Set <code>trees.disable = false</code> to enable tree water requirements and evaporation. Trees use independent settings and search around the soil beneath the sapling; farmland is not required. Natural growth and bone meal are covered. Water evaporates only after successful tree formation, not stage advancement or failed attempts. Vanilla-style saplings are covered on every loader; fungi, mushrooms and azaleas are unaffected.</li>
 <li>Splash particles show when water is replaced.</li>
 <li>Farmland and water are found through tags, so other mods and datapacks can opt in. See the <a href="datapacks.html">Datapacks</a> page.</li>
 <li>Crop coverage: on NeoForge and Forge, any crop that fires the loader's crop-grow events. On Fabric, vanilla-style crops and stems (wheat, carrots, potatoes, beetroots, torchflowers, melons, pumpkins, and modded crops built on them).</li>
 </ul>
 <h2 id="default-behaviour">Default behaviour</h2>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>Setting</th>
-<th>Default</th>
-<th>Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Prevent dry growth</td>
-<td>On</td>
-<td>Crops will not grow if no water is found nearby</td>
-</tr>
-<tr>
-<td>Require source for growth</td>
-<td>On</td>
-<td>Only full source water counts for the growth check</td>
-</tr>
-<tr>
-<td>Replace mode</td>
-<td>SOURCE</td>
-<td>SOURCE = sources only, FLOWING = flowing only, BOTH = any water</td>
-</tr>
-<tr>
-<td>Evaporate chance</td>
-<td>15%</td>
-<td>Probability that a successful growth removes a water block</td>
-</tr>
-<tr>
-<td>Search radius</td>
-<td>6</td>
-<td>Horizontal blocks searched around the farmland under the crop</td>
-</tr>
-<tr>
-<td>Search Y min / max</td>
-<td>0 / 1</td>
-<td>Relative Y range (matches vanilla farmland hydration by default)</td>
-</tr>
-<tr>
-<td>Replacement table</td>
-<td>Coarse dirt (5), Rooted dirt (5), Gravel (3), Moss block (1)</td>
-<td>Weighted random block used as the replacement</td>
-</tr>
-</tbody>
-</table></div>
-<h3 id="biome-temperature-scaling">Biome temperature scaling</h3>
-<p>When enabled (default), the base evaporation chance is multiplied by a value based on biome temperature:</p>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>Region</th>
-<th>Approx. temp</th>
-<th>Default multiplier</th>
-<th>Effective chance (base 15%)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Snowy / frozen</td>
-<td>0.0 or below</td>
-<td>0.4x</td>
-<td>about 6%</td>
-</tr>
-<tr>
-<td>Plains / forests</td>
-<td>about 0.7 to 0.8</td>
-<td>about 0.9x</td>
-<td>about 13 to 14%</td>
-</tr>
-<tr>
-<td>Desert / badlands</td>
-<td>2.0 or above</td>
-<td>1.75x</td>
-<td>about 26% (capped at 100%)</td>
-</tr>
-</tbody>
-</table></div>
-<p>Temperatures between the cold and hot anchors are linearly interpolated. All values are configurable.</p>
+<p>The common config has separate <code>[crops]</code> and <code>[trees]</code> groups. Each starts with its master <code>disable</code> switch, which disables both water requirements and evaporation for that group. Crops are enabled by default; trees are disabled. All other parameter defaults match.</p>
+<div class="table-wrap"><table><thead><tr><th>Key in each group</th><th>Default</th><th>Effect</th></tr></thead><tbody>
+<tr><td><code>disable</code></td><td>Crops: false; trees: true</td><td>Master disable switch, first inside each group</td></tr>
+<tr><td><code>preventDryGrowth</code></td><td>true</td><td>Block growth without suitable nearby water</td></tr>
+<tr><td><code>requireSourceForGrowth</code></td><td>false</td><td>When true, only source water satisfies this group's growth check</td></tr>
+<tr><td><code>evaporateChance</code></td><td>0.15</td><td>Base chance to replace water after successful growth</td></tr>
+<tr><td><code>replaceMode</code></td><td>BOTH</td><td>SOURCE, FLOWING or BOTH water states can be replaced</td></tr>
+<tr><td><code>replaceTable</code></td><td>Coarse dirt 5, rooted dirt 5, gravel 3, moss 1</td><td>Independent weighted replacement blocks</td></tr>
+<tr><td><code>searchRadius</code></td><td>6</td><td>Horizontal search radius from the farmland or sapling soil</td></tr>
+<tr><td><code>searchYMin</code> / <code>searchYMax</code></td><td>0 / 1</td><td>Relative vertical search range from the farmland or soil</td></tr>
+</tbody></table></div>
 <h2 id="configuration">Configuration</h2>
-<p>All options live in the <strong>common</strong> config, shared between client and server: <code>config/ffcropevaporation-common.toml</code>, created on first run. You can also use the in-game config screen (the Mods list on NeoForge 1.21.1 and newer, or Mod Menu on Fabric 1.21.1 and newer). 1.20.1 and 1.20.6 have no in-game screen.</p>
+<p>Settings live in <code>config/ffcropevaporation-common.toml</code>. Crop and tree values can be changed independently. Keep <code>trees.disable = true</code> to turn off all tree features. Setting <code>preventDryGrowth = false</code> in an enabled group removes its water requirement while keeping evaporation active.</p>
+<p><strong>Upgrading:</strong> the old <code>[growth]</code>, <code>[evaporation]</code> and <code>[search]</code> settings are replaced. Reapply custom values under <code>[crops]</code> and, if desired, <code>[trees]</code>. Old settings are not migrated automatically.</p>
+<h3 id="temperature">Shared temperature settings</h3>
+<p><code>[temperature]</code> remains separate and scales each group's own evaporation chance. Defaults: <code>scaleByTemperature = true</code>, <code>coldTemp = 0.0</code>, <code>hotTemp = 2.0</code>, <code>coldMult = 0.4</code>, <code>hotMult = 1.75</code>. The multiplier interpolates between the cold and hot anchors; the resulting chance is capped at 100%.</p>
 <h3 id="weighted-replacement-table">Weighted replacement table</h3>
-<p>Each entry uses the format <code>"modid:block_name,weight"</code>. Higher weight means more likely to be chosen:</p>
-<pre><code class="language-toml">evaporateWeightedTable = [
-    &quot;minecraft:coarse_dirt,5&quot;,
-    &quot;minecraft:rooted_dirt,5&quot;,
-    &quot;minecraft:gravel,3&quot;,
-    &quot;minecraft:moss_block,1&quot;
-]
-</code></pre>
-<h2 id="requirements-and-source-version">Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr></tbody></table></div><p>Source version: <strong>0.2.0</strong>. FFUtilities 0.2.8 is included in every jar.</p><p>The Modrinth button is enabled only when a published project link is configured. The source version above may be newer than the latest published file.</p>
+<p>Each group's <code>replaceTable</code> uses entries like <code>"minecraft:coarse_dirt,5"</code>. Higher weights are more likely. The crop and tree tables are independent.</p>
+<h2 id="requirements-and-source-version">Requirements and source version</h2><div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Loader</th><th>Requires</th></tr></thead><tbody><tr><td>1.20.1</td><td>Fabric</td><td>Fabric Loader 0.14.21 or newer and Fabric API</td></tr><tr><td>1.20.1</td><td>Forge</td><td>Forge 47.1 or newer</td></tr><tr><td>1.20.6</td><td>Fabric</td><td>Fabric Loader 0.15.11 or newer and Fabric API</td></tr><tr><td>1.20.6</td><td>NeoForge</td><td>NeoForge 20.6.141 or newer</td></tr><tr><td>1.21.1</td><td>Fabric</td><td>Fabric Loader 0.16.1 or newer and Fabric API</td></tr><tr><td>1.21.1</td><td>NeoForge</td><td>NeoForge 21.1.211 or newer</td></tr><tr><td>1.21.11</td><td>Fabric</td><td>Fabric Loader 0.18.0 or newer and Fabric API</td></tr><tr><td>1.21.11</td><td>NeoForge</td><td>NeoForge 21.11.45 or newer</td></tr></tbody></table></div><p>Source version: <strong>0.2.3</strong>. FFUtilities 0.2.8 is included in every jar.</p><p>The Modrinth button is enabled only when a published project link is configured. The source version above may be newer than the latest published file.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

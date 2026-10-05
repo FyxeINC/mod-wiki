@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overview â€” FFDeathRules â€” Fyxe's Mod Wiki</title>
+<meta name="description" content="A development scaffold for future configurable death rules.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFDeathRules</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth &#8599;</a><a class="btn btn--curseforge" data-project-link="curseforge" target="_blank" rel="noopener">CurseForge &#8599;</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source &#8599;</a></div></div></div>
+<h2 id="configuration">Configuration</h2>
+<p>Global defaults live in <code>config/ffdeathrules-common.toml</code>. <code>enabled=true</code> controls new deaths; pending restoration always completes. Generated config screens are available on NeoForge 1.21.1+ and Fabric 1.21.1+ through Mod Menu. On these screens, the keep/discard item filter lists support adding entries; new entries start as <code>minecraft:stone</code> and can be edited before saving. Both lists may be empty. Other targets use file editing. The three sections independently control inventory, experience and death messages.</p>
+<div class="table-wrap"><table><thead><tr><th>Config key</th><th>Default</th><th>Behavior</th></tr></thead><tbody><tr><td><code>inventory.inventory</code></td><td><code>VANILLA</code></td><td>VANILLA follows keepInventory, ALL keeps everything, HOTBAR keeps slots 0-8, NONE drops everything. Item filters override this selection.</td></tr>
+<tr><td><code>inventory.keepArmor</code></td><td><code>false</code></td><td>Keep equipped armor in addition to the inventory selection. Binding stays on retained equipment.</td></tr>
+<tr><td><code>inventory.keepOffhand</code></td><td><code>false</code></td><td>Keep the offhand slot in addition to the inventory selection.</td></tr>
+<tr><td><code>inventory.keepItems</code></td><td><code>#ffdeathrules:keep_on_death</code></td><td>Item IDs, #item tags or namespace:* to retain. Destruction rules take priority.</td></tr>
+<tr><td><code>inventory.discardItems</code></td><td><code>#ffdeathrules:discard_on_death</code></td><td>Item IDs, #item tags or namespace:* to destroy, even if otherwise kept.</td></tr>
+<tr><td><code>experience.xpDropPercent</code></td><td><code>-1</code></td><td>Percent of total XP points to drop, 0..100. -1 uses vanilla level*7 capped at 100 (or zero with keepInventory).</td></tr>
+<tr><td><code>experience.xpKeepPercent</code></td><td><code>-1</code></td><td>Percent of XP points to retain, 0..100. -1 keeps the remainder for explicit drop percentages, otherwise follows vanilla. Explicit drop+keep cannot exceed 100.</td></tr>
+<tr><td><code>experience.xpBottles</code></td><td><code>false</code></td><td>Drop recoverable XP as exact-value vanilla experience bottles instead of orbs.</td></tr>
+<tr><td><code>experience.bottleValue</code></td><td><code>7</code></td><td>Desired points per bottle. Large drops are compressed into at most 64 bottles without losing XP.</td></tr>
+<tr><td><code>inventory.respectVanishing</code></td><td><code>true</code></td><td>Destroy vanishing-cursed items before selection. VANILLA with keepInventory preserves vanilla curse behavior.</td></tr>
+<tr><td><code>inventory.durabilityLossPercent</code></td><td><code>0</code></td><td>Durability penalty on retained damageable items, as percent of maximum durability. May break the item.</td></tr>
+<tr><td><code>deathMessages.messageAudience</code></td><td><code>VANILLA</code></td><td>VANILLA respects team visibility, ALL broadcasts, TEAM restricts to teammates, SELF is private, NONE is silent, NEARBY uses radius in the same dimension.</td></tr>
+<tr><td><code>deathMessages.messageTemplate</code></td><td><code>{vanilla}</code></td><td>Single-line template: {vanilla}, {player}, {killer}, {cause}, {dimension}, {x}, {y}, {z}.</td></tr>
+<tr><td><code>deathMessages.respectShowDeathMessages</code></td><td><code>true</code></td><td>Respect the showDeathMessages game rule. False permits messages even when the gamerule is off.</td></tr>
+<tr><td><code>deathMessages.messagePvpOnly</code></td><td><code>false</code></td><td>Only announce deaths caused by another player.</td></tr>
+<tr><td><code>deathMessages.showDeathCoordinates</code></td><td><code>false</code></td><td>Send a private death-location reminder to the dead player regardless of public audience.</td></tr>
+<tr><td><code>deathMessages.messageRadius</code></td><td><code>128</code></td><td>Range in blocks for NEARBY messages. Death coordinates are hidden unless included in the template.</td></tr>
+<tr><td><code>inventory.ownerOnlyDrops</code></td><td><code>false</code></td><td>Reserve dropped inventory and XP bottles for the dead player; ordinary XP orbs cannot be reserved.</td></tr>
+</tbody></table></div>
+<p>TOML item filters are lists, for example <code>keepItems = ["#minecraft:pickaxes", "minecraft:elytra"]</code>. Command/API selectors use comma-separated text; <code>[]</code> explicitly clears an inherited list. Binding curses are not removed. Vanishing destruction takes precedence over discard and keep filters when respectVanishing is true.</p>
+<h2 id="operator-commands">Operator commands</h2>
+<p>All commands require OP level 2. Changes take effect for future deaths and save immediately. Use online player names or offline UUIDs. Team names and subjects containing spaces use quoted Brigadier strings. Values after set are greedy text: write templates directly without outer quotes.</p>
+<pre><code class="language-text">/deathrules default set &lt;key&gt; &lt;value&gt;
+/deathrules player &lt;name-or-uuid&gt; set &lt;key&gt; &lt;value&gt;
+/deathrules team &lt;scoreboard-team&gt; set &lt;key&gt; &lt;value&gt;
+/deathrules permission &lt;node&gt; set &lt;key&gt; &lt;value&gt;
+/deathrules permission &lt;node&gt; priority &lt;integer&gt;
+/deathrules grant &lt;name-or-uuid&gt; &lt;node&gt;
+/deathrules revoke &lt;name-or-uuid&gt; &lt;node&gt;
+/deathrules inspect &lt;online-player&gt;
+/deathrules list
+/deathrules reload</code></pre>
+<p>Keys omit the TOML section, for example <code>inventory</code>, <code>xpDropPercent</code> and <code>messageTemplate</code>. Each scope supports <code>reset &lt;key&gt;</code> to inherit again, <code>clear</code> to remove the profile, or no subcommand to show its stored patch. Clearing a permission profile also removes its priority; grants remain harmless until a profile exists again.</p>
+<pre><code class="language-text">/deathrules default set inventory NONE
+/deathrules default set xpDropPercent 25
+/deathrules permission deathrules.vip set inventory HOTBAR
+/deathrules permission deathrules.vip priority 10
+/deathrules grant Alex deathrules.vip
+/deathrules player Alex set keepArmor true
+/deathrules player Alex set keepItems #minecraft:pickaxes,minecraft:elytra
+/deathrules player Alex set discardItems minecraft:rotten_flesh
+/deathrules team Builders set xpBottles true
+/deathrules team Builders set messageAudience TEAM
+/deathrules default set messageTemplate {player} met {cause} in {dimension}
+/deathrules player Alex reset keepArmor</code></pre>
+<h2 id="permissions">Permissions</h2>
+<p><code>op.0</code> through <code>op.4</code> profiles match vanilla permission-level thresholds. Custom nodes require an exact persistent grant or a positive registered API permission resolver. There is no wildcard grant inheritance or automatic LuckPerms binding. Higher priorities apply later; equal priorities sort by node name. Scoreboard-team membership and API provider results are checked live at death.</p>
+<h2 id="messages">Message controls</h2>
+<p>Templates support <code>{vanilla}</code>, <code>{player}</code>, <code>{killer}</code>, <code>{cause}</code>, <code>{dimension}</code>, <code>{x}</code>, <code>{y}</code>, <code>{z}</code>. A missing killer becomes “the environment”. Templates are single lines up to 1024 characters; rendered text is limited to 240 characters for older packet limits. Plain custom templates do not use command execution or formatting codes.</p>
+<p>VANILLA respects scoreboard team visibility; custom audiences deliberately select their own audience. TEAM includes the dead player and their team. NEARBY is restricted to the same dimension. NONE silences chat announcements while retaining the death-screen message. <code>respectShowDeathMessages=false</code> permits announcements even with the gamerule off. Private coordinates are independent of public visibility.</p>
+<h2 id="persistence-and-reload">Persistence and reload</h2>
+<p>Command and persistent API changes are stored under the world's <code>ffdeathrules/rules.json</code>, schema 1. Player entries are UUID-based. Writes use temporary-file replacement and roll back if saving fails. <code>/deathrules reload</code> rereads this world file; TOML uses the loader's config reload mechanism. Back up the world before manual profile edits. A malformed file is preserved; fix it and reload. Invalid combined XP percentages fall back to vanilla for that death and report an error, so use inspect after combining profiles.</p>
+<pre><code class="language-json">{
+  "schema": 1,
+  "defaults": {"xpDropPercent": "25"},
+  "players": {},
+  "teams": {"Builders": {"keepArmor": "true"}},
+  "permissions": {"deathrules.vip": {"priority": 10, "rules": {"inventory": "HOTBAR"}}},
+  "grants": {"00000000-0000-0000-0000-000000000001": ["deathrules.vip"]}
+}</code></pre>
+
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overview â€” FFDeathRules â€” Fyxe's Mod Wiki</title>
+<meta name="description" content="A development scaffold for future configurable death rules.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFDeathRules</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth &#8599;</a><a class="btn btn--curseforge" data-project-link="curseforge" target="_blank" rel="noopener">CurseForge &#8599;</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source &#8599;</a></div></div></div>
+<h2 id="overview">Overview</h2>
+<p>FFDeathRules gives servers control over death inventory, XP and messages. Rules can differ by permission node, scoreboard team or player UUID, with persistent live operator commands and an API for team/permission mods.</p>
+<h2 id="inventory-and-curses">Inventory and curses</h2>
+<p>Choose VANILLA (follow keepInventory), ALL, HOTBAR (slots 0–8), or NONE. Keep armor/offhand separately and match items by ID, #item tag or namespace wildcard. Discard means destroy, not drop, and wins over retention. Vanishing is processed first by default; VANILLA with keepInventory preserves vanilla's behavior. Binding remains on retained equipment; dropping it on death is legal vanilla behavior. Durability penalties can break retained equipment.</p>
+<p>Owner-only drops reserve items and XP bottles for the dead player's UUID until they despawn. Hoppers and other mods can still interact with dropped entities; this is pickup ownership, not a secure storage mechanism. Extra modded accessory inventories are outside vanilla inventory processing.</p>
+<h2 id="experience">Experience</h2>
+<p>Use percentages of total XP points, not levels, for recovery and retention. Both percentages at -1 preserve vanilla loss and its XP-drop events. An explicit drop percentage with keep=-1 retains the remaining percentage; an explicit keep percentage can also leave a portion permanently lost. Floor rounding loses at most the fractional remainder and never creates XP. Drop plus keep cannot exceed 100. XP bottles recover an exact point value; large drops compress into at most 64 bottles. Ordinary bottles keep their vanilla behavior.</p>
+<h2 id="death-messages">Death messages</h2>
+<p>Use vanilla, all-player, team-only, private, silent or nearby announcements, optional PvP-only announcements, custom text and private recovery coordinates. The death screen uses the custom message when enabled even if the public audience is NONE. Public coordinates are opt-in template placeholders; private location reminders do not broadcast them.</p>
+<h2 id="rule-precedence">Rule precedence</h2>
+<ol><li>Global TOML defaults.</li><li>Persistent world defaults.</li><li>Matching permission profiles, ascending priority then node name.</li><li>Vanilla scoreboard-team profile.</li><li>Registered API providers, ascending priority then provider ID.</li><li>Persistent player UUID overrides.</li></ol>
+<p>Only supplied fields override earlier values; lists replace lower-priority lists. A death snapshots its rules. Changes affect the next death, while pending kept items/XP restore according to the original snapshot, including after a restart or disabling the mod.</p>
+<h2 id="compatibility">Compatibility</h2>
+<p>FFUtilities 0.2.14 is bundled. Fabric requires Fabric API. There are no automatic third-party team/permission integrations: use built-in OP thresholds, exact-node grants or an API bridge. Mods that replace death drops, graves or respawn inventory require integration testing. Vanilla-mode XP keeps loader hooks; custom XP amounts/bottles own the emission and bypass XP-drop modifier hooks. Other mods' consumed-XP flags are respected. Server rules require the mod on the server; client config screens are optional.</p>
+<h2 id="requirements-and-source-version">Requirements and source version</h2>
+<div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Fabric</th><th>NeoForge</th><th>Forge</th></tr></thead><tbody><tr><td>1.20.1</td><td>Loader 0.14.21+ and Fabric API</td><td></td><td>47.1 or newer</td></tr><tr><td>1.20.6</td><td>Loader 0.15.11+ and Fabric API</td><td>20.6.141 or newer</td><td></td></tr><tr><td>1.21.1</td><td>Loader 0.16.1+ and Fabric API</td><td>21.1.211 or newer</td><td></td></tr><tr><td>1.21.11</td><td>Loader 0.18.0+ and Fabric API</td><td>21.11.45 or newer</td><td></td></tr></tbody></table></div><p>Source version: 0.2.1. FFUtilities 0.2.14 is bundled in every jar, so it needs no separate download.</p><p>The Modrinth button is enabled only when a published project link is configured. The source version above may be newer than the latest published file.</p>
+
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

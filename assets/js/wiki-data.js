@@ -18,6 +18,24 @@ window.WIKI_DATA = {
     },
     "recentUpdates": [
       {
+        "date": "2026-10-05",
+        "project": "ffdeathrules",
+        "page": "index.html",
+        "change": "0.2.1: fixed adding keep/discard item filters in generated config screens."
+      },
+      {
+        "date": "2026-10-05",
+        "project": "ffdeathrules",
+        "page": "index.html",
+        "change": "0.1.0: development scaffold with common mod/config classes and all eight Fabric, NeoForge and Forge targets. No gameplay changes yet."
+      },
+      {
+        "date": "2026-10-04",
+        "project": "spirit_of_home",
+        "page": "index.html",
+        "change": "0.6.4: independent HUD scale, opacity, styles, colors, panels, content toggles and paused homesickness fading."
+      },
+      {
         "date": "2026-10-03",
         "project": "spirit_of_home",
         "page": "index.html",
@@ -470,7 +488,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Crop growth can consume nearby water and require water access.",
       "tagline": "Crop growth can consume nearby water and require water access.",
-      "version": "0.2.0",
+      "version": "0.2.3",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffcropevaporation",
       "icon": "icon.png",
@@ -503,7 +521,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFCropEvaporation features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-05",
           "searchExcerpt": "Crop growth can consume nearby water and require water access."
         },
         {
@@ -1659,7 +1677,7 @@ window.WIKI_DATA = {
           "class": ""
         },
         {
-          "label": "MC 1.21.1ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“1.21",
+          "label": "MC 1.21.1ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ1.21",
           "class": ""
         }
       ],
@@ -1697,7 +1715,7 @@ window.WIKI_DATA = {
           "class": "tag--green"
         },
         {
-          "label": "MC 1.20.1ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“1.20",
+          "label": "MC 1.20.1ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ1.20",
           "class": ""
         }
       ],
@@ -1835,12 +1853,93 @@ window.WIKI_DATA = {
           "title": "Datapacks",
           "index": "02",
           "description": "Define level-gated buffs, adventure block exceptions, healing, exhaustion savings, welcome effects, activity categories and name pools.",
-          "updated": "2026-10-03",
+          "updated": "2026-10-04",
           "searchExcerpt": "Level-scaled attributes, benefit_level formulas, home healing, hunger savings, welcome effects and activity filters."
         }
       ],
       "targets": [
         "1.21.1-neoforge"
+      ]
+    },
+    {
+      "slug": "ffdeathrules",
+      "type": "mod",
+      "name": "FFDeathRules",
+      "index": "D",
+      "status": "active",
+      "description": "Configurable death inventory, XP and messages with persistent permission, team and player rules.",
+      "tagline": "Give death a little more fine print.",
+      "version": "0.2.1",
+      "minecraftVersion": "1.20.1-1.21.11",
+      "modrinthSlug": "",
+      "icon": "",
+      "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
+        {
+          "label": "NeoForge",
+          "class": "tag--rust"
+        },
+        {
+          "label": "Forge",
+          "class": "tag--amber"
+        },
+        {
+          "label": "MC 1.20.1-1.21.11",
+          "class": ""
+        }
+      ],
+      "links": {
+        "github": "",
+        "modrinth": "",
+        "curseforge": "",
+        "discord": ""
+      },
+      "pages": [
+        {
+          "file": "index.html",
+          "title": "Overview",
+          "index": "01",
+          "description": "Inventory retention, XP bottles, death messages and rule precedence.",
+          "updated": "2026-10-05",
+          "searchExcerpt": "Inventory retention, XP bottles, death messages and rule precedence."
+        },
+        {
+          "file": "configuration.html",
+          "title": "Configuration",
+          "index": "02",
+          "description": "All settings, operator commands, persistent profiles and permissions.",
+          "updated": "2026-10-05",
+          "searchExcerpt": "All settings, operator commands, persistent profiles and permissions."
+        },
+        {
+          "file": "datapacks.html",
+          "title": "Datapacks",
+          "index": "03",
+          "description": "Keep and discard item tags with examples across Minecraft versions.",
+          "updated": "2026-10-05",
+          "searchExcerpt": "Keep and discard item tags with examples across Minecraft versions."
+        },
+        {
+          "file": "api.html",
+          "title": "Modding API",
+          "index": "04",
+          "description": "Live team rules, permission bridges and persistent player/team overrides.",
+          "updated": "2026-10-05",
+          "searchExcerpt": "Live team rules, permission bridges and persistent player/team overrides."
+        }
+      ],
+      "targets": [
+        "1.20.1-fabric",
+        "1.20.1-forge",
+        "1.20.6-fabric",
+        "1.20.6-neoforge",
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
       ]
     }
   ]

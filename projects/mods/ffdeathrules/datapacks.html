@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overview â€” FFDeathRules â€” Fyxe's Mod Wiki</title>
+<meta name="description" content="A development scaffold for future configurable death rules.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFDeathRules</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth &#8599;</a><a class="btn btn--curseforge" data-project-link="curseforge" target="_blank" rel="noopener">CurseForge &#8599;</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source &#8599;</a></div></div></div>
+<h2 id="item-tags">Item tags</h2>
+<p>The default keep/discard filters refer to <code>#ffdeathrules:keep_on_death</code> and <code>#ffdeathrules:discard_on_death</code>. Both ship empty, preserving vanilla defaults. Add item IDs to keep favorite gear or destroy clutter. Discard wins if an item matches both tags. Vanishing processing still comes first.</p>
+<p>On Minecraft 1.21.1 and 1.21.11, write <code>data/ffdeathrules/tags/item/keep_on_death.json</code>. On 1.20.1 and 1.20.6, use <code>data/ffdeathrules/tags/items/keep_on_death.json</code>. Use the same folder and <code>discard_on_death.json</code> for destruction.</p>
+<pre><code class="language-json">{
+  "replace": false,
+  "values": [
+    "minecraft:elytra",
+    "minecraft:diamond_pickaxe",
+    {"id": "anothermod:favorite_tool", "required": false}
+  ]
+}</code></pre>
+<p>For discard-on-death, the same format might list <code>minecraft:rotten_flesh</code> and <code>minecraft:wooden_sword</code>. Tags use vanilla datapack semantics, including nested tags and replace. Create your own namespace/item tag and reference it in a rule filter with <code>#namespace:tag</code>. Missing optional mod IDs do not make the pack fail.</p>
+<h2 id="reload">Reload</h2>
+<p>Use vanilla <code>/reload</code> after editing tags. Membership is checked from the current registry holders for every death. Profiles remain unchanged unless you edit/reload their world rule file. FFDeathRules has no custom datapack codec or command-based rule format; permissions, teams and player overrides use commands or the API.</p>
+
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>
