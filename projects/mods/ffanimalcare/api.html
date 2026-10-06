@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overview â€” FFAnimalCare â€” Fyxe's Mod Wiki</title>
+<meta name="description" content="Animal hunger, feeding and natural breeding.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFAnimalCare</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth &#8599;</a><a class="btn btn--curseforge" data-project-link="curseforge" target="_blank" rel="noopener">CurseForge &#8599;</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source &#8599;</a></div></div></div>
+<h2 id="api-entry">API entry and dependencies</h2>
+<p>FFAnimalCare 0.3.0 provides API version <code>2</code> in <code>com.fyxe.ffanimalcare.api</code>. The entry point is <code>AnimalHungerApi</code>; register portable callbacks with <code>HungerListener</code>. The interface is shared by Fabric, Forge and NeoForge.</p>
+<p>Compile against the artifact for your exact Minecraft version and loader: <code>com.fyxe.ffanimalcare:ffanimalcare-&lt;minecraft&gt;-&lt;loader&gt;:0.3.0</code>. For example:</p>
+<pre><code class="language-kotlin">// NeoForge
+compileOnly("com.fyxe.ffanimalcare:ffanimalcare-1.21.1-neoforge:0.3.0")
+// Fabric
+modCompileOnly("com.fyxe.ffanimalcare:ffanimalcare-1.21.1-fabric:0.3.0")
+// Forge 1.20.1
+modCompileOnly("com.fyxe.ffanimalcare:ffanimalcare-1.20.1-forge:0.3.0")</code></pre>
+<p>Artifacts use the workspace's configured Fyxe Maven registry after publication, or a local publication during development. FFAnimalCare is a separate runtime mod; do not shade/copy its classes. Its bundled FFUtilities needs no separate player download.</p>
+<p>For optional compatibility, declare <code>ffanimalcare</code> as optional in loader metadata and isolate API references in an integration class loaded only when the mod is installed. NeoForge uses <code>type="optional"</code> with <code>versionRange="[0.3.0,)"</code>; Forge uses <code>mandatory=false</code>. Fabric uses <code>suggests</code> with a <code>&gt;=0.3.0</code> range. Check with your loader's ModList/FabricLoader before invoking the integration class.</p>
+<h2 id="queries">Queries</h2>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>Contract</th></tr></thead><tbody>
+<tr><td><code>isAffected(Animal)</code></td><td>Current config/exclusion/listener eligibility. Does not imply tracking has started.</td></tr>
+<tr><td><code>isTracked(Animal)</code></td><td>Persisted activation flag, available on both sides. It remains saved while the mod is disabled or an animal is excluded.</td></tr>
+<tr><td><code>hunger(Animal)</code></td><td>Latest hunger on either side, 0 full to 1 starving. Queries do not advance or activate hunger.</td></tr>
+<tr><td><code>snapshot(Animal)</code></td><td>Optional server-only Snapshot with tracked, hunger, lastBredTime, breedingDelayRemaining, hungerPauseRemaining, individualMultiplier, careExperience and careLevel. lastBredTime is -1 before breeding; individualMultiplier is -1 before a roll is assigned. Durations are remaining world ticks.</td></tr>
+<tr><td><code>effectiveRate(Animal)</code></td><td>Configured/care/datapack/listener-adjusted gain per world tick, on the server game thread; returns 0 on clients or the wrong thread. May initialize an enabled individual roll for a tracked animal. The recovery pause separately suppresses elapsed gain.</td></tr>
+<tr><td><code>canBreed(Animal)</code></td><td>Generic tracked/age/hunger/cooldown/canFallInLove gates. Does not check for a compatible partner or every species' pregnancy/AI condition.</td></tr>
+</tbody></table></div>
+<h2 id="mutations">Server mutations</h2>
+<p>Call mutations on the server game thread. They respect global enablement, exclusions and eligibility vetoes; client/wrong-thread or recursive callback mutations return false. Finite hunger values are clamped to 0..1. Read snapshots instead of accessing internal HungerState/HungerAccess.</p>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>Behavior</th></tr></thead><tbody>
+<tr><td><code>activate(Animal, double initialHunger)</code></td><td>Explicitly opt in an untracked animal. Cancellable; already-tracked animals return false.</td></tr>
+<tr><td><code>setHunger(Animal, double value)</code></td><td>Advance current hunger, then set a tracked animal's value through the API change callback. Does not activate wild animals.</td></tr>
+<tr><td><code>reduceHunger(Animal, double amount)</code></td><td>Positive normalized hunger reduction for a tracked animal, after catch-up. An actual drop starts recovery; a fully-fed animal can accept an operation without a value change.</td></tr>
+<tr><td><code>fed(Animal, Player, double reduction)</code></td><td>Call after your own food consumption. Can atomically activate and reduce hunger; reports MOD_FEEDING and updated particle/text feedback. Player may be null. Cancellation before commit leaves a wild animal untracked. Caller owns food recognition/consumption.</td></tr>
+<tr><td><code>grassEaten(Animal)</code></td><td>Report completed custom grazing using grassHungerReduction; does not activate wild animals. Emits GRASS feeding/particle feedback when accepted.</td></tr>
+<tr><td><code>startBreeding(Animal)</code></td><td>Advance hunger and start love mode through generic gates and the breeding veto callback. Native/custom AI still owns partner compatibility and offspring creation.</td></tr>
+<tr><td><code>breedingCompleted(Animal)</code></td><td>Call once for each parent after actual custom offspring creation. Records world time/random cooldown, resets love and replaces vanilla adult age cooldown, then reports completion. Does not create offspring.</td></tr>
+</tbody></table></div>
+<p>Reduction amounts are hunger units, not food nutrition points. A reduction of 0.1 removes ten percent of the hunger range. NaN/infinite inputs and non-positive reductions are rejected.</p>
+<pre><code class="language-java">import com.fyxe.ffanimalcare.api.AnimalHungerApi;
+
+// After your custom feeding system has consumed its item:
+boolean accepted = AnimalHungerApi.fed(animal, player, 0.1);
+
+// After custom grazing has actually completed:
+AnimalHungerApi.grassEaten(animal);
+
+// After your own successful offspring creation, once per parent:
+AnimalHungerApi.breedingCompleted(parent);
+AnimalHungerApi.breedingCompleted(partner);</code></pre>
+<h2 id="callbacks">Portable callbacks</h2>
+<p>Register a HungerListener with <code>AnimalHungerApi.registerListener</code>. It returns a removable <code>HungerEvents.Subscription</code>; call <code>close()</code> when your integration is disposed. Listeners run in registration order. Registration can occur during mod setup, while entity operations belong on the game thread.</p>
+<div class="table-wrap"><table><thead><tr><th>Callback</th><th>Use</th></tr></thead><tbody>
+<tr><td><code>allowTracking(Animal)</code></td><td>Return false to leave another system's animals untouched. Pure eligibility veto; may run on either logical side. It cannot override config exclusions.</td></tr>
+<tr><td><code>modifyRate(Rate)</code></td><td>Read animal/perTick and setPerTick to adjust gain after config/datapack factors. Zero prevents gain; final rate is bounded 0..1.</td></tr>
+<tr><td><code>beforeChange(Change)</code></td><td>Inspect animal, previous, reason and activating. cancel(), setCurrent(float), or setRecoveryDelayTicks(int) changes the proposal. Delay applies only to an actual drop.</td></tr>
+<tr><td><code>afterChange(Animal, float previous, float current, HungerChangeReason)</code></td><td>Observe committed value changes/activation. Does not fire for canceled or unchanged non-activation operations.</td></tr>
+<tr><td><code>afterFeeding(Animal, Player, HungerChangeReason)</code></td><td>Observe completed player/mod feeding or grass eating. Player is null for grazing or a caller-supplied custom source. Untamed cat/parrot callbacks wait for vanilla consumption.</td></tr>
+<tr><td><code>beforeBreeding(Breeding)</code></td><td>cancel() vetoes natural or API-started love mode.</td></tr>
+<tr><td><code>afterBreeding(Animal, long worldTime, long delayTicks)</code></td><td>Observe a parent's recorded offspring/pregnancy time and chosen cooldown.</td></tr>
+<tr><td><code>beforeStarvation(Starvation)</code></td><td>cancel() or setDamage(float) modifies a loaded starvation hit.</td></tr>
+</tbody></table></div>
+<p>Change reasons are NATURAL, PLAYER_FEEDING, GRASS, MOD_FEEDING, API and ACTIVATION. For first player/mod feeding, previous is the configured initialHunger before applying the meal, and activating is true. Canceled natural gains consume their elapsed interval; they are not accumulated for later catch-up.</p>
+<p>Modify event payloads inside callbacks; do not call hunger mutations recursively. Recursive mutations return false and nested callback dispatch is suppressed. Non-finite setter inputs are ignored. RuntimeException from a listener is logged and that listener is removed, allowing other integrations to keep running. Internal event dispatch helpers are not part of the supported integration contract.</p>
+<pre><code class="language-java">import com.fyxe.ffanimalcare.api.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Animal;
+
+HungerEvents.Subscription subscription = AnimalHungerApi.registerListener(new HungerListener() {
+    @Override public boolean allowTracking(Animal animal) {
+        // Example: this integration lets another system own bees.
+        return animal.getType() != EntityType.BEE;
+    }
+    @Override public void beforeChange(HungerEvents.Change event) {
+        if (event.reason == HungerChangeReason.GRASS) event.setRecoveryDelayTicks(10);
+    }
+    @Override public void beforeStarvation(HungerEvents.Starvation event) {
+        if (event.animal.hasCustomName()) event.cancel();
+    }
+});
+
+// When this integration is disposed:
+subscription.close();</code></pre>
+<h2 id="data-and-compatibility">Data and compatibility boundaries</h2>
+<p>For static entity/tag/regex rate adjustments, prefer <a href="datapacks.html">datapack rules</a>. Use callbacks for dynamic state-dependent policy, and the API feeding/grazing/breeding helpers when your own logic bypasses vanilla hooks.</p>
+<p>Only Animal subclasses are supported. The API keeps FFAnimalCare's sync, persistence, movement effects and recovery behavior consistent, but does not implement another mod's food consumption, pairing AI or pregnancy logic. Full snapshots are server-only; clients receive hunger/activation. No interactive client or third-party animal mod integration has been verified by these examples.</p>
+<h2 id="care-snapshots">Care in API version 2</h2><p>The server snapshot now includes <code>careExperience()</code> and <code>careLevel()</code>. Experience is saved; level is derived from current configuration. Only hunger/activation synchronize to clients. Effective rates include care before rate callbacks. Recompile integrations against <code>com.fyxe.ffanimalcare.api</code> and API version 2. Diets affect ordinary player feeding; <code>fed</code> takes an explicit normalized reduction and does not apply a diet multiplier.</p><div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

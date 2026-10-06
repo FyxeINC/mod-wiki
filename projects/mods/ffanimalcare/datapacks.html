@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overview â€” FFAnimalCare â€” Fyxe's Mod Wiki</title>
+<meta name="description" content="Animal hunger, feeding and natural breeding.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFAnimalCare</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth &#8599;</a><a class="btn btn--curseforge" data-project-link="curseforge" target="_blank" rel="noopener">CurseForge &#8599;</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source &#8599;</a></div></div></div>
+<h2 id="hunger-rate-rules">Hunger-rate rules</h2>
+<p>FFAnimalCare 0.3.0 adds server datapack rules that multiply hunger gain for eligible animals. Files live at <code>data/&lt;namespace&gt;/ffanimalcare/hunger_rates/&lt;name&gt;.json</code>, with the same custom directory on every supported version. Use a <code>pack.mcmeta</code> appropriate for your Minecraft version.</p>
+<p>The file ID is its namespace and relative filename, for example <code>my_pack:farms</code>. Rules apply only to animals already covered by the mod and do not activate wild animals or override exclusions.</p>
+<h2 id="schema">JSON schema</h2>
+<pre><code class="language-json">{
+  "entities": ["minecraft:pig"],
+  "tags": ["my_pack:farm_animals"],
+  "regex": ["examplemod:.*"],
+  "multiplier": 0.75,
+  "enabled": true
+}</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Field</th><th>Default</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>entities</code></td><td><code>[]</code></td><td>Explicit entity IDs. Missing optional mods are allowed and simply do not match.</td></tr>
+<tr><td><code>tags</code></td><td><code>[]</code></td><td>Entity-type tag IDs without a leading #. Membership comes from the current server tags.</td></tr>
+<tr><td><code>regex</code></td><td><code>[]</code></td><td>Java regex patterns matched against the entire namespace:path entity ID.</td></tr>
+<tr><td><code>multiplier</code></td><td>Required</td><td>Finite number from 0 to 100. 1 is unchanged, 1.1 is 10% faster, 0.75 is 25% slower, 0 stops hunger gain.</td></tr>
+<tr><td><code>enabled</code></td><td><code>true</code></td><td>Set false to disable this rule while keeping a valid definition.</td></tr>
+</tbody></table></div>
+<p>At least one selector is required. Selectors within a file are ORed: a match in any list applies that file once. Every matching file multiplies together, in deterministic file-ID order. There is no exact-ID priority over tags or regex. Zero stops gain even if other matching rules increase it; it does not disable starvation damage for an animal already at the damage threshold.</p>
+<h2 id="default-pigs">Default pig rule and overrides</h2>
+<p>The shipped <code>ffanimalcare:pigs</code> rule is:</p>
+<pre><code class="language-json">{
+  "entities": ["minecraft:pig"],
+  "multiplier": 1.1
+}</code></pre>
+<p>Replace <code>data/ffanimalcare/ffanimalcare/hunger_rates/pigs.json</code> in a higher-priority datapack to change it. To disable it:</p>
+<pre><code class="language-json">{
+  "entities": ["minecraft:pig"],
+  "multiplier": 1.1,
+  "enabled": false
+}</code></pre>
+<p>Adding a different file stacks with the default rather than replacing it. For example, a new pig multiplier of 2 produces a combined 2.2; replace the shipped file if you want exactly 2.</p>
+<h2 id="tags-and-regex">Tags and regex examples</h2>
+<p>For Minecraft 1.21.1 and 1.21.11, define <code>data/my_pack/tags/entity_type/farm_animals.json</code>. On 1.20.1 and 1.20.6, the folder is <code>tags/entity_types</code>.</p>
+<pre><code class="language-json">{
+  "values": ["minecraft:cow", "minecraft:pig", "minecraft:sheep"]
+}</code></pre>
+<p>Then create <code>data/my_pack/ffanimalcare/hunger_rates/farms.json</code>:</p>
+<pre><code class="language-json">{
+  "tags": ["my_pack:farm_animals"],
+  "multiplier": 0.75
+}</code></pre>
+<p>Cows and sheep get 0.75 of their previous rate; pigs get 1.1 * 0.75 = 0.825 because their default rule also matches. For optional mod animals, a full-match pattern can select a whole namespace:</p>
+<pre><code class="language-json">{
+  "regex": ["examplemod:.*"],
+  "multiplier": 1.25
+}</code></pre>
+<p><code>minecraft:pig</code> matches pigs, <code>.*pig.*</code> matches IDs containing pig, and <code>pig</code> alone does not match <code>minecraft:pig</code>. Standard Java regex syntax is supported; escape backslashes using normal JSON escaping.</p>
+<h2 id="reload-and-rate-composition">Reload and rate composition</h2>
+<p>Use <code>/reload</code> to update rules and entity tags. Each reload replaces the previous table; malformed IDs, patterns, selectors or multipliers are logged and skipped per file. Higher-priority packs replace files with the same ID according to normal datapack rules.</p>
+<p>Effective rate combines the base config, optional baby and saved individual multipliers, all matching datapack rules, and the API rate callback. Final gain is capped at 1 hunger per world tick. Rules affect hunger gain only, not the food reduction amount or movement modifier formula.</p>
+<p>Chunk catch-up uses current rules, age and config when the animal resumes. It excludes the saved recovery pause and never catches up damage. Rules are server-only; clients receive the resulting hunger through normal mod synchronization. For custom grazing or feeding logic see <a href="api.html">Modding API</a>.</p>
+<h2 id="diet-types">Diet types and food effectiveness</h2>
+<p>Put diet files at <code>data/&lt;namespace&gt;/ffanimalcare/diet_types/&lt;name&gt;.json</code>. These server-only rules reload with <code>/reload</code>. No built-in diet changes vanilla foods. Top-level <code>entities</code>, <code>tags</code> (entity-type tags, without #) and <code>regex</code> select mobs; at least one selector is required. Selectors are ORed and regex matches the full entity ID. Optional <code>enabled</code> defaults true.</p>
+<p><code>foods</code> is a required array. Each entry accepts lists of <code>items</code>, <code>tags</code> (item tags, without #) and <code>regex</code>; at least one food selector is required. Multiple IDs/selectors per entry are ORed. <code>multiplier</code> defaults 1 and must be finite, between 0 and 100. It scales hunger <em>relief</em>: 2 means twice as filling, 0.5 half as filling, and 0 consumes food without hunger relief. Unknown but valid mod IDs are allowed; malformed IDs, patterns or values reject the file.</p>
+<pre><code class="language-json">{
+  "entities": ["minecraft:cow", "minecraft:sheep"],
+  "tags": ["my_pack:herbivores"],
+  "regex": ["othermod:.*_deer"],
+  "foods": [
+    {"items": ["minecraft:wheat", "minecraft:carrot"], "multiplier": 1.5},
+    {"tags": ["my_pack:animal_snacks"], "multiplier": 0.5},
+    {"regex": ["minecraft:.*_seeds"], "multiplier": 0.75}
+  ]
+}</code></pre>
+<p>For covered animals, matching diets replace vanilla feeding foods. All matching diets contribute accepted foods; when entries overlap, the highest matching multiplier wins, with no stacking. Empty <code>foods</code> accepts no meals. Disabled diets do not cover animals. Animals with no matching diet keep vanilla food acceptance, including supported horse/parrot extras.</p>
+<p>Relief is <code>(nutrition + saturation) &times; foodModifier &times; multiplier</code>; items without food properties use fallback nutrition/saturation. Refusal and first-feed activation still apply. Diet-only foods can be fed even if vanilla does not recognize them. Vanilla cat/parrot foods retain taming; added foods feed without attempting taming. Diets do not change grazing, temptation foods, or custom API feeding. Custom mod interactions may require integration or exclusions.</p>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

@@ -19,6 +19,30 @@ window.WIKI_DATA = {
     "recentUpdates": [
       {
         "date": "2026-10-05",
+        "project": "ffanimalcare",
+        "page": "index.html",
+        "change": "0.2.0: datapack hunger rates, pig appetite, grass relief, saved recovery pause and a portable modding API."
+      },
+      {
+        "date": "2026-10-05",
+        "project": "ffanimalcare",
+        "page": "index.html",
+        "change": "0.1.2: faster baby hunger, optional saved individual appetite variation, and updated particles/text after feeding."
+      },
+      {
+        "date": "2026-10-05",
+        "project": "ffanimalcare",
+        "page": "index.html",
+        "change": "0.1.1: empty-hand hunger checks with animal sounds, rising status particles and configurable optional action-bar text."
+      },
+      {
+        "date": "2026-10-05",
+        "project": "ffanimalcare",
+        "page": "index.html",
+        "change": "0.1.0: animal hunger, nutrition-based feeding, natural breeding, movement and starvation settings."
+      },
+      {
+        "date": "2026-10-05",
         "project": "ffdeathrules",
         "page": "index.html",
         "change": "0.2.1: fixed adding keep/discard item filters in generated config screens."
@@ -1158,7 +1182,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Gives items weight and players configurable encumbrance bands.",
       "tagline": "Gives items weight and players configurable encumbrance bands.",
-      "version": "0.8.3",
+      "version": "0.8.4",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "ffitemweight",
       "icon": "icon.png",
@@ -1191,7 +1215,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemWeight features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-05",
           "searchExcerpt": "Gives items weight and players configurable encumbrance bands."
         },
         {
@@ -1677,7 +1701,7 @@ window.WIKI_DATA = {
           "class": ""
         },
         {
-          "label": "MC 1.21.1ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ1.21",
+          "label": "MC 1.21.1ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“1.21",
           "class": ""
         }
       ],
@@ -1715,7 +1739,7 @@ window.WIKI_DATA = {
           "class": "tag--green"
         },
         {
-          "label": "MC 1.20.1ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ1.20",
+          "label": "MC 1.20.1ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“1.20",
           "class": ""
         }
       ],
@@ -1929,6 +1953,78 @@ window.WIKI_DATA = {
           "description": "Live team rules, permission bridges and persistent player/team overrides.",
           "updated": "2026-10-05",
           "searchExcerpt": "Live team rules, permission bridges and persistent player/team overrides."
+        }
+      ],
+      "targets": [
+        "1.20.1-fabric",
+        "1.20.1-forge",
+        "1.20.6-fabric",
+        "1.20.6-neoforge",
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge"
+      ]
+    },
+    {
+      "slug": "ffanimalcare",
+      "type": "mod",
+      "name": "FFAnimalCare",
+      "index": "A",
+      "status": "active",
+      "description": "Feed animals to manage hunger, health and natural breeding.",
+      "tagline": "Full bellies, healthy herds and natural breeding.",
+      "version": "0.3.0",
+      "minecraftVersion": "1.20.1-1.21.11",
+      "modrinthSlug": "",
+      "icon": "",
+      "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--blue"
+        },
+        {
+          "label": "NeoForge",
+          "class": "tag--rust"
+        },
+        {
+          "label": "Forge",
+          "class": "tag--amber"
+        },
+        {
+          "label": "MC 1.20.1-1.21.11",
+          "class": ""
+        }
+      ],
+      "links": {
+        "github": "",
+        "curseforge": "",
+        "discord": ""
+      },
+      "pages": [
+        {
+          "file": "index.html",
+          "title": "Overview",
+          "index": "01",
+          "description": "Care levels, hunger, feeding, natural breeding and every configuration default.",
+          "updated": "2026-10-05",
+          "searchExcerpt": "Animal hunger, starvation, movement, feeding and natural breeding."
+        },
+        {
+          "file": "datapacks.html",
+          "title": "Datapacks",
+          "index": "02",
+          "description": "Animal diets, food effectiveness, hunger-rate rules and reload examples.",
+          "updated": "2026-10-05",
+          "searchExcerpt": "Datapack hunger rates, pig multiplier, entity tags, regex and reload."
+        },
+        {
+          "file": "api.html",
+          "title": "Modding API",
+          "index": "03",
+          "description": "Portable hunger, feeding, breeding and starvation integration callbacks.",
+          "updated": "2026-10-05",
+          "searchExcerpt": "AnimalHungerApi snapshots, custom feeding, grazing, breeding and cancellable callbacks."
         }
       ],
       "targets": [

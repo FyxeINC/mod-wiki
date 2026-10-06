@@ -7,6 +7,34 @@
   <updated>2026-10-05T00:00:00Z</updated>
   <author><name>Fyxe</name></author>
   <entry>
+    <title>FFAnimalCare: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffanimalcare/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-05-ffanimalcare-77</id>
+    <updated>2026-10-05T00:00:00Z</updated>
+    <summary>0.2.0: datapack hunger rates, pig appetite, grass relief, saved recovery pause and a portable modding API.</summary>
+  </entry>
+  <entry>
+    <title>FFAnimalCare: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffanimalcare/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-05-ffanimalcare-76</id>
+    <updated>2026-10-05T00:00:00Z</updated>
+    <summary>0.1.2: faster baby hunger, optional saved individual appetite variation, and updated particles/text after feeding.</summary>
+  </entry>
+  <entry>
+    <title>FFAnimalCare: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffanimalcare/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-05-ffanimalcare-75</id>
+    <updated>2026-10-05T00:00:00Z</updated>
+    <summary>0.1.1: empty-hand hunger checks with animal sounds, rising status particles and configurable optional action-bar text.</summary>
+  </entry>
+  <entry>
+    <title>FFAnimalCare: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffanimalcare/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-05-ffanimalcare-74</id>
+    <updated>2026-10-05T00:00:00Z</updated>
+    <summary>0.1.0: animal hunger, nutrition-based feeding, natural breeding, movement and starvation settings.</summary>
+  </entry>
+  <entry>
     <title>FFDeathRules: Overview</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffdeathrules/index.html"/>
     <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-05-ffdeathrules-73</id>

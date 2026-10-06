@@ -108,7 +108,7 @@
 <tbody>
 <tr>
 <td>Sable 2.x</td>
-<td>Container contents add cargo mass to the owning sub-level, updating mass, center of mass and inertia when filled or emptied. One item-weight unit equals one Sable mass unit. Includes nested contents under the usual weight settings. Reads each physical block inventory once, including unsided modded storage. No separate FFUtilities download is needed. Players, inventory entities, sided-only storage and detached kinematic contraption inventories are not included. API checked against Sable 2.0.5 on Minecraft 1.21.1.</td>
+<td>Container contents add cargo mass to the owning sub-level, updating mass, center of mass and inertia when filled or emptied. Disabled by default: enable <code>compat.sable.inventoryMassEnabled</code> in server config. <code>compat.sable.inventoryMassMultiplier</code> (default <code>1.0</code>, non-negative) sets Sable mass per item-weight unit: <code>0.5</code> halves cargo mass and <code>0</code> adds none. Disabling removes previously added cargo mass at the next physics refresh. The multiplier changes contents mass only, leaving block mass and player weight unchanged. Includes nested contents under the usual weight settings. Reads each physical block inventory once, including unsided modded storage. No separate FFUtilities download is needed. Players, inventory entities, sided-only storage and detached kinematic contraption inventories are not included. API checked against Sable 2.0.5 on Minecraft 1.21.1.</td>
 </tr>
 <tr>
 <td>EMI</td>
