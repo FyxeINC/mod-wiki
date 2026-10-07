@@ -20,8 +20,8 @@
 <h2 id="ffitemweight-modding-api">FFItemWeight — Modding API</h2>
 <p>Guide for other mods (and AI agents) integrating with <strong>FFItemWeight</strong> (<code>ffitemweight</code>).</p>
 <div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
-<tr><td><strong>Minecraft</strong></td><td>1.20.1, 1.20.6, 1.21.1, 1.21.11</td></tr>
-<tr><td><strong>Loader</strong></td><td>Fabric (all four), Forge 47.1 (1.20.1), NeoForge (1.20.6, 1.21.1, 1.21.11)</td></tr>
+<tr><td><strong>Minecraft</strong></td><td>1.20.1, 1.20.6, 1.21.1, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2, 26.3</td></tr>
+<tr><td><strong>Loader</strong></td><td>Fabric (all versions), Forge 47.1 (1.20.1), NeoForge (1.20.6, 1.21.1, 1.21.11, 26.1.2, 26.2)</td></tr>
 <tr><td><strong>Mod ID</strong></td><td><code>ffitemweight</code></td></tr>
 <tr><td><strong>API package</strong></td><td><code>com.fyxe.ffitemweight.api</code></td></tr>
 <tr><td><strong>Client helpers</strong></td><td><code>com.fyxe.ffitemweight.api.client</code></td></tr>
@@ -33,7 +33,7 @@
     versionRange=&quot;[0,)&quot;
     ordering=&quot;NONE&quot;
     side=&quot;BOTH&quot;</code></pre>
-<p>On Fabric, list <code>&quot;ffitemweight&quot;: &quot;*&quot;</code> under <code>suggests</code> (or <code>depends</code> when required) in <code>fabric.mod.json</code>. The first Fabric build is 0.7.0, so use a version range starting there when you need it. Forge 1.20.1 (<code>mods.toml</code>) uses <code>mandatory=false</code> in place of <code>type=&quot;optional&quot;</code>; builds for Forge, 1.20.x and 1.21.11 start at 0.8.0.</p>
+<p>On Fabric, list <code>&quot;ffitemweight&quot;: &quot;*&quot;</code> under <code>suggests</code> (or <code>depends</code> when required) in <code>fabric.mod.json</code>. The first Fabric build is 0.7.0, so use a version range starting there when you need it. Forge 1.20.1 (<code>mods.toml</code>) uses <code>mandatory=false</code> in place of <code>type=&quot;optional&quot;</code>; builds for Forge, 1.20.x and 1.21.11 start at 0.8.0, and Minecraft 26.x builds (Java 25) start at 0.9.0.</p>
 <p>Use <code>ModList.get().isLoaded(&quot;ffitemweight&quot;)</code> on NeoForge, <code>FabricLoader.getInstance().isModLoaded(&quot;ffitemweight&quot;)</code> on Fabric, or FFUtilities&#x27; <code>Mods.isLoaded</code>, together with an optional compile-only dependency, before calling API classes. Each target is published as <code>com.fyxe.ffitemweight:ffitemweight-&lt;minecraft&gt;-&lt;loader&gt;:&lt;version&gt;</code> (for example <code>ffitemweight-1.21.1-fabric</code>, <code>ffitemweight-1.21.11-neoforge</code> or <code>ffitemweight-1.20.1-forge</code>).</p>
 <hr>
 <h3 id="core-concepts">Core concepts</h3>

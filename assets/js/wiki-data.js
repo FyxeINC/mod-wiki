@@ -37,6 +37,12 @@ window.WIKI_DATA = {
       },
       {
         "date": "2026-10-07",
+        "project": "ffmobsunburnangle",
+        "page": "index.html",
+        "change": "1.3.0: now on Fabric 26.1 to 26.3 and NeoForge 26.1.2 and 26.2 (Java 25), with FFUtilities 0.2.15 bundled on 26.x."
+      },
+      {
+        "date": "2026-10-07",
         "project": "ffcropevaporation",
         "page": "index.html",
         "change": "0.3.0: now on Fabric 26.1 to 26.3 and NeoForge 26.1.2 and 26.2 (Java 25), with FFUtilities 0.2.15 bundled on 26.x."
@@ -382,6 +388,18 @@ window.WIKI_DATA = {
         "project": "ffbandage",
         "page": "index.html",
         "change": "0.2.0: adds Minecraft 26.1 to 26.3 on Fabric and 26.1.2 and 26.2 on NeoForge."
+      },
+      {
+        "date": "2026-10-07",
+        "project": "ffitemweight",
+        "page": "index.html",
+        "change": "0.9.0: adds Minecraft 26.1 to 26.3 on Fabric and 26.1.2 and 26.2 on NeoForge; gameplay, config, commands and datapacks are unchanged."
+      },
+      {
+        "date": "2026-10-07",
+        "project": "ffinjury",
+        "page": "index.html",
+        "change": "0.10.0: adds Minecraft 26.1 to 26.3 on Fabric and 26.1.2 and 26.2 on NeoForge; gameplay, config, commands and datapacks are unchanged."
       },
       {
         "date": "2026-09-29",
@@ -1034,8 +1052,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds tiered injuries, adrenaline, treatment, and healing.",
       "tagline": "Adds tiered injuries, adrenaline, treatment, and healing.",
-      "version": "0.9.2",
-      "minecraftVersion": "1.20.1-1.21.11",
+      "version": "0.10.0",
+      "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "ffinjury",
       "icon": "icon.png",
       "tags": [
@@ -1052,7 +1070,7 @@ window.WIKI_DATA = {
           "class": "tag--amber"
         },
         {
-          "label": "MC 1.20.1-1.21.11",
+          "label": "MC 1.20.1-26.3",
           "class": ""
         }
       ],
@@ -1067,7 +1085,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFInjury features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-07",
           "searchExcerpt": "Adds tiered injuries, adrenaline, treatment, and healing."
         },
         {
@@ -1083,7 +1101,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "03",
           "description": "FFInjury API, events, and integration examples.",
-          "updated": "2026-10-01",
+          "updated": "2026-10-07",
           "searchExcerpt": "FFInjury public API and integration guide."
         }
       ],
@@ -1095,7 +1113,14 @@ window.WIKI_DATA = {
         "1.21.1-fabric",
         "1.21.1-neoforge",
         "1.21.11-fabric",
-        "1.21.11-neoforge"
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ],
       "curseforgeId": "1716368"
     },
@@ -1240,8 +1265,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Gives items weight and players configurable encumbrance bands.",
       "tagline": "Gives items weight and players configurable encumbrance bands.",
-      "version": "0.8.4",
-      "minecraftVersion": "1.20.1-1.21.11",
+      "version": "0.9.0",
+      "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "ffitemweight",
       "icon": "icon.png",
       "tags": [
@@ -1258,7 +1283,7 @@ window.WIKI_DATA = {
           "class": "tag--amber"
         },
         {
-          "label": "MC 1.20.1-1.21.11",
+          "label": "MC 1.20.1-26.3",
           "class": ""
         }
       ],
@@ -1273,7 +1298,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemWeight features, requirements, and source version.",
-          "updated": "2026-10-05",
+          "updated": "2026-10-07",
           "searchExcerpt": "Gives items weight and players configurable encumbrance bands."
         },
         {
@@ -1289,7 +1314,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "03",
           "description": "FFItemWeight API, weight references, events, and integration examples.",
-          "updated": "2026-10-01",
+          "updated": "2026-10-07",
           "searchExcerpt": "FFItemWeight public API, weight_from datapack references, and copper variant weights."
         }
       ],
@@ -1301,7 +1326,14 @@ window.WIKI_DATA = {
         "1.21.1-fabric",
         "1.21.1-neoforge",
         "1.21.11-fabric",
-        "1.21.11-neoforge"
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ],
       "curseforgeId": "1716354"
     },
@@ -1313,8 +1345,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs.",
       "tagline": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs.",
-      "version": "1.2.0",
-      "minecraftVersion": "1.21.1",
+      "version": "1.3.0",
+      "minecraftVersion": "1.21.1-26.3",
       "modrinthSlug": "",
       "icon": "icon.png",
       "tags": [
@@ -1327,7 +1359,7 @@ window.WIKI_DATA = {
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1",
+          "label": "MC 1.21.1-26.3",
           "class": ""
         }
       ],
@@ -1342,13 +1374,20 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFMobSunBurnAngle features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-07",
           "searchExcerpt": "Uses the sun angle for burning and spawn checks on sunlight sensitive mobs."
         }
       ],
       "targets": [
         "1.21.1-fabric",
-        "1.21.1-neoforge"
+        "1.21.1-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ],
       "curseforgeId": "1716390"
     },
@@ -1975,8 +2014,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Configurable death inventory, XP and messages with persistent permission, team and player rules.",
       "tagline": "Give death a little more fine print.",
-      "version": "0.2.1",
-      "minecraftVersion": "1.20.1-1.21.11",
+      "version": "0.3.0",
+      "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "",
       "icon": "",
       "tags": [
@@ -1993,7 +2032,7 @@ window.WIKI_DATA = {
           "class": "tag--amber"
         },
         {
-          "label": "MC 1.20.1-1.21.11",
+          "label": "MC 1.20.1-26.3",
           "class": ""
         }
       ],
@@ -2045,7 +2084,14 @@ window.WIKI_DATA = {
         "1.21.1-fabric",
         "1.21.1-neoforge",
         "1.21.11-fabric",
-        "1.21.11-neoforge"
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ]
     },
     {
