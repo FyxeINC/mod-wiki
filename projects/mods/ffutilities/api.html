@@ -16,7 +16,7 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFUtilities</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth &#8599;</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source &#8599;</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.2.12</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.2.15</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
 <h2 id="ffutilities-modding-api">FFUtilities — Modding API</h2>
 <p>FFUtilities is a shared library for Fabric, NeoForge and Forge. Package root: <code>com.fyxe.ffutilities.api</code>. The same API is built for every target below; gameplay mods bundle the jar for their target with Jar-in-Jar, so players do not need a separate download. Keep the required <code>ffutilities</code> dependency in your loader metadata (<code>neoforge.mods.toml</code>, <code>mods.toml</code> or <code>fabric.mod.json</code>); the embedded mod satisfies it.</p>
 <p>Each target is published to the Fyxe Gitea Maven registry (or a sibling local publication) as <code>com.fyxe.ffutilities:ffutilities-&lt;minecraft&gt;-&lt;loader&gt;:&lt;version&gt;</code>:</p>
@@ -25,6 +25,7 @@
 <tr><td>1.20.6</td><td>Fabric, NeoForge</td><td><code>ffutilities-1.20.6-fabric</code>, <code>ffutilities-1.20.6-neoforge</code></td></tr>
 <tr><td>1.21.1</td><td>Fabric, NeoForge</td><td><code>ffutilities-1.21.1-fabric</code>, <code>ffutilities-1.21.1-neoforge</code> (also published as <code>ffutilities</code>, the coordinate used before 0.2.8)</td></tr>
 <tr><td>1.21.11</td><td>Fabric, NeoForge</td><td><code>ffutilities-1.21.11-fabric</code>, <code>ffutilities-1.21.11-neoforge</code></td></tr>
+<tr><td>26.1, 26.1.1, 26.1.2, 26.2, 26.3</td><td>Fabric, NeoForge</td><td><code>ffutilities-&lt;minecraft&gt;-fabric</code>, <code>ffutilities-&lt;minecraft&gt;-neoforge</code>, for example <code>ffutilities-26.2-neoforge</code> (since 0.2.15)</td></tr>
 </tbody></table></div>
 <p>Gradle Kotlin DSL, one target per build script (<code>ffutilities</code> holds the pinned version, for example <code>0.2.8</code>):</p>
 <pre><code class="language-kotlin">// NeoForge (ModDevGradle)
@@ -51,11 +52,16 @@ jarJar(ffutilitiesJar) {
 // maven(&quot;https://raw.githubusercontent.com/Fuzss/modresources/main/maven/&quot;)
 val ffutilitiesJar = &quot;com.fyxe.ffutilities:ffutilities-1.21.1-fabric:$ffutilities&quot;
 modImplementation(ffutilitiesJar)
-include(ffutilitiesJar)</code></pre>
+include(ffutilitiesJar)
+
+// Fabric 26.x is unobfuscated: use implementation(...) or keep modImplementation(...)
+// through loom-back-compat, which aliases it to the plain configuration.</code></pre>
 <p>In a Groovy build script the NeoForge form <code>jarJar(implementation(&quot;...&quot;)) { version { ... } }</code> also works.</p>
 <h3 id="differences-between-targets">Differences between targets</h3>
 <ul>
 <li>Minecraft 1.21.11 renamed <code>ResourceLocation</code> to <code>Identifier</code>; methods that take or return IDs use the name of their version.</li>
+<li>Minecraft 26.1 renamed <code>GuiGraphics</code> to <code>GuiGraphicsExtractor</code>; <code>GuiUtil</code> and <code>HudTextRenderer</code> take the type of their version.</li>
+<li>The config file is <code>config/ffutilities-common.toml</code> on every target, including NeoForge 26.3, where FML renamed the common config type to <code>LOCAL</code>.</li>
 <li>Configs: NeoForge's <code>ModConfigSpec</code> on 1.20.6+ (Fabric included, through Forge Config API Port) and Forge's <code>ForgeConfigSpec</code> on 1.20.1. <code>ConfigValidators</code> and <code>ConfigLists</code> work with both.</li>
 <li><code>ConfigScreens.register(modId)</code> works on every loader: it adds the generated config screen on NeoForge 1.21.1+ (Mods list) and Fabric 1.21.1+ (Mod Menu), and does nothing where no generated screen exists (1.20.x, Forge). <code>ConfigScreens.register(ModContainer)</code> is also available on NeoForge.</li>
 <li><code>SimpleCodecReloadListener</code> registers like any server data reload listener: <code>AddReloadListenerEvent</code> on NeoForge and Forge, Fabric API's resource loader on Fabric.</li>
@@ -100,7 +106,7 @@ if (WeatherUtil.isSnowingOn(entity)) {
     // Rain falls on this block.
 }</code></pre>
 <h3 id="version-proof-wrappers-0-2-11">Version-proof wrappers (0.2.11)</h3>
-<p>These wrap vanilla code that changed between Minecraft 1.20.1 and 1.21.11, so a mod calls one method instead of writing its own Stonecutter conditional. Each behaves the same on every target.</p>
+<p>These wrap vanilla code that changed between Minecraft 1.20.1 and 26.3, so a mod calls one method instead of writing its own Stonecutter conditional. Each behaves the same on every target.</p>
 <div class="table-wrap"><table><thead><tr><th>Class</th><th>Public helpers</th><th>What changed between versions</th></tr></thead><tbody>
 <tr><td><code>nbt.NbtUtil</code></td><td><code>getInt</code>, <code>getLong</code>, <code>getFloat</code>, <code>getDouble</code>, <code>getBoolean</code>, <code>getString</code> (each with an optional fallback), <code>getCompound</code>, <code>getCompounds</code>, <code>getStrings</code>, <code>getDoubles</code>, <code>keys</code></td><td>1.21.5 made <code>CompoundTag</code> getters return <code>Optional</code>s. A missing key or a value of the wrong type gives the fallback everywhere.</td></tr>
 <tr><td><code>entity.AttributeUtil</code></td><td><code>holder(id)</code>, <code>exists</code>, <code>instance(entity, id or holder)</code>, <code>operation(index)</code>, <code>modifier</code>, <code>getModifier</code>, <code>hasModifier</code>, <code>modifierAmount</code>, <code>setTransient</code>, <code>setPermanent</code>, <code>removeModifier</code>, <code>amount</code>, <code>modifierUuid</code></td><td>Attributes moved behind holders in 1.20.5 and modifiers are keyed by ID from 1.21. Before 1.21 a modifier is keyed by <code>modifierUuid(id)</code>. <code>setTransient</code> and <code>setPermanent</code> replace a modifier with the same ID instead of throwing.</td></tr>
@@ -108,7 +114,7 @@ if (WeatherUtil.isSnowingOn(entity)) {
 <tr><td><code>command.CommandUtil</code></td><td><code>hasPermission(source, level)</code>, <code>isGameMaster</code>, <code>requires(level)</code></td><td>1.21.11 replaced numeric permission levels. Levels stay 1 to 4 (<code>MODERATOR</code>, <code>GAME_MASTER</code>, <code>ADMIN</code>, <code>OWNER</code>).</td></tr>
 <tr><td><code>player.InventoryUtil</code></td><td><code>mainItems</code>, <code>armorItems</code> (feet first), <code>offhandItems</code>, <code>allItems</code>, <code>selectedSlot</code>, <code>containedItems(stack)</code>, <code>blockItems(blockEntity)</code> (0.2.14)</td><td>Block inventories read physical Container slots first, then unsided Forge/NeoForge capabilities or Fabric block storage, without combining adjacent chests or counting multiple sides. Unsupported storage returns an empty list. 1.21.5 replaced the inventory&#x27;s list fields; 1.20.5 moved shulker box and bundle contents to components. On 1.20.1 a shulker box that never held anything has no contents (empty <code>Optional</code>); newer versions give an empty list.</td></tr>
 <tr><td><code>item.FoodUtil</code></td><td><code>food(stack)</code>, <code>isFood</code></td><td>Food became a component in 1.20.5 with absolute saturation; <code>FoodValues</code> always holds the absolute amount (bread: 5 nutrition, 6.0 saturation).</td></tr>
-<tr><td><code>world.WorldUtil</code></td><td><code>minY</code>, <code>hasMoon</code>, <code>moonPhase</code>, <code>isFullMoon</code></td><td>The build height getter was renamed in 1.21.2; 1.21.11 moved the moon into environment attributes. Moon phase 0 is the full moon.</td></tr>
+<tr><td><code>world.WorldUtil</code></td><td><code>minY</code>, <code>hasMoon</code>, <code>moonPhase</code>, <code>isFullMoon</code>, <code>dayTime</code></td><td>The build height getter was renamed in 1.21.2; 1.21.11 moved the moon into environment attributes; 26.1 replaced the level day time with world clocks (<code>dayTime</code> gives the overworld day time in ticks). Moon phase 0 is the full moon.</td></tr>
 <tr><td><code>client.ClientInput</code></td><td><code>hasShiftDown</code>, <code>hasControlDown</code>, <code>hasAltDown</code>, <code>shows(tooltipMode)</code></td><td>The key checks moved from <code>Screen</code> to <code>Minecraft</code>. Client only.</td></tr>
 <tr><td><code>client.GuiUtil</code></td><td><code>blitTexture</code>, <code>withScaledPose</code>, <code>tooltip</code></td><td>1.21.11 blits take a render pipeline and tooltips are drawn at the end of the frame; 1.21.6 made the GUI pose 2D. Client only.</td></tr>
 </tbody></table></div>

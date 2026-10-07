@@ -18,6 +18,30 @@ window.WIKI_DATA = {
     },
     "recentUpdates": [
       {
+        "date": "2026-10-07",
+        "project": "ffnutrition",
+        "page": "index.html",
+        "change": "0.7.0: now on Minecraft 26.1 to 26.3 (Fabric) and 26.1.2 and 26.2 (NeoForge); new gaugeTextStyle option for the Metabolic Gauge text; otherwise no gameplay changes."
+      },
+      {
+        "date": "2026-10-07",
+        "project": "ffwaterfalls",
+        "page": "index.html",
+        "change": "0.4.0: now on Fabric 26.1 to 26.3 and NeoForge 26.1.2 and 26.2 (Java 25), with FFUtilities 0.2.15 bundled on 26.x. On Fabric, sources now also wake from neighbor updates (pistons, explosions, commands) as on NeoForge."
+      },
+      {
+        "date": "2026-10-07",
+        "project": "ffitemcreationtracker",
+        "page": "index.html",
+        "change": "0.4.0: now on Fabric 26.1 to 26.3 and NeoForge 26.1.2 and 26.2 (Java 25), with FFUtilities 0.2.15 bundled on 26.x."
+      },
+      {
+        "date": "2026-10-07",
+        "project": "ffcropevaporation",
+        "page": "index.html",
+        "change": "0.3.0: now on Fabric 26.1 to 26.3 and NeoForge 26.1.2 and 26.2 (Java 25), with FFUtilities 0.2.15 bundled on 26.x."
+      },
+      {
         "date": "2026-10-05",
         "project": "ffanimalcare",
         "page": "index.html",
@@ -354,6 +378,12 @@ window.WIKI_DATA = {
         "change": "0.1.0: now on Fabric (1.20.1 to 1.21.11), Forge 1.20.1 and NeoForge 1.20.6 to 1.21.11, with FFUtilities bundled."
       },
       {
+        "date": "2026-10-07",
+        "project": "ffbandage",
+        "page": "index.html",
+        "change": "0.2.0: adds Minecraft 26.1 to 26.3 on Fabric and 26.1.2 and 26.2 on NeoForge."
+      },
+      {
         "date": "2026-09-29",
         "project": "ffutilities",
         "page": "api.html",
@@ -512,8 +542,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Crop growth can consume nearby water and require water access.",
       "tagline": "Crop growth can consume nearby water and require water access.",
-      "version": "0.2.3",
-      "minecraftVersion": "1.20.1-1.21.11",
+      "version": "0.3.0",
+      "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "ffcropevaporation",
       "icon": "icon.png",
       "tags": [
@@ -530,7 +560,7 @@ window.WIKI_DATA = {
           "class": "tag--amber"
         },
         {
-          "label": "MC 1.20.1-1.21.11",
+          "label": "MC 1.20.1-26.3",
           "class": ""
         }
       ],
@@ -545,7 +575,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFCropEvaporation features, requirements, and source version.",
-          "updated": "2026-10-05",
+          "updated": "2026-10-07",
           "searchExcerpt": "Crop growth can consume nearby water and require water access."
         },
         {
@@ -565,7 +595,14 @@ window.WIKI_DATA = {
         "1.21.1-fabric",
         "1.21.1-neoforge",
         "1.21.11-fabric",
-        "1.21.11-neoforge"
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ],
       "curseforgeId": "1715331"
     },
@@ -795,8 +832,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "A configurable healing bandage item.",
       "tagline": "A configurable healing bandage item.",
-      "version": "0.1.0",
-      "minecraftVersion": "1.20.1-1.21.11",
+      "version": "0.2.1",
+      "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "ffbandage",
       "icon": "icon.png",
       "tags": [
@@ -813,7 +850,7 @@ window.WIKI_DATA = {
           "class": "tag--amber"
         },
         {
-          "label": "MC 1.20.1-1.21.11",
+          "label": "MC 1.20.1-26.3",
           "class": ""
         }
       ],
@@ -828,7 +865,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFBandage features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-07",
           "searchExcerpt": "A configurable healing bandage item."
         }
       ],
@@ -840,7 +877,14 @@ window.WIKI_DATA = {
         "1.21.1-fabric",
         "1.21.1-neoforge",
         "1.21.11-fabric",
-        "1.21.11-neoforge"
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ],
       "curseforgeId": "1716425"
     },
@@ -917,8 +961,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
       "tagline": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
-      "version": "0.9.3",
-      "minecraftVersion": "1.21.1, 1.21.11",
+      "version": "0.10.0",
+      "minecraftVersion": "1.21.1-26.3",
       "modrinthSlug": "fffoodspoilageandpreservation",
       "icon": "icon.png",
       "tags": [
@@ -931,7 +975,7 @@ window.WIKI_DATA = {
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.21.1, 1.21.11",
+          "label": "MC 1.21.1-26.3",
           "class": ""
         }
       ],
@@ -946,7 +990,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFFoodSpoilageAndPreservation features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-07",
           "searchExcerpt": "Food spoilage stages, preservation methods, storage rates, stacking, and requirements."
         },
         {
@@ -962,7 +1006,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "03",
           "description": "FFFoodSpoilageAndPreservation API, events, and integration examples.",
-          "updated": "2026-10-02",
+          "updated": "2026-10-07",
           "searchExcerpt": "Food spoilage events, modifier definitions, custom inventory stacking, and integration examples."
         }
       ],
@@ -970,7 +1014,14 @@ window.WIKI_DATA = {
         "1.21.1-fabric",
         "1.21.1-neoforge",
         "1.21.11-fabric",
-        "1.21.11-neoforge"
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ],
       "curseforgeId": "1716349",
       "updated": "2026-10-02"
@@ -1056,8 +1107,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Records who created an item, when, where, and how.",
       "tagline": "Records who created an item, when, where, and how.",
-      "version": "0.3.1",
-      "minecraftVersion": "1.20.6-1.21.11",
+      "version": "0.4.0",
+      "minecraftVersion": "1.20.6-26.3",
       "modrinthSlug": "",
       "icon": "icon.png",
       "tags": [
@@ -1070,7 +1121,7 @@ window.WIKI_DATA = {
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.20.6-1.21.11",
+          "label": "MC 1.20.6-26.3",
           "class": ""
         }
       ],
@@ -1085,7 +1136,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemCreationTracker features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-07",
           "searchExcerpt": "Records who created an item, when, where, and how."
         },
         {
@@ -1093,7 +1144,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFItemCreationTracker API, events, and integration examples.",
-          "updated": "2026-10-01",
+          "updated": "2026-10-07",
           "searchExcerpt": "FFItemCreationTracker public API and integration guide."
         }
       ],
@@ -1103,7 +1154,14 @@ window.WIKI_DATA = {
         "1.21.1-fabric",
         "1.21.1-neoforge",
         "1.21.11-fabric",
-        "1.21.11-neoforge"
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ],
       "curseforgeId": "1716378"
     },
@@ -1400,8 +1458,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Rewards diet variety with nutrition categories that affect maximum health.",
       "tagline": "Rewards diet variety with nutrition categories that affect maximum health.",
-      "version": "0.6.1",
-      "minecraftVersion": "1.20.1-1.21.11",
+      "version": "0.7.0",
+      "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "ffnutrition",
       "icon": "icon.png",
       "tags": [
@@ -1418,7 +1476,7 @@ window.WIKI_DATA = {
           "class": "tag--amber"
         },
         {
-          "label": "MC 1.20.1-1.21.11",
+          "label": "MC 1.20.1-26.3",
           "class": ""
         }
       ],
@@ -1433,7 +1491,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFNutrition features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-07",
           "searchExcerpt": "Rewards diet variety with nutrition categories that affect maximum health."
         },
         {
@@ -1449,7 +1507,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "03",
           "description": "FFNutrition API, events, and integration examples.",
-          "updated": "2026-10-01",
+          "updated": "2026-10-07",
           "searchExcerpt": "FFNutrition public API and integration guide."
         }
       ],
@@ -1461,7 +1519,14 @@ window.WIKI_DATA = {
         "1.21.1-fabric",
         "1.21.1-neoforge",
         "1.21.11-fabric",
-        "1.21.11-neoforge"
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ],
       "curseforgeId": "1715311"
     },
@@ -1511,8 +1576,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge.",
       "tagline": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge.",
-      "version": "0.2.14",
-      "minecraftVersion": "1.20.1-1.21.11",
+      "version": "0.2.15",
+      "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "",
       "icon": "icon.png",
       "tags": [
@@ -1529,7 +1594,7 @@ window.WIKI_DATA = {
           "class": "tag--amber"
         },
         {
-          "label": "MC 1.20.1-1.21.11",
+          "label": "MC 1.20.1-26.3",
           "class": ""
         }
       ],
@@ -1544,7 +1609,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFUtilities features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-06",
           "searchExcerpt": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge."
         },
         {
@@ -1552,7 +1617,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFUtilities API, events, and integration examples.",
-          "updated": "2026-10-02",
+          "updated": "2026-10-06",
           "searchExcerpt": "FFUtilities public API and integration guide."
         }
       ],
@@ -1564,7 +1629,17 @@ window.WIKI_DATA = {
         "1.21.1-fabric",
         "1.21.1-neoforge",
         "1.21.11-fabric",
-        "1.21.11-neoforge"
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1-neoforge",
+        "26.1.1-fabric",
+        "26.1.1-neoforge",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric",
+        "26.3-neoforge"
       ],
       "curseforgeId": "1716382",
       "updated": "2026-10-02"
@@ -1577,8 +1652,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Makes liquid source blocks fall under gravity.",
       "tagline": "Makes liquid source blocks fall under gravity.",
-      "version": "0.3.0",
-      "minecraftVersion": "1.20.1-1.21.11",
+      "version": "0.4.0",
+      "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "ffwaterfalls",
       "icon": "icon.png",
       "tags": [
@@ -1595,7 +1670,7 @@ window.WIKI_DATA = {
           "class": "tag--amber"
         },
         {
-          "label": "MC 1.20.1-1.21.11",
+          "label": "MC 1.20.1-26.3",
           "class": ""
         }
       ],
@@ -1610,7 +1685,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFWaterFalls features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-07",
           "searchExcerpt": "Makes liquid source blocks fall under gravity."
         }
       ],
@@ -1622,7 +1697,14 @@ window.WIKI_DATA = {
         "1.21.1-fabric",
         "1.21.1-neoforge",
         "1.21.11-fabric",
-        "1.21.11-neoforge"
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ],
       "curseforgeId": "1716357"
     },
@@ -1659,7 +1741,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFRandomQuests features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-07",
           "searchExcerpt": "Adds periodic personal and shared quests, rewards, and a Quest Board."
         },
         {
@@ -1974,7 +2056,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Feed animals to manage hunger, health and natural breeding.",
       "tagline": "Full bellies, healthy herds and natural breeding.",
-      "version": "0.3.0",
+      "version": "0.3.1",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "",
       "icon": "",
