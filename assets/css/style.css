@@ -881,6 +881,23 @@ img.project-icon { border: 1px solid var(--line); background: var(--paper); }
 .tag--purple { background: #EFE6FA; color: #6E3FA8; }
 html[data-theme="dark"] .tag--blue { background: #1B2A40; color: #86B2F0; }
 html[data-theme="dark"] .tag--purple { background: #2A2140; color: #C9A7EE; }
+/* Mod loader tags use Modrinth's loader colors. */
+.tag--fabric { --loader: #dbb69b; }
+.tag--neoforge { --loader: #f99e6b; }
+.tag--forge { --loader: #959eef; }
+.tag--quilt { --loader: #c796f9; }
+.tag--fabric, .tag--neoforge, .tag--forge, .tag--quilt {
+  background: color-mix(in srgb, var(--loader) 30%, var(--paper));
+  color: color-mix(in srgb, var(--loader) 40%, #000);
+  border-color: color-mix(in srgb, var(--loader) 55%, transparent);
+}
+html[data-theme="dark"] .tag--fabric,
+html[data-theme="dark"] .tag--neoforge,
+html[data-theme="dark"] .tag--forge,
+html[data-theme="dark"] .tag--quilt {
+  background: color-mix(in srgb, var(--loader) 18%, var(--paper));
+  color: var(--loader);
+}
 .platform-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.7rem; }
 .badge-row { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.8rem; }
 .badge-row img { height: 20px; display: block; }

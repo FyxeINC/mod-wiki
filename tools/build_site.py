@@ -34,7 +34,7 @@ FEED_FILE = SITE / "feed.xml"
 SITEMAP_FILE = SITE / "sitemap.xml"
 DATA_PATTERN = re.compile(r"(window\.WIKI_DATA\s*=\s*)(\{.*\})(\s*;\s*window\.WIKI_PROJECTS)", re.S)
 
-LOADER_TAGS = [("fabric", "Fabric", "tag--blue"), ("neoforge", "NeoForge", "tag--rust"), ("forge", "Forge", "tag--amber"), ("quilt", "Quilt", "tag--purple")]
+LOADER_TAGS = [("fabric", "Fabric", "tag--fabric"), ("neoforge", "NeoForge", "tag--neoforge"), ("forge", "Forge", "tag--forge"), ("quilt", "Quilt", "tag--quilt")]
 LOADER_ORDER = {key: i for i, (key, _, _) in enumerate(LOADER_TAGS)}
 
 

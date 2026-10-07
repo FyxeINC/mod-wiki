@@ -579,15 +579,15 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "Forge",
-          "class": "tag--amber"
+          "class": "tag--forge"
         },
         {
           "label": "MC 1.20.1-26.3",
@@ -651,11 +651,11 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "MC 1.21.1, 1.21.11",
@@ -724,11 +724,11 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "MC 1.21.1, 1.21.11",
@@ -797,15 +797,15 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "Forge",
-          "class": "tag--amber"
+          "class": "tag--forge"
         },
         {
           "label": "MC 1.20.1-26.3",
@@ -877,15 +877,15 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "Forge",
-          "class": "tag--amber"
+          "class": "tag--forge"
         },
         {
           "label": "MC 1.20.1-26.3",
@@ -941,15 +941,15 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "Forge",
-          "class": "tag--amber"
+          "class": "tag--forge"
         },
         {
           "label": "MC 1.20.1-26.3",
@@ -1013,11 +1013,11 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "MC 1.21.1-26.3",
@@ -1086,15 +1086,15 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "Forge",
-          "class": "tag--amber"
+          "class": "tag--forge"
         },
         {
           "label": "MC 1.20.1-26.3",
@@ -1166,11 +1166,11 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "MC 1.20.6-26.3",
@@ -1232,11 +1232,11 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "MC 1.20.6-26.3",
@@ -1306,15 +1306,15 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "Forge",
-          "class": "tag--amber"
+          "class": "tag--forge"
         },
         {
           "label": "MC 1.20.1-26.3",
@@ -1386,11 +1386,11 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "MC 1.21.1-26.3",
@@ -1440,7 +1440,7 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "MC 1.21.1",
@@ -1478,7 +1478,7 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "MC 1.20.4-26.3",
@@ -1538,15 +1538,15 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "Forge",
-          "class": "tag--amber"
+          "class": "tag--forge"
         },
         {
           "label": "MC 1.20.1-26.3",
@@ -1618,7 +1618,7 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "MC 1.21.1",
@@ -1656,15 +1656,15 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "Forge",
-          "class": "tag--amber"
+          "class": "tag--forge"
         },
         {
           "label": "MC 1.20.1-26.3",
@@ -1732,15 +1732,15 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "Forge",
-          "class": "tag--amber"
+          "class": "tag--forge"
         },
         {
           "label": "MC 1.20.1-26.3",
@@ -1796,7 +1796,7 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "MC 1.21.1",
@@ -1928,7 +1928,7 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "MC 1.21.1",
@@ -1967,7 +1967,7 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "MC 1.20.1",
@@ -2005,7 +2005,7 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "MC 1.21.1",
@@ -2055,15 +2055,15 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "Forge",
-          "class": "tag--amber"
+          "class": "tag--forge"
         },
         {
           "label": "MC 1.20.1-26.3",
@@ -2144,15 +2144,15 @@ window.WIKI_DATA = {
       "tags": [
         {
           "label": "Fabric",
-          "class": "tag--blue"
+          "class": "tag--fabric"
         },
         {
           "label": "NeoForge",
-          "class": "tag--rust"
+          "class": "tag--neoforge"
         },
         {
           "label": "Forge",
-          "class": "tag--amber"
+          "class": "tag--forge"
         },
         {
           "label": "MC 1.20.1-1.21.11",
