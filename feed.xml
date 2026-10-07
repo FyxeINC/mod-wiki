@@ -9,16 +9,30 @@
   <entry>
     <title>FFNutrition: Overview</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffnutrition/index.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-07-ffnutrition-85</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-07-ffnutrition-87</id>
     <updated>2026-10-07T00:00:00Z</updated>
     <summary>0.7.0: now on Minecraft 26.1 to 26.3 (Fabric) and 26.1.2 and 26.2 (NeoForge); new gaugeTextStyle option for the Metabolic Gauge text; otherwise no gameplay changes.</summary>
   </entry>
   <entry>
+    <title>FFExhaustion: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffexhaustion/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-07-ffexhaustion-86</id>
+    <updated>2026-10-07T00:00:00Z</updated>
+    <summary>0.10.0: now on Fabric 26.1 to 26.3 and NeoForge 26.1.2 and 26.2 (Java 25), with FFUtilities 0.2.15 bundled on 26.x.</summary>
+  </entry>
+  <entry>
     <title>FFWaterFalls: Overview</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffwaterfalls/index.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-07-ffwaterfalls-84</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-07-ffwaterfalls-85</id>
     <updated>2026-10-07T00:00:00Z</updated>
     <summary>0.4.0: now on Fabric 26.1 to 26.3 and NeoForge 26.1.2 and 26.2 (Java 25), with FFUtilities 0.2.15 bundled on 26.x. On Fabric, sources now also wake from neighbor updates (pistons, explosions, commands) as on NeoForge.</summary>
+  </entry>
+  <entry>
+    <title>FFItemRarityModifiers: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffitemraritymodifiers/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-07-ffitemraritymodifiers-84</id>
+    <updated>2026-10-07T00:00:00Z</updated>
+    <summary>0.4.0: now on Fabric 26.1 to 26.3 and NeoForge 26.1.2 and 26.2 (Java 25), with FFUtilities 0.2.15 bundled on 26.x.</summary>
   </entry>
   <entry>
     <title>FFItemCreationTracker: Overview</title>

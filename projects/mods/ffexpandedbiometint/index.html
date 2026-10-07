@@ -24,7 +24,7 @@
 <p>Colors multiply the original texture, so its detail remains visible. Block-breaking particles use the same biome color and strength as the block. Inventory previews have no world biome to sample, so they are untinted.</p>
 <p>When the rules arrive (on joining, or after <code>/reload</code> changes them), the client only rebuilds the loaded chunks; there is no resource reload screen.</p>
 <h2 id="version-differences">Version differences</h2>
-<p>On Minecraft 1.21.11, and on 1.21.1 with Sodium, tinted blocks keep their random texture variants (such as stone's rotated textures). On the other versions and setups, each tinted block always shows the same variant. Everything else works the same on every version and loader.</p>
+<p>On Minecraft 1.21.11 and newer (including 26.x), and on 1.21.1 with Sodium, tinted blocks keep their random texture variants (such as stone's rotated textures). On the other versions and setups, each tinted block always shows the same variant. Everything else works the same on every version and loader.</p>
 <h2 id="requirements">Requirements</h2>
 <div class="table-wrap"><table>
 <thead>
@@ -60,16 +60,46 @@
 <td>-</td>
 <td>21.11.45 or newer</td>
 </tr>
+<tr>
+<td>26.1</td>
+<td>Fabric Loader 0.18.4 or newer</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>26.1.1</td>
+<td>Fabric Loader 0.18.5 or newer</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>26.1.2</td>
+<td>Fabric Loader 0.19.2 or newer</td>
+<td>-</td>
+<td>26.1.2.114 or newer</td>
+</tr>
+<tr>
+<td>26.2</td>
+<td>Fabric Loader 0.19.3 or newer</td>
+<td>-</td>
+<td>26.2.0.88 or newer</td>
+</tr>
+<tr>
+<td>26.3</td>
+<td>Fabric Loader 0.19.5 or newer</td>
+<td>-</td>
+<td>-</td>
+</tr>
 </tbody>
 </table></div>
 <ul>
-<li><strong>Java:</strong> 17 for Minecraft 1.20.1, 21 for the newer versions.</li>
+<li><strong>Java:</strong> 17 for Minecraft 1.20.1, 21 for 1.20.6 to 1.21.11, 25 for 26.x.</li>
 <li><strong>Shared library:</strong> FFUtilities is built into the mod.</li>
-<li><strong>Sodium:</strong> optional on every Fabric version and on NeoForge 1.21.1 and 1.21.11. Checked with Sodium 0.5.13 (1.20.1), 0.5.11 (1.20.6), 0.8.13 (1.21.1) and 0.8.14 (1.21.11).</li>
+<li><strong>Sodium:</strong> optional on every Fabric version and on NeoForge 1.21.1, 1.21.11, 26.1.2 and 26.2. Checked with Sodium 0.5.13 (1.20.1), 0.5.11 (1.20.6), 0.8.13 (1.21.1), 0.8.14 (1.21.11) and 0.9.2 (26.2, Fabric and NeoForge).</li>
 <li><strong>Embeddium:</strong> optional on Forge 1.20.1 and NeoForge 1.20.6, where Sodium has no build. Checked with 0.3.31 and 0.3.20.</li>
 </ul>
 <p>There is no config file; rules come from datapacks (see <a href="datapacks.html">Datapacks</a>) and from other mods through the API.</p>
-<h2 id="requirements-and-source-version">Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.20.1, 1.20.6, 1.21.1, 1.21.11</td></tr><tr><th>Loader</th><td>Fabric Loader (0.14.21 on 1.20.1, 0.15.11 on 1.20.6, 0.16.1 on 1.21.1, 0.18.0 on 1.21.11) with Fabric API; Forge 47.1 or newer (1.20.1); NeoForge 20.6.141 (1.20.6), 21.1.211 (1.21.1) or 21.11.45 (1.21.11) or newer</td></tr><tr><th>Included library</th><td>FFUtilities 0.2.8 is bundled in the jar</td></tr><tr><th>Source version</th><td>0.6.0</td></tr></tbody></table></div><p>The Modrinth button is enabled only when a published project link is configured. The source version above may be newer than the latest published file.</p>
+<h2 id="requirements-and-source-version">Requirements and source version</h2><div class="table-wrap"><table><tbody><tr><th>Minecraft</th><td>1.20.1, 1.20.6, 1.21.1, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2, 26.3</td></tr><tr><th>Loader</th><td>Fabric Loader (0.14.21 on 1.20.1, 0.15.11 on 1.20.6, 0.16.1 on 1.21.1, 0.18.0 on 1.21.11, 0.18.4 on 26.1, 0.18.5 on 26.1.1, 0.19.2 on 26.1.2, 0.19.3 on 26.2, 0.19.5 on 26.3) with Fabric API; Forge 47.1 or newer (1.20.1); NeoForge 20.6.141 (1.20.6), 21.1.211 (1.21.1) 21.11.45 (1.21.11), 26.1.2.114 (26.1.2) or 26.2.0.88 (26.2) or newer</td></tr><tr><th>Included library</th><td>FFUtilities is bundled in the jar (0.2.8, or 0.2.15 on 26.x)</td></tr><tr><th>Source version</th><td>0.7.0</td></tr></tbody></table></div><p>The Modrinth button is enabled only when a published project link is configured. The source version above may be newer than the latest published file.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

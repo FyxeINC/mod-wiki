@@ -25,9 +25,21 @@ window.WIKI_DATA = {
       },
       {
         "date": "2026-10-07",
+        "project": "ffexhaustion",
+        "page": "index.html",
+        "change": "0.10.0: now on Fabric 26.1 to 26.3 and NeoForge 26.1.2 and 26.2 (Java 25), with FFUtilities 0.2.15 bundled on 26.x."
+      },
+      {
+        "date": "2026-10-07",
         "project": "ffwaterfalls",
         "page": "index.html",
         "change": "0.4.0: now on Fabric 26.1 to 26.3 and NeoForge 26.1.2 and 26.2 (Java 25), with FFUtilities 0.2.15 bundled on 26.x. On Fabric, sources now also wake from neighbor updates (pistons, explosions, commands) as on NeoForge."
+      },
+      {
+        "date": "2026-10-07",
+        "project": "ffitemraritymodifiers",
+        "page": "index.html",
+        "change": "0.4.0: now on Fabric 26.1 to 26.3 and NeoForge 26.1.2 and 26.2 (Java 25), with FFUtilities 0.2.15 bundled on 26.x."
       },
       {
         "date": "2026-10-07",
@@ -778,7 +790,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Applies biome tints with datapack rules and a mod integration API.",
       "tagline": "Give blocks local color with datapack rules.",
-      "version": "0.6.0",
+      "version": "0.7.0",
       "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "",
       "icon": "icon.png",
@@ -811,7 +823,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFExpandedBiomeTint features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-07",
           "searchExcerpt": "Datapack rules and a mod API assign grass, foliage, or water tint to blocks and breaking particles."
         },
         {
@@ -827,7 +839,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "03",
           "description": "Java registration API and datapack format for block biome tint rules.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-07",
           "searchExcerpt": "BiomeTintAPI Java methods, exact IDs, block tags, regex, tint channels, strengths, and datapack precedence."
         }
       ],
@@ -922,8 +934,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Tracks player fatigue from actions with configurable recovery and effects.",
       "tagline": "Tracks player fatigue from actions with configurable recovery and effects.",
-      "version": "0.9.2",
-      "minecraftVersion": "1.20.1-1.21.11",
+      "version": "0.10.0",
+      "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "ffexhaustion",
       "icon": "icon.png",
       "tags": [
@@ -940,7 +952,7 @@ window.WIKI_DATA = {
           "class": "tag--amber"
         },
         {
-          "label": "MC 1.20.1-1.21.11",
+          "label": "MC 1.20.1-26.3",
           "class": ""
         }
       ],
@@ -955,7 +967,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFExhaustion features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-07",
           "searchExcerpt": "Tracks player fatigue from actions with configurable recovery and effects."
         },
         {
@@ -975,7 +987,14 @@ window.WIKI_DATA = {
         "1.21.1-fabric",
         "1.21.1-neoforge",
         "1.21.11-fabric",
-        "1.21.11-neoforge"
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ],
       "curseforgeId": "1716363"
     },
@@ -1235,7 +1254,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemRarityModifiers features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-07",
           "searchExcerpt": "Adds configurable rarity rolls and small modifiers to gear."
         },
         {
