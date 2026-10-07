@@ -708,7 +708,7 @@ window.WIKI_DATA = {
       "version": "0.8.1",
       "minecraftVersion": "1.21.1, 1.21.11",
       "modrinthSlug": "",
-      "icon": "",
+      "icon": "icon.png",
       "tags": [
         {
           "label": "Fabric",
@@ -725,7 +725,7 @@ window.WIKI_DATA = {
       ],
       "links": {
         "github": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffentitydirt",
         "discord": ""
       },
       "pages": [
@@ -767,7 +767,8 @@ window.WIKI_DATA = {
         "1.21.1-neoforge",
         "1.21.11-fabric",
         "1.21.11-neoforge"
-      ]
+      ],
+      "curseforgeId": "1721009"
     },
     {
       "slug": "ffexpandedbiometint",
@@ -778,7 +779,7 @@ window.WIKI_DATA = {
       "description": "Applies biome tints with datapack rules and a mod integration API.",
       "tagline": "Give blocks local color with datapack rules.",
       "version": "0.6.0",
-      "minecraftVersion": "1.20.1-1.21.11",
+      "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "",
       "icon": "icon.png",
       "tags": [
@@ -795,7 +796,7 @@ window.WIKI_DATA = {
           "class": "tag--amber"
         },
         {
-          "label": "MC 1.20.1-1.21.11",
+          "label": "MC 1.20.1-26.3",
           "class": ""
         }
       ],
@@ -838,7 +839,14 @@ window.WIKI_DATA = {
         "1.21.1-fabric",
         "1.21.1-neoforge",
         "1.21.11-fabric",
-        "1.21.11-neoforge"
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ],
       "curseforgeId": "1716383"
     },
@@ -1198,8 +1206,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds configurable rarity rolls and small modifiers to gear.",
       "tagline": "Adds configurable rarity rolls and small modifiers to gear.",
-      "version": "0.3.1",
-      "minecraftVersion": "1.20.6-1.21.11",
+      "version": "0.4.0",
+      "minecraftVersion": "1.20.6-26.3",
       "modrinthSlug": "",
       "icon": "icon.png",
       "tags": [
@@ -1212,7 +1220,7 @@ window.WIKI_DATA = {
           "class": "tag--rust"
         },
         {
-          "label": "MC 1.20.6-1.21.11",
+          "label": "MC 1.20.6-26.3",
           "class": ""
         }
       ],
@@ -1253,7 +1261,14 @@ window.WIKI_DATA = {
         "1.21.1-fabric",
         "1.21.1-neoforge",
         "1.21.11-fabric",
-        "1.21.11-neoforge"
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ],
       "curseforgeId": "1716386"
     },
@@ -1890,7 +1905,7 @@ window.WIKI_DATA = {
       "version": "0.1.3",
       "minecraftVersion": "1.21.1",
       "modrinthSlug": "",
-      "icon": "",
+      "icon": "icon.png",
       "tags": [
         {
           "label": "NeoForge",
@@ -2017,7 +2032,7 @@ window.WIKI_DATA = {
       "version": "0.3.0",
       "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "",
-      "icon": "",
+      "icon": "icon.png",
       "tags": [
         {
           "label": "Fabric",
@@ -2039,7 +2054,7 @@ window.WIKI_DATA = {
       "links": {
         "github": "",
         "modrinth": "",
-        "curseforge": "",
+        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ffdeathrules",
         "discord": ""
       },
       "pages": [
@@ -2092,7 +2107,8 @@ window.WIKI_DATA = {
         "26.2-fabric",
         "26.2-neoforge",
         "26.3-fabric"
-      ]
+      ],
+      "curseforgeId": "1728811"
     },
     {
       "slug": "ffanimalcare",
