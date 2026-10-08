@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Datapacks — FFFoodSpoilageAndPreservation — Fyxe's Mod Wiki</title>
-<meta name="description" content="Modifier categories, preservation modifiers, cooking recipes and food tags.">
+<meta name="description" content="Spoilage stages, modifier categories, preservation modifiers, cooking recipes and food tags.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -17,7 +17,31 @@
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFFoodSpoilageAndPreservation</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth &#8599;</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source &#8599;</a></div></div></div>
 <h2 id="datapacks">Datapacks</h2>
-<p>Preservation is fully data driven. Datapacks can add modifier categories and modifiers, add smoker and campfire recipes that apply a modifier, and overlay the mod's food tags. The same files work on every supported version and loader. Use <code>/reload</code> after changing a datapack.</p>
+<p>Preservation is fully data driven. Datapacks can define spoilage stages, add modifier categories and modifiers, add smoker and campfire recipes that apply a modifier, and overlay the mod's food tags. The same files work on every supported version and loader. Use <code>/reload</code> after changing a datapack.</p>
+<h3 id="spoilage-stages">Spoilage stages</h3>
+<p>Path: <code>data/&lt;namespace&gt;/fffoodspoilageandpreservation/stage/&lt;id&gt;.json</code> (a synced registry). Stages are sorted by <code>order</code> (lowest is freshest, ties by id). The first stage is fresh and the last is final: food that fills it is fully spoiled. If a datapack leaves no stages, the built-in defaults are used. This is the built-in Rotten stage:</p>
+<pre><code class="language-json">{
+  &quot;order&quot;: 4,
+  &quot;name&quot;: {&quot;translate&quot;: &quot;stage.fffoodspoilageandpreservation.rotten&quot;},
+  &quot;color&quot;: &quot;RED&quot;,
+  &quot;duration_ticks&quot;: 2400,
+  &quot;debuff_chance&quot;: 0.35
+}
+</code></pre>
+<div class="table-wrap"><table>
+<thead><tr><th>Field</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>order</code></td><td>Integer sort position, lowest first (default 0)</td></tr>
+<tr><td><code>name</code></td><td>Text component shown in tooltips (required)</td></tr>
+<tr><td><code>color</code></td><td>Tooltip color: hex like <code>#55FF55</code> or a color name like <code>GOLD</code> (default <code>WHITE</code>)</td></tr>
+<tr><td><code>duration_ticks</code></td><td>Ticks needed to fill the stage at the normal rate, at least 1 (required)</td></tr>
+<tr><td><code>buff_chance</code> / <code>debuff_chance</code></td><td>0 to 1 chance of a random buff or debuff when eating food in this stage (default 0). Needs <code>freshBuffs.enabled</code> / <code>nearSpoiledDebuffs.enabled</code> in the server config</td></tr>
+<tr><td><code>buffs</code> / <code>debuffs</code></td><td>Optional lists of <code>{effect, duration_ticks (default 100), amplifier (default 0), weight (default 1)}</code>. When empty, the <code>freshBuffs.buffs</code> / <code>nearSpoiledDebuffs.debuffs</code> config tables are used</td></tr>
+<tr><td><code>nutrition_multiplier</code> / <code>saturation_multiplier</code></td><td>Optional 0 to 1 absolute multiplier for this stage. When absent, the compounding <code>nutritionPerStage</code> / <code>saturationPerStage</code> config values apply</td></tr>
+<tr><td><code>noise_intensity</code> / <code>noise_color</code></td><td>Optional 0 to 1 intensity and hex color overriding the client spoilage noise ramp for this stage</td></tr>
+</tbody>
+</table></div>
+<p>Built-in stages: <code>fresh</code> (order 0, <code>#55FF55</code>, 1200 ticks, <code>buff_chance</code> 0.15), <code>good</code> (1, <code>#9BE03A</code>, 2400), <code>stale</code> (2, <code>YELLOW</code>, 3600), <code>rotting</code> (3, <code>GOLD</code>, 2400) and <code>rotten</code> (4, <code>RED</code>, 2400, <code>debuff_chance</code> 0.35).</p>
 <h3 id="modifier-categories">Modifier categories</h3>
 <p>Path: <code>data/&lt;namespace&gt;/fffoodspoilageandpreservation/modifier_category/&lt;id&gt;.json</code> (a synced registry).</p>
 <pre><code class="language-json">{
@@ -56,8 +80,10 @@
   &quot;prevent_eating&quot;: false,
   &quot;display_name&quot;: {&quot;translate&quot;: &quot;tooltip.fffoodspoilageandpreservation.modifier.candied&quot;},
   &quot;tooltip_color&quot;: &quot;GOLD&quot;,
-  &quot;item_highlight&quot;: &quot;tint&quot;,
   &quot;item_tint&quot;: &quot;#F2A21B&quot;,
+  &quot;item_visuals&quot;: [
+    {&quot;type&quot;: &quot;gradient&quot;, &quot;color&quot;: &quot;#F2A21B&quot;, &quot;opacity&quot;: 30, &quot;end_color&quot;: &quot;#7A3F00&quot;, &quot;end_opacity&quot;: 65, &quot;angle&quot;: 0}
+  ],
   &quot;apply_items&quot;: [&quot;minecraft:honey_bottle&quot;],
   &quot;remove_items&quot;: [],
   &quot;food_whitelist&quot;: [],
@@ -91,12 +117,16 @@
 <td>Tooltip text and its color</td>
 </tr>
 <tr>
+<td><code>item_visuals</code> (0.12.0)</td>
+<td>List of visual layers drawn on the food in inventories and hands, in order (last in front); see below. Needs FFUtilities 0.2.17</td>
+</tr>
+<tr>
 <td><code>item_highlight</code></td>
-<td><code>none</code> (default), <code>tint</code>, <code>outline</code> or <code>both</code>, drawn in <code>item_tint</code>. Older files with <code>tint_item: true</code> and no <code>item_highlight</code> count as <code>tint</code></td>
+<td>Legacy, still works when <code>item_visuals</code> is empty or missing: <code>none</code> (default), <code>tint</code>, <code>outline</code> or <code>both</code>, drawn in <code>item_tint</code>. Older files with <code>tint_item: true</code> and no <code>item_highlight</code> count as <code>tint</code></td>
 </tr>
 <tr>
 <td><code>item_tint</code></td>
-<td><code>#RRGGBB</code> highlight color</td>
+<td><code>#RRGGBB</code> default color for layers that give no <code>color</code> (and for the legacy highlight)</td>
 </tr>
 <tr>
 <td><code>apply_items</code> / <code>remove_items</code></td>
@@ -112,8 +142,45 @@
 </tr>
 </tbody>
 </table></div>
+<h4 id="item-visuals">Item visuals</h4>
+<p>Each entry of <code>item_visuals</code> is one layer. Layers draw in list order, so the last is in front, and modifiers on the same food stack with the lowest-ranked first.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td>Required. <code>tint</code> (flat color), <code>gradient</code> (<code>color</code> fading to <code>end_color</code> along <code>angle</code>), <code>radial</code> (<code>color</code> at the center to <code>end_color</code> at the edges), <code>noise</code> (sparse flecks like salt or frost), <code>desaturate</code> (drains the food&#x27;s own color; <code>opacity</code> is the amount) or <code>outline</code> (1-pixel border, inventories only; the highest-ranked modifier&#x27;s outline wins)</td>
+</tr>
+<tr>
+<td><code>color</code> / <code>end_color</code></td>
+<td>Hex color. <code>color</code> defaults to the modifier&#x27;s <code>item_tint</code></td>
+</tr>
+<tr>
+<td><code>opacity</code> / <code>end_opacity</code></td>
+<td>0 to 100 percent. <code>opacity</code> defaults to 35 and is the start opacity of a gradient; <code>end_opacity</code> defaults to the same value, so a gradient can fade in from nothing</td>
+</tr>
+<tr>
+<td><code>blend</code></td>
+<td><code>normal</code> (default), <code>multiply</code>, <code>screen</code> or <code>overlay</code>: how the color mixes with the food&#x27;s own pixels</td>
+</tr>
+<tr>
+<td><code>angle</code></td>
+<td>Gradient direction in degrees (default 0): 0 runs top to bottom, 90 left to right, 180 bottom to top, 270 right to left</td>
+</tr>
+<tr>
+<td><code>intensity</code></td>
+<td><code>noise</code> only: 0 to 100 (default 30), how many flecks</td>
+</tr>
+</tbody>
+</table></div>
+<p>For example, the built-in Frozen modifier uses a 35 percent <code>tint</code> layer plus an <code>outline</code> layer, and Cured uses a faint white tint plus white <code>noise</code>. The player&#x27;s client option <code>modifierVisualOpacity</code> scales every layer&#x27;s opacity.</p>
 <p>Within a category, the modifier with the lowest <code>rate_multiplier</code> ranks highest. It wins when two modifiers share an apply item, and only a higher-ranked modifier replaces an existing one in an exclusive category. Modifiers no longer have their own <code>priority</code>; old files that still set it load fine and the value is ignored.</p>
-<p>Built-in IDs: <code>preservation</code>, <code>temperature</code> (categories) and <code>cured</code>, <code>brined</code>, <code>candied</code>, <code>dried</code>, <code>smoked</code>, <code>frozen</code> (modifiers). Old saves with <code>"cured"</code> resolve to <code>fffoodspoilageandpreservation:cured</code>.</p>
+<p>Built-in IDs: <code>preservation</code>, <code>temperature</code> (categories) and <code>cured</code>, <code>brined</code>, <code>candied</code>, <code>smoked</code>, <code>frozen</code> (modifiers). Old saves with <code>"cured"</code> resolve to <code>fffoodspoilageandpreservation:cured</code>.</p>
 <h3 id="cooking-recipes">Cooking recipes</h3>
 <p>Smoker and campfire recipes keep the same food and apply a modifier:</p>
 <pre><code class="language-json">{

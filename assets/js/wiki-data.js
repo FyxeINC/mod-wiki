@@ -18,6 +18,48 @@ window.WIKI_DATA = {
     },
     "recentUpdates": [
       {
+        "date": "2026-10-08",
+        "project": "fffoodspoilageandpreservation",
+        "page": "datapacks.html",
+        "change": "0.12.0: modifier JSON gains item_visuals, a list of tint, gradient, radial, noise, desaturate and outline layers; client option tintOpacity is replaced by modifierVisualOpacity. Needs FFUtilities 0.2.17."
+      },
+      {
+        "date": "2026-10-08",
+        "project": "ffutilities",
+        "page": "api.html",
+        "change": "0.2.17: item highlight patterns gain gradients (linear, vertical, radial), a DESATURATE blend that now works on every pattern, and SpriteMasks bounds helpers."
+      },
+      {
+        "date": "2026-10-08",
+        "project": "ffutilities",
+        "page": "api.html",
+        "change": "0.2.16: new client-only item highlight API (api.client.highlight) for tinting, noise and outlines on items in the GUI and in hand, plus GuiUtil.drawOutline."
+      },
+      {
+        "date": "2026-10-08",
+        "project": "ffitemweight",
+        "page": "index.html",
+        "change": "0.10.0: slotHighlightMode gains ITEM_TINT and ITEM_OUTLINE, which follow the item sprite shape and also work on the hotbar. Needs FFUtilities 0.2.16."
+      },
+      {
+        "date": "2026-10-08",
+        "project": "fffoodspoilageandpreservation",
+        "page": "index.html",
+        "change": "0.11.1: bundles FFUtilities 0.2.16 on every target; item tints and outlines look the same."
+      },
+      {
+        "date": "2026-10-08",
+        "project": "ffentitydirt",
+        "page": "index.html",
+        "change": "0.9.0: now on Minecraft 26.x: Fabric 26.1 to 26.3 and NeoForge 26.1.2 and 26.2 (Java 25); needs FF Entity Painting 0.10.0 or newer there."
+      },
+      {
+        "date": "2026-10-07",
+        "project": "ffentitypainting",
+        "page": "index.html",
+        "change": "0.10.0: now on Minecraft 26.x: Fabric 26.1 to 26.3 and NeoForge 26.1.2 and 26.2 (Java 25); EMF, ETF, GeckoLib 5 and 3D Skin Layers supported there."
+      },
+      {
         "date": "2026-10-07",
         "project": "ffnutrition",
         "page": "index.html",
@@ -644,8 +686,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Paint living entities, modded and GeckoLib mobs included, with shared, team-restricted and local layers, with a mod API for brushes, layer access rules and server-side painting.",
       "tagline": "Add a splash of color to living entities.",
-      "version": "0.9.11",
-      "minecraftVersion": "1.21.1, 1.21.11",
+      "version": "0.10.0",
+      "minecraftVersion": "1.21.1-26.3",
       "modrinthSlug": "",
       "icon": "icon.png",
       "tags": [
@@ -658,7 +700,7 @@ window.WIKI_DATA = {
           "class": "tag--neoforge"
         },
         {
-          "label": "MC 1.21.1, 1.21.11",
+          "label": "MC 1.21.1-26.3",
           "class": ""
         }
       ],
@@ -673,7 +715,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFEntityPainting features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-07",
           "searchExcerpt": "Paint living entities with layers, blend modes and brush opacity, local layers and team layers, modded and GeckoLib mobs, and 3D Skin Layers on players."
         },
         {
@@ -697,7 +739,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "04",
           "description": "Java API for paint tools, server-side paint edits, locked, owned and stacked layers with data tags, layer access rules (combinable, layer-aware), local layers, events, snapshots, body shapes, geometry capture, the painted texture for other renderers, preview paint and opting mobs out.",
-          "updated": "2026-10-02",
+          "updated": "2026-10-07",
           "searchExcerpt": "EntityPaintingAPI, PaintEditor, PaintView, PaintTool, PixelMode opacity, BlendMode, LayerBand owner stacking band priority layer data tag, LayerAccess anyOf allOf not LayerRules LayerRule ForLayer team tag view paint access, editLocal paintLocal local layers raycast, PaintEvent, PaintUpdatedEvent, UNPAINTABLE excludeEntities isPaintable excludeModel excludeModels GeckoLib surfaces bones, captureGeometry CapturedGeometry rasterize, BodyShapes SurfaceShape canvasCells BodyFrame measureShapes, paintedTexture PaintedTexture statue mannequin portrait, preview previewFor previewHit clearPreview ghost brush, surfaces aliases exclusions datapack resource pack."
         }
       ],
@@ -705,7 +747,14 @@ window.WIKI_DATA = {
         "1.21.1-fabric",
         "1.21.1-neoforge",
         "1.21.11-fabric",
-        "1.21.11-neoforge"
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ],
       "curseforgeId": "1716393"
     },
@@ -717,8 +766,8 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Entities pick up dirt from the ground, soot, snow and damage marks, and wash it all off in water, rain or a cauldron.",
       "tagline": "Mobs that look like they've been somewhere.",
-      "version": "0.8.1",
-      "minecraftVersion": "1.21.1, 1.21.11",
+      "version": "0.9.0",
+      "minecraftVersion": "1.21.1-26.3",
       "modrinthSlug": "",
       "icon": "icon.png",
       "tags": [
@@ -731,7 +780,7 @@ window.WIKI_DATA = {
           "class": "tag--neoforge"
         },
         {
-          "label": "MC 1.21.1, 1.21.11",
+          "label": "MC 1.21.1-26.3",
           "class": ""
         }
       ],
@@ -746,7 +795,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFEntityDirt features, requirements, and source version.",
-          "updated": "2026-10-04",
+          "updated": "2026-10-08",
           "searchExcerpt": "Dirt from walking, falls and mining, honey and slime smears, sculk stains, powder snow and lava char, soot from fire and explosions, snow, weapon wounds from projectiles, melee and mobs, washed off by water, rain or a cauldron, stored as FFEntityPainting paint on locked layers."
         },
         {
@@ -770,7 +819,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "04",
           "description": "Java API for wound marks: register wound shapes, restyle built-ins, assign item and entity tags, and pick wounds in code.",
-          "updated": "2026-10-02",
+          "updated": "2026-10-08",
           "searchExcerpt": "WoundAPI register replaceShape assignItems assignEntities addResolver resolve, WoundShape builder Sizing LINE BLOT Rotation RANDOM LEVEL VERTICAL stroke dot ring spatter tint minScale, WoundContext, WoundResolver, Better Combat categories, item keywords."
         }
       ],
@@ -778,7 +827,14 @@ window.WIKI_DATA = {
         "1.21.1-fabric",
         "1.21.1-neoforge",
         "1.21.11-fabric",
-        "1.21.11-neoforge"
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ],
       "curseforgeId": "1721009"
     },
@@ -1006,7 +1062,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
       "tagline": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
-      "version": "0.10.0",
+      "version": "0.12.0",
       "minecraftVersion": "1.21.1-26.3",
       "modrinthSlug": "fffoodspoilageandpreservation",
       "icon": "icon.png",
@@ -1035,23 +1091,23 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFFoodSpoilageAndPreservation features, requirements, and source version.",
-          "updated": "2026-10-07",
+          "updated": "2026-10-08",
           "searchExcerpt": "Food spoilage stages, preservation methods, storage rates, stacking, and requirements."
         },
         {
           "file": "datapacks.html",
           "title": "Datapacks",
           "index": "02",
-          "description": "FFFoodSpoilageAndPreservation datapack formats: modifier categories, preservation modifiers, cooking recipes and food tags.",
-          "updated": "2026-09-30",
-          "searchExcerpt": "Preservation modifier and category JSON fields, smoker and campfire modifier recipes, never spoil tags."
+          "description": "FFFoodSpoilageAndPreservation datapack formats: spoilage stages, modifier categories, preservation modifiers, cooking recipes and food tags.",
+          "updated": "2026-10-08",
+          "searchExcerpt": "Spoilage stage JSON fields, preservation modifier and category JSON fields, smoker and campfire modifier recipes, never spoil tags."
         },
         {
           "file": "api.html",
           "title": "Modding API",
           "index": "03",
           "description": "FFFoodSpoilageAndPreservation API, events, and integration examples.",
-          "updated": "2026-10-07",
+          "updated": "2026-10-08",
           "searchExcerpt": "Food spoilage events, modifier definitions, custom inventory stacking, and integration examples."
         }
       ],
@@ -1299,7 +1355,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Gives items weight and players configurable encumbrance bands.",
       "tagline": "Gives items weight and players configurable encumbrance bands.",
-      "version": "0.9.0",
+      "version": "0.10.0",
       "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "ffitemweight",
       "icon": "icon.png",
@@ -1332,7 +1388,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemWeight features, requirements, and source version.",
-          "updated": "2026-10-07",
+          "updated": "2026-10-08",
           "searchExcerpt": "Gives items weight and players configurable encumbrance bands."
         },
         {
@@ -1649,7 +1705,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge.",
       "tagline": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge.",
-      "version": "0.2.15",
+      "version": "0.2.17",
       "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "",
       "icon": "icon.png",
@@ -1682,7 +1738,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFUtilities features, requirements, and source version.",
-          "updated": "2026-10-06",
+          "updated": "2026-10-08",
           "searchExcerpt": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge."
         },
         {
@@ -1690,7 +1746,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFUtilities API, events, and integration examples.",
-          "updated": "2026-10-06",
+          "updated": "2026-10-08",
           "searchExcerpt": "FFUtilities public API and integration guide."
         }
       ],
