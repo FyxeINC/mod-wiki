@@ -83,7 +83,7 @@
 <tr>
 <td><code>kind</code></td>
 <td>required</td>
-<td><code>attribute</code> (changes an attribute) or <code>max_damage</code> (changes durability)</td>
+<td><code>attribute</code> (changes an attribute), <code>max_damage</code> (changes durability; only items with durability roll it), <code>projectile_damage</code> (value added to the base damage of arrows and tridents fired from the item) or <code>projectile_velocity</code> (percent change of launch speed, so 5 means +5%)</td>
 </tr>
 <tr>
 <td><code>family</code></td>
@@ -132,9 +132,9 @@
 </tr>
 </tbody>
 </table></div>
-<p>Attribute IDs follow the Minecraft version: on 1.21.11 write <code>minecraft:attack_damage</code> instead of <code>minecraft:generic.attack_damage</code>. Bundled examples include attack, armor, durability, reach, movement, health, mining speed, fishing luck and shield modifiers.</p>
+<p>Attribute IDs follow the Minecraft version: on 1.21.11 write <code>minecraft:attack_damage</code> instead of <code>minecraft:generic.attack_damage</code>. Bundled examples include attack, armor, durability, reach, movement, health, mining speed, fishing luck and shield modifiers. Projectile modifiers are Piercing and Blunted (damage) and Fleet and Lobbed (speed); they are good or bad weapon modifiers that require the <code>c:tools/ranged_weapon</code> tag. Block reach modifiers require <code>ffitemraritymodifiers:mining_tools</code> and entity reach modifiers require <code>c:tools/melee_weapon</code>.</p>
 <h3 id="rarity-weights">Rarity weights</h3>
-<p>File name must be a vanilla rarity ID (<code>common</code>, <code>uncommon</code>, <code>rare</code>, <code>epic</code>). Each list is a weighted table of how many modifiers to roll. This is the bundled <code>rare.json</code>:</p>
+<p>File name must be a vanilla rarity ID (<code>common</code>, <code>uncommon</code>, <code>rare</code>, <code>epic</code>). Each list is a weighted table of how many modifiers to roll. Bundled rarities roll no bad modifiers (<code>bad_amounts</code> is only amount 0), and Common rolls none at all; add non-zero bad amounts to enable negatives. This is the bundled <code>rare.json</code>:</p>
 <pre><code class="language-json">{
   &quot;good_amounts&quot;: [
     {&quot;amount&quot;: 0, &quot;weight&quot;: 0},
@@ -143,14 +143,12 @@
     {&quot;amount&quot;: 3, &quot;weight&quot;: 1}
   ],
   &quot;bad_amounts&quot;: [
-    {&quot;amount&quot;: 0, &quot;weight&quot;: 8},
-    {&quot;amount&quot;: 1, &quot;weight&quot;: 2},
-    {&quot;amount&quot;: 2, &quot;weight&quot;: 1}
+    {&quot;amount&quot;: 0, &quot;weight&quot;: 1}
   ]
 }
 </code></pre>
 <h3 id="rarity-sources">Rarity sources</h3>
-<p><code>chance</code> (0 to 1) is how likely the trigger rolls a rarity at all; <code>rarity_weights</code> picks which one, including Common. A successful Common roll is shown on the item.</p>
+<p><code>chance</code> (0 to 1) is how likely the weighted <code>rarity_weights</code> table is used. If the roll fails or the source is unknown, the item becomes Common, so every eligible item always gets a rarity, and it is shown on the item.</p>
 <pre><code class="language-json">{
   &quot;chance&quot;: 1.00,
   &quot;rarity_weights&quot;: [
@@ -162,6 +160,7 @@
 }
 </code></pre>
 <p>Built-in IDs used automatically: <code>crafting</code>, <code>fishing</code>, <code>trading</code>, <code>mob_drops</code>, <code>loot_table</code>. The bundled <code>elite_mobs</code> and <code>dungeon_loot</code> sources are used by the example overrides below. Packs that override <code>trading_before</code> must rename that source to <code>trading</code>. A <code>smithing_default</code> source also ships for future use, but nothing calls it automatically yet. Add your own ID and reference it from an override file or from a mod through the API.</p>
+<p>The <code>loot_table</code> hook skips mob death tables (<code>entities/...</code>) and fishing tables (<code>gameplay/fishing</code> and below), because those items roll through the <code>mob_drops</code> and <code>fishing</code> sources (and mob overrides). A <code>rarity_source_override/loot_table</code> file that lists one of those tables makes the hook roll it with the override's source instead.</p>
 <h3 id="source-overrides">Source overrides</h3>
 <p>Redirect specific mobs (or entity tags, with a <code>#</code> prefix) away from <code>mob_drops</code>, or specific loot tables away from <code>loot_table</code>:</p>
 <pre><code class="language-json">{

@@ -16,10 +16,10 @@
   const SECTIONS = Object.values(DATA.sections || {});
   const ROOT = window.SITE_ROOT || "";
   const LOADERS = [
-    { key: "fabric", label: "Fabric", css: "tag--blue" },
-    { key: "neoforge", label: "NeoForge", css: "tag--rust" },
-    { key: "forge", label: "Forge", css: "tag--amber" },
-    { key: "quilt", label: "Quilt", css: "tag--purple" }
+    { key: "fabric", label: "Fabric", css: "tag--fabric" },
+    { key: "neoforge", label: "NeoForge", css: "tag--neoforge" },
+    { key: "forge", label: "Forge", css: "tag--forge" },
+    { key: "quilt", label: "Quilt", css: "tag--quilt" }
   ];
 
   /* ---------------------------------------------------------------------

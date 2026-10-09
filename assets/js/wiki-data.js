@@ -78,6 +78,12 @@ window.WIKI_DATA = {
         "change": "0.4.0: now on Fabric 26.1 to 26.3 and NeoForge 26.1.2 and 26.2 (Java 25), with FFUtilities 0.2.15 bundled on 26.x. On Fabric, sources now also wake from neighbor updates (pistons, explosions, commands) as on NeoForge."
       },
       {
+        "date": "2026-10-08",
+        "project": "ffitemraritymodifiers",
+        "page": "datapacks.html",
+        "change": "0.5.0: enableMobDrops and enableLootTables now work (the loot hook skips mob and fishing tables unless overridden), new projectile_damage and projectile_velocity modifier kinds with Piercing, Blunted, Fleet and Lobbed, reach modifiers limited to fitting tools, and smithing upgrades keep rarity and modifiers on the new item."
+      },
+      {
         "date": "2026-10-07",
         "project": "ffitemraritymodifiers",
         "page": "index.html",
@@ -1281,7 +1287,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds configurable rarity rolls and small modifiers to gear.",
       "tagline": "Adds configurable rarity rolls and small modifiers to gear.",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "minecraftVersion": "1.20.6-26.3",
       "modrinthSlug": "",
       "icon": "icon.png",
@@ -1310,7 +1316,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemRarityModifiers features, requirements, and source version.",
-          "updated": "2026-10-07",
+          "updated": "2026-10-08",
           "searchExcerpt": "Adds configurable rarity rolls and small modifiers to gear."
         },
         {
@@ -1318,7 +1324,7 @@ window.WIKI_DATA = {
           "title": "Datapacks",
           "index": "02",
           "description": "FFItemRarityModifiers datapack formats: modifier types, rarity weights, rarity sources, overrides and item tags.",
-          "updated": "2026-09-30",
+          "updated": "2026-10-08",
           "searchExcerpt": "Modifier type fields, rarity weights, rarity source chances, mob and loot table overrides, eligible item tags."
         },
         {
@@ -1326,7 +1332,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "03",
           "description": "FFItemRarityModifiers API, gear tags, modifier targeting, and integration examples.",
-          "updated": "2026-10-01",
+          "updated": "2026-10-08",
           "searchExcerpt": "FFItemRarityModifiers API, durable gear tags, required_item_tag modifier targeting, and integration guide."
         }
       ],

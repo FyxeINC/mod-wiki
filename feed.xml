@@ -9,44 +9,51 @@
   <entry>
     <title>FFFoodSpoilageAndPreservation: Datapacks</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/fffoodspoilageandpreservation/datapacks.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-08-fffoodspoilageandpreservation-94</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-08-fffoodspoilageandpreservation-95</id>
     <updated>2026-10-08T00:00:00Z</updated>
     <summary>0.12.0: modifier JSON gains item_visuals, a list of tint, gradient, radial, noise, desaturate and outline layers; client option tintOpacity is replaced by modifierVisualOpacity. Needs FFUtilities 0.2.17.</summary>
   </entry>
   <entry>
     <title>FFUtilities: Modding API</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffutilities/api.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-08-ffutilities-93</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-08-ffutilities-94</id>
     <updated>2026-10-08T00:00:00Z</updated>
     <summary>0.2.17: item highlight patterns gain gradients (linear, vertical, radial), a DESATURATE blend that now works on every pattern, and SpriteMasks bounds helpers.</summary>
   </entry>
   <entry>
     <title>FFUtilities: Modding API</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffutilities/api.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-08-ffutilities-92</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-08-ffutilities-93</id>
     <updated>2026-10-08T00:00:00Z</updated>
     <summary>0.2.16: new client-only item highlight API (api.client.highlight) for tinting, noise and outlines on items in the GUI and in hand, plus GuiUtil.drawOutline.</summary>
   </entry>
   <entry>
     <title>FFItemWeight: Overview</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffitemweight/index.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-08-ffitemweight-91</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-08-ffitemweight-92</id>
     <updated>2026-10-08T00:00:00Z</updated>
     <summary>0.10.0: slotHighlightMode gains ITEM_TINT and ITEM_OUTLINE, which follow the item sprite shape and also work on the hotbar. Needs FFUtilities 0.2.16.</summary>
   </entry>
   <entry>
     <title>FFFoodSpoilageAndPreservation: Overview</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/fffoodspoilageandpreservation/index.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-08-fffoodspoilageandpreservation-90</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-08-fffoodspoilageandpreservation-91</id>
     <updated>2026-10-08T00:00:00Z</updated>
     <summary>0.11.1: bundles FFUtilities 0.2.16 on every target; item tints and outlines look the same.</summary>
   </entry>
   <entry>
     <title>FFEntityDirt: Overview</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffentitydirt/index.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-08-ffentitydirt-89</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-08-ffentitydirt-90</id>
     <updated>2026-10-08T00:00:00Z</updated>
     <summary>0.9.0: now on Minecraft 26.x: Fabric 26.1 to 26.3 and NeoForge 26.1.2 and 26.2 (Java 25); needs FF Entity Painting 0.10.0 or newer there.</summary>
+  </entry>
+  <entry>
+    <title>FFItemRarityModifiers: Datapacks</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffitemraritymodifiers/datapacks.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-08-ffitemraritymodifiers-89</id>
+    <updated>2026-10-08T00:00:00Z</updated>
+    <summary>0.5.0: enableMobDrops and enableLootTables now work (the loot hook skips mob and fishing tables unless overridden), new projectile_damage and projectile_velocity modifier kinds with Piercing, Blunted, Fleet and Lobbed, reach modifiers limited to fitting tools, and smithing upgrades keep rarity and modifiers on the new item.</summary>
   </entry>
   <entry>
     <title>FFEntityPainting: Overview</title>

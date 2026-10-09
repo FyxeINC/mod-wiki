@@ -23,7 +23,7 @@
 <pre><code class="language-java">ResourceLocation source = ResourceLocation.fromNamespaceAndPath(&quot;mymod&quot;, &quot;quest_reward&quot;);
 boolean changed = RarityModifierApi.tryApplyRaritySource(
     reward, source, level.getRandom(), level.registryAccess());</code></pre>
-<p>The method takes an <code>ItemStack</code>, source <code>ResourceLocation</code>, <code>RandomSource</code>, and <code>HolderLookup.Provider</code>. It returns <code>true</code> when the stack changes. It is a safe no-op if the item is ineligible, already processed, has no matching source data, or fails its chance roll.</p>
+<p>The method takes an <code>ItemStack</code>, source <code>ResourceLocation</code>, <code>RandomSource</code>, and <code>HolderLookup.Provider</code>. It returns <code>true</code> when the stack changes. It is a safe no-op only if the item is ineligible or already processed. Otherwise the item always gets a rarity: a failed chance roll or an unknown source gives Common.</p>
 <h3 id="pair-code-with-data">Pair code with data</h3>
 <p>Create <code>data/mymod/ffitemraritymodifiers/rarity_source/quest_reward.json</code> so pack authors can configure the source&#x27;s chance and rarity weights. The source ID in code must match the namespace and file path. See the mod&#x27;s README and shipped datapack files for the current schema.</p>
 <p>Call from the logical server path that hands out the reward. Do not call repeatedly on the same stack in a tick; the API guards already processed items, but the best integration point is item creation.</p>
