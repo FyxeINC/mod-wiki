@@ -20,6 +20,12 @@ window.WIKI_DATA = {
       {
         "date": "2026-10-09",
         "project": "ffsoilfertility",
+        "page": "api.html",
+        "change": "0.4.0: new public API (SoilFertilityAPI) to read soil quality, register server quality modifiers, sample areas, and listen to growth, bone meal, particle and field-changed events."
+      },
+      {
+        "date": "2026-10-09",
+        "project": "ffsoilfertility",
         "page": "index.html",
         "change": "0.2.0: new growth.affectCrops and growth.affectSaplings options; saplings now use the separate ffsoilfertility:affected_saplings tag and are off by default."
       },
@@ -1322,7 +1328,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemRarityModifiers features, requirements, and source version.",
-          "updated": "2026-10-08",
+          "updated": "2026-10-09",
           "searchExcerpt": "Adds configurable rarity rolls and small modifiers to gear."
         },
         {
@@ -2277,7 +2283,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Soil quality varies across the land in smooth patches, speeding up or slowing down crop growth and tinting grass to match.",
       "tagline": "Soil quality varies across the land in smooth patches, speeding up or slowing down crop growth and tinting grass to match.",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "",
       "icon": "",
@@ -2328,6 +2334,14 @@ window.WIKI_DATA = {
           "description": "The affected_blocks and affected_saplings block tags.",
           "updated": "2026-10-09",
           "searchExcerpt": "Block tags ffsoilfertility:affected_blocks and ffsoilfertility:affected_saplings, replace and example."
+        },
+        {
+          "file": "api.html",
+          "title": "Modding API",
+          "index": "04",
+          "description": "SoilFertilityAPI, quality modifiers and events with examples.",
+          "updated": "2026-10-09",
+          "searchExcerpt": "SoilFertilityAPI soil quality queries, quality modifiers, area sampling and growth, bone meal, particle and field changed events."
         }
       ],
       "targets": [

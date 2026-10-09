@@ -48,9 +48,11 @@
 <p>On Minecraft 26.3 the simplex noise class changed, so the soil pattern for a given seed may differ slightly from other versions. The noise is normalised, so the proportions hold.</p>
 <h2 id="compatibility">Compatibility</h2>
 <p>The grass tint hooks the biome grass colour instead of replacing block colour handlers, so it also applies to other mods' grass-tinted blocks and to Sodium and Embeddium colour caches. A mod that bypasses the biome grass colour is not tinted. The bone meal limits use plain Mixin redirects, so the mod needs no MixinExtras. Fabric needs Fabric API installed separately; FFUtilities 0.2.17 is bundled in every jar. Fabric and Forge use Forge Config API Port (bundled through FFUtilities on Fabric). The in-game config screen comes from FFUtilities on NeoForge 1.21+ and from Mod Menu on Fabric 1.21.1+; Forge 1.20.1 and 1.20.6 have none, so edit the toml files.</p>
+<h2 id="api">Modding API</h2>
+<p>Other mods can read soil quality, adjust it on the server and listen to growth, bone meal and particle events. See the <a href="api.html">Modding API</a> page.</p>
 <h2 id="requirements-and-source-version">Requirements and source version</h2>
 <div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Fabric</th><th>NeoForge</th><th>Forge</th></tr></thead><tbody><tr><td>1.21.1</td><td></td><td>21.1.211 or newer</td><td></td></tr></tbody></table></div>
-<p>Source version: 0.3.0. NeoForge 26.1, 26.1.1 and 26.3 are not supported because only beta NeoForge builds exist. Java 17 is needed for 1.20.1, Java 21 for 1.20.6 to 1.21.11 and Java 25 for 26.x. FFUtilities is bundled in the jar, so it needs no separate download. The Modrinth and CurseForge buttons are enabled only when a published project link is configured.</p>
+<p>Source version: 0.4.0. NeoForge 26.1, 26.1.1 and 26.3 are not supported because only beta NeoForge builds exist. Java 17 is needed for 1.20.1, Java 21 for 1.20.6 to 1.21.11 and Java 25 for 26.x. FFUtilities is bundled in the jar, so it needs no separate download. The Modrinth and CurseForge buttons are enabled only when a published project link is configured.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>

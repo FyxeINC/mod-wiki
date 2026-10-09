@@ -134,13 +134,10 @@
 </table></div>
 <p>Attribute IDs follow the Minecraft version: on 1.21.11 write <code>minecraft:attack_damage</code> instead of <code>minecraft:generic.attack_damage</code>. Bundled examples include attack, armor, durability, reach, movement, health, mining speed, fishing luck and shield modifiers. Projectile modifiers are Piercing and Blunted (damage) and Fleet and Lobbed (speed); they are good or bad weapon modifiers that require the <code>c:tools/ranged_weapon</code> tag. Block reach modifiers require <code>ffitemraritymodifiers:mining_tools</code> and entity reach modifiers require <code>c:tools/melee_weapon</code>.</p>
 <h3 id="rarity-weights">Rarity weights</h3>
-<p>File name must be a vanilla rarity ID (<code>common</code>, <code>uncommon</code>, <code>rare</code>, <code>epic</code>). Each list is a weighted table of how many modifiers to roll. Bundled rarities roll no bad modifiers (<code>bad_amounts</code> is only amount 0), and Common rolls none at all; add non-zero bad amounts to enable negatives. This is the bundled <code>rare.json</code>:</p>
+<p>File name must be a vanilla rarity ID (<code>common</code>, <code>uncommon</code>, <code>rare</code>, <code>epic</code>). Each list is a weighted table of how many modifiers to roll. Bundled rarities always roll exactly this many good modifiers: Common 0, Uncommon 1, Rare 2, Epic 3. They roll no bad modifiers (<code>bad_amounts</code> is only amount 0); add non-zero bad amounts, or more good amounts with weights, to vary this. This is the bundled <code>rare.json</code>:</p>
 <pre><code class="language-json">{
   &quot;good_amounts&quot;: [
-    {&quot;amount&quot;: 0, &quot;weight&quot;: 0},
-    {&quot;amount&quot;: 1, &quot;weight&quot;: 2},
-    {&quot;amount&quot;: 2, &quot;weight&quot;: 2},
-    {&quot;amount&quot;: 3, &quot;weight&quot;: 1}
+    {&quot;amount&quot;: 2, &quot;weight&quot;: 1}
   ],
   &quot;bad_amounts&quot;: [
     {&quot;amount&quot;: 0, &quot;weight&quot;: 1}

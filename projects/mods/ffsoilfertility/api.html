@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modding API — FFSoilFertility — Fyxe's Mod Wiki</title>
+<meta name="description" content="Soil quality varies across the land in smooth patches, speeding up or slowing down crop growth and tinting grass to match.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFSoilFertility</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth &#8599;</a><a class="btn btn--curseforge" data-project-link="curseforge" target="_blank" rel="noopener">CurseForge &#8599;</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source &#8599;</a></div></div></div>
+<p>This guide describes the public API in the current source version <code>0.4.0</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<h2 id="ffsoilfertility-modding-api">FFSoilFertility — Modding API</h2>
+<p>Guide for other mods (and AI agents) integrating with <strong>FFSoilFertility</strong> (<code>ffsoilfertility</code>).</p>
+<div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td><strong>Mod ID</strong></td><td><code>ffsoilfertility</code></td></tr>
+<tr><td><strong>API package</strong></td><td><code>com.fyxe.ffsoilfertility.api</code> (plus <code>com.fyxe.ffsoilfertility.SoilQuality</code> and <code>SoilParams</code>)</td></tr>
+<tr><td><strong>Loaders</strong></td><td>Fabric, Forge (1.20.1) and NeoForge; see the <a href="index.html">Overview</a> for the supported Minecraft versions</td></tr>
+<tr><td><strong>Soil quality</strong></td><td><code>SoilQuality.LOW</code>, <code>NORMAL</code>, <code>HIGH</code></td></tr>
+</tbody></table></div>
+<p>Dependency (optional, NeoForge <code>neoforge.mods.toml</code>):</p>
+<pre><code class="language-toml">[[dependencies.yourmod]]
+    modId=&quot;ffsoilfertility&quot;
+    type=&quot;optional&quot;
+    versionRange=&quot;[0.4.0,)&quot;
+    ordering=&quot;NONE&quot;
+    side=&quot;BOTH&quot;</code></pre>
+<p>On Fabric, list <code>&quot;ffsoilfertility&quot;: &quot;&gt;=0.4.0&quot;</code> under <code>suggests</code> (or <code>depends</code> when required) in <code>fabric.mod.json</code>. Forge 1.20.1 (<code>mods.toml</code>) uses <code>mandatory=false</code> in place of <code>type=&quot;optional&quot;</code>. The API first shipped in 0.4.0. Each target is published as <code>com.fyxe.ffsoilfertility:ffsoilfertility-&lt;minecraft&gt;-&lt;loader&gt;:&lt;version&gt;</code>. Check <code>ModList.get().isLoaded(&quot;ffsoilfertility&quot;)</code> on NeoForge or Forge, <code>FabricLoader.getInstance().isModLoaded(&quot;ffsoilfertility&quot;)</code> on Fabric, or FFUtilities&#x27; <code>Mods.isLoaded</code>, before touching API classes.</p>
+<hr>
+<h3 id="core-concepts">Core concepts</h3>
+<ul>
+<li><strong>Quality is a function of position.</strong> It depends on the block&#x27;s X and Z, the biome and the synced <code>SoilParams</code>, so it can be read on both sides. It never loads chunks.</li>
+<li><strong>Server and client differ.</strong> The server value includes registered <code>SoilQualityModifier</code>s; the client value never does (it drives the grass tint and hoe readout).</li>
+<li><strong>No field, no data.</strong> When a side has no soil field (no world started, or a client on a server without the mod), every query reports <code>NORMAL</code> and <code>getFertility</code> returns 0. Check <code>isActive(level)</code> first.</li>
+<li>Call the API on the thread that owns the level.</li>
+</ul>
+<hr>
+<h3 id="reading-soil">Reading soil quality</h3>
+<pre><code class="language-java">import com.fyxe.ffsoilfertility.SoilQuality;
+import com.fyxe.ffsoilfertility.api.SoilFertilityAPI;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+
+boolean on = SoilFertilityAPI.isEnabled();                 // master config switch
+boolean active = SoilFertilityAPI.isActive(level);         // this side has a soil field
+SoilQuality q = SoilFertilityAPI.getQuality(level, pos);   // server: with modifiers; client: base only
+SoilQuality base = SoilFertilityAPI.getBaseQuality(level, pos);   // ignores modifiers
+double fertility = SoilFertilityAPI.getFertility(level, pos);     // std deviations; below 0 is poorer</code></pre>
+<p><code>getFertility</code> includes the biome&#x27;s climate bias. Low quality is at or below the field&#x27;s low threshold and High at or above its high threshold. <code>getParams(level)</code> returns the <code>SoilParams</code> record the field was built from, or <code>null</code> when <code>isActive</code> is false.</p>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>Returns</th><th>Notes</th></tr></thead><tbody>
+<tr><td><code>isEnabled()</code></td><td><code>boolean</code></td><td>Quality can still be read while the mod is disabled</td></tr>
+<tr><td><code>isActive(Level)</code></td><td><code>boolean</code></td><td>False means every query reports NORMAL</td></tr>
+<tr><td><code>getParams(Level)</code></td><td><code>SoilParams</code></td><td>Null when not active</td></tr>
+<tr><td><code>getQuality(Level, BlockPos)</code></td><td><code>SoilQuality</code></td><td>Never null</td></tr>
+<tr><td><code>getBaseQuality(Level, BlockPos)</code></td><td><code>SoilQuality</code></td><td>Never null</td></tr>
+<tr><td><code>getFertility(Level, BlockPos)</code></td><td><code>double</code></td><td>0 when not active</td></tr>
+</tbody></table></div>
+<hr>
+<h3 id="growth-rules">Growth rules</h3>
+<pre><code class="language-java">import java.util.OptionalInt;
+
+double mult = SoilFertilityAPI.getGrowthMultiplier(SoilQuality.HIGH);   // config value for a quality
+double here = SoilFertilityAPI.getGrowthMultiplier(level, pos);        // for the soil at pos
+OptionalInt limit = SoilFertilityAPI.getBonemealStageLimit(SoilQuality.LOW);   // empty = not limited
+boolean affected = SoilFertilityAPI.isAffected(level.getBlockState(pos));
+boolean crops = SoilFertilityAPI.affectsCrops();
+boolean saplings = SoilFertilityAPI.affectsSaplings();</code></pre>
+<p>A multiplier of 1 is vanilla, below 1 skips random ticks and above 1 adds extra ticks. <code>isAffected</code> is true when soil quality changes how that block grows (crops and saplings, per the config and block tags).</p>
+<hr>
+<h3 id="area-queries">Area queries</h3>
+<pre><code class="language-java">import java.util.Map;
+import java.util.Optional;
+
+// Count qualities on a grid: radius 64, one sample every 8 blocks
+Map&lt;SoilQuality, Integer&gt; counts = SoilFertilityAPI.sampleArea(level, pos, 64, 8);
+int highColumns = counts.get(SoilQuality.HIGH);
+
+// Nearest High soil within 128 blocks, searched on a 4 block grid
+Optional&lt;BlockPos&gt; nearest = SoilFertilityAPI.findNearest(level, pos, SoilQuality.HIGH, 128, 4);</code></pre>
+<p>Both use <code>getQuality</code>, so modifiers count on the server. <code>radius</code> is clamped to <code>MAX_SEARCH_RADIUS</code> (256), and <code>step</code> is raised when needed so at most <code>MAX_SAMPLES</code> (16384) positions are read. Every quality is a key of the <code>sampleArea</code> result. <code>findNearest</code> returns a grid position at the origin&#x27;s Y, up to <code>step / 2</code> blocks from the true nearest column, or empty when nothing was found.</p>
+<hr>
+<h3 id="quality-modifiers">Quality modifiers (server)</h3>
+<p>A <code>SoilQualityModifier</code> adjusts the quality the server uses for gameplay: growth speed, bone meal limits, particles and the server-side <code>getQuality</code>. Modifiers run in registration order. Return the given quality (or <code>null</code>) to leave it as is. They <strong>run on every quality lookup, including every random tick of an affected block, so keep them cheap</strong>. They do not change the grass tint or client queries.</p>
+<pre><code class="language-java">import com.fyxe.ffsoilfertility.SoilQuality;
+import com.fyxe.ffsoilfertility.api.SoilFertilityAPI;
+import com.fyxe.ffsoilfertility.api.SoilQualityModifier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Blocks;
+
+// Soil within one block of a composter is always High
+SoilQualityModifier nearComposter = (level, pos, quality) -&gt; {
+    if (quality == SoilQuality.HIGH) return quality;
+    BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+    for (int dx = -1; dx &lt;= 1; dx++) {
+        for (int dz = -1; dz &lt;= 1; dz++) {
+            cursor.set(pos.getX() + dx, pos.getY(), pos.getZ() + dz);
+            if (level.hasChunkAt(cursor) &amp;&amp; level.getBlockState(cursor).is(Blocks.COMPOSTER)) {
+                return SoilQuality.HIGH;
+            }
+        }
+    }
+    return quality;
+};
+
+SoilFertilityAPI.registerQualityModifier(nearComposter);
+// Later, if needed:
+SoilFertilityAPI.unregisterQualityModifier(nearComposter);</code></pre>
+<hr>
+<h3 id="events">Events</h3>
+<p>All events extend <code>SoilEvent</code>. On every loader listen with <code>SoilApiEvents.register(EventType.class, listener)</code>; listeners run in registration order on the thread that posts the event. On NeoForge the same events are also posted on <code>NeoForge.EVENT_BUS</code> (<code>SoilEvent</code> extends NeoForge&#x27;s <code>Event</code>). Fabric and Forge have no separate bus, so use <code>SoilApiEvents</code> there. Cancellable events implement <code>Cancellable</code>, which is NeoForge&#x27;s <code>ICancellableEvent</code> on NeoForge and a plain interface with <code>isCanceled</code> / <code>setCanceled</code> elsewhere.</p>
+<h4>Fabric</h4>
+<pre><code class="language-java">import com.fyxe.ffsoilfertility.api.SoilApiEvents;
+import com.fyxe.ffsoilfertility.api.SoilGrowthEvent;
+import net.fabricmc.api.ModInitializer;
+
+public class YourMod implements ModInitializer {
+    @Override
+    public void onInitialize() {
+        SoilApiEvents.register(SoilGrowthEvent.class, event -&gt; {
+            if (event.getLevel().isRaining()) {
+                event.setGrowthMultiplier(event.getOriginalMultiplier() * 1.5);
+            }
+        });
+    }
+}</code></pre>
+<h4>Forge (1.20.1)</h4>
+<pre><code class="language-java">import com.fyxe.ffsoilfertility.api.SoilApiEvents;
+import com.fyxe.ffsoilfertility.api.SoilGrowthEvent;
+import net.minecraftforge.fml.common.Mod;
+
+@Mod(&quot;yourmod&quot;)
+public class YourMod {
+    public YourMod() {
+        // Forge does not receive these on its event bus; register with SoilApiEvents.
+        SoilApiEvents.register(SoilGrowthEvent.class, event -&gt; {
+            if (event.getLevel().isRaining()) {
+                event.setGrowthMultiplier(event.getOriginalMultiplier() * 1.5);
+            }
+        });
+    }
+}</code></pre>
+<h4>NeoForge</h4>
+<pre><code class="language-java">import com.fyxe.ffsoilfertility.SoilQuality;
+import com.fyxe.ffsoilfertility.api.SoilApiEvents;
+import com.fyxe.ffsoilfertility.api.SoilGrowthEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
+
+@Mod(&quot;yourmod&quot;)
+public class YourMod {
+    public YourMod() {
+        // Either form works on NeoForge.
+        SoilApiEvents.register(SoilGrowthEvent.class, event -&gt; {
+            if (event.getLevel().isRaining()) {
+                event.setGrowthMultiplier(event.getOriginalMultiplier() * 1.5);
+            }
+        });
+        NeoForge.EVENT_BUS.addListener((SoilGrowthEvent event) -&gt; {
+            if (event.getQuality() == SoilQuality.LOW &amp;&amp; event.getLevel().isNight()) {
+                event.setCanceled(true);
+            }
+        });
+    }
+}</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Event</th><th>Cancellable</th><th>Side</th><th>When</th></tr></thead><tbody>
+<tr><td><code>SoilGrowthEvent</code></td><td>Yes</td><td>Server</td><td>Before each affected block&#x27;s random tick</td></tr>
+<tr><td><code>SoilBonemealEvent</code></td><td>No</td><td>Server</td><td>Bone meal is about to advance an affected crop</td></tr>
+<tr><td><code>SoilGrowthParticlesEvent</code></td><td>Yes</td><td>Server</td><td>An affected block just grew and particles are enabled for its quality</td></tr>
+<tr><td><code>SoilFieldChangedEvent</code></td><td>No</td><td>Server and client</td><td>A soil field was built with different parameters</td></tr>
+</tbody></table></div>
+<h4><code>SoilGrowthEvent</code></h4>
+<p>Fired before an affected block gets its random tick. Cancel to skip this tick entirely, or change the multiplier for just this tick (below 1 is the chance the tick happens, above 1 adds extra ticks). Not fired for the extra ticks the mod itself adds on high quality soil, nor while the mod is disabled.</p>
+<div class="table-wrap"><table><thead><tr><th>Getter / setter</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>getLevel()</code> / <code>getPos()</code> / <code>getState()</code></td><td><code>ServerLevel</code>, block position and state</td></tr>
+<tr><td><code>getQuality()</code></td><td>Soil quality, after modifiers</td></tr>
+<tr><td><code>getOriginalMultiplier()</code></td><td>The multiplier the config gives this quality</td></tr>
+<tr><td><code>getGrowthMultiplier()</code> / <code>setGrowthMultiplier(double)</code></td><td>Current value; setter clamps to 0 to 32 and ignores NaN and infinities</td></tr>
+</tbody></table></div>
+<h4><code>SoilBonemealEvent</code></h4>
+<p>Fired when bone meal (a player, a dispenser or any other caller of the crop code) is about to advance an affected crop, with the stages after the bone meal limit. Not fired while the mod is disabled.</p>
+<pre><code class="language-java">SoilApiEvents.register(SoilBonemealEvent.class, event -&gt; {
+    // Lift the limit on High soil
+    if (event.getQuality() == SoilQuality.HIGH) {
+        event.setStages(event.getVanillaStages());
+    }
+});</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Getter / setter</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>getLevel()</code> / <code>getPos()</code> / <code>getState()</code> / <code>getQuality()</code></td><td>Where and on what soil</td></tr>
+<tr><td><code>getVanillaStages()</code></td><td>Stages vanilla rolled, before any limit</td></tr>
+<tr><td><code>getLimitedStages()</code></td><td>Stages after the config limit, before listeners</td></tr>
+<tr><td><code>getStages()</code> / <code>setStages(int)</code></td><td>Result; setter clamps to 0 to 64</td></tr>
+</tbody></table></div>
+<h4><code>SoilGrowthParticlesEvent</code></h4>
+<p>Fired when an affected block just grew and the config has particles enabled for its quality. Cancel to show none, or replace the particle and count.</p>
+<pre><code class="language-java">import net.minecraft.core.particles.ParticleTypes;
+
+SoilApiEvents.register(SoilGrowthParticlesEvent.class, event -&gt; {
+    if (event.getQuality() == SoilQuality.HIGH) {
+        event.setParticle(ParticleTypes.HAPPY_VILLAGER);
+        event.setCount(8);
+    }
+});</code></pre>
+<p>Getters: <code>getLevel()</code>, <code>getPos()</code>, <code>getQuality()</code>, <code>getParticle()</code> and <code>getCount()</code>. <code>setParticle(SimpleParticleType)</code> ignores <code>null</code>; <code>setCount(int)</code> clamps to 0 to 256.</p>
+<h4><code>SoilFieldChangedEvent</code></h4>
+<p>Fired after a soil field was built with parameters different from the previous one: on the server when a world starts or the config changes the soil settings, and on the client when the server&#x27;s parameters arrive. Quality at every position may have changed, so drop cached results. Check <code>isClientSide()</code> to tell which thread it runs on.</p>
+<pre><code class="language-java">SoilApiEvents.register(SoilFieldChangedEvent.class, event -&gt; {
+    if (event.isClientSide()) {
+        myClientCache.clear();
+    }
+    SoilParams params = event.getParams();   // com.fyxe.ffsoilfertility.SoilParams
+});</code></pre>
+<hr>
+<h3 id="stability">Stability</h3>
+<ul>
+<li>Package <code>com.fyxe.ffsoilfertility.api</code>, <code>SoilQuality</code> and the <code>SoilParams</code> record are <strong>public API</strong>.</li>
+<li><code>SoilFertilityAPI.applyModifiers</code> is public only for the mod&#x27;s own lookup; do not call it.</li>
+<li>Config classes, <code>FFSoilFertilityMod</code>, <code>SoilField</code>, mixins and the platform packages are <strong>internal</strong>.</li>
+</ul>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

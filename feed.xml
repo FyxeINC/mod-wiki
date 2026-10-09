@@ -7,6 +7,13 @@
   <updated>2026-10-09T00:00:00Z</updated>
   <author><name>Fyxe</name></author>
   <entry>
+    <title>FFSoilFertility: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffsoilfertility/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffsoilfertility-97</id>
+    <updated>2026-10-09T00:00:00Z</updated>
+    <summary>0.4.0: new public API (SoilFertilityAPI) to read soil quality, register server quality modifiers, sample areas, and listen to growth, bone meal, particle and field-changed events.</summary>
+  </entry>
+  <entry>
     <title>FFSoilFertility: Overview</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffsoilfertility/index.html"/>
     <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffsoilfertility-96</id>
