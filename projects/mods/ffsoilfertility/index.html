@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overview — FFSoilFertility — Fyxe's Mod Wiki</title>
+<meta name="description" content="How soil patches change crop growth and grass colour.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFSoilFertility</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth &#8599;</a><a class="btn btn--curseforge" data-project-link="curseforge" target="_blank" rel="noopener">CurseForge &#8599;</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source &#8599;</a></div></div></div>
+<h2 id="overview">Overview</h2><p>Soil quality varies across the land in smooth patches, speeding up or slowing down crop growth and tinting grass to match.</p>
+<figure class="figure figure--todo"><div class="figure__todo">A hillside of grass showing a washed-out low quality patch, normal grass, and a vivid high quality patch side by side.</div></figure>
+<h2 id="features">Features</h2><ul><li>Every spot in the world has a soil quality: Low, Normal or High.</li><li>Low quality soil slows crop growth; High quality soil speeds it up.</li><li>Bone meal can be capped per soil quality: by default Low soil gets one growth stage per use, while Normal and High soil behave like vanilla.</li><li>Grass is tinted to show the quality: washed out, yellower and darker on Low soil, more vivid, slightly bluer-green and brighter on High soil.</li><li>Crops give off growth particles by soil quality (smoke, composter or happy villager by default; only Normal is off by default).</li><li>Hold a hoe (an item extending the vanilla hoe class or in the <code>minecraft:hoes</code> item tag; on Minecraft 26.3 only the tag) and look at a block to see its soil quality, drawn with the HUD 80 px above the bottom of the screen (client option <code>tint.hoeReadout</code>).</li><li>No commands and no items: it works on its own.</li></ul>
+<h2 id="how-it-works">How it works</h2>
+<p>Quality comes from the block's X and Z position and the biome there. It is built from smooth, two-octave simplex noise seeded by the world seed plus the <code>seedSalt</code> option, which makes soil form large patches rather than a speckle, optionally shifted by the biome's climate (off by default, see below). The Low and High percentages describe the share where the climate is neutral or ignored, so they are approximate shares of the world, not exact.</p>
+<ul>
+<li>Each quality has a growth multiplier (<code>lowGrowthMultiplier</code>, <code>normalGrowthMultiplier</code>, <code>highGrowthMultiplier</code>).</li>
+<li><strong>Below 1</strong>: random ticks of affected blocks are skipped with probability <code>1 - multiplier</code>.</li>
+<li><strong>Above 1</strong>: the random tick repeats. That adds <code>multiplier - 1</code> extra ticks, and a fractional part counts as a chance of one more.</li>
+<li><strong>1</strong>: vanilla behaviour, which is the default for Normal soil.</li>
+</ul>
+<p>Which blocks are affected is set by the block tag <code>ffsoilfertility:affected_blocks</code> (see <a href="datapacks.html">Datapacks</a>): crops, sweet berry bushes, cocoa, sugar cane, cactus and bamboo by default (turn them off with <code>growth.affectCrops</code>). Saplings are covered by a separate tag, <code>ffsoilfertility:affected_saplings</code>, and are off by default: enable <code>growth.affectSaplings</code> to include them. With <code>affectAllCropBlocks</code> on, any modded block built on vanilla's crop or stem block is affected too. All options are on the <a href="configuration.html">Configuration</a> page.</p>
+<h2 id="bone-meal">Bone meal</h2>
+<p>The <code>bonemeal.low</code>, <code>bonemeal.normal</code> and <code>bonemeal.high</code> server options can limit how many growth stages one use of bone meal advances an affected crop on that soil quality. Each quality has <code>limitStages</code> and <code>maxStages</code> (1 to 16): while the limit is on, one use advances at most <code>maxStages</code> stages. The defaults limit only Low soil, to 1 stage; Normal (2) and High (3) have the limit off and behave like vanilla.</p>
+<ul>
+<li>It applies only to affected blocks (see above) and only while <code>enabled</code> is true.</li>
+<li>The cap applies to the stages vanilla rolls for crops (wheat, carrots, potatoes, beetroots and modded crops that use vanilla's crop growth) and for melon and pumpkin stems. Vanilla bone meal normally advances wheat, carrots, potatoes and stems by 2 to 5 stages.</li>
+<li>It works for bone meal from players and dispensers alike, because the limit is applied inside the blocks.</li>
+<li>A capped stem does not place its fruit early: the fruit check only runs if the capped growth actually reaches the final stage.</li>
+<li>Other plants already advance one stage per use in vanilla (sweet berries, cocoa, saplings, torchflower and pitcher crops), so the limit does not change them. Bamboo (1 to 2 blocks per use) is not limited, and neither are modded plants that replace vanilla's bone meal code entirely.</li>
+</ul>
+<h2 id="climate">Climate</h2>
+<p>Optionally, the biome's temperature and downfall can shift soil quality. Both factors are off by default, so soil is pure noise until you turn on <code>climate.temperatureEnabled</code> and/or <code>climate.downfallEnabled</code>. When on, each factor adds <code>influence * score</code> to the normalised soil noise, where the score is +1 at the ideal value and -1 at one tolerance away or more. Only temperature and downfall are read, never biome ids, so modded biomes work. With the default ideals, forest and plains-like climates have fertile soil and deserts and frozen biomes poorer soil. A factor that is switched off, or has influence 0, is ignored. See the <code>climate</code> options on <a href="configuration.html">Configuration</a>.</p>
+<h2 id="grass-tint">Grass tint</h2>
+<p>A mixin on the biome grass colour adjusts it in HSB. Saturation is multiplied by <code>1 + highSaturation</code> or <code>1 - lowDesaturation</code>, the hue is rotated by <code>highHueShift</code> or <code>lowHueShift</code> degrees, and brightness is multiplied by <code>1 + highBrightness</code> or <code>1 + lowBrightness</code>. Normal soil is left unchanged. It applies to every tint that goes through the biome grass colour: grass blocks, short grass, ferns, tall grass, large ferns, grass-tinted blocks from other mods and the colour caches of Sodium and Embeddium. The client option <code>grassVisuals</code> is a master switch: off shows vanilla grass (the hoe readout still works). Changing the client config re-renders the world automatically.</p>
+<h2 id="growth-particles">Growth particles</h2>
+<p>When an affected block grows, the server sends particles above it, chosen by soil quality through the <code>particles.low</code>, <code>particles.normal</code> and <code>particles.high</code> server options (enabled, particle id and count). This includes growth from the extra ticks on faster soil. Only simple particles without extra data work. See <a href="configuration.html">Configuration</a>.</p>
+<h2 id="multiplayer">Multiplayer</h2>
+<p>The gameplay config is a common config that clients do not read. The server sends the seed, scale, percentages and climate settings to clients on login and whenever the config reloads. That packet is an optional channel on every loader: players without the mod can join a server that has it and just see vanilla grass, and a client with the mod on a vanilla server gets no tint and no readout. Growth effects happen on the server either way.</p>
+<p>On Minecraft 26.3 the simplex noise class changed, so the soil pattern for a given seed may differ slightly from other versions. The noise is normalised, so the proportions hold.</p>
+<h2 id="compatibility">Compatibility</h2>
+<p>The grass tint hooks the biome grass colour instead of replacing block colour handlers, so it also applies to other mods' grass-tinted blocks and to Sodium and Embeddium colour caches. A mod that bypasses the biome grass colour is not tinted. The bone meal limits use plain Mixin redirects, so the mod needs no MixinExtras. Fabric needs Fabric API installed separately; FFUtilities 0.2.17 is bundled in every jar. Fabric and Forge use Forge Config API Port (bundled through FFUtilities on Fabric). The in-game config screen comes from FFUtilities on NeoForge 1.21+ and from Mod Menu on Fabric 1.21.1+; Forge 1.20.1 and 1.20.6 have none, so edit the toml files.</p>
+<h2 id="requirements-and-source-version">Requirements and source version</h2>
+<div class="table-wrap"><table><thead><tr><th>Minecraft</th><th>Fabric</th><th>NeoForge</th><th>Forge</th></tr></thead><tbody><tr><td>1.21.1</td><td></td><td>21.1.211 or newer</td><td></td></tr></tbody></table></div>
+<p>Source version: 0.3.0. NeoForge 26.1, 26.1.1 and 26.3 are not supported because only beta NeoForge builds exist. Java 17 is needed for 1.20.1, Java 21 for 1.20.6 to 1.21.11 and Java 25 for 26.x. FFUtilities is bundled in the jar, so it needs no separate download. The Modrinth and CurseForge buttons are enabled only when a published project link is configured.</p>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

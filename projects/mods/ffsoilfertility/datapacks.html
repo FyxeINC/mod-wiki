@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datapacks — FFSoilFertility — Fyxe's Mod Wiki</title>
+<meta name="description" content="The affected_blocks and affected_saplings block tags.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFSoilFertility</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth &#8599;</a><a class="btn btn--curseforge" data-project-link="curseforge" target="_blank" rel="noopener">CurseForge &#8599;</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source &#8599;</a></div></div></div>
+<h2 id="datapacks">Datapacks</h2>
+<p>FFSoilFertility reads two block tags to decide which blocks grow faster or slower with soil quality. Add or remove blocks with a datapack (or your own mod's <code>data/</code> folder). Everything else is in the <a href="configuration.html">config</a>.</p>
+<div class="table-wrap"><table><thead><tr><th>Tag</th><th>Type</th><th>Default contents</th></tr></thead><tbody>
+<tr><td><code>#ffsoilfertility:affected_blocks</code></td><td>block</td><td><code>#minecraft:crops</code>, <code>minecraft:sweet_berry_bush</code>, <code>minecraft:cocoa</code>, <code>minecraft:sugar_cane</code>, <code>minecraft:cactus</code>, <code>minecraft:bamboo</code>, <code>minecraft:bamboo_sapling</code></td></tr>
+<tr><td><code>#ffsoilfertility:affected_saplings</code></td><td>block</td><td><code>#minecraft:saplings</code></td></tr>
+</tbody></table></div>
+<h3 id="file-location">File location</h3>
+<p>The files are <code>data/ffsoilfertility/tags/block/affected_blocks.json</code> and <code>data/ffsoilfertility/tags/block/affected_saplings.json</code>. On Minecraft 1.20.1 and 1.20.6 the folder is plural: <code>tags/blocks/</code>.</p>
+<h3 id="example">Example</h3>
+<p>Add a modded crop and keep the default entries:</p>
+<pre><code class="language-json">{
+  &quot;replace&quot;: false,
+  &quot;values&quot;: [
+    &quot;examplemod:glow_wheat&quot;
+  ]
+}
+</code></pre>
+<p>Set <code>replace</code> to <code>true</code> to drop the defaults and use only your own list. With the <code>affectAllCropBlocks</code> option on, blocks extending vanilla's crop or stem block are affected even if they are not in the tag. Use <code>/reload</code> after changing a datapack.</p>
+<p>The <code>affected_blocks</code> tag only applies while the <code>growth.affectCrops</code> option is on. The <code>affected_saplings</code> tag works the same way but only while <code>growth.affectSaplings</code> is on (off by default). Every block extending vanilla's sapling block, including modded saplings, is affected without being listed; use the tag for modded saplings that do not extend it.</p>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>

@@ -18,6 +18,12 @@ window.WIKI_DATA = {
     },
     "recentUpdates": [
       {
+        "date": "2026-10-09",
+        "project": "ffsoilfertility",
+        "page": "index.html",
+        "change": "0.2.0: new growth.affectCrops and growth.affectSaplings options; saplings now use the separate ffsoilfertility:affected_saplings tag and are off by default."
+      },
+      {
         "date": "2026-10-08",
         "project": "fffoodspoilageandpreservation",
         "page": "datapacks.html",
@@ -2261,6 +2267,85 @@ window.WIKI_DATA = {
         "1.21.1-neoforge",
         "1.21.11-fabric",
         "1.21.11-neoforge"
+      ]
+    },
+    {
+      "slug": "ffsoilfertility",
+      "type": "mod",
+      "name": "FFSoilFertility",
+      "index": "T",
+      "status": "active",
+      "description": "Soil quality varies across the land in smooth patches, speeding up or slowing down crop growth and tinting grass to match.",
+      "tagline": "Soil quality varies across the land in smooth patches, speeding up or slowing down crop growth and tinting grass to match.",
+      "version": "0.3.0",
+      "minecraftVersion": "1.20.1-26.3",
+      "modrinthSlug": "",
+      "icon": "",
+      "tags": [
+        {
+          "label": "Fabric",
+          "class": "tag--fabric"
+        },
+        {
+          "label": "NeoForge",
+          "class": "tag--neoforge"
+        },
+        {
+          "label": "Forge",
+          "class": "tag--forge"
+        },
+        {
+          "label": "MC 1.20.1-26.3",
+          "class": ""
+        }
+      ],
+      "links": {
+        "github": "",
+        "curseforge": "",
+        "discord": ""
+      },
+      "pages": [
+        {
+          "file": "index.html",
+          "title": "Overview",
+          "index": "01",
+          "description": "How soil patches change crop growth and grass colour.",
+          "updated": "2026-10-09",
+          "searchExcerpt": "Soil quality patches, crop growth speed, bone meal stage limits and grass tint."
+        },
+        {
+          "file": "configuration.html",
+          "title": "Configuration",
+          "index": "02",
+          "description": "Common and client options with defaults and ranges.",
+          "updated": "2026-10-09",
+          "searchExcerpt": "Soil noise scale, climate temperature and downfall toggles and influence, grass visuals switch, low and high percentages, growth multipliers, affect crops and saplings switches, seed salt, bone meal stage limits, growth particles and tint hue, saturation and brightness."
+        },
+        {
+          "file": "datapacks.html",
+          "title": "Datapacks",
+          "index": "03",
+          "description": "The affected_blocks and affected_saplings block tags.",
+          "updated": "2026-10-09",
+          "searchExcerpt": "Block tags ffsoilfertility:affected_blocks and ffsoilfertility:affected_saplings, replace and example."
+        }
+      ],
+      "targets": [
+        "1.20.1-fabric",
+        "1.20.1-forge",
+        "1.20.6-fabric",
+        "1.20.6-neoforge",
+        "1.21.1-fabric",
+        "1.21.1-neoforge",
+        "1.21.11-fabric",
+        "1.21.11-neoforge",
+        "26.1-fabric",
+        "26.1.1-fabric",
+        "26.1.2-fabric",
+        "26.1.2-neoforge",
+        "26.2-fabric",
+        "26.2-neoforge",
+        "26.3-fabric"
       ]
     }
   ]

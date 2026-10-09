@@ -4,8 +4,15 @@
   <link href="https://fyxeinc.github.io/mod-wiki/updates.html"/>
   <link rel="self" href="https://fyxeinc.github.io/mod-wiki/feed.xml"/>
   <id>https://fyxeinc.github.io/mod-wiki/</id>
-  <updated>2026-10-08T00:00:00Z</updated>
+  <updated>2026-10-09T00:00:00Z</updated>
   <author><name>Fyxe</name></author>
+  <entry>
+    <title>FFSoilFertility: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffsoilfertility/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffsoilfertility-96</id>
+    <updated>2026-10-09T00:00:00Z</updated>
+    <summary>0.2.0: new growth.affectCrops and growth.affectSaplings options; saplings now use the separate ffsoilfertility:affected_saplings tag and are off by default.</summary>
+  </entry>
   <entry>
     <title>FFFoodSpoilageAndPreservation: Datapacks</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/fffoodspoilageandpreservation/datapacks.html"/>

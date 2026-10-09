@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configuration — FFSoilFertility — Fyxe's Mod Wiki</title>
+<meta name="description" content="Common and client options with defaults and ranges.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var t;try{t=localStorage.getItem("wiki-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))})();</script>
+</head>
+<body>
+<div data-site-header></div>
+<div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
+<div data-site-breadcrumb></div>
+<div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFSoilFertility</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth &#8599;</a><a class="btn btn--curseforge" data-project-link="curseforge" target="_blank" rel="noopener">CurseForge &#8599;</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source &#8599;</a></div></div></div>
+<h2 id="configuration">Configuration</h2>
+<p>Settings are split between a common file (gameplay, read by the server) and a client file, each grouped by topic. The mod has no commands.</p>
+<h2 id="server-options">Server options</h2>
+<p>File: <code>config/ffsoilfertility-common.toml</code> (a common config, not per world; the same path on every loader; use the config screen where available (NeoForge 1.21+ via FFUtilities, Fabric 1.21.1+ via Mod Menu; Forge 1.20.1 and 1.20.6 have none) or edit the file). Gameplay reads it on the server, whether dedicated or integrated. Clients do not read it: they receive the soil parameters from the server on login and on config reload.</p>
+<div class="table-wrap"><table><thead><tr><th>Option</th><th>Default</th><th>Range</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>enabled</code></td><td><code>true</code></td><td></td><td>Turns the mod's features on or off.</td></tr>
+<tr><td><code>soil.noiseScale</code></td><td><code>96.0</code></td><td>8 to 2048</td><td>Rough size in blocks of one soil patch. Larger values make bigger, smoother patches.</td></tr>
+<tr><td><code>soil.lowPercent</code></td><td><code>15.0</code></td><td>0 to 50</td><td>Approximate share of the world with low quality soil, in percent, where the climate is neutral. The climate options move land towards Low or High from there.</td></tr>
+<tr><td><code>soil.highPercent</code></td><td><code>15.0</code></td><td>0 to 50</td><td>Approximate share of the world with high quality soil, in percent, where the climate is neutral. The climate options move land towards Low or High from there.</td></tr>
+<tr><td><code>soil.seedSalt</code></td><td><code>0</code></td><td>any integer</td><td>Mixed into the world seed to pick the soil pattern. Change it to get a different layout.</td></tr>
+<tr><td><code>climate.temperatureEnabled</code></td><td><code>false</code></td><td></td><td>Lets the biome's temperature shift soil quality. Off by default; while off, the temperature options below have no effect.</td></tr>
+<tr><td><code>climate.temperatureInfluence</code></td><td><code>0.6</code></td><td>0 to 4</td><td>How strongly temperature shifts soil quality, in standard deviations of the soil noise (0 ignores temperature, 1 is as strong as the patches themselves).</td></tr>
+<tr><td><code>climate.idealTemperature</code></td><td><code>0.8</code></td><td>-2 to 4</td><td>Biome temperature with the best soil (vanilla: plains 0.8, forest 0.7, taiga 0.25, snowy plains 0.0, desert 2.0).</td></tr>
+<tr><td><code>climate.temperatureTolerance</code></td><td><code>1.0</code></td><td>0.05 to 4</td><td>How far from the ideal temperature the soil is at its worst. Smaller values make the effect fall off faster.</td></tr>
+<tr><td><code>climate.downfallEnabled</code></td><td><code>false</code></td><td></td><td>Lets the biome's downfall (rainfall) shift soil quality. Off by default; while off, the downfall options below have no effect.</td></tr>
+<tr><td><code>climate.downfallInfluence</code></td><td><code>0.6</code></td><td>0 to 4</td><td>How strongly rainfall shifts soil quality, in standard deviations of the soil noise (0 ignores downfall).</td></tr>
+<tr><td><code>climate.idealDownfall</code></td><td><code>0.8</code></td><td>-1 to 2</td><td>Biome downfall with the best soil (vanilla: desert 0.0, plains 0.4, forest 0.8, jungle 0.9). Set it to 1.0 or more to make wetter always better.</td></tr>
+<tr><td><code>climate.downfallTolerance</code></td><td><code>0.8</code></td><td>0.05 to 3</td><td>How far from the ideal downfall the soil is at its worst. Smaller values make the effect fall off faster.</td></tr>
+<tr><td><code>growth.affectCrops</code></td><td><code>true</code></td><td></td><td>Lets soil quality change how fast crops grow: the <code>ffsoilfertility:affected_blocks</code> tag and, with <code>affectAllCropBlocks</code>, every crop and stem block. Off means vanilla crop growth everywhere.</td></tr>
+<tr><td><code>growth.affectSaplings</code></td><td><code>false</code></td><td></td><td>Lets soil quality change how fast saplings grow into trees. Covers every block extending vanilla's sapling block (so modded saplings work) plus the <code>ffsoilfertility:affected_saplings</code> tag.</td></tr>
+<tr><td><code>growth.normalGrowthMultiplier</code></td><td><code>0.85</code></td><td>0 to 8</td><td>Growth speed on normal quality soil as a multiplier of vanilla (1.0 is vanilla).</td></tr>
+<tr><td><code>growth.lowGrowthMultiplier</code></td><td><code>0.5</code></td><td>0 to 8</td><td>Growth speed on low quality soil as a multiplier of vanilla (1.0 is vanilla).</td></tr>
+<tr><td><code>growth.highGrowthMultiplier</code></td><td><code>1.45</code></td><td>0 to 8</td><td>Growth speed on high quality soil as a multiplier of vanilla (1.0 is vanilla).</td></tr>
+<tr><td><code>growth.affectAllCropBlocks</code></td><td><code>true</code></td><td></td><td>Also affect every block that extends vanilla's crop or stem block, such as modded crops, not only blocks in the <code>ffsoilfertility:affected_blocks</code> tag.</td></tr>
+<tr><td><code>bonemeal.low.limitStages</code></td><td><code>true</code></td><td></td><td>Limit how many growth stages one use of bone meal can advance an affected crop on low quality soil.</td></tr>
+<tr><td><code>bonemeal.low.maxStages</code></td><td><code>1</code></td><td>1 to 16</td><td>Most stages one use of bone meal can advance an affected crop on low quality soil while the limit is on.</td></tr>
+<tr><td><code>bonemeal.normal.limitStages</code></td><td><code>false</code></td><td></td><td>Limit how many growth stages one use of bone meal can advance an affected crop on normal quality soil.</td></tr>
+<tr><td><code>bonemeal.normal.maxStages</code></td><td><code>2</code></td><td>1 to 16</td><td>Most stages one use of bone meal can advance an affected crop on normal quality soil while the limit is on.</td></tr>
+<tr><td><code>bonemeal.high.limitStages</code></td><td><code>false</code></td><td></td><td>Limit how many growth stages one use of bone meal can advance an affected crop on high quality soil.</td></tr>
+<tr><td><code>bonemeal.high.maxStages</code></td><td><code>3</code></td><td>1 to 16</td><td>Most stages one use of bone meal can advance an affected crop on high quality soil while the limit is on.</td></tr>
+<tr><td><code>particles.low.enabled</code></td><td><code>true</code></td><td></td><td>Show particles when an affected block grows on low quality soil.</td></tr>
+<tr><td><code>particles.low.particle</code></td><td><code>minecraft:smoke</code></td><td>particle id</td><td>Particle shown on low quality soil. Only simple particles without extra data work (for example <code>minecraft:heart</code>).</td></tr>
+<tr><td><code>particles.low.count</code></td><td><code>3</code></td><td>1 to 32</td><td>Particles per growth step on low quality soil.</td></tr>
+<tr><td><code>particles.normal.enabled</code></td><td><code>false</code></td><td></td><td>Show particles when an affected block grows on normal quality soil.</td></tr>
+<tr><td><code>particles.normal.particle</code></td><td><code>minecraft:composter</code></td><td>particle id</td><td>Particle shown on normal quality soil. Only simple particles without extra data work (for example <code>minecraft:heart</code>).</td></tr>
+<tr><td><code>particles.normal.count</code></td><td><code>3</code></td><td>1 to 32</td><td>Particles per growth step on normal quality soil.</td></tr>
+<tr><td><code>particles.high.enabled</code></td><td><code>true</code></td><td></td><td>Show particles when an affected block grows on high quality soil.</td></tr>
+<tr><td><code>particles.high.particle</code></td><td><code>minecraft:happy_villager</code></td><td>particle id</td><td>Particle shown on high quality soil. Only simple particles without extra data work (for example <code>minecraft:heart</code>).</td></tr>
+<tr><td><code>particles.high.count</code></td><td><code>4</code></td><td>1 to 32</td><td>Particles per growth step on high quality soil.</td></tr>
+</tbody></table></div>
+<p>The bone meal limit only applies to affected blocks (the <code>ffsoilfertility:affected_blocks</code> tag, plus every crop and stem block while <code>growth.affectAllCropBlocks</code> is on, all only while <code>growth.affectCrops</code> is on; saplings only while <code>growth.affectSaplings</code> is on) and only while <code>enabled</code> is true. By default only low quality soil is limited, to one stage per use; normal and high quality soil behave like vanilla. The cap applies whether the bone meal comes from a player or a dispenser. See <a href="index.html#bone-meal">Bone meal</a> on the overview for which plants it affects.</p>
+<p>Particles are sent from the server when an affected block grows, including growth from the extra ticks on faster soil. Sugar cane, cactus and bamboo count when they add a block above.</p>
+<p>Climate: the soil noise is normalised (mean 0, standard deviation 1). Temperature and downfall each add <code>influence * score</code> to it, where the score is +1 at the ideal value and -1 at one tolerance away or more, falling off linearly in between. Only the biome's temperature and downfall are read, never biome ids, so modded biomes work. A factor is ignored unless <code>temperatureEnabled</code> or <code>downfallEnabled</code> is on (both are off by default), and influence 0 also disables it. With both factors enabled, the defaults make forest and plains-like climates fertile and deserts and frozen biomes poorer.</p>
+<p>The percentages are approximate because they are quantiles of smooth noise. For example, <code>soil.lowPercent = 30</code> with <code>growth.lowGrowthMultiplier = 0</code> makes roughly a third of the land never grow affected crops.</p>
+<h2 id="client-options">Client options</h2>
+<p>File: <code>config/ffsoilfertility-client.toml</code>. These only change what you see: the grass colours (the world re-renders automatically when they change) and the hoe readout.</p>
+<div class="table-wrap"><table><thead><tr><th>Option</th><th>Default</th><th>Range</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>grassVisuals</code></td><td><code>true</code></td><td></td><td>Master switch for every grass colour change this mod makes. Off shows vanilla grass everywhere; the hoe readout still works. The <code>tint.*</code> options below set how grass looks while it is on.</td></tr>
+<tr><td><code>tint.highSaturation</code></td><td><code>0.3</code></td><td>0 to 1</td><td>How much more saturated grass gets on high quality soil (0.3 is 30% more saturated).</td></tr>
+<tr><td><code>tint.lowDesaturation</code></td><td><code>0.4</code></td><td>0 to 1</td><td>How much less saturated grass gets on low quality soil (0.4 is 40% less saturated).</td></tr>
+<tr><td><code>tint.highHueShift</code></td><td><code>4.0</code></td><td>-180 to 180</td><td>Hue shift in degrees for grass on high quality soil (positive moves green towards cyan).</td></tr>
+<tr><td><code>tint.lowHueShift</code></td><td><code>-6.0</code></td><td>-180 to 180</td><td>Hue shift in degrees for grass on low quality soil (negative moves green towards yellow).</td></tr>
+<tr><td><code>tint.highBrightness</code></td><td><code>0.03</code></td><td>-1 to 1</td><td>Brightness change for grass on high quality soil (0.05 is 5% brighter, -0.05 is 5% darker).</td></tr>
+<tr><td><code>tint.lowBrightness</code></td><td><code>-0.05</code></td><td>-1 to 1</td><td>Brightness change for grass on low quality soil.</td></tr>
+<tr><td><code>tint.hoeReadout</code></td><td><code>true</code></td><td></td><td>While holding a hoe (either hand) and looking at a block, shows a coloured line above the action bar: "Soil: Low" (orange), "Soil: Normal" (white) or "Soil: High" (green). Only shown when the server has the mod.</td></tr>
+</tbody></table></div>
+<div data-page-footer></div>
+</main></div><div data-site-footer></div>
+<script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
+</body></html>
