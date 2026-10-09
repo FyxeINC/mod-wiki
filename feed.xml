@@ -7,6 +7,20 @@
   <updated>2026-10-09T00:00:00Z</updated>
   <author><name>Fyxe</name></author>
   <entry>
+    <title>FFItemCreationTracker: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffitemcreationtracker/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffitemcreationtracker-99</id>
+    <updated>2026-10-09T00:00:00Z</updated>
+    <summary>0.5.0: remembers other players who change a stamped item (Modified by), new Brewed, Cut and Woven sources, and a CreationHistory API.</summary>
+  </entry>
+  <entry>
+    <title>FFItemCreationTracker: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffitemcreationtracker/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffitemcreationtracker-98</id>
+    <updated>2026-10-09T00:00:00Z</updated>
+    <summary>0.4.1: the stamp command takes unquoted namespaced ids and tab-completes sources other mods registered; command messages are translatable and info shows UTC.</summary>
+  </entry>
+  <entry>
     <title>FFSoilFertility: Modding API</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffsoilfertility/api.html"/>
     <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffsoilfertility-97</id>

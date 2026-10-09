@@ -19,6 +19,18 @@ window.WIKI_DATA = {
     "recentUpdates": [
       {
         "date": "2026-10-09",
+        "project": "ffitemcreationtracker",
+        "page": "index.html",
+        "change": "0.5.0: remembers other players who change a stamped item (Modified by), new Brewed, Cut and Woven sources, and a CreationHistory API."
+      },
+      {
+        "date": "2026-10-09",
+        "project": "ffitemcreationtracker",
+        "page": "index.html",
+        "change": "0.4.1: the stamp command takes unquoted namespaced ids and tab-completes sources other mods registered; command messages are translatable and info shows UTC."
+      },
+      {
+        "date": "2026-10-09",
         "project": "ffsoilfertility",
         "page": "api.html",
         "change": "0.4.0: new public API (SoilFertilityAPI) to read soil quality, register server quality modifiers, sample areas, and listen to growth, bone meal, particle and field-changed events."
@@ -1233,7 +1245,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Records who created an item, when, where, and how.",
       "tagline": "Records who created an item, when, where, and how.",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "minecraftVersion": "1.20.6-26.3",
       "modrinthSlug": "",
       "icon": "icon.png",
@@ -1262,7 +1274,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFItemCreationTracker features, requirements, and source version.",
-          "updated": "2026-10-07",
+          "updated": "2026-10-09",
           "searchExcerpt": "Records who created an item, when, where, and how."
         },
         {
@@ -1270,7 +1282,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFItemCreationTracker API, events, and integration examples.",
-          "updated": "2026-10-07",
+          "updated": "2026-10-09",
           "searchExcerpt": "FFItemCreationTracker public API and integration guide."
         }
       ],

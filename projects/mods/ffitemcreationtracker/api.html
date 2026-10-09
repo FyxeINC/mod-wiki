@@ -16,7 +16,7 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFItemCreationTracker</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth &#8599;</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source &#8599;</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.3.1</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.5.0</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
 <h2 id="item-creation-tracker-modding-api">Item Creation Tracker — Modding API</h2>
 <p>Primary class: <code>com.fyxe.ffitemcreationtracker.api.ItemCreationAPI</code>. The creation component is <code>ffitemcreationtracker:creation</code>; <code>CreationRecord</code> stores creator name and UUID, game day, timestamp, source ID, dimension, biome, moon phase, and custom extras.</p>
 <h3 id="read-and-write-stamps">Read and write stamps</h3>
@@ -29,10 +29,10 @@
 <tr><td><code>create(Player, String, Map&lt;String,String&gt;)</code></td><td>Construct a record without writing it.</td></tr>
 <tr><td><code>forceStamp(ItemStack, Player, String)</code></td><td>Write a stamp unconditionally, replacing any existing one.</td></tr>
 </tbody></table></div>
-<p><code>tryStamp</code> runs on the logical server, returns <code>true</code> only when it writes a stamp, and respects enabled state, creative/spectator rules, item eligibility, and overwrite settings. It posts <code>CreationStampEvent</code> before writing.</p>
+<p><code>tryStamp</code> runs on the logical server, returns <code>true</code> only when it writes a stamp, and respects enabled state, creative/spectator rules, item eligibility, and overwrite settings. When the item already has a stamp and overwriting is off, it records the player as a modifier through <code>CreationHistory.recordModification</code> (no <code>CreationStampEvent</code>) and still returns <code>false</code>. It posts <code>CreationStampEvent</code> before writing.</p>
 <p><code>forceStamp</code> ignores those config gates and does not post <code>CreationStampEvent</code>; it backs the OP-only <code>/ffitemcreationtracker stamp</code> command and is meant for explicit admin actions, not automatic gameplay stamping. There is no API method or command to remove a stamp.</p>
 <h3 id="custom-sources-and-display">Custom sources and display</h3>
-<p>Use a namespaced source ID such as <code>mymod:cooking</code>. Call <code>ItemCreationAPI.registerSource(sourceId, byKey, nounKey, nounFirstKey)</code> to supply wording, or provide translation keys. <code>registerExtra(extraKey, formatter)</code> formats an extra field in tooltips. Built-in sources include <code>CRAFTED</code>, <code>SMELTED</code>, <code>ANVIL</code>, <code>SMITHING</code>, <code>ENCHANTED</code>, <code>TRADED</code>, <code>FISHED</code>, and <code>UNKNOWN</code>.</p>
+<p>Use a namespaced source ID such as <code>mymod:cooking</code>. Call <code>ItemCreationAPI.registerSource(sourceId, byKey, nounKey, nounFirstKey)</code> to supply wording, or provide translation keys. <code>registerExtra(extraKey, formatter)</code> formats an extra field in tooltips. <code>CreationSources.registeredIds()</code> returns every registered source ID, which the <code>stamp</code> command uses for tab completion. Built-in sources include <code>CRAFTED</code>, <code>SMELTED</code>, <code>ANVIL</code>, <code>SMITHING</code>, <code>ENCHANTED</code>, <code>TRADED</code>, <code>FISHED</code>, <code>BREWED</code>, <code>STONECUT</code>, <code>LOOMED</code>, and <code>UNKNOWN</code>.</p>
 <pre><code class="language-java">ItemCreationAPI.tryStamp(result, player, &quot;mymod:cooking&quot;, Map.of(&quot;mymod:recipe&quot;, &quot;stew&quot;));</code></pre>
 <h3 id="built-in-detail-extras">Built-in detail extras</h3>
 <p><code>com.fyxe.ffitemcreationtracker.api.CreationExtras</code> names the extras keys this mod writes itself when the server config allows it. They are added before <code>CreationStampEvent</code> is posted, so a listener can read or remove them; <code>forceStamp</code> records them as well. Values from the caller's own extras map are never overwritten.</p>
@@ -41,13 +41,22 @@
 <tr><td><code>DEPTH</code></td><td><code>ffitemcreationtracker:depth</code></td><td><code>deep</code>, <code>underground</code>, <code>underwater</code>, <code>surface</code>, <code>high</code> (skipped in roofed dimensions)</td><td><code>recordDepth</code>, default on</td></tr>
 <tr><td><code>POSITION</code></td><td><code>ffitemcreationtracker:position</code></td><td><code>x,y,z</code> block position</td><td><code>recordCoordinates</code>, default off</td></tr>
 </tbody></table></div>
-<p><code>CreationExtras.BUILT_IN</code> holds all three keys. The tooltip draws them with their own client settings instead of the generic extras setting.</p>
+<p><code>CreationExtras.BUILT_IN</code> holds these keys and <code>MODIFIERS</code> (below). The tooltip draws them with their own client settings instead of the generic extras setting.</p>
 <pre><code class="language-java">ItemCreationAPI.get(stack)
         .map(rec -&gt; rec.extras().get(CreationExtras.WEATHER))
         .filter(&quot;thunder&quot;::equals)
         .ifPresent(w -&gt; giveStormBonus(player));</code></pre>
+<h3 id="modification-history">Modification history</h3>
+<p><code>CreationExtras.MODIFIERS</code> (<code>ffitemcreationtracker:modifiers</code>) stores the names of players who changed a stamped item, comma separated, oldest first, in the stamp extras. The maker is never listed and a name appears once. Use <code>com.fyxe.ffitemcreationtracker.api.CreationHistory</code> instead of parsing it yourself.</p>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><code>modifiers(CreationRecord)</code> / <code>modifiers(ItemStack)</code></td><td>Names of the modifiers, oldest first; empty when none.</td></tr>
+<tr><td><code>recordModification(ItemStack, Player)</code></td><td>Add the player to a stamped stack's history. Returns <code>true</code> when the stack changed; does nothing for the maker, a listed player, an unstamped stack, or when server <code>trackModifications</code> is off. Posts no event.</td></tr>
+<tr><td><code>withModifier(CreationRecord, String, int)</code></td><td>The history after that name is added (oldest dropped beyond the max), or <code>null</code> when nothing changes.</td></tr>
+<tr><td><code>parse(String)</code> / <code>join(List&lt;String&gt;)</code></td><td>Convert between the stored string and a list.</td></tr>
+</tbody></table></div>
+<pre><code class="language-java">List&lt;String&gt; who = CreationHistory.modifiers(stack);</code></pre>
 <h3 id="pre-write-event">Pre-write event</h3>
-<p><code>com.fyxe.ffitemcreationtracker.api.event.CreationStampEvent</code> is a plain class (not a NeoForge bus event) passed to every listener registered with <code>CreationStampEvents.register(Consumer&lt;CreationStampEvent&gt;)</code>. It runs on the logical server after config checks but before the component is written, and works the same on Fabric and NeoForge. Inspect <code>getPlayer()</code>, <code>getStack()</code>, <code>getSourceId()</code>, and <code>getExtras()</code>; call <code>setSourceId</code>, <code>putExtra</code>, or <code>setCanceled(true)</code> to change or stop the stamp. Register once during mod initialization.</p>
+<p><code>com.fyxe.ffitemcreationtracker.api.event.CreationStampEvent</code> is a plain class (not a NeoForge bus event) passed to every listener registered with <code>CreationStampEvents.register(Consumer&lt;CreationStampEvent&gt;)</code>. It runs on the logical server after config checks but before the component is written, and works the same on Fabric and NeoForge. Inspect <code>getPlayer()</code>, <code>getStack()</code>, <code>getSourceId()</code>, and <code>getExtras()</code>; call <code>setSourceId</code>, <code>putExtra</code>, or <code>setCanceled(true)</code> to change or stop the stamp. A listener that throws is logged and skipped, so one faulty listener cannot break the click or stop the other listeners. Register once during mod initialization.</p>
 <pre><code class="language-java">CreationStampEvents.register(event -&gt; {
     if (event.getSourceId().equals(&quot;mymod:cooking&quot;)) {
         event.putExtra(&quot;mymod:station&quot;, &quot;campfire&quot;);
@@ -72,7 +81,7 @@ tooltip.ffitemcreationtracker.source.mymod.cooking
 tooltip.ffitemcreationtracker.source.mymod.cooking.first
 tooltip.ffitemcreationtracker.extra.mymod.note
 </code></pre>
-<p>Built-in <code>CreationSource</code> values: CRAFTED, SMELTED, ANVIL, SMITHING, ENCHANTED, TRADED, FISHED, UNKNOWN. Anvil and smithing both print as Smithed.</p>
+<p>Built-in <code>CreationSource</code> values: CRAFTED, SMELTED, ANVIL, SMITHING, ENCHANTED, TRADED, FISHED, BREWED, STONECUT, LOOMED, UNKNOWN. Brewed prints as Brewed by, stonecut as Cut by, loomed as Woven by. Anvil and smithing both print as Smithed. Taking an item from a furnace output is stamped SMELTED, a villager trade TRADED, an anvil result ANVIL, a smithing table result SMITHING, a stonecutter result STONECUT, a loom result LOOMED, and any other output slot CRAFTED.</p>
 <div data-page-footer></div>
 </main></div><div data-site-footer></div>
 <script>window.SITE_ROOT="../../../";</script><script src="../../../assets/js/wiki-data.js"></script><script src="../../../assets/js/main.js"></script>
