@@ -16,7 +16,7 @@
 <div class="layout"><aside class="sidebar" data-project-sidebar></aside><main class="content">
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFNutrition</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth &#8599;</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source &#8599;</a></div></div></div>
-<p>This guide describes the public API in the current source version <code>0.7.0</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
+<p>This guide describes the public API in the current source version <code>0.8.0</code>. Use the dependency guidance below and check that the mod is loaded when integrating conditionally.</p>
 <h2 id="ff-nutrition-modding-api">FF Nutrition — Modding API</h2>
 <p>This document describes the public API other mods (and agents) can use to interact with FF Nutrition on Minecraft 1.20.1, 1.20.6, 1.21.1, 1.21.11 and 26.1 to 26.3 (Fabric, Forge and NeoForge; NeoForge on 26.1.2 and 26.2 only).</p>
 <p>Primary entry point: <code>com.fyxeinc.ffnutrition.api.FFNutritionAPI</code></p>
@@ -32,7 +32,7 @@
     side=&quot;BOTH&quot;</code></pre>
 <p>Forge 1.20.1 (<code>mods.toml</code>) uses <code>mandatory=false</code> in place of <code>type=&quot;optional&quot;</code>.</p>
 <p>Fabric (<code>fabric.mod.json</code>): <code>"suggests": { "ffnutrition": "&gt;=0.4.0" }</code>. The API is loader-free, so the same calls work on both loaders.</p>
-<p>Compile against the per-target Maven artifact <code>com.fyxeinc.ffnutrition:ffnutrition-&lt;minecraft&gt;-&lt;loader&gt;:0.7.0</code>, for example <code>ffnutrition-1.21.1-neoforge</code>, <code>ffnutrition-1.21.11-fabric</code> or <code>ffnutrition-1.20.1-forge</code>. NeoForge 1.21.1 builds before 0.4.0 used <code>com.fyxeinc.ffnutrition:ffnutrition</code>.</p>
+<p>Compile against the per-target Maven artifact <code>com.fyxeinc.ffnutrition:ffnutrition-&lt;minecraft&gt;-&lt;loader&gt;:0.8.0</code>, for example <code>ffnutrition-1.21.1-neoforge</code>, <code>ffnutrition-1.21.11-fabric</code> or <code>ffnutrition-1.20.1-forge</code>. NeoForge 1.21.1 builds before 0.4.0 used <code>com.fyxeinc.ffnutrition:ffnutrition</code>.</p>
 <p>Always prefer the API over writing the <code>nutrition_data</code> attachment or attribute base value directly. The API keeps events, the max-health modifier, and the Metabolic Gauge client sync consistent.</p>
 <hr>
 <h3 id="max-health-compatibility">Max-health compatibility</h3>
@@ -67,6 +67,7 @@
 <tr><td><code>getDefaultTargetMaxHealth(Player)</code></td><td>Built-in formula target (before events)</td></tr>
 <tr><td><code>getMaxHealthModifierId()</code></td><td><code>ResourceLocation</code> (<code>Identifier</code> on 1.21.11) of our permanent modifier; on 1.20.x it is stored under a UUID derived from this id</td></tr>
 <tr><td><code>getMaxHealthModifierAmount(Player)</code></td><td><code>Optional&lt;Double&gt;</code> of current modifier amount</td></tr>
+<tr><td><code>foodValueScale(double nutrition, double saturation)</code></td><td><code>nutrition * nutritionModifier + saturation * saturationModifier</code> from the common config (defaults 4.0 and 2.0); saturation is the absolute amount (0.8.0)</td></tr>
 </tbody></table></div>
 <hr>
 <h3 id="mutations-server-only-no-ops-on-client">Mutations (server only; no-ops on client)</h3>
@@ -86,7 +87,8 @@
 <tr><td><code>setAllCategories(Player, double)</code></td><td>Set every category to the same value (clamped)</td></tr>
 <tr><td><code>setAllCategories(..., Cause)</code></td><td>Same with explicit cause</td></tr>
 <tr><td><code>addNutritionVector(Player, double[], Cause)</code></td><td>Ordered vector add (food-style)</td></tr>
-<tr><td><code>applyFoodNutrition(ServerPlayer, Item, double[], usedFallback, fromPlacedBlock)</code></td><td>Food path + <code>FoodNutritionAppliedEvent</code></td></tr>
+<tr><td><code>applyFoodNutrition(ServerPlayer, Item, double[], usedFallback, fromPlacedBlock)</code></td><td>Food path + <code>FoodNutritionAppliedEvent</code>; the change event carries an empty stack</td></tr>
+<tr><td><code>applyFoodNutrition(ServerPlayer, ItemStack, double[], usedFallback)</code></td><td>Eaten-item food path (0.8.0): same as above, but the <code>NutritionChangeEvent</code> carries the stack</td></tr>
 <tr><td><code>applyMaxHealth(Player)</code></td><td>Force modifier refresh only</td></tr>
 </tbody></table></div>
 <p><code>Cause</code> values: <code>FOOD</code>, <code>DECAY</code>, <code>COMMAND</code>, <code>API</code>, <code>DEATH_CLONE</code>, <code>OTHER</code>.</p>
@@ -117,6 +119,21 @@ public static void onComputeMaxHealth(ComputeMaxHealthEvent event) {
             &amp;&amp; event.getOperation() == NutritionChangeEvent.Operation.ADD_VECTOR) {
         // cancel or mutate event.getVector()
         event.setCanceled(true);
+    }
+}</code></pre>
+<h4>Example — scale eaten food by its stack</h4>
+<p>Since 0.8.0, <code>NutritionChangeEvent.getStack()</code> returns the food stack as it was eaten for <code>Cause.FOOD</code> changes from an eaten item. It is <code>ItemStack.EMPTY</code> for placed food blocks and for every other cause, and is read only. The event has a new constructor <code>NutritionChangeEvent(ServerPlayer, Cause, Operation, ItemStack)</code>; the three-argument constructor passes an empty stack. Item compositions are multiplied by <code>FFNutritionAPI.foodValueScale(nutrition, saturation)</code> for the item's own food values, so a listener can compare the values of two versions of a food with the same weighting.</p>
+<pre><code class="language-java">public static void onNutritionChange(NutritionChangeEvent event) {
+    ItemStack stack = event.getStack();
+    if (event.getCause() == NutritionChangeEvent.Cause.FOOD
+            &amp;&amp; event.getOperation() == NutritionChangeEvent.Operation.ADD_VECTOR
+            &amp;&amp; !stack.isEmpty()) {
+        double factor = yourFreshness(stack); // 0.0 to 1.0
+        double[] scaled = event.getVector().clone();
+        for (int i = 0; i &lt; scaled.length; i++) {
+            scaled[i] *= factor;
+        }
+        event.setVector(scaled);
     }
 }</code></pre>
 <h4>Example — react after score changes</h4>

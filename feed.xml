@@ -4,35 +4,63 @@
   <link href="https://fyxeinc.github.io/mod-wiki/updates.html"/>
   <link rel="self" href="https://fyxeinc.github.io/mod-wiki/feed.xml"/>
   <id>https://fyxeinc.github.io/mod-wiki/</id>
-  <updated>2026-10-09T00:00:00Z</updated>
+  <updated>2026-10-10T00:00:00Z</updated>
   <author><name>Fyxe</name></author>
+  <entry>
+    <title>FFNutrition: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffnutrition/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-10-ffnutrition-103</id>
+    <updated>2026-10-10T00:00:00Z</updated>
+    <summary>0.8.0: NutritionChangeEvent.getStack() carries the eaten food stack, new applyFoodNutrition(ServerPlayer, ItemStack, double[], usedFallback) and FFNutritionAPI.foodValueScale(nutrition, saturation). Spoiled food gives less diet credit with FFFoodSpoilageAndPreservation 0.13.0 or newer.</summary>
+  </entry>
+  <entry>
+    <title>FFFoodSpoilageAndPreservation: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/fffoodspoilageandpreservation/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-10-fffoodspoilageandpreservation-102</id>
+    <updated>2026-10-10T00:00:00Z</updated>
+    <summary>0.13.0: with FF Nutrition 0.8.0 or newer, the diet credit of eaten food is scaled by how much of its hunger and saturation the spoiled food still gives; server option scaleFFNutrition (default on) in nutritionDecay.</summary>
+  </entry>
   <entry>
     <title>FFItemCreationTracker: Overview</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffitemcreationtracker/index.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffitemcreationtracker-99</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffitemcreationtracker-101</id>
     <updated>2026-10-09T00:00:00Z</updated>
     <summary>0.5.0: remembers other players who change a stamped item (Modified by), new Brewed, Cut and Woven sources, and a CreationHistory API.</summary>
   </entry>
   <entry>
     <title>FFItemCreationTracker: Overview</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffitemcreationtracker/index.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffitemcreationtracker-98</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffitemcreationtracker-100</id>
     <updated>2026-10-09T00:00:00Z</updated>
     <summary>0.4.1: the stamp command takes unquoted namespaced ids and tab-completes sources other mods registered; command messages are translatable and info shows UTC.</summary>
   </entry>
   <entry>
     <title>FFSoilFertility: Modding API</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffsoilfertility/api.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffsoilfertility-97</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffsoilfertility-99</id>
     <updated>2026-10-09T00:00:00Z</updated>
     <summary>0.4.0: new public API (SoilFertilityAPI) to read soil quality, register server quality modifiers, sample areas, and listen to growth, bone meal, particle and field-changed events.</summary>
   </entry>
   <entry>
     <title>FFSoilFertility: Overview</title>
     <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffsoilfertility/index.html"/>
-    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffsoilfertility-96</id>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffsoilfertility-98</id>
     <updated>2026-10-09T00:00:00Z</updated>
     <summary>0.2.0: new growth.affectCrops and growth.affectSaplings options; saplings now use the separate ffsoilfertility:affected_saplings tag and are off by default.</summary>
+  </entry>
+  <entry>
+    <title>FFAnimalCare: Overview</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffanimalcare/index.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffanimalcare-97</id>
+    <updated>2026-10-09T00:00:00Z</updated>
+    <summary>0.3.2: fixed off-hand double feeding; bowls, bottles and a water bucket (from any fish bucket) are returned for diet-only foods; much less network traffic. Bundles FFUtilities 0.2.18.</summary>
+  </entry>
+  <entry>
+    <title>FFUtilities: Modding API</title>
+    <link href="https://fyxeinc.github.io/mod-wiki/projects/mods/ffutilities/api.html"/>
+    <id>https://fyxeinc.github.io/mod-wiki/#update-2026-10-09-ffutilities-96</id>
+    <updated>2026-10-09T00:00:00Z</updated>
+    <summary>0.2.18: new item.ItemUtil.useRemainder(stack) returns what is left after one item is used up (bowls, bottles, use remainders, water bucket for fish buckets, crafting remainders).</summary>
   </entry>
   <entry>
     <title>FFFoodSpoilageAndPreservation: Datapacks</title>

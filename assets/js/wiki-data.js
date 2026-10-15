@@ -18,6 +18,18 @@ window.WIKI_DATA = {
     },
     "recentUpdates": [
       {
+        "date": "2026-10-10",
+        "project": "ffnutrition",
+        "page": "api.html",
+        "change": "0.8.0: NutritionChangeEvent.getStack() carries the eaten food stack, new applyFoodNutrition(ServerPlayer, ItemStack, double[], usedFallback) and FFNutritionAPI.foodValueScale(nutrition, saturation). Spoiled food gives less diet credit with FFFoodSpoilageAndPreservation 0.13.0 or newer."
+      },
+      {
+        "date": "2026-10-10",
+        "project": "fffoodspoilageandpreservation",
+        "page": "index.html",
+        "change": "0.13.0: with FF Nutrition 0.8.0 or newer, the diet credit of eaten food is scaled by how much of its hunger and saturation the spoiled food still gives; server option scaleFFNutrition (default on) in nutritionDecay."
+      },
+      {
         "date": "2026-10-09",
         "project": "ffitemcreationtracker",
         "page": "index.html",
@@ -40,6 +52,18 @@ window.WIKI_DATA = {
         "project": "ffsoilfertility",
         "page": "index.html",
         "change": "0.2.0: new growth.affectCrops and growth.affectSaplings options; saplings now use the separate ffsoilfertility:affected_saplings tag and are off by default."
+      },
+      {
+        "date": "2026-10-09",
+        "project": "ffanimalcare",
+        "page": "index.html",
+        "change": "0.3.2: fixed off-hand double feeding; bowls, bottles and a water bucket (from any fish bucket) are returned for diet-only foods; much less network traffic. Bundles FFUtilities 0.2.18."
+      },
+      {
+        "date": "2026-10-09",
+        "project": "ffutilities",
+        "page": "api.html",
+        "change": "0.2.18: new item.ItemUtil.useRemainder(stack) returns what is left after one item is used up (bowls, bottles, use remainders, water bucket for fish buckets, crafting remainders)."
       },
       {
         "date": "2026-10-08",
@@ -1092,7 +1116,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
       "tagline": "Adds food spoilage stages, preservation modifiers, temperature, and eat effects.",
-      "version": "0.12.0",
+      "version": "0.13.0",
       "minecraftVersion": "1.21.1-26.3",
       "modrinthSlug": "fffoodspoilageandpreservation",
       "icon": "icon.png",
@@ -1121,7 +1145,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFFoodSpoilageAndPreservation features, requirements, and source version.",
-          "updated": "2026-10-08",
+          "updated": "2026-10-10",
           "searchExcerpt": "Food spoilage stages, preservation methods, storage rates, stacking, and requirements."
         },
         {
@@ -1557,7 +1581,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Loads mods from nested folders in the mods directory.",
       "tagline": "Loads mods from nested folders in the mods directory.",
-      "version": "0.6.0",
+      "version": "0.6.1",
       "minecraftVersion": "1.20.4-26.3",
       "modrinthSlug": "ffmodsubfolders",
       "icon": "icon.png",
@@ -1617,7 +1641,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Rewards diet variety with nutrition categories that affect maximum health.",
       "tagline": "Rewards diet variety with nutrition categories that affect maximum health.",
-      "version": "0.7.0",
+      "version": "0.8.0",
       "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "ffnutrition",
       "icon": "icon.png",
@@ -1650,7 +1674,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "FFNutrition features, requirements, and source version.",
-          "updated": "2026-10-07",
+          "updated": "2026-10-10",
           "searchExcerpt": "Rewards diet variety with nutrition categories that affect maximum health."
         },
         {
@@ -1666,7 +1690,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "03",
           "description": "FFNutrition API, events, and integration examples.",
-          "updated": "2026-10-07",
+          "updated": "2026-10-10",
           "searchExcerpt": "FFNutrition public API and integration guide."
         }
       ],
@@ -1735,7 +1759,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge.",
       "tagline": "A shared API library for Fyxe mods on Fabric, NeoForge and Forge.",
-      "version": "0.2.17",
+      "version": "0.2.18",
       "minecraftVersion": "1.20.1-26.3",
       "modrinthSlug": "",
       "icon": "icon.png",
@@ -1776,7 +1800,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "02",
           "description": "FFUtilities API, events, and integration examples.",
-          "updated": "2026-10-08",
+          "updated": "2026-10-09",
           "searchExcerpt": "FFUtilities public API and integration guide."
         }
       ],
@@ -2223,7 +2247,7 @@ window.WIKI_DATA = {
       "status": "active",
       "description": "Feed animals to manage hunger, health and natural breeding.",
       "tagline": "Full bellies, healthy herds and natural breeding.",
-      "version": "0.3.1",
+      "version": "0.3.2",
       "minecraftVersion": "1.20.1-1.21.11",
       "modrinthSlug": "",
       "icon": "",
@@ -2256,7 +2280,7 @@ window.WIKI_DATA = {
           "title": "Overview",
           "index": "01",
           "description": "Care levels, hunger, feeding, natural breeding and every configuration default.",
-          "updated": "2026-10-05",
+          "updated": "2026-10-09",
           "searchExcerpt": "Animal hunger, starvation, movement, feeding and natural breeding."
         },
         {
@@ -2272,7 +2296,7 @@ window.WIKI_DATA = {
           "title": "Modding API",
           "index": "03",
           "description": "Portable hunger, feeding, breeding and starvation integration callbacks.",
-          "updated": "2026-10-05",
+          "updated": "2026-10-09",
           "searchExcerpt": "AnimalHungerApi snapshots, custom feeding, grazing, breeding and cancellable callbacks."
         }
       ],

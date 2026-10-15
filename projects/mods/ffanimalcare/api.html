@@ -17,7 +17,7 @@
 <div data-site-breadcrumb></div>
 <div class="mod-meta"><img class="mod-meta__icon" data-project-icon alt=""><div class="mod-meta__body"><span class="status-pill" data-project-status></span><h3 data-project-name>FFAnimalCare</h3><p class="mod-meta__tagline" data-project-tagline></p><div class="platform-tags" data-project-tags></div><div class="badge-row"><img data-project-badge="downloads"></div><div class="mod-meta__actions"><a class="btn btn--modrinth" data-project-link="modrinth" target="_blank" rel="noopener">Modrinth &#8599;</a><a class="btn btn--curseforge" data-project-link="curseforge" target="_blank" rel="noopener">CurseForge &#8599;</a><a class="btn btn--github" data-project-link="github" target="_blank" rel="noopener">Source &#8599;</a></div></div></div>
 <h2 id="api-entry">API entry and dependencies</h2>
-<p>FFAnimalCare 0.3.0 provides API version <code>2</code> in <code>com.fyxe.ffanimalcare.api</code>. The entry point is <code>AnimalHungerApi</code>; register portable callbacks with <code>HungerListener</code>. The interface is shared by Fabric, Forge and NeoForge.</p>
+<p>FFAnimalCare 0.3.2 provides API version <code>2</code> in <code>com.fyxe.ffanimalcare.api</code>. The entry point is <code>AnimalHungerApi</code>; register portable callbacks with <code>HungerListener</code>. The interface is shared by Fabric, Forge and NeoForge.</p>
 <p>Compile against the artifact for your exact Minecraft version and loader: <code>com.fyxe.ffanimalcare:ffanimalcare-&lt;minecraft&gt;-&lt;loader&gt;:0.3.0</code>. For example:</p>
 <pre><code class="language-kotlin">// NeoForge
 compileOnly("com.fyxe.ffanimalcare:ffanimalcare-1.21.1-neoforge:0.3.0")
@@ -31,7 +31,7 @@ modCompileOnly("com.fyxe.ffanimalcare:ffanimalcare-1.20.1-forge:0.3.0")</code></
 <div class="table-wrap"><table><thead><tr><th>Method</th><th>Contract</th></tr></thead><tbody>
 <tr><td><code>isAffected(Animal)</code></td><td>Current config/exclusion/listener eligibility. Does not imply tracking has started.</td></tr>
 <tr><td><code>isTracked(Animal)</code></td><td>Persisted activation flag, available on both sides. It remains saved while the mod is disabled or an animal is excluded.</td></tr>
-<tr><td><code>hunger(Animal)</code></td><td>Latest hunger on either side, 0 full to 1 starving. Queries do not advance or activate hunger.</td></tr>
+<tr><td><code>hunger(Animal)</code></td><td>0 full to 1 starving. The authoritative value on the server; on clients the latest synchronized value (sent within about a second, immediately on activation or a change of 0.01 or more). Queries do not advance or activate hunger.</td></tr>
 <tr><td><code>snapshot(Animal)</code></td><td>Optional server-only Snapshot with tracked, hunger, lastBredTime, breedingDelayRemaining, hungerPauseRemaining, individualMultiplier, careExperience and careLevel. lastBredTime is -1 before breeding; individualMultiplier is -1 before a roll is assigned. Durations are remaining world ticks.</td></tr>
 <tr><td><code>effectiveRate(Animal)</code></td><td>Configured/care/datapack/listener-adjusted gain per world tick, on the server game thread; returns 0 on clients or the wrong thread. May initialize an enabled individual roll for a tracked animal. The recovery pause separately suppresses elapsed gain.</td></tr>
 <tr><td><code>canBreed(Animal)</code></td><td>Generic tracked/age/hunger/cooldown/canFallInLove gates. Does not check for a compatible partner or every species' pregnancy/AI condition.</td></tr>
